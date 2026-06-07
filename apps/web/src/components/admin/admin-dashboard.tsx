@@ -21,9 +21,9 @@ const revenueData = [
 ];
 
 const recentBookings = [
-  { id: "JIJU-001", client: "Sharma Wedding", amount: "₹18L", status: "Confirmed" },
-  { id: "JIJU-002", client: "TechCorp Gala", amount: "₹32L", status: "Planning" },
-  { id: "JIJU-003", client: "Music Fest", amount: "₹85L", status: "Confirmed" },
+  { id: "Glitz-001", client: "Sharma Wedding", amount: "₹18L", status: "Confirmed" },
+  { id: "Glitz-002", client: "TechCorp Gala", amount: "₹32L", status: "Planning" },
+  { id: "Glitz-003", client: "Music Fest", amount: "₹85L", status: "Confirmed" },
 ];
 
 const recentLeads = [
@@ -36,7 +36,7 @@ export function AdminDashboard() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="font-display text-2xl font-bold md:text-3xl">Admin Dashboard</h1>
-      <p className="text-muted">JIJU Events management overview</p>
+      <p className="text-muted">Glitz Events & Promotions management overview</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[

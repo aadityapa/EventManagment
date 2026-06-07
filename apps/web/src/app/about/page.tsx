@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export const metadata = generateSEO({
   title: "About Us",
   description:
-    "Learn about JIJU Events — 15+ years of luxury event management excellence, our vision, mission, and award-winning team.",
+    "Learn about Glitz Events & Promotions — 15+ years of luxury event management excellence, our vision, mission, and award-winning team.",
   path: "/about",
 });
 
@@ -23,7 +23,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        title="About JIJU Events"
+        title="About Glitz Events & Promotions"
         subtitle="Transforming visions into unforgettable experiences since 2010"
       />
 
@@ -41,7 +41,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <Image
                 src={EVENT_IMAGES.about}
-                alt="JIJU Events team at work"
+                alt="Glitz Events & Promotions team at work"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"

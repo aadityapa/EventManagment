@@ -113,7 +113,7 @@ export function BookingWizard() {
 
   const next = () => {
     if (step === 8) {
-      const bookingNumber = `JIJU-${Date.now().toString(36).toUpperCase()}`;
+      const bookingNumber = `Glitz-${Date.now().toString(36).toUpperCase()}`;
       setState((s) => ({ ...s, bookingNumber }));
     }
     if (step < STEPS.length) setStep((s) => s + 1);

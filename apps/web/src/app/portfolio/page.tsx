@@ -5,7 +5,7 @@ import { PortfolioGrid } from "@/components/portfolio/portfolio-grid";
 export const metadata = generateSEO({
   title: "Portfolio",
   description:
-    "Explore JIJU Events portfolio — luxury weddings, corporate galas, concerts, and more.",
+    "Explore Glitz Events & Promotions portfolio — luxury weddings, corporate galas, concerts, and more.",
   path: "/portfolio",
 });
 

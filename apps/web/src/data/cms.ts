@@ -2,18 +2,18 @@ import { EVENT_IMAGES } from "@/lib/images";
 
 export const companyProfile = {
   introduction:
-    "JIJU Events is a premier international event management company that transforms visions into unforgettable experiences. With over 15 years of excellence, we've orchestrated 2,500+ events across 45 cities worldwide — from intimate destination weddings to grand corporate galas and star-studded concerts.",
+    "Glitz Events & Promotions is Pune's premier luxury event management company, transforming visions into unforgettable black-tie experiences. With over 12 years of excellence, we've orchestrated 1,800+ events across India — from intimate destination weddings to grand corporate galas, celebrity appearances, and stadium concerts.",
   vision:
-    "To be the world's most trusted luxury event management brand, setting new standards in creativity, precision, and guest experience.",
+    "To be India's most trusted luxury event management brand, setting new standards in creativity, precision, and guest experience.",
   mission:
     "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every event reflects our clients' unique story and exceeds every expectation.",
   story:
-    "Founded in 2010 by visionary event strategist Priya Sharma, JIJU Events began as a boutique wedding planning studio in Mumbai. What started with a single dream wedding has evolved into a global event powerhouse, trusted by Fortune 500 companies, Bollywood celebrities, and discerning families seeking nothing but the extraordinary.",
+    "Founded in Pune, Glitz Events & Promotions began as a boutique wedding and promotions studio. What started with a single dream celebration has evolved into a luxury event powerhouse, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
   stats: {
-    eventsManaged: 2500,
-    happyClients: 1800,
-    yearsExperience: 15,
-    citiesCovered: 45,
+    eventsManaged: 1800,
+    happyClients: 1400,
+    yearsExperience: 12,
+    citiesCovered: 35,
   },
 };
 
@@ -42,11 +42,11 @@ export const services = [
 ];
 
 export const testimonials = [
-  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "JIJU Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80", eventType: "WEDDING" },
-  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. JIJU's team handled everything with military precision.", rating: 5, image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", eventType: "CORPORATE" },
-  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. JIJU understands how to create buzz.", rating: 5, image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80", eventType: "PRODUCT_LAUNCH" },
+  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Glitz Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80", eventType: "WEDDING" },
+  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Glitz's team handled everything with military precision.", rating: 5, image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", eventType: "CORPORATE" },
+  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Glitz understands how to create buzz.", rating: 5, image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80", eventType: "PRODUCT_LAUNCH" },
   { id: "4", name: "The Kapoor Family", role: "Birthday Celebration", content: "Our daughter's 18th birthday was the talk of the town. The theme, entertainment, and food were all extraordinary.", rating: 5, image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80", eventType: "BIRTHDAY" },
-  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. JIJU Events is simply the best in the business.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", eventType: "CONFERENCE" },
+  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Glitz Events is simply the best in the business.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", eventType: "CONFERENCE" },
 ];
 
 export const awards = [
@@ -88,7 +88,7 @@ export const portfolioItems = [
 ];
 
 export const faqs = [
-  { question: "How far in advance should I book JIJU Events?", answer: "We recommend booking 6-12 months in advance for weddings and 3-6 months for corporate events. However, we can accommodate shorter timelines based on availability.", category: "General" },
+  { question: "How far in advance should I book Glitz Events?", answer: "We recommend booking 6-12 months in advance for weddings and 3-6 months for corporate events. However, we can accommodate shorter timelines based on availability.", category: "General" },
   { question: "Do you handle destination events internationally?", answer: "Yes! We've managed events in 45+ cities worldwide including Dubai, Bali, Thailand, Europe, and the Maldives.", category: "Services" },
   { question: "What is included in your wedding planning packages?", answer: "Our packages include venue selection, vendor coordination, design & decor, timeline management, day-of coordination, and post-event support. Custom packages are available.", category: "Weddings" },
   { question: "How does your online booking system work?", answer: "Our 9-step booking wizard lets you select event type, date, venue, guest count, budget, and services. You can pay online and receive instant confirmation via email, SMS, and WhatsApp.", category: "Booking" },

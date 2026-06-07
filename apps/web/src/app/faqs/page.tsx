@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 export const metadata = generateSEO({
   title: "FAQs",
   description:
-    "Frequently asked questions about JIJU Events — booking, payments, services, and more.",
+    "Frequently asked questions about Glitz Events & Promotions — booking, payments, services, and more.",
   path: "/faqs",
 });
 
@@ -25,7 +25,7 @@ export default function FaqsPage() {
 
       <PageHero
         title="Frequently Asked Questions"
-        subtitle="Everything you need to know about planning with JIJU Events"
+        subtitle="Everything you need to know about planning with Glitz Events & Promotions"
       />
 
       <section className="py-16 md:py-24">

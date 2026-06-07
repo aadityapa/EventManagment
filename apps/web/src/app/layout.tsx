@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Cinzel, Montserrat, Playfair_Display, Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { Header } from "@/components/layout/header";
@@ -7,11 +7,19 @@ import { Footer } from "@/components/layout/footer";
 import { FloatingCTA } from "@/components/layout/floating-cta";
 import { ExitIntentPopup } from "@/components/layout/exit-intent-popup";
 import { LiveChat } from "@/components/layout/live-chat";
-import { generateSEO } from "@/lib/seo";
+import { PageLoader } from "@/components/layout/page-loader";
+import { generateSEO, organizationSchema } from "@/lib/seo";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -22,7 +30,19 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const metadata: Metadata = generateSEO();
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  ...generateSEO(),
+  icons: {
+    icon: "/logo-icon.svg",
+    apple: "/logo-icon.svg",
+  },
+};
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -31,7 +51,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
 };
 
@@ -40,12 +60,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const schema = organizationSchema();
+
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="dark">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      </head>
       <body
-        className={`${inter.variable} ${playfair.variable} min-h-screen flex flex-col font-sans antialiased`}
+        className={`${montserrat.variable} ${poppins.variable} ${playfair.variable} ${cinzel.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-foreground`}
       >
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <PageLoader />
           <Header />
           <main className="flex-1 pb-20 md:pb-0">{children}</main>
           <Footer />

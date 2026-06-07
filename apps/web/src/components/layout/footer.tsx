@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Sparkles } from "lucide-react";
-import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { SITE_CONFIG, NAV_LINKS, FOOTER_LEGAL } from "@/lib/constants";
 import { services } from "@/data/cms";
 import { NewsletterForm } from "@/components/engagement/newsletter-form";
+import { Logo } from "@/components/branding/logo";
 
 function SocialIcon({ name }: { name: string }) {
   const paths: Record<string, React.ReactNode> = {
@@ -43,15 +44,9 @@ export function Footer() {
       <div className="container-page py-12 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 xl:grid-cols-5">
           <div className="space-y-4 lg:col-span-2 xl:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="font-display text-xl font-semibold">
-                JIJU <span className="gradient-text">Events</span>
-              </span>
-            </Link>
+            <Logo />
             <p className="max-w-xs text-sm leading-relaxed text-muted">
-              {SITE_CONFIG.tagline}. Crafting extraordinary experiences for over
-              15 years.
+              {SITE_CONFIG.tagline}. Pune&apos;s luxury event management &amp; promotions experts.
             </p>
             <div className="flex gap-3">
               {socialIcons.map(({ href, name, label }) => (
@@ -151,19 +146,12 @@ export function Footer() {
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
             reserved.
           </p>
-          <div className="flex gap-6 text-sm">
-            <Link
-              href="/privacy"
-              className="text-muted transition-colors hover:text-primary"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-muted transition-colors hover:text-primary"
-            >
-              Terms of Service
-            </Link>
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            {FOOTER_LEGAL.map((link) => (
+              <Link key={link.href} href={link.href} className="text-muted transition-colors hover:text-primary">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

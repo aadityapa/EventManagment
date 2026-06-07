@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 
 export const metadata = generateSEO({
   title: "Testimonials",
-  description: "Read what our clients say about JIJU Events — 4.9 star rated luxury event management.",
+  description: "Read what our clients say about Glitz Events & Promotions — 4.9 star rated luxury event management.",
   path: "/testimonials",
 });
 
@@ -16,7 +16,7 @@ export default function TestimonialsPage() {
     <>
       <PageHero
         title="Client Testimonials"
-        subtitle="Stories from those who've experienced the JIJU difference"
+        subtitle="Stories from those who've experienced the Glitz difference"
       />
 
       <section className="py-16 md:py-24">

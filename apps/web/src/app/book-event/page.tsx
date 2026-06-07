@@ -5,7 +5,7 @@ import { BookingWizard } from "@/components/booking/booking-wizard";
 export const metadata = generateSEO({
   title: "Book Event",
   description:
-    "Book your event with JIJU Events — our 9-step wizard makes planning effortless.",
+    "Book your event with Glitz Events & Promotions — our 9-step wizard makes planning effortless.",
   path: "/book-event",
 });
 

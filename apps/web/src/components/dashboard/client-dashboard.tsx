@@ -24,8 +24,8 @@ const navItems = [
 ];
 
 const mockBookings = [
-  { id: "JIJU-A1B2C3", event: "Royal Udaipur Wedding", date: "2026-12-15", status: "Confirmed", progress: 65 },
-  { id: "JIJU-D4E5F6", event: "TechCorp Annual Gala", date: "2026-09-20", status: "Planning", progress: 35 },
+  { id: "Glitz-A1B2C3", event: "Royal Udaipur Wedding", date: "2026-12-15", status: "Confirmed", progress: 65 },
+  { id: "Glitz-D4E5F6", event: "TechCorp Annual Gala", date: "2026-09-20", status: "Planning", progress: 35 },
 ];
 
 export function ClientDashboard() {

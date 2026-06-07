@@ -24,7 +24,7 @@ export default function TermsPage() {
               {
                 title: "2. Services",
                 content:
-                  "JIJU Events provides event planning, management, and coordination services. Service scope, deliverables, and pricing are defined in individual booking agreements and proposals.",
+                  "Glitz Events & Promotions provides event planning, management, and coordination services. Service scope, deliverables, and pricing are defined in individual booking agreements and proposals.",
               },
               {
                 title: "3. Booking & Payments",
@@ -44,12 +44,12 @@ export default function TermsPage() {
               {
                 title: "6. Limitation of Liability",
                 content:
-                  "JIJU Events' liability is limited to the total fees paid for the specific event. We are not liable for indirect, incidental, or consequential damages arising from event execution.",
+                  "Glitz Events & Promotions' liability is limited to the total fees paid for the specific event. We are not liable for indirect, incidental, or consequential damages arising from event execution.",
               },
               {
                 title: "7. Intellectual Property",
                 content:
-                  "All website content, designs, and marketing materials are owned by JIJU Events. Event photography and videography usage rights are defined in individual service agreements.",
+                  "All website content, designs, and marketing materials are owned by Glitz Events & Promotions. Event photography and videography usage rights are defined in individual service agreements.",
               },
               {
                 title: "8. Governing Law",

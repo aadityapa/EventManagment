@@ -6,7 +6,7 @@ import { X, Gift, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const STORAGE_KEY = "jiju-exit-intent-dismissed";
+const STORAGE_KEY = "Glitz-exit-intent-dismissed";
 
 export function ExitIntentPopup() {
   const [isOpen, setIsOpen] = useState(false);

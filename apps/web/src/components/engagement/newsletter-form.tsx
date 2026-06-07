@@ -83,7 +83,7 @@ export function NewsletterForm({
         </Button>
       </div>
       {status === "success" && (
-        <p className="text-xs text-primary">Welcome to the JIJU family!</p>
+        <p className="text-xs text-primary">Welcome to the Glitz family!</p>
       )}
     </form>
   );

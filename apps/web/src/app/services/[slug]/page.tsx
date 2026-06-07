@@ -85,7 +85,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               </div>
               <p className="mt-8 text-muted leading-relaxed">
                 Our {service.title.toLowerCase()} service delivers a premium, end-to-end experience.
-                From initial consultation through flawless execution, JIJU Events handles every detail
+                From initial consultation through flawless execution, Glitz Events & Promotions handles every detail
                 so you can focus on what matters most — enjoying your extraordinary event.
               </p>
             </div>

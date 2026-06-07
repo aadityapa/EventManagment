@@ -34,7 +34,7 @@ export function ContactForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="phone" className="mb-1 block text-sm font-medium">Phone</label>
-          <Input id="phone" name="phone" type="tel" required placeholder="+91 98765 43210" />
+          <Input id="phone" name="phone" type="tel" required placeholder="+91 9730594753" />
         </div>
         <div>
           <label htmlFor="eventType" className="mb-1 block text-sm font-medium">Event Type</label>

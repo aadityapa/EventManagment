@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export const metadata = generateSEO({
   title: "Contact",
   description:
-    "Get in touch with JIJU Events — book a free consultation for your next extraordinary event.",
+    "Get in touch with Glitz Events & Promotions — book a free consultation for your next extraordinary event.",
   path: "/contact",
 });
 

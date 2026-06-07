@@ -15,7 +15,7 @@ export function generateSEO({
   title,
   description = SITE_CONFIG.description,
   keywords = SEO_KEYWORDS,
-  image = "/og-image.jpg",
+  image = "/logo.svg",
   path = "",
   type = "website",
   noIndex = false,
@@ -53,23 +53,41 @@ export function generateSEO({
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "EventPlanning",
+    "@type": "LocalBusiness",
+    "@id": `${SITE_CONFIG.url}/#organization`,
     name: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
+    image: `${SITE_CONFIG.url}/logo.svg`,
+    priceRange: "₹₹₹₹",
     address: {
       "@type": "PostalAddress",
-      streetAddress: SITE_CONFIG.address,
+      addressLocality: SITE_CONFIG.city,
+      addressRegion: SITE_CONFIG.region,
       addressCountry: "IN",
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 18.5204,
+      longitude: 73.8567,
+    },
+    areaServed: {
+      "@type": "City",
+      name: "Pune",
+    },
     sameAs: Object.values(SITE_CONFIG.social),
-    priceRange: "₹₹₹₹",
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "4.9",
-      reviewCount: "847",
+      reviewCount: "512",
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "21:00",
     },
   };
 }
@@ -112,7 +130,7 @@ export function eventSchema(event: {
     name: event.name,
     description: event.description,
     startDate: event.startDate,
-    location: { "@type": "Place", name: event.location },
+    location: { "@type": "Place", name: event.location, address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" } },
     image: event.image,
     organizer: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
   };

@@ -24,7 +24,7 @@ const blogContent: Record<string, string[]> = {
     "Define clear KPIs before planning: lead generation targets, brand awareness metrics, employee engagement scores, or partnership conversions.",
     "Experiential activations outperform passive presentations. Interactive demos, networking gamification, and immersive brand zones create memorable touchpoints.",
     "Post-event analytics — survey data, social media reach, sales pipeline impact — should inform future event strategy.",
-    "Partner with an agency like JIJU Events that provides comprehensive post-event reporting and actionable insights.",
+    "Partner with an agency like Glitz Events & Promotions that provides comprehensive post-event reporting and actionable insights.",
   ],
   "sustainable-events-guide": [
     "Luxury and sustainability are not mutually exclusive. Today's premium events embrace eco-conscious practices without compromising experience.",

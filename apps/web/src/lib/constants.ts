@@ -1,44 +1,50 @@
 export const SITE_CONFIG = {
-  name: "JIJU Events",
-  tagline: "Crafting Extraordinary Experiences",
+  name: "Glitz Events & Promotions",
+  shortName: "Glitz Events",
+  tagline: "Creating Extraordinary Experiences",
   description:
-    "Premier international event management company specializing in luxury weddings, corporate events, concerts, and destination celebrations. 15+ years of excellence.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://jijuevents.com",
-  phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 98765 43210",
-  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@jijuevents.com",
-  address: "Luxury Events Tower, Bandra Kurla Complex, Mumbai, India 400051",
+    "Premier luxury event management company in Pune specializing in weddings, corporate events, celebrity management, concerts, exhibitions, product launches, and destination celebrations.",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://glitzevents.in",
+  phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
+  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@glitzevents.in",
+  address: "Pune, Maharashtra, India",
+  city: "Pune",
+  region: "Maharashtra",
   social: {
-    instagram: "https://instagram.com/jijuevents",
-    facebook: "https://facebook.com/jijuevents",
-    youtube: "https://youtube.com/jijuevents",
-    linkedin: "https://linkedin.com/company/jijuevents",
+    instagram: "https://instagram.com/glitzevents",
+    facebook: "https://facebook.com/glitzevents",
+    youtube: "https://youtube.com/glitzevents",
+    linkedin: "https://linkedin.com/company/glitzevents",
   },
 };
 
 export const SEO_KEYWORDS = [
-  "Event Management Company",
-  "Wedding Planner",
+  "Event Management Company Pune",
+  "Wedding Planner Pune",
   "Corporate Event Organizer",
-  "Event Planning Services",
+  "Luxury Event Planner",
   "Destination Wedding Planner",
-  "Event Management Agency",
-  "Luxury Event Planning",
-  "Premium Wedding Planner India",
+  "Event Promotion Agency",
+  "Celebrity Event Management Pune",
+  "Concert Management Pune",
+  "Product Launch Events Pune",
+  "Award Function Organizer",
 ];
 
 export const EVENT_TYPES = [
-  { id: "CORPORATE", label: "Corporate Events", icon: "Building2" },
   { id: "WEDDING", label: "Wedding Planning", icon: "Heart" },
   { id: "DESTINATION_WEDDING", label: "Destination Weddings", icon: "Plane" },
-  { id: "BIRTHDAY", label: "Birthday Events", icon: "Cake" },
-  { id: "PRODUCT_LAUNCH", label: "Product Launches", icon: "Rocket" },
-  { id: "CONFERENCE", label: "Conferences", icon: "Users" },
-  { id: "EXHIBITION", label: "Exhibitions", icon: "LayoutGrid" },
-  { id: "CONCERT", label: "Concert Management", icon: "Music" },
+  { id: "CORPORATE", label: "Corporate Events", icon: "Building2" },
   { id: "CELEBRITY", label: "Celebrity Management", icon: "Star" },
+  { id: "AWARD_FUNCTION", label: "Award Functions", icon: "Trophy" },
+  { id: "BIRTHDAY", label: "Birthday Celebrations", icon: "Cake" },
+  { id: "PRODUCT_LAUNCH", label: "Product Launches", icon: "Rocket" },
+  { id: "EXHIBITION", label: "Exhibitions", icon: "LayoutGrid" },
   { id: "BRAND_PROMOTION", label: "Brand Promotions", icon: "Megaphone" },
+  { id: "CONCERT", label: "Concert Management", icon: "Music" },
   { id: "FASHION_SHOW", label: "Fashion Shows", icon: "Shirt" },
-  { id: "MUSIC_FESTIVAL", label: "Music Festivals", icon: "Radio" },
+  { id: "OTHER", label: "Event Production", icon: "Clapperboard" },
 ] as const;
 
 export const ADDITIONAL_SERVICES = [
@@ -77,4 +83,10 @@ export const NAV_LINKS = [
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
+];
+
+export const FOOTER_LEGAL = [
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms & Conditions" },
+  { href: "/refund", label: "Refund Policy" },
 ];

@@ -41,7 +41,7 @@ const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 });
 app.use("/api/", limiter);
 
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", service: "JIJU Events API", timestamp: new Date().toISOString() });
+  res.json({ status: "ok", service: "Glitz Events API", timestamp: new Date().toISOString() });
 });
 
 app.use("/api/auth", authRoutes);
@@ -78,13 +78,13 @@ function startServer() {
         app
       )
       .listen(Number(PORT), HOST, () => {
-        console.log(`🎉 JIJU Events API running on https://${HOST}:${PORT}`);
+        console.log(`🎉 Glitz Events API running on https://${HOST}:${PORT}`);
       });
     return;
   }
 
   app.listen(Number(PORT), HOST, () => {
-    console.log(`🎉 JIJU Events API running on http://${HOST}:${PORT}`);
+    console.log(`🎉 Glitz Events API running on http://${HOST}:${PORT}`);
   });
 }
 

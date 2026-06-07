@@ -3,7 +3,7 @@ import { AdminDashboard } from "@/components/admin/admin-dashboard";
 
 export const metadata = generateSEO({
   title: "Admin Dashboard",
-  description: "JIJU Events administration panel.",
+  description: "Glitz Events & Promotions administration panel.",
   path: "/admin",
   noIndex: true,
 });

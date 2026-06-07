@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/utils";
 export const metadata = generateSEO({
   title: "Blog",
   description:
-    "Event planning insights, trends, and tips from the JIJU Events team.",
+    "Event planning insights, trends, and tips from the Glitz Events & Promotions team.",
   path: "/blog",
   type: "website",
 });

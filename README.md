@@ -1,186 +1,49 @@
-# JIJU Events — Premium Event Management Platform
+# Glitz Events & Promotions — Luxury Event Management Platform
 
-A world-class, production-ready event management website with premium UI/UX, advanced booking system, lead generation, audience engagement, AI features, and enterprise dashboards.
+Premium black & gold event management website for **Glitz Events & Promotions**, Pune.
+
+**Contact:** +91 9730594753 | [glitzevents.in](https://glitzevents.in)
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 16, TypeScript, Tailwind CSS v4, Framer Motion, Shadcn UI |
-| Backend | Node.js, Express.js, PostgreSQL, Prisma ORM |
-| Auth | Google OAuth, Email/Password, OTP Login |
+| Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS v4, Framer Motion, GSAP, ShadCN UI |
+| Backend | Node.js, Express.js, PostgreSQL, Prisma ORM, Redis |
+| Auth | Google OAuth, Email/Password, OTP, JWT |
 | Payments | Razorpay, Stripe, PayPal |
-| Images | Unsplash, Pexels, Pixabay APIs + Sharp optimization |
+| DevOps | Docker, Docker Compose, NGINX, GitHub Actions, Vercel |
 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
 npm install
 cd apps/web && npm install
 cd ../../server && npm install
-
-# 2. Configure environment
 cp .env.example .env
-# Edit .env with your database URL and API keys
-
-# 3. Setup database
-npm run db:generate
-npm run db:push
-npm run db:seed
-
-# 4. Fetch event images (optional — requires API keys)
-npm run images:fetch
-
-# 5. Start development
+npm run db:generate && npm run db:push && npm run db:seed
 npm run dev
 ```
 
-- **Frontend:** http://localhost:3000
-- **API:** http://localhost:4000
-
 ## Deploy to Vercel
 
-The Next.js frontend in `apps/web` is configured for [Vercel](https://vercel.com) deployment.
+1. Import [aadityapa/EventManagment](https://github.com/aadityapa/EventManagment)
+2. Set **Root Directory** to `apps/web`
+3. Add env vars: `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_COMPANY_PHONE`, etc.
+4. Deploy
 
-### 1. Push to GitHub
-
-Repository: [aadityapa/EventManagment](https://github.com/aadityapa/EventManagment)
-
-### 2. Import on Vercel
-
-1. Go to [vercel.com/new](https://vercel.com/new) and import the GitHub repo.
-2. Set **Root Directory** to `apps/web`.
-3. Framework Preset: **Next.js** (auto-detected).
-4. Add environment variables (Production):
-
-| Variable | Example |
-|----------|---------|
-| `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` |
-| `NEXTAUTH_URL` | `https://your-app.vercel.app` |
-| `NEXTAUTH_SECRET` | *(generate a random string)* |
-| `NEXT_PUBLIC_API_URL` | `https://your-api-url.com/api` *(when API is deployed)* |
-| `NEXT_PUBLIC_COMPANY_NAME` | `JIJU Events` |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | `+919876543210` |
-
-5. Click **Deploy**.
-
-### 3. API (optional)
-
-The Express API in `server/` does not run on Vercel. Deploy it separately on [Railway](https://railway.app), [Render](https://render.com), or similar, then set `NEXT_PUBLIC_API_URL` in Vercel to that URL.
-
-Marketing pages, portfolio, services, and CMS content work without the API. Booking, auth, and admin features require the API + PostgreSQL database.
-
-### Local HTTPS (optional)
+## Docker Production
 
 ```bash
-npm run dev:https
+docker compose up -d --build
 ```
 
-## Project Structure
+## Brand
 
-```
-jiju-events/
-├── apps/web/              # Next.js frontend
-│   ├── src/app/           # App Router pages (20+ routes)
-│   ├── src/components/    # UI components, layouts, sections
-│   ├── src/data/          # CMS content (editable)
-│   └── src/lib/           # Utils, SEO, constants, images
-├── server/                # Express.js API
-│   └── src/routes/        # Auth, bookings, venues, vendors, AI, admin
-├── prisma/                # Database schema & seed
-├── scripts/               # Image fetch pipeline
-└── .env.example           # Environment template
-```
-
-## Pages
-
-| Page | Route | Description |
-|------|-------|-------------|
-| Home | `/` | Hero, stats, services, portfolio, testimonials |
-| About | `/about` | Company profile, team, awards, partners |
-| Services | `/services` | 12 event service categories |
-| Portfolio | `/portfolio` | Filterable event showcase |
-| Venues | `/venues` | Venue marketplace with search & compare |
-| Vendors | `/vendors` | Vendor marketplace by category |
-| Gallery | `/gallery` | Masonry image gallery |
-| Pricing | `/pricing` | Package comparison |
-| Blog | `/blog` | Event planning articles |
-| FAQs | `/faqs` | Accordion with schema markup |
-| Contact | `/contact` | Lead capture form |
-| Book Event | `/book-event` | 9-step booking wizard |
-| Client Dashboard | `/dashboard` | Booking tracking, timeline, payments |
-| Vendor Dashboard | `/dashboard/vendor` | Vendor management portal |
-| Admin Panel | `/admin` | Analytics, leads, revenue reports |
-
-## Booking System (9 Steps)
-
-1. Event Type Selection
-2. Date Selection (with availability check)
-3. Venue Selection
-4. Guest Count
-5. Budget Selection
-6. Additional Services
-7. Review Details (with GST & coupons)
-8. Online Payment (Razorpay/Stripe/PayPal)
-9. Confirmation (Email/SMS/WhatsApp)
-
-## API Endpoints
-
-```
-POST   /api/auth/register        Register user
-POST   /api/auth/login           Email login
-POST   /api/auth/otp/send        Send OTP
-POST   /api/auth/otp/verify      Verify OTP
-GET    /api/bookings/availability  Check date availability
-POST   /api/bookings/calculate   Dynamic pricing
-POST   /api/bookings             Create booking
-GET    /api/venues               List venues
-GET    /api/vendors              List vendors
-POST   /api/leads                Submit lead
-POST   /api/leads/newsletter     Newsletter signup
-POST   /api/payments/create-order  Create payment
-POST   /api/ai/chat              AI chatbot
-POST   /api/ai/plan              AI event planner
-GET    /api/admin/dashboard      Admin analytics
-GET    /api/cms/*                CMS content
-```
-
-## Environment Variables
-
-See `.env.example` for all required variables. Key ones:
-
-- `DATABASE_URL` — PostgreSQL connection string
-- `NEXTAUTH_SECRET` — Auth encryption key
-- `UNSPLASH_ACCESS_KEY` / `PEXELS_API_KEY` — Image APIs
-- `RAZORPAY_KEY_ID` / `STRIPE_SECRET_KEY` — Payment gateways
-- `OPENAI_API_KEY` — AI chatbot (optional, has fallback)
-
-## SEO Features
-
-- Technical SEO with meta tags, Open Graph, Twitter Cards
-- Schema markup: Organization, Event, FAQ, Breadcrumb
-- Auto-generated sitemap.xml and robots.txt
-- Target keywords optimized across all pages
-- Core Web Vitals optimized (lazy loading, image optimization)
-
-## Design System
-
-- **Primary:** Gold `#c9a962` with luxury gradients
-- **Typography:** Inter (body) + Playfair Display (headings)
-- **Effects:** Glassmorphism, smooth animations, micro-interactions
-- **Themes:** Dark + Light mode with system preference detection
-- **Accessibility:** WCAG compliant focus states, reduced motion support
-
-## Default Admin Credentials
-
-```
-Email: admin@jijuevents.com
-Password: admin123
-```
-
-Change immediately in production.
+- **Colors:** Deep Black (#000) + Luxury Gold (#D4AF37)
+- **Fonts:** Playfair Display, Cinzel, Montserrat, Poppins
+- **Theme:** Dark luxury, glassmorphism, cinematic animations
 
 ## License
 
-Proprietary — JIJU Events © 2026
+Proprietary — Glitz Events & Promotions © 2026
