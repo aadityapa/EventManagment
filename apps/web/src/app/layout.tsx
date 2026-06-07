@@ -39,8 +39,8 @@ const cinzel = Cinzel({
 export const metadata: Metadata = {
   ...generateSEO(),
   icons: {
-    icon: "/logo-icon.svg",
-    apple: "/logo-icon.svg",
+    icon: "/logo.jpg",
+    apple: "/logo.jpg",
   },
 };
 

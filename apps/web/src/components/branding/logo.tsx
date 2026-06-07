@@ -9,19 +9,21 @@ interface LogoProps {
   priority?: boolean;
 }
 
-export function Logo({ className, iconOnly = false, href = "/", priority = false }: LogoProps) {
-  const src = iconOnly ? "/logo-icon.svg" : "/logo.svg";
-  const width = iconOnly ? 40 : 180;
-  const height = iconOnly ? 40 : 48;
+const LOGO_SRC = "/logo.jpg";
 
+export function Logo({ className, iconOnly = false, href = "/", priority = false }: LogoProps) {
   const image = (
     <Image
-      src={src}
+      src={LOGO_SRC}
       alt="Glitz Events & Promotions"
-      width={width}
-      height={height}
+      width={iconOnly ? 48 : 240}
+      height={iconOnly ? 48 : 96}
       priority={priority}
-      className={cn("h-auto w-auto object-contain", iconOnly ? "h-9 w-9 sm:h-10 sm:w-10" : "h-10 w-auto sm:h-12", className)}
+      className={cn(
+        "h-auto w-auto object-contain",
+        iconOnly ? "h-9 w-9 rounded-md sm:h-10 sm:w-10" : "h-10 w-auto max-w-[160px] sm:h-12 sm:max-w-[200px] md:max-w-[220px]",
+        className
+      )}
     />
   );
 

@@ -4,6 +4,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { generateSEO } from "@/lib/seo";
 import { PageHero } from "@/components/shared/page-hero";
 import { ContactForm } from "@/components/contact/contact-form";
+import { Logo } from "@/components/branding/logo";
 import { Button } from "@/components/ui/button";
 
 export const metadata = generateSEO({
@@ -29,6 +30,13 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-6">
+              <div className="glass-card flex flex-col items-center justify-center p-8">
+                <Logo href={undefined} className="!h-24 !max-w-[280px] sm:!h-28" priority />
+                <p className="mt-4 text-center text-sm text-muted">
+                  Luxury event management &amp; promotions — Pune
+                </p>
+              </div>
+
               <div className="glass-card p-6">
                 <h3 className="font-display text-xl font-semibold">Contact Information</h3>
                 <ul className="mt-4 space-y-4">
@@ -58,7 +66,7 @@ export default function ContactPage() {
               <div className="glass-card flex aspect-video items-center justify-center p-6">
                 <div className="text-center text-muted">
                   <MapPin className="mx-auto h-12 w-12 text-primary/50" />
-                  <p className="mt-2 text-sm">Map placeholder — Bandra Kurla Complex, Mumbai</p>
+                  <p className="mt-2 text-sm">Pune, Maharashtra, India</p>
                 </div>
               </div>
 

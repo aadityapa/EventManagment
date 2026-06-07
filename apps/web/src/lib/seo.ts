@@ -15,7 +15,7 @@ export function generateSEO({
   title,
   description = SITE_CONFIG.description,
   keywords = SEO_KEYWORDS,
-  image = "/logo.svg",
+  image = "/logo.jpg",
   path = "",
   type = "website",
   noIndex = false,
@@ -60,7 +60,7 @@ export function organizationSchema() {
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/logo.svg`,
+    image: `${SITE_CONFIG.url}/logo.jpg`,
     priceRange: "₹₹₹₹",
     address: {
       "@type": "PostalAddress",
