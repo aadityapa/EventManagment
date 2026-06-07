@@ -1,0 +1,387 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CLIENT
+  VENDOR
+  ADMIN
+  STAFF
+}
+
+enum BookingStatus {
+  DRAFT
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PARTIAL
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  LOST
+}
+
+enum EventType {
+  CORPORATE
+  WEDDING
+  DESTINATION_WEDDING
+  BIRTHDAY
+  PRODUCT_LAUNCH
+  CONFERENCE
+  EXHIBITION
+  CONCERT
+  CELEBRITY
+  BRAND_PROMOTION
+  FASHION_SHOW
+  MUSIC_FESTIVAL
+  AWARD_FUNCTION
+  OTHER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  phone         String?
+  name          String
+  passwordHash  String?
+  role          UserRole  @default(CLIENT)
+  avatar        String?
+  googleId      String?   @unique
+  emailVerified DateTime?
+  otpCode       String?
+  otpExpires    DateTime?
+  referralCode  String    @unique @default(cuid())
+  referredById  String?
+  loyaltyPoints Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  referredBy    User?     @relation("Referrals", fields: [referredById], references: [id])
+  referrals     User[]    @relation("Referrals")
+  bookings      Booking[]
+  leads         Lead[]
+  reviews       Review[]
+  vendorProfile Vendor?
+  messages      Message[]
+  documents     Document[]
+  payments      Payment[]
+  newsletter    NewsletterSubscriber?
+}
+
+model CompanyProfile {
+  id              String   @id @default(cuid())
+  introduction    String   @db.Text
+  vision          String   @db.Text
+  mission         String   @db.Text
+  story           String   @db.Text
+  eventsManaged   Int      @default(2500)
+  happyClients    Int      @default(1800)
+  yearsExperience Int      @default(15)
+  citiesCovered   Int      @default(45)
+  updatedAt       DateTime @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  bio       String   @db.Text
+  image     String
+  specialty String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  company   String?
+  content   String   @db.Text
+  rating    Int      @default(5)
+  image     String?
+  videoUrl  String?
+  eventType EventType?
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Award {
+  id          String   @id @default(cuid())
+  title       String
+  organization String
+  year        Int
+  image       String?
+  description String?  @db.Text
+}
+
+model Partner {
+  id    String  @id @default(cuid())
+  name  String
+  logo  String
+  url   String?
+  order Int     @default(0)
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  icon        String
+  image       String
+  features    String[]
+  basePrice   Float?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+}
+
+model PortfolioItem {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String    @db.Text
+  eventType   EventType
+  image       String
+  images      String[]
+  videoUrl    String?
+  beforeImage String?
+  afterImage  String?
+  location    String?
+  guestCount  Int?
+  featured    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+model Venue {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String   @db.Text
+  city         String
+  state        String
+  country      String   @default("India")
+  address      String
+  capacity     Int
+  pricePerDay  Float
+  images       String[]
+  amenities    String[]
+  virtualTour  String?
+  rating       Float    @default(0)
+  reviewCount  Int      @default(0)
+  latitude     Float?
+  longitude    Float?
+  featured     Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  bookings     Booking[]
+  reviews      Review[]
+}
+
+model Vendor {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  businessName String
+  slug         String   @unique
+  category     String
+  description  String   @db.Text
+  city         String
+  images       String[]
+  priceRange   String
+  rating       Float    @default(0)
+  reviewCount  Int      @default(0)
+  verified     Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  reviews      Review[]
+  bookings     VendorBooking[]
+}
+
+model VendorBooking {
+  id        String   @id @default(cuid())
+  vendorId  String
+  bookingId String
+  status    String   @default("pending")
+  amount    Float
+  createdAt DateTime @default(now())
+  vendor    Vendor   @relation(fields: [vendorId], references: [id])
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  bookingNumber   String        @unique
+  userId          String
+  eventType       EventType
+  eventDate       DateTime
+  venueId         String?
+  guestCount      Int
+  budget          Float
+  additionalServices String[]
+  subtotal        Float
+  gstAmount       Float
+  discount        Float         @default(0)
+  couponCode      String?
+  totalAmount     Float
+  status          BookingStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(PENDING)
+  notes           String?       @db.Text
+  timeline        Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user            User          @relation(fields: [userId], references: [id])
+  venue           Venue?        @relation(fields: [venueId], references: [id])
+  payments        Payment[]
+  documents       Document[]
+  messages        Message[]
+  vendorBookings  VendorBooking[]
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  bookingId     String
+  userId        String
+  amount        Float
+  currency      String        @default("INR")
+  provider      String
+  providerId    String?
+  status        PaymentStatus @default(PENDING)
+  invoiceNumber String?       @unique
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  user          User          @relation(fields: [userId], references: [id])
+}
+
+model Lead {
+  id        String     @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  eventType EventType?
+  budget    Float?
+  message   String?    @db.Text
+  source    String?
+  status    LeadStatus @default(NEW)
+  userId    String?
+  metadata  Json?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user      User?      @relation(fields: [userId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  venueId   String?
+  vendorId  String?
+  rating    Int
+  comment   String   @db.Text
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  venue     Venue?   @relation(fields: [venueId], references: [id])
+  vendor    Vendor?  @relation(fields: [vendorId], references: [id])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  userId    String
+  bookingId String?
+  title     String
+  type      String
+  url       String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  booking   Booking? @relation(fields: [bookingId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  userId    String
+  bookingId String?
+  content   String   @db.Text
+  isFromAdmin Boolean @default(false)
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  booking   Booking? @relation(fields: [bookingId], references: [id])
+}
+
+model Coupon {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  discountType  String
+  discountValue Float
+  minAmount     Float?
+  maxUses       Int?
+  usedCount     Int      @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean  @default(true)
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String   @db.Text
+  image       String
+  author      String
+  tags        String[]
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model FAQ {
+  id       String @id @default(cuid())
+  question String
+  answer   String @db.Text
+  category String
+  order    Int    @default(0)
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  userId    String?  @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  messages  Json[]
+  leadScore Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

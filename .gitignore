@@ -1,0 +1,13 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+Thumbs.db
+apps/web/public/images/*-raw.jpg
+apps/web/public/images/manifest.json
+.turbo/
+coverage/
+*.tsbuildinfo
