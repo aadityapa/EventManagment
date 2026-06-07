@@ -12,8 +12,8 @@ const featuredServices = services.slice(0, 6);
 
 export function ServicesSection() {
   return (
-    <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-14 sm:py-20 md:py-28">
+      <div className="container-page">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +41,7 @@ export function ServicesSection() {
           </Button>
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {featuredServices.map((service, i) => (
             <motion.div
               key={service.slug}

@@ -32,27 +32,29 @@ export function ClientDashboard() {
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
-      <aside className="border-b border-border bg-secondary/5 p-4 lg:w-64 lg:border-b-0 lg:border-r">
-        <h2 className="mb-4 font-display text-lg font-bold">Client Portal</h2>
-        <nav className="flex flex-wrap gap-1 lg:flex-col">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10",
-                pathname === "/dashboard" && item.href === "/dashboard" && "bg-primary/10 text-primary"
-              )}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+    <div className="flex min-h-[calc(100dvh-4rem)] flex-col lg:flex-row">
+      <aside className="border-b border-border bg-secondary/5 lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r">
+        <div className="container-page py-4 lg:px-4">
+          <h2 className="mb-3 font-display text-lg font-bold lg:mb-4">Client Portal</h2>
+          <nav className="scroll-nav gap-2 lg:flex-col lg:overflow-visible">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "touch-target flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-primary/10 lg:w-full",
+                  pathname === "/dashboard" && item.href === "/dashboard" && "bg-primary/10 text-primary"
+                )}
+              >
+                <item.icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </aside>
 
-      <main className="flex-1 p-6 lg:p-8">
+      <main className="container-page flex-1 py-6 lg:py-8">
         <h1 className="font-display text-2xl font-bold md:text-3xl">Dashboard Overview</h1>
         <p className="mt-1 text-muted">Welcome back! Here&apos;s your event status.</p>
 

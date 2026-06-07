@@ -133,13 +133,13 @@ export function BookingWizard() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-8">
-        <div className="mb-2 flex justify-between text-sm text-muted">
-          <span>
-            Step {step} of {STEPS.length}: {STEPS[step - 1]}
+    <div className="mx-auto max-w-4xl px-0 sm:px-2">
+      <div className="mb-6 sm:mb-8">
+        <div className="mb-2 flex justify-between text-xs text-muted sm:text-sm">
+          <span className="truncate pr-2">
+            Step {step}/{STEPS.length}: {STEPS[step - 1]}
           </span>
-          <span>{Math.round(progress)}%</span>
+          <span className="shrink-0">{Math.round(progress)}%</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-border">
           <motion.div
@@ -149,10 +149,23 @@ export function BookingWizard() {
             transition={{ duration: 0.3 }}
           />
         </div>
+        <div className="scroll-nav mt-3 gap-2 pb-1 md:hidden">
+          {STEPS.map((label, i) => (
+            <span
+              key={label}
+              className={cn(
+                "rounded-full px-2.5 py-1 text-[10px] font-medium",
+                i + 1 === step ? "gradient-gold text-black" : "bg-border text-muted"
+              )}
+            >
+              {i + 1}. {label}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
+      <Card className="overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
           <CardTitle className="flex items-center gap-2">
             {step === 1 && <PartyPopper className="h-5 w-5 text-primary" />}
             {step === 2 && <Calendar className="h-5 w-5 text-primary" />}
@@ -166,7 +179,7 @@ export function BookingWizard() {
             {STEPS[step - 1]}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -176,7 +189,7 @@ export function BookingWizard() {
               transition={{ duration: 0.25 }}
             >
               {step === 1 && (
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {EVENT_TYPES.map((type) => (
                     <button
                       key={type.id}
@@ -415,12 +428,12 @@ export function BookingWizard() {
           </AnimatePresence>
 
           {step < 9 && (
-            <div className="mt-8 flex justify-between">
-              <Button variant="outline" onClick={back} disabled={step === 1}>
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:mt-8 sm:flex-row sm:justify-between">
+              <Button variant="outline" onClick={back} disabled={step === 1} className="w-full sm:w-auto">
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <Button onClick={next} disabled={!canProceed()}>
+              <Button onClick={next} disabled={!canProceed()} className="w-full sm:w-auto">
                 {step === 8 ? "Confirm & Pay" : "Continue"}
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -434,9 +447,9 @@ export function BookingWizard() {
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between gap-4 px-4 py-3 text-sm">
-      <span className="text-muted">{label}</span>
-      <span className="text-right font-medium">{value}</span>
+    <div className="flex flex-col gap-1 px-4 py-3 text-sm sm:flex-row sm:justify-between sm:gap-4">
+      <span className="shrink-0 text-muted">{label}</span>
+      <span className="font-medium sm:text-right">{value}</span>
     </div>
   );
 }

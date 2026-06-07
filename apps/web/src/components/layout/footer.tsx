@@ -40,8 +40,8 @@ export function Footer() {
 
   return (
     <footer className="gradient-dark border-t border-border/50 text-foreground">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="container-page py-12 sm:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 xl:grid-cols-5">
           <div className="space-y-4 lg:col-span-2 xl:col-span-1">
             <Link href="/" className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />

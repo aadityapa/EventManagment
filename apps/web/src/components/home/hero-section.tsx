@@ -51,7 +51,7 @@ export function HeroSection() {
 
       <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-32 text-center sm:px-6 lg:px-8">
+      <div className="relative z-10 container-page py-20 text-center sm:py-28 md:py-32">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,9 +67,9 @@ export function HeroSection() {
             <span>Premier International Event Management</span>
           </motion.div>
 
-          <h1 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
             <span className="block text-balance">Crafting Extraordinary</span>
-            <span className="relative mt-2 inline-flex h-[1.2em] min-w-[280px] items-center justify-center sm:min-w-[400px]">
+            <span className="relative mt-2 inline-flex h-[1.2em] w-full min-w-0 items-center justify-center sm:min-w-[320px] md:min-w-[400px]">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={ROTATING_WORDS[wordIndex]}
@@ -89,7 +89,7 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-white/80 sm:text-xl"
+            className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg md:text-xl"
           >
             From intimate destination weddings to grand corporate galas — we
             transform visions into unforgettable experiences with meticulous
@@ -100,15 +100,15 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            className="mt-8 flex w-full flex-col items-stretch justify-center gap-3 px-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4 sm:px-0"
           >
-            <Button asChild size="xl">
-              <Link href="/book">
+            <Button asChild size="xl" className="w-full sm:w-auto">
+              <Link href="/book-event">
                 <Calendar className="h-5 w-5" />
                 Book Event
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl" className="border-white/30 text-white hover:bg-white/10">
+            <Button asChild variant="outline" size="xl" className="w-full border-white/30 text-white hover:bg-white/10 sm:w-auto">
               <Link href="/contact">
                 Get Quote
                 <ArrowRight className="h-5 w-5" />
@@ -121,7 +121,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="mx-auto mt-20 grid max-w-4xl grid-cols-2 gap-6 rounded-2xl glass p-6 sm:grid-cols-4 sm:gap-4 sm:p-8"
+          className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 rounded-2xl glass p-4 sm:mt-16 sm:gap-6 sm:p-6 md:grid-cols-4 md:p-8"
         >
           {heroStats.map((stat, i) => (
             <motion.div
