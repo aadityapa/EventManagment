@@ -4,6 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
+import fs from "fs";
+import https from "https";
 import path from "path";
 
 dotenv.config({ path: path.join(__dirname, "../../.env") });
@@ -20,9 +22,18 @@ import cmsRoutes from "./routes/cms";
 
 const app = express();
 const PORT = process.env.API_PORT || 4000;
+const HOST = process.env.API_HOST || "0.0.0.0";
 
 app.use(helmet());
-app.use(cors({ origin: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+        : true,
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json({ limit: "10mb" }));
 
@@ -52,8 +63,31 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: "Internal server error" });
 });
 
-app.listen(PORT, () => {
-  console.log(`🎉 JIJU Events API running on http://localhost:${PORT}`);
-});
+function startServer() {
+  const certFile = process.env.SSL_CERT_PATH || path.join(__dirname, "../../certs/cert.pem");
+  const keyFile = process.env.SSL_KEY_PATH || path.join(__dirname, "../../certs/key.pem");
+  const useHttps = process.env.USE_HTTPS === "true";
+
+  if (useHttps && fs.existsSync(certFile) && fs.existsSync(keyFile)) {
+    https
+      .createServer(
+        {
+          key: fs.readFileSync(keyFile),
+          cert: fs.readFileSync(certFile),
+        },
+        app
+      )
+      .listen(Number(PORT), HOST, () => {
+        console.log(`🎉 JIJU Events API running on https://${HOST}:${PORT}`);
+      });
+    return;
+  }
+
+  app.listen(Number(PORT), HOST, () => {
+    console.log(`🎉 JIJU Events API running on http://${HOST}:${PORT}`);
+  });
+}
+
+startServer();
 
 export default app;

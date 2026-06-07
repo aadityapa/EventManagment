@@ -39,6 +39,44 @@ npm run dev
 - **Frontend:** http://localhost:3000
 - **API:** http://localhost:4000
 
+## Deploy to Vercel
+
+The Next.js frontend in `apps/web` is configured for [Vercel](https://vercel.com) deployment.
+
+### 1. Push to GitHub
+
+Repository: [aadityapa/EventManagment](https://github.com/aadityapa/EventManagment)
+
+### 2. Import on Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new) and import the GitHub repo.
+2. Set **Root Directory** to `apps/web`.
+3. Framework Preset: **Next.js** (auto-detected).
+4. Add environment variables (Production):
+
+| Variable | Example |
+|----------|---------|
+| `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` |
+| `NEXTAUTH_URL` | `https://your-app.vercel.app` |
+| `NEXTAUTH_SECRET` | *(generate a random string)* |
+| `NEXT_PUBLIC_API_URL` | `https://your-api-url.com/api` *(when API is deployed)* |
+| `NEXT_PUBLIC_COMPANY_NAME` | `JIJU Events` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | `+919876543210` |
+
+5. Click **Deploy**.
+
+### 3. API (optional)
+
+The Express API in `server/` does not run on Vercel. Deploy it separately on [Railway](https://railway.app), [Render](https://render.com), or similar, then set `NEXT_PUBLIC_API_URL` in Vercel to that URL.
+
+Marketing pages, portfolio, services, and CMS content work without the API. Booking, auth, and admin features require the API + PostgreSQL database.
+
+### Local HTTPS (optional)
+
+```bash
+npm run dev:https
+```
+
 ## Project Structure
 
 ```

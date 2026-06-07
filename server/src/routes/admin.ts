@@ -57,7 +57,7 @@ router.get("/leads", async (_req, res) => {
 router.patch("/leads/:id", async (req: AuthRequest, res) => {
   try {
     const lead = await prisma.lead.update({
-      where: { id: req.params.id },
+      where: { id: String(req.params.id) },
       data: { status: req.body.status },
     });
     res.json(lead);

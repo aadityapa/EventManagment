@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 router.get("/:slug", async (req, res) => {
   try {
     const vendor = await prisma.vendor.findUnique({
-      where: { slug: req.params.slug },
+      where: { slug: String(req.params.slug) },
       include: {
         user: { select: { name: true, email: true, phone: true } },
         reviews: { include: { user: { select: { name: true, avatar: true } } }, take: 10 },

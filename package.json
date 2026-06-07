@@ -5,19 +5,25 @@
   "description": "Premium International Event Management Platform",
   "scripts": {
     "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
-    "dev:web": "cd apps/web && npm run dev",
+    "dev:https": "node scripts/generate-certs.js && concurrently \"npm run dev:web:https\" \"npm run dev:api\"",
+    "dev:web": "cd apps/web && npm run dev -- -H 0.0.0.0",
+    "dev:web:https": "cd apps/web && npm run dev -- -H 0.0.0.0 --experimental-https --experimental-https-key ../../certs/key.pem --experimental-https-cert ../../certs/cert.pem",
     "dev:api": "cd server && npm run dev",
     "build": "cd apps/web && npm run build",
     "start": "concurrently \"cd apps/web && npm start\" \"cd server && npm start\"",
-    "db:generate": "npx prisma generate --schema=prisma/schema.prisma",
+    "db:generate": "npx prisma generate --schema=prisma/schema.prisma && node scripts/sync-prisma-client.js",
+    "postinstall": "node scripts/postinstall.js",
     "db:push": "npx prisma db push --schema=prisma/schema.prisma",
     "db:seed": "npx ts-node prisma/seed.ts",
     "images:fetch": "npx ts-node scripts/fetch-images.ts",
     "lint": "cd apps/web && npm run lint"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.3",
     "concurrently": "^9.2.1",
     "prisma": "^6.8.2",
+    "selfsigned": "^5.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

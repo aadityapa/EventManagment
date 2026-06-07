@@ -136,7 +136,7 @@ router.get("/my", authenticate, async (req: AuthRequest, res) => {
 router.get("/:id", authenticate, async (req: AuthRequest, res) => {
   try {
     const booking = await prisma.booking.findFirst({
-      where: { id: req.params.id, userId: req.user!.id },
+      where: { id: String(req.params.id), userId: req.user!.id },
       include: { venue: true, payments: true, documents: true, messages: true, vendorBookings: { include: { vendor: true } } },
     });
     if (!booking) return res.status(404).json({ error: "Booking not found" });

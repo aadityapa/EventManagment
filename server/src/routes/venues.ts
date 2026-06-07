@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
 router.get("/:slug", async (req, res) => {
   try {
     const venue = await prisma.venue.findUnique({
-      where: { slug: req.params.slug },
+      where: { slug: String(req.params.slug) },
       include: { reviews: { include: { user: { select: { name: true, avatar: true } } }, take: 10 } },
     });
     if (!venue) return res.status(404).json({ error: "Venue not found" });

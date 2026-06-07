@@ -32,5 +32,5 @@ export function getWhatsAppUrl(message: string): string {
 
 export function getApiUrl(path: string): string {
   const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
-  return `${base}${path}`;
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
