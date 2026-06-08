@@ -3,11 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
-import { motion } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { testimonials } from "@/data/cms";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { StitchGlowCard, StitchSection } from "@/components/stitch";
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -15,11 +16,7 @@ function StarRating({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`h-4 w-4 ${
-            i < rating
-              ? "fill-primary text-primary"
-              : "fill-none text-muted-foreground"
-          }`}
+          className={`h-4 w-4 ${i < rating ? "fill-primary text-primary" : "fill-none text-muted-foreground"}`}
         />
       ))}
     </div>
@@ -35,11 +32,9 @@ export function TestimonialsSection() {
 
   useEffect(() => {
     if (!emblaApi) return;
-
     const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
     onSelect();
-
     const autoplay = setInterval(() => emblaApi.scrollNext(), 5000);
     return () => {
       clearInterval(autoplay);
@@ -48,23 +43,10 @@ export function TestimonialsSection() {
   }, [emblaApi]);
 
   return (
-    <section className="relative py-20 sm:py-28">
-      <div className="absolute inset-0 gradient-dark opacity-30" />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            Testimonials
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
-            What Our Clients Say
-          </h2>
-        </motion.div>
+    <StitchSection dark className="relative">
+      <div className="absolute inset-0 gradient-dark opacity-40" />
+      <div className="container-page relative">
+        <SectionHeading eyebrow="Testimonials" title="What Our Clients Say" />
 
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
@@ -74,7 +56,7 @@ export function TestimonialsSection() {
                   key={testimonial.id}
                   className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]"
                 >
-                  <Card className="h-full">
+                  <StitchGlowCard hover3d={false} className="h-full">
                     <CardContent className="flex h-full flex-col p-6 sm:p-8">
                       <Quote className="mb-4 h-8 w-8 text-primary/40" />
                       <p className="flex-1 text-base leading-relaxed text-foreground/90">
@@ -97,22 +79,16 @@ export function TestimonialsSection() {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
+                  </StitchGlowCard>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="mt-8 flex items-center justify-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={scrollPrev}
-              aria-label="Previous testimonial"
-            >
+            <Button variant="outline" size="icon" onClick={scrollPrev} aria-label="Previous testimonial">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-
             <div className="flex gap-2">
               {testimonials.map((_, i) => (
                 <button
@@ -120,25 +96,17 @@ export function TestimonialsSection() {
                   onClick={() => emblaApi?.scrollTo(i)}
                   aria-label={`Go to testimonial ${i + 1}`}
                   className={`h-2 rounded-full transition-all ${
-                    i === selectedIndex
-                      ? "w-6 bg-primary"
-                      : "w-2 bg-muted-foreground/30"
+                    i === selectedIndex ? "w-6 bg-primary" : "w-2 bg-muted-foreground/30"
                   }`}
                 />
               ))}
             </div>
-
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={scrollNext}
-              aria-label="Next testimonial"
-            >
+            <Button variant="outline" size="icon" onClick={scrollNext} aria-label="Next testimonial">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
-    </section>
+    </StitchSection>
   );
 }

@@ -1,3 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { GoldParticles } from "@/components/effects/gold-particles";
+import { stitchTransition, stitchVariants } from "@/lib/stitch/motion";
 import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
@@ -11,21 +16,51 @@ export function PageHero({ title, subtitle, className, children }: PageHeroProps
   return (
     <section
       className={cn(
-        "relative overflow-hidden border-b border-border bg-gradient-to-b from-secondary/20 via-background to-background py-12 sm:py-16 md:py-24",
+        "relative overflow-hidden border-b border-primary/10 bg-black py-14 sm:py-20 md:py-28",
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,169,98,0.12),transparent_60%)]" />
-      <div className="container relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-            {title}
-          </h1>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.18),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
+      <GoldParticles className="pointer-events-none absolute inset-0 opacity-60" />
+
+      <div className="container-page relative z-10">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12 } },
+          }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <motion.div
+            variants={stitchVariants.lineGrow}
+            transition={{ ...stitchTransition, duration: 1 }}
+            className="mx-auto mb-6 h-px w-24 origin-center bg-gradient-to-r from-transparent via-primary to-transparent"
+          />
+          <motion.h1
+            variants={stitchVariants.textReveal}
+            transition={stitchTransition}
+            className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
+          >
+            <span className="gradient-text">{title}</span>
+          </motion.h1>
           {subtitle && (
-            <p className="mt-4 text-lg text-muted md:text-xl">{subtitle}</p>
+            <motion.p
+              variants={stitchVariants.fadeUp}
+              transition={{ ...stitchTransition, delay: 0.1 }}
+              className="mt-4 text-lg text-white/70 md:text-xl"
+            >
+              {subtitle}
+            </motion.p>
           )}
-          {children}
-        </div>
+          {children && (
+            <motion.div variants={stitchVariants.fadeUp} transition={{ ...stitchTransition, delay: 0.2 }}>
+              {children}
+            </motion.div>
+          )}
+        </motion.div>
       </div>
     </section>
   );

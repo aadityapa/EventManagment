@@ -1,3 +1,6 @@
+"use client";
+
+import { StitchReveal } from "@/components/stitch";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -16,7 +19,8 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div
+    <StitchReveal
+      variant="fadeUp"
       className={cn(
         "mb-10 md:mb-14",
         align === "center" && "mx-auto max-w-2xl text-center",
@@ -24,16 +28,17 @@ export function SectionHeading({
       )}
     >
       {eyebrow && (
-        <p className="mb-2 text-sm font-medium uppercase tracking-widest text-primary">
+        <p className="mb-3 font-brand text-xs font-medium uppercase tracking-[0.35em] text-primary">
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl">
+      <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-muted md:text-lg">{description}</p>
+        <p className="mt-4 text-base text-muted md:text-lg">{description}</p>
       )}
-    </div>
+      <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+    </StitchReveal>
   );
 }
