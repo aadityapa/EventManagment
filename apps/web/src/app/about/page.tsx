@@ -7,20 +7,17 @@ import {
   partners,
 } from "@/data/cms";
 import { EVENT_IMAGES } from "@/lib/images";
-import { generateSEO } from "@/lib/seo";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 
-export const metadata = generateSEO({
-  title: "About Us",
-  description:
-    "Learn about Glitz Events & Promotions — 15+ years of luxury event management excellence, our vision, mission, and award-winning team.",
-  path: "/about",
-});
+export const metadata = stitchMetadata("about");
 
 export default function AboutPage() {
   return (
+    <StitchRoute screen="about">
     <>
       <PageHero
         title="About Glitz Events & Promotions"
@@ -143,5 +140,6 @@ export default function AboutPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

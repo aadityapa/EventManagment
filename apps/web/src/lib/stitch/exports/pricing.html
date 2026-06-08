@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Investment in Excellence - Glitz Events Pricing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+                    "surface": "#16130b",
+                    "text-primary": "#FAFAFA",
+                    "surface-dim": "#16130b",
+                    "on-error": "#690005",
+                    "outline": "#99907c",
+                    "secondary-fixed": "#ffe16d",
+                    "primary-fixed": "#ffe088",
+                    "on-secondary-fixed-variant": "#544600",
+                    "on-tertiary": "#082b72",
+                    "on-surface": "#eae1d4",
+                    "on-tertiary-fixed-variant": "#27438a",
+                    "bg-surface": "#121212",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "primary-container": "#d4af37",
+                    "error-container": "#93000a",
+                    "gold-soft": "#F5D76E",
+                    "on-surface-variant": "#d0c5af",
+                    "error": "#ffb4ab",
+                    "surface-container": "#231f17",
+                    "on-secondary": "#3a3000",
+                    "bg-elevated": "#0D0D0D",
+                    "on-primary": "#3c2f00",
+                    "surface-bright": "#3d392f",
+                    "on-background": "#eae1d4",
+                    "outline-variant": "#4d4635",
+                    "on-secondary-fixed": "#221b00",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#e9c400",
+                    "background": "#16130b",
+                    "bg-primary": "#0A0A0A",
+                    "glass-border": "rgba(212, 175, 55, 0.2)",
+                    "tertiary-fixed": "#dbe1ff",
+                    "inverse-on-surface": "#343027",
+                    "inverse-primary": "#735c00",
+                    "on-secondary-container": "#725f00",
+                    "secondary": "#fff9ef",
+                    "glass-bg": "rgba(13, 13, 13, 0.65)",
+                    "surface-variant": "#38342b",
+                    "surface-container-lowest": "#110e07",
+                    "tertiary": "#bfcdff",
+                    "text-muted": "#A3A3A3",
+                    "on-primary-fixed": "#241a00",
+                    "tertiary-container": "#97b0ff",
+                    "surface-container-low": "#1f1b13",
+                    "on-primary-fixed-variant": "#574500",
+                    "primary-fixed-dim": "#e9c349",
+                    "surface-container-highest": "#38342b",
+                    "surface-tint": "#e9c349",
+                    "on-tertiary-fixed": "#00174b",
+                    "on-primary-container": "#554300",
+                    "surface-container-high": "#2d2a21",
+                    "inverse-surface": "#eae1d4",
+                    "on-tertiary-container": "#254188",
+                    "primary": "#d4af37", // adjusted for consistent gold primary
+                    "secondary-container": "#ffdb3c"
+            },
+            borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            spacing: {
+                    "4": "4px",
+                    "24": "24px",
+                    "8": "8px",
+                    "48": "48px",
+                    "32": "32px",
+                    "16": "16px",
+                    "96": "96px",
+                    "12": "12px",
+                    "64": "64px",
+                    "128": "128px"
+            },
+            fontFamily: {
+                    "heading-h2-mobile": ["Playfair Display"],
+                    "display-h1": ["Playfair Display"],
+                    "display-h1-mobile": ["Playfair Display"],
+                    "body-md": ["Montserrat"],
+                    "body-lg": ["Montserrat"],
+                    "heading-h2": ["Playfair Display"],
+                    "heading-h3": ["Montserrat"],
+                    "eyebrow": ["Montserrat"],
+                    "cta": ["Montserrat"]
+            },
+            fontSize: {
+                    "heading-h2-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-h1": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-h1-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "heading-h2": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "heading-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "eyebrow": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "cta": ["16px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            },
+            boxShadow: {
+              "glow": "0 0 20px rgba(212, 175, 55, 0.3)",
+              "glow-intense": "0 0 40px rgba(212, 175, 55, 0.5)"
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+      .reveal.active { opacity: 1; transform: translateY(0); }
+      body { background-color: #0A0A0A; } /* Enforce bg-primary */
+    </style>
+</head>
+<body class="bg-bg-primary text-text-primary antialiased selection:bg-primary selection:text-bg-primary font-body-md">
+<main class="max-w-[1280px] mx-auto px-24 md:px-32 pb-128 overflow-hidden">
+<!-- Section 1: Hero -->
+<section class="py-96 md:py-128 flex flex-col items-center justify-center text-center relative reveal">
+<!-- Subtle background glow -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/5 blur-[100px] rounded-full pointer-events-none"></div>
+<h1 class="font-display-h1 text-display-h1-mobile md:text-display-h1 text-primary mb-24 relative z-10 drop-shadow-lg">
+                Investment in Excellence
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl relative z-10 leading-relaxed">
+                Bespoke event curation tailored to your most ambitious visions. Transparency meets unparalleled luxury.
+            </p>
+</section>
+<!-- Section 2: Pricing Tiers -->
+<section class="py-64 relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-32">
+<!-- Silver Tier -->
+<div class="bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border p-32 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-glow reveal">
+<div class="mb-48">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8">The Boutique Experience</h3>
+<p class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-24">Silver Tier</p>
+<div class="flex items-baseline gap-2">
+<span class="font-heading-h2 text-heading-h2-mobile text-text-primary">Starting from ₹5,00,000</span>
+</div>
+</div>
+<ul class="flex flex-col gap-16 mb-48 flex-grow">
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Custom Venue Sourcing</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Decor Conceptualization</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Vendor Coordination</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>On-site Management (12 hrs)</span>
+</li>
+</ul>
+<button class="w-full py-16 px-24 bg-transparent border border-primary text-primary font-cta text-cta rounded transition-all duration-200 hover:bg-primary hover:text-bg-primary hover:shadow-glow mt-auto">
+                        Inquire Now
+                    </button>
+</div>
+<!-- Gold Tier (Featured) -->
+<div class="bg-surface-container-high/80 backdrop-blur-xl rounded-lg border-2 border-primary p-32 flex flex-col relative transform md:-translate-y-8 shadow-glow-intense z-20 reveal transition-transform duration-300 hover:-translate-y-12">
+<div class="absolute -top-16 left-1/2 -translate-x-1/2 bg-primary text-bg-primary px-24 py-8 rounded-full font-eyebrow text-eyebrow font-bold tracking-widest uppercase shadow-glow">
+                        Most Preferred
+                    </div>
+<div class="mb-48 mt-16">
+<h3 class="font-heading-h3 text-heading-h3 text-primary mb-8">The Signature Gala</h3>
+<p class="font-eyebrow text-eyebrow text-gold-soft uppercase tracking-widest mb-24">Gold Tier</p>
+<div class="flex items-baseline gap-2">
+<span class="font-heading-h2 text-heading-h2 text-text-primary">Starting from ₹12,00,000</span>
+</div>
+</div>
+<ul class="flex flex-col gap-16 mb-48 flex-grow">
+<li class="flex items-start gap-12 text-text-primary font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>Premium Venue Selection</span>
+</li>
+<li class="flex items-start gap-12 text-text-primary font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>Full-scale Cinematic Decor</span>
+</li>
+<li class="flex items-start gap-12 text-text-primary font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>Celebrity Coordination</span>
+</li>
+<li class="flex items-start gap-12 text-text-primary font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>Guest Concierge Service</span>
+</li>
+<li class="flex items-start gap-12 text-text-primary font-body-md text-body-md">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>4K Event Cinematography</span>
+</li>
+</ul>
+<button class="w-full py-16 px-24 bg-primary text-bg-primary font-cta text-cta rounded transition-all duration-200 hover:bg-gold-soft shadow-glow mt-auto">
+                        Secure Your Date
+                    </button>
+</div>
+<!-- Platinum Tier -->
+<div class="bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border p-32 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-glow reveal">
+<div class="mb-48">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8">The Grand Masterpiece</h3>
+<p class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-24">Platinum Tier</p>
+<div class="flex items-baseline gap-2">
+<span class="font-heading-h2 text-heading-h2-mobile text-text-primary">Starting from ₹25,00,000</span>
+</div>
+</div>
+<ul class="flex flex-col gap-16 mb-48 flex-grow">
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>International Destination Logistics</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>Royal Palatial Venues</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>Global Artist Booking</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md border-b border-glass-border pb-16">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>Multi-day Itinerary Design</span>
+</li>
+<li class="flex items-start gap-12 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>Exclusive Post-Event Production</span>
+</li>
+</ul>
+<button class="w-full py-16 px-24 bg-transparent border border-primary text-primary font-cta text-cta rounded transition-all duration-200 hover:bg-primary hover:text-bg-primary hover:shadow-glow mt-auto">
+                        Inquire Now
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section 3: FAQ Accordion -->
+<section class="py-96 max-w-3xl mx-auto reveal">
+<h2 class="font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-center text-primary mb-64">
+                Frequently Asked Questions
+            </h2>
+<div class="space-y-16">
+<!-- FAQ Item 1 -->
+<div class="bg-glass-bg border border-glass-border rounded-lg overflow-hidden transition-colors hover:border-primary/50 cursor-pointer" onclick="this.classList.toggle('active-faq')">
+<div class="p-24 flex justify-between items-center">
+<h4 class="font-body-lg text-body-lg font-semibold text-text-primary">How far in advance should we book?</h4>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 icon-toggle">add</span>
+</div>
+<div class="px-24 pb-24 text-on-surface-variant font-body-md text-body-md hidden content-pane">
+<p>For large-scale and destination events, we recommend securing our services 8 to 12 months in advance to ensure the availability of premium venues and preferred global vendors.</p>
+</div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="bg-glass-bg border border-glass-border rounded-lg overflow-hidden transition-colors hover:border-primary/50 cursor-pointer" onclick="this.classList.toggle('active-faq')">
+<div class="p-24 flex justify-between items-center">
+<h4 class="font-body-lg text-body-lg font-semibold text-text-primary">Do you handle destination events outside Pune?</h4>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 icon-toggle">add</span>
+</div>
+<div class="px-24 pb-24 text-on-surface-variant font-body-md text-body-md hidden content-pane">
+<p>Yes, our Platinum Tier specializes in international destination logistics. We curate experiences globally, handling everything from guest travel to venue management across borders.</p>
+</div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="bg-glass-bg border border-glass-border rounded-lg overflow-hidden transition-colors hover:border-primary/50 cursor-pointer" onclick="this.classList.toggle('active-faq')">
+<div class="p-24 flex justify-between items-center">
+<h4 class="font-body-lg text-body-lg font-semibold text-text-primary">Can we customize existing packages?</h4>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 icon-toggle">add</span>
+</div>
+<div class="px-24 pb-24 text-on-surface-variant font-body-md text-body-md hidden content-pane">
+<p>Absolutely. While our tiers provide a comprehensive foundation, every Glitz Event is a bespoke creation. We tailor services to perfectly align with your unique vision and requirements.</p>
+</div>
+</div>
+<!-- FAQ Item 4 -->
+<div class="bg-glass-bg border border-glass-border rounded-lg overflow-hidden transition-colors hover:border-primary/50 cursor-pointer" onclick="this.classList.toggle('active-faq')">
+<div class="p-24 flex justify-between items-center">
+<h4 class="font-body-lg text-body-lg font-semibold text-text-primary">What is your consultation process?</h4>
+<span class="material-symbols-outlined text-primary transition-transform duration-300 icon-toggle">add</span>
+</div>
+<div class="px-24 pb-24 text-on-surface-variant font-body-md text-body-md hidden content-pane">
+<p>Our process begins with a private consultation to understand your aesthetic and goals. Following this, we present a curated conceptual proposal and mood board before securing the partnership.</p>
+</div>
+</div>
+</div>
+<style>
+                .active-faq .content-pane { display: block; }
+                .active-faq .icon-toggle { transform: rotate(45deg); }
+            </style>
+</section>
+<!-- Section 4: Final CTA -->
+<section class="py-96 flex flex-col items-center text-center reveal">
+<div class="bg-glass-bg border border-glass-border rounded-xl p-64 w-full max-w-4xl relative overflow-hidden">
+<!-- Decorative lighting -->
+<div class="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 blur-[80px] rounded-full pointer-events-none"></div>
+<h2 class="font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-24 relative z-10">
+                    Ready to curate your masterpiece?
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-48 relative z-10 max-w-2xl mx-auto">
+                    Connect directly with our lead planners to begin designing an event that transcends expectations.
+                </p>
+<div class="flex flex-col sm:flex-row gap-24 justify-center items-center relative z-10">
+<a class="flex items-center gap-12 font-cta text-cta text-text-primary hover:text-primary transition-colors py-16 px-32 border border-glass-border rounded hover:border-primary bg-bg-surface/50" href="tel:+919730594753">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+                        +91 9730594753
+                    </a>
+<a class="flex items-center gap-12 bg-primary text-bg-primary font-cta text-cta py-16 px-32 rounded transition-all duration-200 hover:bg-gold-soft shadow-glow" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+                        Message on WhatsApp
+                    </a>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Simple scroll reveal animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 150;
+                
+                reveals.forEach(reveal => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger on initial load
+        });
+    </script>
+</body></html>

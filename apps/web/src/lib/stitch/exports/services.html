@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Services - Glitz Events</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline": "#99907c",
+                        "on-secondary-fixed": "#221b00",
+                        "bg-elevated": "#0D0D0D",
+                        "text-primary": "#FAFAFA",
+                        "surface-bright": "#3d392f",
+                        "on-error": "#690005",
+                        "inverse-surface": "#eae1d4",
+                        "primary-fixed-dim": "#e9c349",
+                        "surface-tint": "#e9c349",
+                        "gold-soft": "#F5D76E",
+                        "surface-variant": "#38342b",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-primary": "#3c2f00",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "inverse-primary": "#735c00",
+                        "secondary-fixed": "#ffe16d",
+                        "surface-dim": "#16130b",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "glass-bg": "rgba(13, 13, 13, 0.65)",
+                        "tertiary": "#bfcdff",
+                        "on-primary-container": "#554300",
+                        "on-surface-variant": "#d0c5af",
+                        "secondary-fixed-dim": "#e9c400",
+                        "surface-container-high": "#2d2a21",
+                        "glass-border": "rgba(212, 175, 55, 0.2)",
+                        "on-tertiary-container": "#254188",
+                        "tertiary-container": "#97b0ff",
+                        "on-secondary-container": "#725f00",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface": "#16130b",
+                        "surface-container-lowest": "#110e07",
+                        "on-surface": "#eae1d4",
+                        "on-secondary": "#3a3000",
+                        "on-error-container": "#ffdad6",
+                        "bg-primary": "#0A0A0A",
+                        "secondary": "#fff9ef",
+                        "inverse-on-surface": "#343027",
+                        "text-muted": "#A3A3A3",
+                        "background": "#16130b",
+                        "on-primary-fixed": "#241a00",
+                        "primary": "#f2ca50",
+                        "on-tertiary": "#082b72",
+                        "on-tertiary-fixed": "#00174b",
+                        "surface-container": "#231f17",
+                        "primary-container": "#d4af37",
+                        "outline-variant": "#4d4635",
+                        "secondary-container": "#ffdb3c",
+                        "on-secondary-fixed-variant": "#544600",
+                        "surface-container-low": "#1f1b13",
+                        "error": "#ffb4ab",
+                        "on-background": "#eae1d4",
+                        "bg-surface": "#121212",
+                        "surface-container-highest": "#38342b",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffe088"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "32": "32px",
+                        "96": "96px",
+                        "128": "128px",
+                        "8": "8px",
+                        "48": "48px",
+                        "64": "64px",
+                        "24": "24px",
+                        "16": "16px",
+                        "12": "12px",
+                        "4": "4px"
+                    },
+                    fontFamily: {
+                        "display-h1": ["Playfair Display"],
+                        "heading-h2": ["Playfair Display"],
+                        "cta": ["Montserrat"],
+                        "heading-h3": ["Montserrat"],
+                        "heading-h2-mobile": ["Playfair Display"],
+                        "display-h1-mobile": ["Playfair Display"],
+                        "body-lg": ["Montserrat"],
+                        "eyebrow": ["Montserrat"],
+                        "body-md": ["Montserrat"]
+                    },
+                    fontSize: {
+                        "display-h1": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "heading-h2": ["48px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "cta": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "heading-h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "heading-h2-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-h1-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "eyebrow": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(212, 175, 55, 0.3)',
+                        'glow-hover': '0 0 30px rgba(212, 175, 55, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        body { background-color: #0A0A0A; color: #FAFAFA; }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-bg-primary">
+<!-- Hero Section -->
+<section class="relative min-h-[716px] flex items-center justify-center px-24 md:px-32 py-96 overflow-hidden">
+<!-- Abstract Background Glow -->
+<div class="absolute inset-0 z-0">
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-container/5 rounded-full blur-[150px]"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto text-center flex flex-col items-center gap-24 reveal">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest border border-glass-border rounded-full px-16 py-8 bg-glass-bg backdrop-blur-md">
+                What We Do
+            </span>
+<h1 class="font-display-h1-mobile md:font-display-h1 text-display-h1-mobile md:text-display-h1 text-text-primary max-w-4xl">
+                Curated Event Experiences
+            </h1>
+<p class="font-body-lg text-body-lg text-text-muted max-w-2xl">
+                Elevating luxury event management in Pune. We transform your vision into extraordinary, cinematic realities that captivate and inspire.
+            </p>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="px-24 md:px-32 py-96 relative z-10">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24">
+<!-- Card 1 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Weddings</h3>
+<p class="font-body-md text-body-md text-text-muted">Exquisite celebrations tailored to your love story.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 2 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 100ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">business</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Corporate Events</h3>
+<p class="font-body-md text-body-md text-text-muted">Professional excellence for your brand's most important milestones.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 3 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 200ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">music_note</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Concerts</h3>
+<p class="font-body-md text-body-md text-text-muted">Electrifying atmosphere and seamless production for grand stages.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 4 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 300ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">architecture</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Exhibitions</h3>
+<p class="font-body-md text-body-md text-text-muted">Immersive showcases that blend art, technology, and branding.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 5 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Celebrity Management</h3>
+<p class="font-body-md text-body-md text-text-muted">Exclusive access and white-glove coordination for elite talent.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 6 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 100ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">rocket_launch</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Product Launches</h3>
+<p class="font-body-md text-body-md text-text-muted">High-impact reveals that capture attention and drive momentum.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 7 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 200ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">emoji_events</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Award Functions</h3>
+<p class="font-body-md text-body-md text-text-muted">Glamorous evenings celebrating achievement with cinematic flair.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Card 8 -->
+<div class="group reveal relative bg-glass-bg backdrop-blur-xl border border-glass-border rounded-lg p-32 flex flex-col gap-24 transition-all duration-300 hover:shadow-glow hover:-translate-y-2 hover:border-primary-container/50 overflow-hidden" style="transition-delay: 300ms;">
+<div class="w-48 h-48 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 0;">flight_takeoff</span>
+</div>
+<div class="flex flex-col gap-12 flex-grow">
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Destination Weddings</h3>
+<p class="font-body-md text-body-md text-text-muted">Global luxury logistics for your 'I do' in paradise.</p>
+</div>
+<a class="font-cta text-cta text-primary flex items-center gap-8 group-hover:text-gold-soft transition-colors mt-auto w-fit" href="#">
+                    Explore <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="px-24 md:px-32 py-128 bg-bg-surface relative border-y border-glass-border">
+<div class="max-w-7xl mx-auto flex flex-col items-center gap-64 reveal">
+<h2 class="font-heading-h2-mobile md:font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary text-center">
+                Our Bespoke Process
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-32 relative w-full">
+<!-- Connector Line (Desktop) -->
+<div class="hidden md:block absolute top-24 left-1/6 right-1/6 h-[1px] bg-gradient-to-r from-transparent via-glass-border to-transparent z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center text-center gap-24">
+<div class="w-48 h-48 rounded-full bg-bg-elevated border border-primary flex items-center justify-center shadow-glow">
+<span class="font-heading-h3 text-heading-h3 text-primary">01</span>
+</div>
+<div class="flex flex-col gap-8">
+<h4 class="font-heading-h3 text-heading-h3 text-text-primary">Consult</h4>
+<p class="font-body-md text-body-md text-text-muted">Initial discovery and vision alignment.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center text-center gap-24">
+<div class="w-48 h-48 rounded-full bg-bg-elevated border border-primary flex items-center justify-center shadow-glow">
+<span class="font-heading-h3 text-heading-h3 text-primary">02</span>
+</div>
+<div class="flex flex-col gap-8">
+<h4 class="font-heading-h3 text-heading-h3 text-text-primary">Plan</h4>
+<p class="font-body-md text-body-md text-text-muted">Strategic blueprinting and meticulous detail curation.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center text-center gap-24">
+<div class="w-48 h-48 rounded-full bg-bg-elevated border border-primary flex items-center justify-center shadow-glow">
+<span class="font-heading-h3 text-heading-h3 text-primary">03</span>
+</div>
+<div class="flex flex-col gap-8">
+<h4 class="font-heading-h3 text-heading-h3 text-text-primary">Execute</h4>
+<p class="font-body-md text-body-md text-text-muted">Flawless on-site management and cinematic production.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Band -->
+<section class="bg-primary-container text-bg-primary w-full py-48 md:py-64 reveal">
+<div class="max-w-7xl mx-auto px-24 md:px-32 flex flex-col md:flex-row items-center justify-between gap-32">
+<h2 class="font-heading-h2-mobile md:font-heading-h2 text-heading-h2-mobile md:text-heading-h2 font-bold text-center md:text-left">
+                Ready to elevate your next event?
+            </h2>
+<a class="inline-flex items-center gap-16 px-32 py-16 bg-bg-primary text-primary border border-bg-primary hover:border-text-primary rounded-full transition-all duration-300 hover:shadow-glow group shrink-0" href="https://wa.me/919730594753" rel="noopener noreferrer" target="_blank">
+<span class="font-cta text-cta group-hover:text-gold-soft">Book Free Consultation</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</section>
+<script>
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+    </script>
+</body></html>

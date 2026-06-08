@@ -2,21 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services } from "@/data/cms";
-import { generateSEO } from "@/lib/seo";
 import { PageHero } from "@/components/shared/page-hero";
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 
-export const metadata = generateSEO({
-  title: "Services",
-  description:
-    "Comprehensive event management services — weddings, corporate events, concerts, exhibitions, and more.",
-  path: "/services",
-});
+export const metadata = stitchMetadata("services");
 
 export default function ServicesPage() {
   return (
+    <StitchRoute screen="services">
     <>
       <PageHero
         title="Our Services"
@@ -82,5 +79,6 @@ export default function ServicesPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

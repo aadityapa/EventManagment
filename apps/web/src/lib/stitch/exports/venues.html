@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stunning Venues - Glitz Events</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Smooth Scroll & Animations */
+        html { scroll-behavior: smooth; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Glow Effect Classes (since shadow-glow isn't standard Tailwind) */
+        .shadow-glow { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        .hover\:shadow-glow:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); }
+        .text-glow { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "bg-surface": "#121212",
+                        "surface-variant": "#38342b",
+                        "surface-container-lowest": "#110e07",
+                        "surface-container-low": "#1f1b13",
+                        "glass-bg": "rgba(13, 13, 13, 0.65)",
+                        "surface-container-high": "#2d2a21",
+                        "primary": "#f2ca50",
+                        "secondary-fixed-dim": "#e9c400",
+                        "on-tertiary": "#082b72",
+                        "primary-container": "#d4af37",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-primary": "#3c2f00",
+                        "inverse-on-surface": "#343027",
+                        "glass-border": "rgba(212, 175, 55, 0.2)",
+                        "on-error": "#690005",
+                        "bg-elevated": "#0D0D0D",
+                        "on-secondary": "#3a3000",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#4d4635",
+                        "surface-bright": "#3d392f",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "tertiary": "#bfcdff",
+                        "outline": "#99907c",
+                        "surface-tint": "#e9c349",
+                        "surface-dim": "#16130b",
+                        "inverse-surface": "#eae1d4",
+                        "error-container": "#93000a",
+                        "bg-primary": "#0A0A0A",
+                        "on-secondary-container": "#725f00",
+                        "tertiary-fixed": "#dbe1ff",
+                        "tertiary-container": "#97b0ff",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "secondary": "#fff9ef",
+                        "primary-fixed": "#ffe088",
+                        "on-secondary-fixed-variant": "#544600",
+                        "on-background": "#eae1d4",
+                        "secondary-fixed": "#ffe16d",
+                        "gold-soft": "#F5D76E",
+                        "on-tertiary-container": "#254188",
+                        "secondary-container": "#ffdb3c",
+                        "on-secondary-fixed": "#221b00",
+                        "on-surface-variant": "#d0c5af",
+                        "on-primary-fixed-variant": "#574500",
+                        "background": "#16130b",
+                        "text-primary": "#FAFAFA",
+                        "on-error-container": "#ffdad6",
+                        "text-muted": "#A3A3A3",
+                        "on-primary-container": "#554300",
+                        "surface-container": "#231f17",
+                        "on-primary-fixed": "#241a00",
+                        "surface-container-highest": "#38342b",
+                        "on-surface": "#eae1d4",
+                        "surface": "#16130b",
+                        "inverse-primary": "#735c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "64": "64px",
+                        "48": "48px",
+                        "4": "4px",
+                        "12": "12px",
+                        "24": "24px",
+                        "32": "32px",
+                        "128": "128px",
+                        "8": "8px",
+                        "16": "16px",
+                        "96": "96px"
+                    },
+                    "fontFamily": {
+                        "heading-h3": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "display-h1-mobile": ["Playfair Display"],
+                        "heading-h2-mobile": ["Playfair Display"],
+                        "cta": ["Montserrat"],
+                        "eyebrow": ["Montserrat"],
+                        "heading-h2": ["Playfair Display"],
+                        "display-h1": ["Playfair Display"],
+                        "body-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "heading-h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-h1-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "heading-h2-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "cta": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "eyebrow": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "heading-h2": ["48px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-h1": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bg-primary text-text-primary antialiased font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary">
+<main>
+<!-- Hero Section -->
+<section class="relative h-[80vh] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Hero" class="w-full h-full object-cover object-center opacity-40" src="https://lh3.googleusercontent.com/aida/AP1WRLvXDJAgLgkM9_FqcQvrBZJpcvrHDUdCWuq2oTXWVqxDdxN75JMgZl8JPGQ5apfUHJEVsSZ7qS8Wf_tw3d89j-_KcbGVs0sJtx9y8Mp1TpZ9x7AYJrHdVu-4ztlypIIiMBbyFMgZhPwIJK0O5IhnN4oEr-r7h87gYn74K5ck7jyzpZ0FZi7IoR-pMW_lMrxIR2aiTNGAoxHsGG-GysVvXAC64GDKdQc6XEBByO_jbKZLA479E54m4TymFX4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
+</div>
+<div class="relative z-10 text-center px-24 reveal">
+<span class="font-eyebrow text-eyebrow text-primary tracking-[0.2em] uppercase mb-8 block">Exclusive Portfolio</span>
+<h1 class="font-display-h1-mobile md:font-display-h1 text-display-h1-mobile md:text-display-h1 text-text-primary mb-24 text-glow">
+                    Stunning Venues
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    Discover elite spaces curated for unforgettable experiences in Pune. From heritage grandeur to modern cinematic lounges.
+                </p>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+<span class="material-symbols-outlined text-primary text-3xl">expand_more</span>
+</div>
+</section>
+<!-- Filter Bar -->
+<section class="sticky top-24 z-40 px-24 md:px-0 max-w-5xl mx-auto -mt-32 mb-64 reveal" style="transition-delay: 0.2s;">
+<div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-xl p-16 md:p-24 shadow-glow flex flex-col md:flex-row gap-16 items-center justify-between">
+<div class="flex items-center gap-12 w-full md:w-auto">
+<span class="material-symbols-outlined text-primary">filter_list</span>
+<span class="font-eyebrow text-eyebrow text-text-primary uppercase tracking-widest">Filter By</span>
+</div>
+<div class="flex flex-col sm:flex-row w-full md:w-auto gap-16 flex-1 justify-end">
+<!-- Venue Type Filter -->
+<div class="relative w-full sm:w-64">
+<select class="w-full bg-bg-elevated border border-glass-border text-on-surface-variant rounded-lg px-16 py-12 appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md text-body-md cursor-pointer">
+<option value="">Venue Type</option>
+<option value="ballroom">Grand Ballroom</option>
+<option value="heritage">Heritage Property</option>
+<option value="rooftop">Rooftop Lounge</option>
+<option value="outdoor">Outdoor Mandap</option>
+</select>
+<span class="material-symbols-outlined absolute right-12 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<!-- Capacity Filter -->
+<div class="relative w-full sm:w-64">
+<select class="w-full bg-bg-elevated border border-glass-border text-on-surface-variant rounded-lg px-16 py-12 appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md text-body-md cursor-pointer">
+<option value="">Capacity</option>
+<option value="small">Intimate (Up to 200)</option>
+<option value="medium">Medium (200 - 500)</option>
+<option value="large">Grand (500 - 1500+)</option>
+</select>
+<span class="material-symbols-outlined absolute right-12 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Venue Grid Section -->
+<section class="max-w-7xl mx-auto px-24 mb-128">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-32">
+<!-- Card 1 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="The Grand Palace" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLsXhHUQdWrjT-va1TODolEkMSrdZtkwqGYISFRrd4evNfPFsHW6SDiRbPS-FHqMYGNJO2sqVA7205Cu0wFOfmTd2-7U4CGZ0Lq4705T0hLEPv66WuQoOiTnAVmDc7jh8xzZ0dHam4ZR07puQ5rGsyLe8G0sz-d41bcmYaos-XxaD4S8h283MDKUti6ESvRhgtDSi-pkK0Dc34oj1bnJIz__JHh-T_lp2af3NvEOBd0E6U0Z-O7REb4dwoA"/>
+<div class="absolute top-16 right-16 bg-bg-elevated/80 backdrop-blur-md border border-glass-border px-12 py-4 rounded-full flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-sm">diamond</span>
+<span class="font-eyebrow text-eyebrow text-primary">Premium</span>
+</div>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">The Grand Palace</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Koregaon Park, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>500 - 1500</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹5,50,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300" style="transition-delay: 0.1s;">
+<div class="relative h-64 overflow-hidden">
+<img alt="Sky Lounge" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLsBWsLYVdLZS8am1UvEgdlprsjwd1r2zmEcC0109eIxTve87viT86up5j6gPrSXmoFKDR_56OIZm_AkZ6BBm9Ve-X64q-uB1RC0mOUIov0aQr5XWfa2V3ECKGlocy_dMjWjdtMMYPdNgBI9iVasudL5efDNwL3qN6ACdjEeWkkxLrad8UhiR1VSEvyQoz4Wgb9ovdfa68KGf649yIW15Qu3Lv1fJR1w8a-1cHeq448-N-XKFvau1qkhDMk"/>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">Corporate Sky Lounge</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Viman Nagar, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>100 - 300</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹2,00,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300" style="transition-delay: 0.2s;">
+<div class="relative h-64 overflow-hidden">
+<img alt="Heritage Mandap" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLuU1LIX7ulK7VZV6ZLOZpne6M-F_DEBKf-foEDFm93cC5kXhGEvx3g215j-Ps0-1U8LnV9ya8IPg5UpmlreVigaUw-Yz3kVfrte1oe7dyyhfv2xxx4mCtY5cgNgSVeJzQLtP7Apub0Cz8KvYWd7OfzC_5wpqvuhS06D_6CGpffLnpIk84FlpeK2XGdpkCck5WntmeLPlSFSapIKsClQhlTF8qQ48KfnuO_JUrxiXN7enSw8MyDTbyGY-w"/>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">The Heritage Mandap</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Kothrud, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>200 - 600</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹3,50,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Gala Dining Hall" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLtrId6VGPdz9MUAVF7vtsGvV1g4r9UpJ-McbBlC83qlkpKbyb31xMW64xLiwUrTWyfTeimeAczOi3FB-rIWJRSAddMWLUHqOZatut3vpTQPsaowcJt9Cnrsg4P2uxjZWgRPGbwFZ46dj3uUMRxPN_sEENLZfVQOlFZ2UxUfi5ed1RCuWxwa9Q25bjFy8l2JgqJZ3ySr24KoTfGjonmBoXsUewJAJjI-rJuRD9GzLPcKAtZwNj9Npi8e2FA"/>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">Emerald Bay Gala</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Baner, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>300 - 800</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹4,00,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300" style="transition-delay: 0.1s;">
+<div class="relative h-64 overflow-hidden">
+<img alt="Tech Lounge" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLtrXPTH7lR8hndow7cQk3zlGJtRZHJ58Fy7NCUiIIE7us3uh0VfCIoh8MhLzKAThmIT0bIoGZL9pTossz11yhYytZcQ4WtIa3AYMa8Sgd2jnHYK8HAPWB16xtRdmiCBSHnv7c4tSR1s_tBhvMOQSNxhTWVPdar-wlLPg6zN7P4U-2zxTBICJtj0PpIcll3tQOvKOej2CwrbrSyPk61Ngwt3Pat3MZTK2-VvgwjOH6GujQox4UkbzvTtb-o"/>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">The Nexus Hub</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Hinjewadi, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>150 - 400</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹2,50,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="bg-glass-bg border border-glass-border rounded-xl overflow-hidden group reveal hover:-translate-y-2 transition-all duration-300" style="transition-delay: 0.2s;">
+<div class="relative h-64 overflow-hidden">
+<img alt="Concert Stage" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLsaOs-T3zhOytRsY2dio6VDK0RPoBaTfDcaeTgf5y3dTfSeNJd4-h75y_KLfC7b88MGUwxEnW5iobI-SR-qfSHZZEieCnc8Lcz8bdq150T-kMViggJj1c1FXz7vqfyX4e-oPuqH_4t3iCbrzBfHsXi-ILTiuJTkGtSxmb7upvaI0Y5uGQtgV98LcY3hNyxTZ8ERY_e5wqCpliKc2ivC4cYyC5uOILmZuzQatndrFBmgpBjaQxLXiIJ-hLE"/>
+</div>
+<div class="p-24 flex flex-col gap-16">
+<div>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary mb-8 group-hover:text-primary transition-colors">Aura Stage Arena</h3>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-sm">Balewadi, Pune</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-16 py-16 border-y border-glass-border">
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Capacity</span>
+<div class="flex items-center gap-8 text-text-primary">
+<span class="material-symbols-outlined text-[18px] text-primary">group</span>
+<span>1000 - 3000</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-eyebrow text-eyebrow text-text-muted">Starting at</span>
+<span class="text-text-primary font-medium">₹8,00,000</span>
+</div>
+</div>
+<button class="w-full py-16 bg-transparent border border-primary text-primary font-cta text-cta rounded-lg hover:bg-primary-container hover:text-on-primary hover:shadow-glow transition-all duration-300 uppercase tracking-widest mt-8">
+                            View Details
+                        </button>
+</div>
+</article>
+</div>
+</section>
+<!-- Map Section -->
+<section class="max-w-7xl mx-auto px-24 mb-128 reveal">
+<div class="flex flex-col items-center mb-48">
+<h2 class="font-heading-h2-mobile md:font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-16 text-center text-glow">
+                    Our Exclusive Network in Pune
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl text-center">
+                    Strategically located premium venues across the city's most desirable districts.
+                </p>
+</div>
+<div class="relative w-full h-[500px] bg-surface-container-low border border-glass-border rounded-2xl overflow-hidden shadow-glow">
+<!-- Placeholder for actual map integration -->
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEwaDQwTTEwIDB2NDBNMCAyMGg0ME0yMCAwdjQwTTAgMzBoNDBNMzAgMHY0MCIgc3Ryb2tlPSJyZ2JhKDIxMiwgMTc1LCA1NSwgMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')] opacity-50"></div>
+<!-- Map Pins (Simulated) -->
+<div class="absolute top-1/4 left-1/3 group cursor-pointer">
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] group-hover:-translate-y-2 transition-transform">location_on</span>
+<div class="hidden group-hover:block absolute top-full mt-8 left-1/2 -translate-x-1/2 bg-glass-bg border border-glass-border backdrop-blur-md px-16 py-8 rounded-lg whitespace-nowrap shadow-glow z-10">
+<p class="font-eyebrow text-primary text-xs">Baner District</p>
+<p class="text-xs text-text-primary mt-2">2 Venues</p>
+</div>
+</div>
+<div class="absolute top-1/2 left-2/3 group cursor-pointer">
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] group-hover:-translate-y-2 transition-transform">location_on</span>
+<div class="hidden group-hover:block absolute top-full mt-8 left-1/2 -translate-x-1/2 bg-glass-bg border border-glass-border backdrop-blur-md px-16 py-8 rounded-lg whitespace-nowrap shadow-glow z-10">
+<p class="font-eyebrow text-primary text-xs">Koregaon Park</p>
+<p class="text-xs text-text-primary mt-2">3 Venues</p>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2 group cursor-pointer">
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] group-hover:-translate-y-2 transition-transform">location_on</span>
+<div class="hidden group-hover:block absolute top-full mt-8 left-1/2 -translate-x-1/2 bg-glass-bg border border-glass-border backdrop-blur-md px-16 py-8 rounded-lg whitespace-nowrap shadow-glow z-10">
+<p class="font-eyebrow text-primary text-xs">Central Pune</p>
+<p class="text-xs text-text-primary mt-2">1 Venue</p>
+</div>
+</div>
+<div class="absolute bottom-16 right-24 bg-bg-elevated/80 backdrop-blur-md border border-glass-border p-16 rounded-lg">
+<div class="flex items-center gap-12">
+<span class="material-symbols-outlined text-primary">explore</span>
+<span class="font-cta text-cta text-text-primary tracking-widest uppercase text-sm">Pune, Maharashtra</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-4xl mx-auto px-24 mb-128 text-center reveal">
+<div class="bg-gradient-to-b from-surface-container-high to-bg-surface border border-glass-border rounded-2xl p-48 md:p-64 shadow-glow relative overflow-hidden">
+<!-- Decorative Elements -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
+<div class="absolute -top-64 -right-64 w-128 h-128 bg-primary opacity-[0.03] rounded-full blur-3xl pointer-events-none"></div>
+<h2 class="font-heading-h2-mobile md:font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-24">
+                    Ready to Book Your Dream Space?
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-48 max-w-xl mx-auto">
+                    Connect with our elite venue concierges to discuss availability, custom arrangements, and exclusive pricing.
+                </p>
+<a class="inline-flex items-center justify-center gap-12 bg-primary-container text-on-primary px-32 py-16 rounded-full font-cta text-cta uppercase tracking-widest hover:bg-primary hover:shadow-glow hover:-translate-y-1 transition-all duration-300" href="https://wa.me/919730594753" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                    Message on WhatsApp
+                </a>
+</div>
+</section>
+</main>
+<script>
+        // Simple Intersection Observer for scroll reveal animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body></html>

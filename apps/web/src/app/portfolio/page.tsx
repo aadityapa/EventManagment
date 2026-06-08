@@ -1,17 +1,13 @@
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { PortfolioGrid } from "@/components/portfolio/portfolio-grid";
 
-export const metadata = generateSEO({
-  title: "Portfolio",
-  description:
-    "Explore Glitz Events & Promotions portfolio — luxury weddings, corporate galas, concerts, and more.",
-  path: "/portfolio",
-});
+export const metadata = stitchMetadata("portfolio");
 
 export default function PortfolioPage() {
   return (
-    <>
+    <StitchRoute screen="portfolio">
       <PageHero
         title="Our Portfolio"
         subtitle="Extraordinary events we've brought to life across the globe"
@@ -21,6 +17,6 @@ export default function PortfolioPage() {
           <PortfolioGrid />
         </div>
       </section>
-    </>
+    </StitchRoute>
   );
 }

@@ -2,20 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
 import { blogPosts } from "@/data/cms";
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = generateSEO({
-  title: "Blog",
-  description:
-    "Event planning insights, trends, and tips from the Glitz Events & Promotions team.",
-  path: "/blog",
-  type: "website",
-});
+export const metadata = stitchMetadata("blog");
 
 export default function BlogPage() {
   return (
+    <StitchRoute screen="blog">
     <>
       <PageHero
         title="Event Insights"
@@ -72,5 +68,6 @@ export default function BlogPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

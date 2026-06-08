@@ -1,22 +1,20 @@
 import Link from "next/link";
 import { faqs } from "@/data/cms";
-import { generateSEO, faqSchema } from "@/lib/seo";
+import { faqSchema } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { FaqAccordion } from "@/components/faq/faq-accordion";
 import { Button } from "@/components/ui/button";
 
-export const metadata = generateSEO({
-  title: "FAQs",
-  description:
-    "Frequently asked questions about Glitz Events & Promotions — booking, payments, services, and more.",
-  path: "/faqs",
-});
+export const metadata = stitchMetadata("faqs");
 
 export default function FaqsPage() {
   const schema = faqSchema(faqs);
   const categories = Array.from(new Set(faqs.map((f) => f.category)));
 
   return (
+    <StitchRoute screen="faqs">
     <>
       <script
         type="application/ld+json"
@@ -52,5 +50,6 @@ export default function FaqsPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

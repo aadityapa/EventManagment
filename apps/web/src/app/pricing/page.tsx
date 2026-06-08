@@ -1,19 +1,15 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { pricingPlans, faqs } from "@/data/cms";
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { FaqAccordion } from "@/components/faq/faq-accordion";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-export const metadata = generateSEO({
-  title: "Pricing",
-  description:
-    "Transparent event planning packages — Essential, Premium, and Luxury tiers for every celebration.",
-  path: "/pricing",
-});
+export const metadata = stitchMetadata("pricing");
 
 export default function PricingPage() {
   const pricingFaqs = faqs.filter((f) =>
@@ -21,6 +17,7 @@ export default function PricingPage() {
   );
 
   return (
+    <StitchRoute screen="pricing">
     <>
       <PageHero
         title="Pricing Plans"
@@ -125,5 +122,6 @@ export default function PricingPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

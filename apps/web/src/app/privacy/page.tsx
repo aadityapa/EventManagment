@@ -1,15 +1,13 @@
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const metadata = generateSEO({
-  title: "Privacy Policy",
-  description: `Privacy policy for ${SITE_CONFIG.name} — how we collect, use, and protect your data.`,
-  path: "/privacy",
-});
+export const metadata = stitchMetadata("privacy");
 
 export default function PrivacyPage() {
   return (
+    <StitchRoute screen="privacy">
     <>
       <PageHero title="Privacy Policy" subtitle={`Last updated: June 1, 2026`} />
 
@@ -76,5 +74,6 @@ export default function PrivacyPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

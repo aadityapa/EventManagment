@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trusted Partners | GLITZ EVENTS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#3a3000",
+                        "surface-variant": "#38342b",
+                        "on-primary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffe088",
+                        "primary-container": "#d4af37",
+                        "surface-bright": "#3d392f",
+                        "tertiary": "#bfcdff",
+                        "gold-soft": "#F5D76E",
+                        "surface-container-high": "#2d2a21",
+                        "surface": "#16130b",
+                        "secondary-fixed": "#ffe16d",
+                        "on-primary": "#3c2f00",
+                        "glass-bg": "rgba(13, 13, 13, 0.65)",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "text-muted": "#A3A3A3",
+                        "secondary-fixed-dim": "#e9c400",
+                        "on-primary-fixed-variant": "#574500",
+                        "surface-container-lowest": "#110e07",
+                        "bg-elevated": "#0D0D0D",
+                        "background": "#16130b",
+                        "on-secondary-fixed-variant": "#544600",
+                        "tertiary-container": "#97b0ff",
+                        "secondary-container": "#ffdb3c",
+                        "bg-surface": "#121212",
+                        "surface-tint": "#e9c349",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "secondary": "#fff9ef",
+                        "on-secondary-fixed": "#221b00",
+                        "on-surface-variant": "#d0c5af",
+                        "on-secondary-container": "#725f00",
+                        "inverse-on-surface": "#343027",
+                        "on-tertiary-fixed": "#00174b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "outline-variant": "#4d4635",
+                        "on-primary-container": "#554300",
+                        "on-tertiary": "#082b72",
+                        "outline": "#99907c",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#16130b",
+                        "primary": "#f2ca50",
+                        "on-background": "#eae1d4",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#eae1d4",
+                        "inverse-primary": "#735c00",
+                        "surface-container-highest": "#38342b",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-tertiary-container": "#254188",
+                        "bg-primary": "#0A0A0A",
+                        "surface-container": "#231f17",
+                        "surface-container-low": "#1f1b13",
+                        "text-primary": "#FAFAFA",
+                        "inverse-surface": "#eae1d4",
+                        "glass-border": "rgba(212, 175, 55, 0.2)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "32": "32px",
+                        "24": "24px",
+                        "48": "48px",
+                        "12": "12px",
+                        "64": "64px",
+                        "128": "128px",
+                        "4": "4px",
+                        "96": "96px",
+                        "8": "8px",
+                        "16": "16px"
+                    },
+                    "fontFamily": {
+                        "heading-h3": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "cta": ["Montserrat"],
+                        "heading-h2": ["Playfair Display"],
+                        "display-h1-mobile": ["Playfair Display"],
+                        "display-h1": ["Playfair Display"],
+                        "body-md": ["Montserrat"],
+                        "heading-h2-mobile": ["Playfair Display"],
+                        "eyebrow": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "heading-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "cta": ["16px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "heading-h2": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-h1-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display-h1": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "heading-h2-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "eyebrow": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}]
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(212, 175, 55, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-bg-primary text-on-surface font-body-md antialiased min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- Hero Section -->
+<section class="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden pt-32 pb-64 fade-up">
+<div class="absolute inset-0 z-0">
+<img alt="" class="w-full h-full object-cover opacity-30 object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfGjb37T5yyAt49jcFmYLEK_A7529n4b-yQcVco9LD9Nsriy9T6y395ydASvUi_X96Co83ITmd41Y9p2w9pZGTfH_evlSyCudlI7qjL9EO8y6dJ-8T7-rN-vLUt3jbh9ZVjKyjNGEW_BFWm4YglIMj1jwACTJqnUh9GM4XfqRC-iSdewnXa5YjM6TnjllyABHU4JjnrFUrgVD5RMpGXnx5XZWYzRJYU-iCPPnfxBOV9rWD17H71DLRK-vPaAkoXHz3N9SIh1HOY4Y"/>
+<div class="absolute inset-0 bg-gradient-to-b from-bg-primary/50 via-bg-primary/80 to-bg-primary"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-24 md:px-32 text-center flex flex-col items-center">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-16">The Vanguard of Events</span>
+<h1 class="font-display-h1 text-display-h1-mobile md:text-display-h1 text-text-primary mb-24 drop-shadow-lg">Trusted Partners</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto">
+                The elite network behind Pune's most extraordinary events. Curated for excellence, precision, and luxury.
+            </p>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="w-full py-96 px-24 md:px-32 fade-up">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-64">
+<h2 class="font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-16">Curated Categories</h2>
+<div class="w-64 h-1 bg-primary-container mx-auto"></div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-24">
+<!-- Category Item -->
+<div class="group flex flex-col items-center justify-center p-32 bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border hover:shadow-glow transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-primary mb-16 group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="font-heading-h3 text-heading-h3 text-text-primary text-center text-sm md:text-base">Catering</span>
+</div>
+<!-- Category Item -->
+<div class="group flex flex-col items-center justify-center p-32 bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border hover:shadow-glow transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-primary mb-16 group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">yard</span>
+<span class="font-heading-h3 text-heading-h3 text-text-primary text-center text-sm md:text-base">Décor</span>
+</div>
+<!-- Category Item -->
+<div class="group flex flex-col items-center justify-center p-32 bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border hover:shadow-glow transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-primary mb-16 group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">speaker</span>
+<span class="font-heading-h3 text-heading-h3 text-text-primary text-center text-sm md:text-base">AV</span>
+</div>
+<!-- Category Item -->
+<div class="group flex flex-col items-center justify-center p-32 bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border hover:shadow-glow transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-primary mb-16 group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">camera</span>
+<span class="font-heading-h3 text-heading-h3 text-text-primary text-center text-sm md:text-base">Photography</span>
+</div>
+<!-- Category Item -->
+<div class="group flex flex-col items-center justify-center p-32 bg-glass-bg backdrop-blur-md rounded-lg border border-glass-border hover:shadow-glow transition-all duration-300 hover:-translate-y-2 cursor-pointer col-span-2 md:col-span-1">
+<span class="material-symbols-outlined text-4xl text-primary mb-16 group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">music_note</span>
+<span class="font-heading-h3 text-heading-h3 text-text-primary text-center text-sm md:text-base">Entertainment</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Artisans -->
+<section class="w-full py-96 px-24 md:px-32 bg-surface-container-lowest fade-up">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-64 gap-24">
+<div>
+<h2 class="font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-16">Featured Artisans</h2>
+<div class="w-64 h-1 bg-primary-container"></div>
+</div>
+<button class="font-cta text-cta text-primary flex items-center gap-8 hover:text-gold-soft transition-colors group">
+                    VIEW ALL PARTNERS
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-32">
+<!-- Artisan Card 1 -->
+<div class="flex flex-col bg-bg-elevated rounded-lg border border-glass-border overflow-hidden group hover:shadow-glow transition-all duration-500">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEzbpGt7pUs9rOKarLX7v1mQMHwyetal8BT5vnN9_Spwij3cRuhWqQNv-Kll-qcjKn-j1S3xi427yLNiMDIKjRNEGS3wwFpyLmQEfbar16IqagLp9NRW1OD6CmnhffhI-zEH6KW5C6QwBwdvRdt0Kggo9zsLJIkAi_BimqYOmInb8gTlcApsj-W62GTAJDpM7ksOsXMlXqssWmUKqiNbIigbWMBZhswZyM3frfVy890b8yQEp9rVjxNCQCecd9wV1bJY8JvhD5SVk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-bg-elevated to-transparent opacity-80"></div>
+<div class="absolute bottom-16 left-16 right-16 flex justify-between items-end">
+<div>
+<span class="font-eyebrow text-eyebrow text-primary uppercase block mb-4">Premium Catering</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Royal Palate Catering</h3>
+</div>
+</div>
+</div>
+<div class="p-24 flex flex-col flex-grow">
+<div class="flex text-primary mb-16">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-24 flex-grow">
+                            Exquisite culinary experiences crafted with precision, blending traditional flavors with modern haute cuisine presentation for discerning palates.
+                        </p>
+<a class="font-cta text-cta text-primary flex items-center gap-8 mt-auto hover:text-gold-soft transition-colors w-fit group/link" href="#">
+                            VIEW PROFILE
+                            <span class="material-symbols-outlined group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Artisan Card 2 -->
+<div class="flex flex-col bg-bg-elevated rounded-lg border border-glass-border overflow-hidden group hover:shadow-glow transition-all duration-500">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbIUEHhYo6Kd5ofJHnMDxHpZIR5BbqpDB_Vi-QW_Wc1ydkvcSYUBmwatDTs9fPYEO3sStFelh4hWZ_ZEgJx_u3afjFIGYMpJyMsjy96KAnTbIpkGwofOY_ibjONDdB-XlZ4s1N-npZrmI5ITC13sT_RK7Orqx-DmIKkC9P9VqAirSz8jxSS3PBwgZE9ZoBqsCloxXtWig4at2C7SlEDeqdakAQsWo2BmwGBdYkmpK60SGAcFu_K4Nxbpld-RyTGVWbL1aovuI5Jwk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-bg-elevated to-transparent opacity-80"></div>
+<div class="absolute bottom-16 left-16 right-16 flex justify-between items-end">
+<div>
+<span class="font-eyebrow text-eyebrow text-primary uppercase block mb-4">Floral &amp; Design</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Aura Floral Artisans</h3>
+</div>
+</div>
+</div>
+<div class="p-24 flex flex-col flex-grow">
+<div class="flex text-primary mb-16">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-24 flex-grow">
+                            Transforming spaces through evocative floral architecture and ambient styling, creating breathtaking visual narratives for every occasion.
+                        </p>
+<a class="font-cta text-cta text-primary flex items-center gap-8 mt-auto hover:text-gold-soft transition-colors w-fit group/link" href="#">
+                            VIEW PROFILE
+                            <span class="material-symbols-outlined group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Artisan Card 3 -->
+<div class="flex flex-col bg-bg-elevated rounded-lg border border-glass-border overflow-hidden group hover:shadow-glow transition-all duration-500">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6272YqxBQ51DVqFX6OkQ8qhws36M_culPCiL7E_FeIYvgoJQLh97AWsPlmrApBnLBBRJ5s7kH3XHTXTtMOQyeiOPTN1hxKqQYxW1jFrEcliZWQ-cx6taJS3GZHOBscoR7j19MVbPwEMUUdlU9-LSgjJURE0nC6aBiUjbCydozmTYkTZpMNIuAqq5fPyZf9If65eiHd_lKuLEJ6X-fVHNRNT3vbou1G84BK1f6A8tPs4LmHF2OK9X_wFsqmfyKqZGbsXk3Wrfh0g8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-bg-elevated to-transparent opacity-80"></div>
+<div class="absolute bottom-16 left-16 right-16 flex justify-between items-end">
+<div>
+<span class="font-eyebrow text-eyebrow text-primary uppercase block mb-4">Audio Visual</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary">Sonic Illumination</h3>
+</div>
+</div>
+</div>
+<div class="p-24 flex flex-col flex-grow">
+<div class="flex text-primary mb-16">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-24 flex-grow">
+                            State-of-the-art sensory production, seamlessly integrating light, sound, and technology to elevate the atmospheric dimension of your event.
+                        </p>
+<a class="font-cta text-cta text-primary flex items-center gap-8 mt-auto hover:text-gold-soft transition-colors w-fit group/link" href="#">
+                            VIEW PROFILE
+                            <span class="material-symbols-outlined group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Network CTA -->
+<section class="w-full py-128 px-24 md:px-32 relative overflow-hidden fade-up">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent"></div>
+</div>
+<div class="max-w-4xl mx-auto relative z-10 text-center bg-glass-bg backdrop-blur-xl border border-glass-border rounded-xl p-48 md:p-64 shadow-glow">
+<span class="material-symbols-outlined text-64 text-primary mb-24 block mx-auto" style="font-variation-settings: 'FILL' 1;">handshake</span>
+<h2 class="font-heading-h2 text-heading-h2-mobile md:text-heading-h2 text-text-primary mb-24">Join Our Elite Network</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-48 max-w-2xl mx-auto">
+                Are you a purveyor of exceptional quality? Partner with Glitz Events &amp; Promotions to gain access to Pune's most exclusive clientele and elevate your brand within our curated portfolio of artisans.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-24">
+<button class="bg-primary text-on-primary font-cta text-cta px-32 py-16 rounded hover:bg-gold-soft hover:shadow-glow transition-all duration-300 w-full sm:w-auto uppercase tracking-widest">
+                    INQUIRE NOW
+                </button>
+<a class="flex items-center gap-8 font-cta text-cta text-text-primary hover:text-primary transition-colors py-16 px-24 border border-glass-border rounded hover:bg-primary/10 w-full sm:w-auto justify-center" href="https://wa.me/919730594753">
+<span class="material-symbols-outlined">chat</span>
+                    +91 9730594753
+                </a>
+</div>
+</div>
+</section>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-up');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body></html>

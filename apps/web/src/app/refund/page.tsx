@@ -1,15 +1,13 @@
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const metadata = generateSEO({
-  title: "Refund Policy",
-  description: `Refund and cancellation policy for ${SITE_CONFIG.name} event bookings and services.`,
-  path: "/refund",
-});
+export const metadata = stitchMetadata("refund");
 
 export default function RefundPage() {
   return (
+    <StitchRoute screen="refund">
     <>
       <PageHero title="Refund Policy" subtitle="Last updated: June 7, 2026" />
 
@@ -66,5 +64,6 @@ export default function RefundPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

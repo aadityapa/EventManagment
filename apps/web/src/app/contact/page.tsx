@@ -1,21 +1,18 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
-import { generateSEO } from "@/lib/seo";
 import { PageHero } from "@/components/shared/page-hero";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Logo } from "@/components/branding/logo";
 import { Button } from "@/components/ui/button";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 
-export const metadata = generateSEO({
-  title: "Contact",
-  description:
-    "Get in touch with Glitz Events & Promotions — book a free consultation for your next extraordinary event.",
-  path: "/contact",
-});
+export const metadata = stitchMetadata("contact");
 
 export default function ContactPage() {
   return (
+    <StitchRoute screen="contact">
     <>
       <PageHero
         title="Contact Us"
@@ -86,5 +83,6 @@ export default function ContactPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

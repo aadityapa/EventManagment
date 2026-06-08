@@ -45,6 +45,20 @@
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-bg-primary: #0a0a0a;
+  --color-bg-elevated: #0d0d0d;
+  --color-bg-surface: #121212;
+  --color-text-primary: #fafafa;
+  --color-text-muted: #a3a3a3;
+  --color-gold-soft: #f5d76e;
+  --color-primary-container: #d4af37;
+  --color-on-primary-container: #554300;
+  --color-on-surface-variant: #d0c5af;
+  --color-glass-border: rgba(212, 175, 55, 0.2);
+  --color-glass-bg: rgba(13, 13, 13, 0.65);
+  --color-surface-container-low: #1f1b13;
+  --color-surface-container-lowest: #110e07;
+  --color-surface-variant: #38342b;
   --font-sans: var(--font-montserrat);
   --font-body: var(--font-poppins);
   --font-display: var(--font-playfair);
@@ -243,4 +257,94 @@ body {
 ::selection {
   background: var(--primary);
   color: var(--primary-foreground);
+}
+
+/* Stitch screen utilities (from Google Stitch export) */
+.stitch-main .glass-panel {
+  background: rgba(13, 13, 13, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.stitch-main .text-gradient-gold {
+  background: linear-gradient(to right, #f5d76e, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stitch-main .bg-gradient-gold {
+  background: linear-gradient(135deg, #d4af37, #f5d76e);
+}
+
+.stitch-main .hover-lift {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.stitch-main .hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+}
+
+.stitch-main .hover-glow:hover {
+  box-shadow: 0 0 20px rgba(245, 215, 110, 0.4);
+}
+
+.stitch-main .masonry-grid {
+  column-count: 1;
+  column-gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .stitch-main .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stitch-main .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.stitch-main .masonry-item {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+.stitch-main .fade-up-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stitch-main .fade-up {
+  animation: stitch-fade-up 0.8s ease-out forwards;
+}
+
+@keyframes stitch-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stitch-main .gold-shimmer {
+  background-image: linear-gradient(90deg, #d4af37 0%, #f5d76e 50%, #d4af37 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+.stitch-main .particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
 }

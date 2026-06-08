@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Glitz Events - Our Masterpieces</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .masonry-grid { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .masonry-grid { column-count: 3; }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Custom Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle ambient glow behind the grid */
+        .ambient-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, rgba(10, 10, 10, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "secondary": "#fff9ef",
+                            "bg-surface": "#121212",
+                            "outline": "#99907c",
+                            "on-surface": "#eae1d4",
+                            "error": "#ffb4ab",
+                            "primary": "#f2ca50",
+                            "inverse-primary": "#735c00",
+                            "surface": "#16130b",
+                            "on-surface-variant": "#d0c5af",
+                            "glass-border": "rgba(212, 175, 55, 0.2)",
+                            "on-secondary": "#3a3000",
+                            "secondary-container": "#ffdb3c",
+                            "text-muted": "#A3A3A3",
+                            "bg-primary": "#0A0A0A",
+                            "bg-elevated": "#0D0D0D",
+                            "on-secondary-container": "#725f00",
+                            "on-primary": "#3c2f00",
+                            "on-tertiary-fixed-variant": "#27438a",
+                            "gold-soft": "#F5D76E",
+                            "inverse-surface": "#eae1d4",
+                            "surface-container-high": "#2d2a21",
+                            "error-container": "#93000a",
+                            "secondary-fixed": "#ffe16d",
+                            "surface-container-lowest": "#110e07",
+                            "on-primary-fixed": "#241a00",
+                            "text-primary": "#FAFAFA",
+                            "on-error-container": "#ffdad6",
+                            "on-primary-fixed-variant": "#574500",
+                            "tertiary-fixed-dim": "#b4c5ff",
+                            "on-tertiary-container": "#254188",
+                            "on-secondary-fixed-variant": "#544600",
+                            "primary-container": "#d4af37",
+                            "outline-variant": "#4d4635",
+                            "surface-variant": "#38342b",
+                            "inverse-on-surface": "#343027",
+                            "surface-bright": "#3d392f",
+                            "on-tertiary-fixed": "#00174b",
+                            "primary-fixed-dim": "#e9c349",
+                            "surface-container-highest": "#38342b",
+                            "surface-container-low": "#1f1b13",
+                            "glass-bg": "rgba(13, 13, 13, 0.65)",
+                            "surface-container": "#231f17",
+                            "tertiary-container": "#97b0ff",
+                            "primary-fixed": "#ffe088",
+                            "on-primary-container": "#554300",
+                            "on-tertiary": "#082b72",
+                            "surface-tint": "#e9c349",
+                            "background": "#16130b",
+                            "on-error": "#690005",
+                            "surface-dim": "#16130b",
+                            "secondary-fixed-dim": "#e9c400",
+                            "tertiary-fixed": "#dbe1ff",
+                            "tertiary": "#bfcdff",
+                            "on-secondary-fixed": "#221b00",
+                            "on-background": "#eae1d4"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "12": "12px",
+                            "32": "32px",
+                            "64": "64px",
+                            "4": "4px",
+                            "24": "24px",
+                            "96": "96px",
+                            "48": "48px",
+                            "16": "16px",
+                            "8": "8px",
+                            "128": "128px"
+                    },
+                    "fontFamily": {
+                            "display-h1-mobile": ["Playfair Display"],
+                            "cta": ["Montserrat"],
+                            "body-lg": ["Montserrat"],
+                            "heading-h3": ["Montserrat"],
+                            "heading-h2-mobile": ["Playfair Display"],
+                            "display-h1": ["Playfair Display"],
+                            "body-md": ["Montserrat"],
+                            "eyebrow": ["Montserrat"],
+                            "heading-h2": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                            "display-h1-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                            "cta": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                            "heading-h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                            "heading-h2-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                            "display-h1": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                            "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                            "eyebrow": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                            "heading-h2": ["48px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    },
+                    "boxShadow": {
+                        "glow": "0 0 20px rgba(212, 175, 55, 0.3)",
+                    }
+            },
+            }
+        }
+    </script>
+</head>
+<body class="bg-bg-primary text-text-primary min-h-screen relative overflow-x-hidden antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Ambient Glow -->
+<div class="ambient-glow"></div>
+<main class="w-full max-w-[1440px] mx-auto px-24 md:px-32 py-64 md:py-96 relative z-10">
+<!-- Hero Section -->
+<section class="text-center mb-64 md:mb-96 reveal">
+<h1 class="font-display-h1-mobile text-display-h1-mobile md:font-display-h1 md:text-display-h1 text-text-primary mb-24 tracking-tight">
+                Our Masterpieces
+            </h1>
+<p class="font-body-lg text-body-lg text-text-muted max-w-2xl mx-auto mb-48">
+                A curated selection of our finest cinematic events, where luxury meets impeccable execution.
+            </p>
+<!-- Filter Chips -->
+<div class="flex flex-wrap justify-center gap-16" id="portfolio-filters">
+<button class="filter-btn active px-24 py-12 rounded-full border border-glass-border bg-glass-bg backdrop-blur-md text-primary font-cta text-cta transition-all duration-300 shadow-glow" data-filter="all">
+                    All
+                </button>
+<button class="filter-btn px-24 py-12 rounded-full border border-glass-border bg-surface-container-lowest text-text-muted font-cta text-cta transition-all duration-300 hover:text-primary hover:border-glass-border" data-filter="weddings">
+                    Weddings
+                </button>
+<button class="filter-btn px-24 py-12 rounded-full border border-glass-border bg-surface-container-lowest text-text-muted font-cta text-cta transition-all duration-300 hover:text-primary hover:border-glass-border" data-filter="corporate">
+                    Corporate
+                </button>
+<button class="filter-btn px-24 py-12 rounded-full border border-glass-border bg-surface-container-lowest text-text-muted font-cta text-cta transition-all duration-300 hover:text-primary hover:border-glass-border" data-filter="concerts">
+                    Concerts
+                </button>
+</div>
+</section>
+<!-- Masonry Portfolio Grid -->
+<section class="masonry-grid mb-128" id="portfolio-grid">
+<!-- Item 1 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="weddings">
+<div class="aspect-[4/5] w-full overflow-hidden bg-bg-elevated">
+<img alt="Royal Palace Wedding" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7Sy1O_1z7gTVSdWwrMOFRA7aH-MiCPx_4bF9x3lAMwgDWHO_7Wk_RW3ZUpZzC6uLqGZucGqJ6mTZGshao9r8EfGGZhrbrBDHa9rRdl-Vy7ffDycllkO--qSsC1kp1O5fNmyulWMugSdKR3mkd7kJOoSOPN7LxxrIMcRrx5RYg6jTTcEqd_-fBhvVmBD09R8MPXzNId4jXuxepq5pRC0DbFeRr9xkBGRiXX6uTdERfm5yLPChg2jA_eQSkqFGn-JyqdzAwoFLNMqM"/>
+</div>
+<!-- Glassmorphism Overlay -->
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Weddings</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Royal Palace Wedding</h3>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="corporate">
+<div class="aspect-square w-full overflow-hidden bg-bg-elevated">
+<img alt="Crystal Gala Dinner" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtr5xyJ-QLNQW5fc4ZdC7EwW9bdVB94tMErWC3hBlYaciAXfJEnH13ymYn7u3zGll0leCqIJaIHo0-c3n82IulhFIL9n3pEY09YqG_Zs51vCo4s8f0vwadCF94FPdBVgiHBP8oYpMkmsp2gnY_k3suqrQAbs4bcIUkr5gO_nSpvECHpP3N3GjdPlJK5UAVkvvSrivl-qOdpkmY_5GNa9eFoA1ZP6fADS7YIDpyBywnemw4XRZJkV1uOVKcHC5Npr463DJd4B4y2q0"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Corporate</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Crystal Gala Dinner</h3>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="concerts">
+<div class="aspect-[16/9] w-full overflow-hidden bg-bg-elevated">
+<img alt="Gold Coast Concert" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQXDtYacy01FzYx7R549tvPcwQ7jLpT0N2i62WmBEvXsNRKwTlu80zsI8K2ROOh3Bw0bd6pNqUP0qW-cY6rnrEVm1YWt9FZW8sWfC3lIw6CM1eUcS4trJ7k605z3_tEUGtSKSiSFs9k7RQqIhi5f7OQ4gYzQyF3Gh1m2D2IlHcpdCVAeq7rIczhkD68YaIj7myHS1g9EZH9ydVds2KpGNgHNOX-9kctFre9M_TkXtCboT8mdTm1SPGOLGpzmEbJtMqFypFmBxm3KQ"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Concerts</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Gold Coast Concert</h3>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="weddings">
+<div class="aspect-square w-full overflow-hidden bg-bg-elevated">
+<img alt="Traditional Elegance" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGIL8gh_VBiXXKau9AdFD6u_a8uW7627g_-67SCDCKQFs8pZXYowYfnL427sCl3TaETiShk71ANTDXUEWy-1NLitq8IE0qyYyQNvbHbP-ynR8TfoP-WZZERpM0BiCMpBw9HZhNcB7mO14FylP_T78z-zPVEVamUAa6IRfdLd-wFjXTOhbgsiE9miCejFGR_0IfanRbUzIP0S00_QUq3XVyY1pPOuvmgFtKh4D9t78CXLamX2UIQHnjmWQvKQdeiLTEkBDZlzD0b7g"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Weddings</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Traditional Elegance</h3>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="corporate">
+<div class="aspect-[4/5] w-full overflow-hidden bg-bg-elevated">
+<img alt="Tech Launch Pune" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQJcvm8OiGSPi7fZz_fr8aXCN3LHN4n64dbRG5ANfBfz0yE5a1J6vzjC4gLGBYIcHzqywYT4OJvTBJDebw6JtP-CbslgvMO-aTT_9XbSeVM1rgRpkSopWh1_63hJ2gDRWMS97OEMOftwTsyJVPS6FVop4kCZsUtKvpaSLViyPNpXTBXkEL2C97EPwehDz7XXm52bWLLQcw0w7udeFbVE3BH4AgtsaIzrNvpuGPAlLnpmTGlnVvIwYBVqKp0deNrLW7ggscZ5xAzV4"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Corporate</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Tech Launch Pune</h3>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="corporate">
+<div class="aspect-square w-full overflow-hidden bg-bg-elevated">
+<img alt="Gourmet Showcase" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJmwKDWLABO0NFXx1M86rFK1LalaFulS4eweIfr1Qu3eurqjUVdGq3E0pxw4iyLwyfufee6lUQvz1eA4z_Zgj74uJ_URsCwmayvi5LRykQsWbN00Ccm2jkAANxCVv9jRQQbZA1-DkAUl-gsv1Q9dOIbDcoCNGnoV0sjsy-a65cfXL0O1IHG0LQ6DUUiex2VeeAq0m2Yg3WL--JfKkqFD670vePGDoOsZiHeg9g3VCxqr5HUAEgJmPKLAwwetSjtX_hbKMchUavWLI"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Corporate</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Gourmet Showcase</h3>
+</div>
+</div>
+<!-- Item 7 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="weddings">
+<div class="aspect-[16/9] w-full overflow-hidden bg-bg-elevated">
+<img alt="The Grand Entrance" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChNYV4PXPGB6txo2id9g0X0BushiAE9GSdeNm05V8gPS52Pa5rEEunaTXAv4DP4MFO8np1YE9a8QLnqyxRdp_cUqoOLXdAjN_LIDQTCpo7I4D63h1waF4PYmRFH5h4E284TOAtw7YWNu12ad7L6Qb7RqT_yc4aJJpjgWr0UbLfgcbAC4gtRizLAB72ogOnKYRG4Ha7Y0fpxMpICpHsIOa6_Y6LkBrVdu3aakb2_H-7ixqiX9unVTr0UHEkSFM_72vHn-1bUJtnpno"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Weddings</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">The Grand Entrance</h3>
+</div>
+</div>
+<!-- Item 8 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="corporate">
+<div class="aspect-square w-full overflow-hidden bg-bg-elevated">
+<img alt="Elite Networking" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj7TG_dPeULgy4W0Lc0x042OgTxwMFu60wPShgKzVwYxmtc1EPSPHLxn25FhAtQmor-_lzDHbXiYnpCkB48H3R-1IWGdMX6cZ4BISGNwvnPHC_GXLVg7xU7jooFVf2u3YPrAqLtsOq6CCC8qXywUHBY4oojhT9Rf8oHphA4qw4kK4mgc4kwCGSYYjil0Z0adeYg5x3YFUq5k-hydABEOXYYIRoSMTbutI2zjFpYKQQeMw2if0pvNFr4558O9AVG-KBqTVNCa5l2Fo"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Corporate</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Elite Networking</h3>
+</div>
+</div>
+<!-- Item 9 -->
+<div class="masonry-item portfolio-card group relative rounded-lg overflow-hidden border border-glass-border cursor-pointer reveal" data-category="weddings">
+<div class="aspect-[4/5] w-full overflow-hidden bg-bg-elevated">
+<img alt="Bespoke Floral Decor" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0AL57ylK6cBLABhkFICmIIiCyupGTlgZd2ChCyiDUhTp6YGWYCJCKyTVl8gC9j1OSYhpXX0k706kcVrS624TDfOGBFxEcRQ8nF47Tucn6UZOHbTTrpvIanerkI-NyA1cRKuHvRwLO67mBJUWeJzYmls0hw1l070vJHf2L1rhhqEVV8tCEB6vZ5AVjROJQnPJ1gWjk82_KHdb2nFk8zE7av_PelQW8rLQRs2R3dU2rQhbK92UNjc-stXCF1TkUxfJqC_L5ROtadbE"/>
+</div>
+<div class="absolute inset-0 bg-glass-bg opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-32 backdrop-blur-sm border-t border-glass-border">
+<span class="font-eyebrow text-eyebrow text-primary uppercase tracking-widest mb-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">Weddings</span>
+<h3 class="font-heading-h3 text-heading-h3 text-text-primary transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">Bespoke Floral Decor</h3>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-32 md:gap-64 mb-128 py-64 border-t border-b border-glass-border reveal">
+<div class="text-center">
+<div class="font-display-h1-mobile text-display-h1-mobile md:font-display-h1 md:text-display-h1 text-primary mb-8">500+</div>
+<div class="font-body-md text-body-md text-text-muted">Events Organized</div>
+</div>
+<div class="text-center">
+<div class="font-display-h1-mobile text-display-h1-mobile md:font-display-h1 md:text-display-h1 text-primary mb-8">15+</div>
+<div class="font-body-md text-body-md text-text-muted">Years Excellence</div>
+</div>
+<div class="text-center">
+<div class="font-display-h1-mobile text-display-h1-mobile md:font-display-h1 md:text-display-h1 text-primary mb-8">100%</div>
+<div class="font-body-md text-body-md text-text-muted">Client Satisfaction</div>
+</div>
+<div class="text-center">
+<div class="font-display-h1-mobile text-display-h1-mobile md:font-display-h1 md:text-display-h1 text-primary mb-8">50+</div>
+<div class="font-body-md text-body-md text-text-muted">Global Awards</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="reveal relative rounded-xl overflow-hidden p-64 md:p-96 border border-glass-border bg-glass-bg backdrop-blur-lg text-center shadow-glow">
+<!-- Subtle background texture/gradient for CTA -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-highest/50 to-transparent z-0"></div>
+<div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+<h2 class="font-heading-h2-mobile text-heading-h2-mobile md:font-heading-h2 md:text-heading-h2 text-text-primary mb-24">
+                    Ready to Create Your Masterpiece?
+                </h2>
+<p class="font-body-lg text-body-lg text-text-muted mb-48 max-w-xl mx-auto">
+                    Let's curate an unforgettable experience together. Our team of experts is ready to bring your vision to life with cinematic precision.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-24">
+<button class="bg-primary-container text-on-primary-container font-cta text-cta px-48 py-16 rounded-lg transition-all duration-300 hover:bg-gold-soft hover:shadow-glow active:scale-95 flex items-center gap-8">
+                        Book a Consultation
+                    </button>
+<a class="text-primary hover:text-gold-soft font-cta text-cta transition-colors duration-200 flex items-center gap-8 border-b border-transparent hover:border-gold-soft pb-4" href="https://wa.me/919730594753">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        +91 9730594753
+                    </a>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Scroll Reveal Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+                
+                reveals.forEach((reveal, index) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        // Add slight stagger to grid items
+                        if(reveal.classList.contains('masonry-item')) {
+                            setTimeout(() => {
+                                reveal.classList.add('active');
+                            }, (index % 3) * 150);
+                        } else {
+                            reveal.classList.add('active');
+                        }
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger on load
+
+            // Filter Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button state visually
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-glass-bg', 'shadow-glow', 'text-primary');
+                        b.classList.add('bg-surface-container-lowest', 'text-text-muted');
+                    });
+                    btn.classList.add('bg-glass-bg', 'shadow-glow', 'text-primary');
+                    btn.classList.remove('bg-surface-container-lowest', 'text-text-muted');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    portfolioItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        
+                        if (filterValue === 'all' || itemCategory === filterValue) {
+                            item.style.display = 'block';
+                            // Small animation reset for re-appearing items
+                            item.classList.remove('active');
+                            setTimeout(() => item.classList.add('active'), 50);
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us - Glitz Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "glass-bg": "rgba(13, 13, 13, 0.65)",
+                        "error": "#ffb4ab",
+                        "on-surface": "#eae1d4",
+                        "secondary-container": "#ffdb3c",
+                        "on-tertiary-fixed": "#00174b",
+                        "secondary-fixed": "#ffe16d",
+                        "surface-container": "#231f17",
+                        "inverse-on-surface": "#343027",
+                        "outline": "#99907c",
+                        "surface-variant": "#38342b",
+                        "secondary-fixed-dim": "#e9c400",
+                        "on-secondary-fixed": "#221b00",
+                        "primary": "#f2ca50",
+                        "surface-bright": "#3d392f",
+                        "on-primary-fixed": "#241a00",
+                        "on-background": "#eae1d4",
+                        "primary-fixed-dim": "#e9c349",
+                        "tertiary": "#bfcdff",
+                        "text-primary": "#FAFAFA",
+                        "background": "#16130b",
+                        "outline-variant": "#4d4635",
+                        "on-primary": "#3c2f00",
+                        "tertiary-container": "#97b0ff",
+                        "on-primary-container": "#554300",
+                        "surface": "#16130b",
+                        "inverse-surface": "#eae1d4",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "on-error-container": "#ffdad6",
+                        "bg-primary": "#0A0A0A",
+                        "surface-tint": "#e9c349",
+                        "on-secondary-container": "#725f00",
+                        "on-tertiary": "#082b72",
+                        "surface-container-highest": "#38342b",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-surface-variant": "#d0c5af",
+                        "primary-fixed": "#ffe088",
+                        "on-secondary": "#3a3000",
+                        "surface-container-lowest": "#110e07",
+                        "surface-container-low": "#1f1b13",
+                        "error-container": "#93000a",
+                        "surface-dim": "#16130b",
+                        "on-tertiary-container": "#254188",
+                        "surface-container-high": "#2d2a21",
+                        "bg-elevated": "#0D0D0D",
+                        "on-error": "#690005",
+                        "bg-surface": "#121212",
+                        "tertiary-fixed": "#dbe1ff",
+                        "text-muted": "#A3A3A3",
+                        "primary-container": "#d4af37",
+                        "gold-soft": "#F5D76E",
+                        "on-secondary-fixed-variant": "#544600",
+                        "glass-border": "rgba(212, 175, 55, 0.2)",
+                        "secondary": "#fff9ef",
+                        "inverse-primary": "#735c00"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "8": "8px",
+                        "16": "16px",
+                        "4": "4px",
+                        "24": "24px",
+                        "48": "48px",
+                        "32": "32px",
+                        "96": "96px",
+                        "64": "64px",
+                        "128": "128px",
+                        "12": "12px"
+                    },
+                    fontFamily: {
+                        "heading-h3": ["Montserrat"],
+                        "display-h1-mobile": ["Playfair Display"],
+                        "body-md": ["Montserrat"],
+                        "heading-h2": ["Playfair Display"],
+                        "heading-h2-mobile": ["Playfair Display"],
+                        "display-h1": ["Playfair Display"],
+                        "cta": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "eyebrow": ["Montserrat"]
+                    },
+                    fontSize: {
+                        "heading-h3": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
+                        "display-h1-mobile": ["48px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "heading-h2": ["48px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "heading-h2-mobile": ["36px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "display-h1": ["72px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "cta": ["16px", { lineHeight: "1.0", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "eyebrow": ["12px", { lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "500" }]
+                    },
+                    boxShadow: {
+                        "glow": "0 0 20px rgba(212, 175, 55, 0.3)"
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        body {
+            background-color: #0A0A0A;
+            color: #FAFAFA;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Subtle radial gold spotlight */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vw;
+            max-width: 1000px;
+            max-height: 1000px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(10, 10, 10, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #F5D76E 0%, #FAFAFA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Custom Form Input Styles */
+        .glass-input {
+            background-color: #0D0D0D;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #FAFAFA;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+        }
+
+        .glass-input::placeholder {
+            color: #A3A3A3;
+        }
+
+        select.glass-input option {
+            background-color: #0D0D0D;
+            color: #FAFAFA;
+        }
+        
+        /* Pulse Animation for WhatsApp Hint */
+        @keyframes subtle-pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        .whatsapp-pulse {
+            animation: subtle-pulse 3s infinite;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex items-center justify-center py-64">
+<main class="w-full max-w-[1280px] mx-auto px-24 md:px-48 lg:px-64 grid grid-cols-1 lg:grid-cols-2 gap-64 relative z-10">
+<!-- Left Column: Content & Details -->
+<div class="flex flex-col gap-48">
+<header class="scroll-reveal" style="transition-delay: 100ms;">
+<h1 class="font-display-h1 text-display-h1 gradient-text mb-16">Let's Create Something Extraordinary</h1>
+<p class="font-body-lg text-body-lg text-text-muted">Every grand event begins with a simple conversation. Reach out to discuss how we can bring your cinematic vision to life.</p>
+</header>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-24">
+<!-- Phone Card -->
+<div class="scroll-reveal glass-card bg-glass-bg border border-glass-border rounded-lg p-24 backdrop-blur-md flex flex-col gap-12 group hover:shadow-glow transition-all duration-300" style="transition-delay: 200ms;">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform duration-300">call</span>
+<div>
+<p class="font-eyebrow text-eyebrow text-text-muted uppercase mb-4">Direct Line</p>
+<p class="font-body-md text-body-md text-on-surface">+91 9730594753</p>
+</div>
+</div>
+<!-- Email Card -->
+<div class="scroll-reveal glass-card bg-glass-bg border border-glass-border rounded-lg p-24 backdrop-blur-md flex flex-col gap-12 group hover:shadow-glow transition-all duration-300" style="transition-delay: 300ms;">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform duration-300">mail</span>
+<div>
+<p class="font-eyebrow text-eyebrow text-text-muted uppercase mb-4">Electronic Mail</p>
+<p class="font-body-md text-body-md text-on-surface">hello@glitzevents.in</p>
+</div>
+</div>
+<!-- Location Card -->
+<div class="scroll-reveal glass-card bg-glass-bg border border-glass-border rounded-lg p-24 backdrop-blur-md flex flex-col gap-12 group hover:shadow-glow transition-all duration-300" style="transition-delay: 400ms;">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform duration-300">location_on</span>
+<div>
+<p class="font-eyebrow text-eyebrow text-text-muted uppercase mb-4">Headquarters</p>
+<p class="font-body-md text-body-md text-on-surface">Pune, India</p>
+</div>
+</div>
+<!-- Hours Card -->
+<div class="scroll-reveal glass-card bg-glass-bg border border-glass-border rounded-lg p-24 backdrop-blur-md flex flex-col gap-12 group hover:shadow-glow transition-all duration-300" style="transition-delay: 500ms;">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform duration-300">schedule</span>
+<div>
+<p class="font-eyebrow text-eyebrow text-text-muted uppercase mb-4">Operating Hours</p>
+<p class="font-body-md text-body-md text-on-surface">Mon-Sat, 10:00 AM - 8:00 PM</p>
+</div>
+</div>
+</div>
+<!-- Map Placeholder -->
+<div class="scroll-reveal w-full h-64 rounded-lg overflow-hidden border border-glass-border relative group" style="transition-delay: 600ms;">
+<div class="absolute inset-0 bg-bg-elevated mix-blend-multiply opacity-50 z-10 transition-opacity duration-300 group-hover:opacity-30"></div>
+<!-- Placeholder for map - replacing with a styled image placeholder -->
+<img alt="Stylized dark map of Pune, India" class="w-full h-full object-cover filter grayscale contrast-125 brightness-50" data-alt="A highly stylized, dark-mode satellite map view of an urban area. The map is rendered in deep charcoal blacks and dark greys, heavily referencing a luxury, cinematic glassmorphism aesthetic. Subtle, glowing gold lines trace the major roads and arteries, looking almost like illuminated circuits or delicate gold foil. The overall mood is sophisticated, exclusive, and moody." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjGjmsJZEgsa-M5cqeui02P0BDRZTRqtVkyhxK2noSPY-WfbiBDBvVvdGcZCsFoet532Gie_tPnL5PCZGOiS4ffH8kPwCxK0qp_vFIGK445b0DIvO0AJ2dmdVC3LvjHtrJFYBk4t4AI5C18PB0WROOyBGTf2q39me4XeWfFqAWGkvjfyKErY9JuaxaDHYnqtMxmZHawmF9_6yWoBb2aYvPdUfXvmWzVVS0meZsK6oSVN_CeZHMP8UwQzdkLRxaP6QVDg9xkDW02DM"/>
+<!-- Gold Marker -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<div class="w-8 h-8 bg-primary rounded-full blur-md opacity-50 mt-[-10px]"></div>
+</div>
+</div>
+</div>
+<!-- Right Column: Contact Form -->
+<div class="flex items-center justify-center">
+<div class="scroll-reveal w-full bg-glass-bg border border-glass-border rounded-xl p-32 lg:p-48 backdrop-blur-xl shadow-2xl relative" style="transition-delay: 300ms;">
+<!-- Decorative Corner Accents -->
+<div class="absolute top-0 left-0 w-16 h-16 border-t border-l border-primary opacity-50 rounded-tl-xl pointer-events-none"></div>
+<div class="absolute bottom-0 right-0 w-16 h-16 border-b border-r border-primary opacity-50 rounded-br-xl pointer-events-none"></div>
+<h2 class="font-heading-h3 text-heading-h3 text-on-surface mb-32">Send an Inquiry</h2>
+<form class="flex flex-col gap-24">
+<div class="flex flex-col gap-8">
+<label class="font-eyebrow text-eyebrow text-text-muted uppercase" for="name">Full Name</label>
+<input class="glass-input rounded-md px-16 py-12 font-body-md w-full" id="name" placeholder="John Doe" type="text"/>
+</div>
+<div class="flex flex-col gap-8">
+<label class="font-eyebrow text-eyebrow text-text-muted uppercase" for="email">Email Address</label>
+<input class="glass-input rounded-md px-16 py-12 font-body-md w-full" id="email" placeholder="john@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-8">
+<label class="font-eyebrow text-eyebrow text-text-muted uppercase" for="phone">Phone Number</label>
+<input class="glass-input rounded-md px-16 py-12 font-body-md w-full" id="phone" placeholder="+91 00000 00000" type="tel"/>
+</div>
+<div class="flex flex-col gap-8">
+<label class="font-eyebrow text-eyebrow text-text-muted uppercase" for="event-type">Event Type</label>
+<div class="relative">
+<select class="glass-input rounded-md px-16 py-12 font-body-md w-full appearance-none cursor-pointer" id="event-type">
+<option disabled="" selected="" value="">Select an event type</option>
+<option value="wedding">Wedding Celebration</option>
+<option value="corporate">Corporate Gala</option>
+<option value="private">Private Soirée</option>
+<option value="other">Other Extraordinary Event</option>
+</select>
+<span class="material-symbols-outlined absolute right-16 top-1/2 transform -translate-y-1/2 text-primary pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-8">
+<label class="font-eyebrow text-eyebrow text-text-muted uppercase" for="message">Your Vision</label>
+<textarea class="glass-input rounded-md px-16 py-12 font-body-md w-full resize-none" id="message" placeholder="Briefly describe what you're imagining..." rows="4"></textarea>
+</div>
+<button class="mt-16 w-full bg-primary text-bg-primary font-cta text-cta py-16 rounded-md hover:bg-gold-soft transition-colors duration-300 shadow-glow flex items-center justify-center gap-8 group" type="button">
+                        SEND INQUIRY
+                        <span class="material-symbols-outlined group-hover:translate-x-4 transition-transform duration-300">arrow_forward</span>
+</button>
+</form>
+</div>
+</div>
+</main>
+<!-- Floating WhatsApp Hint -->
+<a class="fixed bottom-32 right-32 z-50 flex items-center gap-12 bg-glass-bg border border-glass-border px-24 py-12 rounded-full backdrop-blur-md whatsapp-pulse cursor-pointer hover:bg-surface-variant transition-colors duration-300 text-on-surface" href="#">
+<span class="font-eyebrow text-eyebrow tracking-wider">Message on WhatsApp</span>
+<span class="material-symbols-outlined text-primary">chat</span>
+</a>
+<script>
+        // Simple Scroll Reveal Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>

@@ -3,6 +3,9 @@ node_modules/
 dist/
 .env
 .env.local
+stitch-exports/
+stitch-project.json
+.cursor/mcp.json
 certs/
 *.log
 .DS_Store

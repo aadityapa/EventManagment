@@ -1,15 +1,13 @@
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const metadata = generateSEO({
-  title: "Terms & Conditions",
-  description: `Terms and conditions for using ${SITE_CONFIG.name} services and website.`,
-  path: "/terms",
-});
+export const metadata = stitchMetadata("terms");
 
 export default function TermsPage() {
   return (
+    <StitchRoute screen="terms">
     <>
       <PageHero title="Terms & Conditions" subtitle="Last updated: June 1, 2026" />
 
@@ -66,5 +64,6 @@ export default function TermsPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

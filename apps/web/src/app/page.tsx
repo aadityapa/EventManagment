@@ -1,15 +1,14 @@
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
+import { organizationSchema } from "@/lib/seo";
 import { HeroSection } from "@/components/home/hero-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { ServicesSection } from "@/components/home/services-section";
 import { PortfolioSection } from "@/components/home/portfolio-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { CTASection } from "@/components/home/cta-section";
-import { generateSEO, organizationSchema } from "@/lib/seo";
 
-export const metadata = generateSEO({
-  title: undefined,
-  path: "/",
-});
+export const metadata = stitchMetadata("home");
 
 export default function HomePage() {
   const schema = organizationSchema();
@@ -20,12 +19,14 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <HeroSection />
-      <StatsSection />
-      <ServicesSection />
-      <PortfolioSection />
-      <TestimonialsSection />
-      <CTASection />
+      <StitchRoute screen="home" className="-mt-4 md:mt-0">
+        <HeroSection />
+        <StatsSection />
+        <ServicesSection />
+        <PortfolioSection />
+        <TestimonialsSection />
+        <CTASection />
+      </StitchRoute>
     </>
   );
 }

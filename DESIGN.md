@@ -110,3 +110,22 @@
 ## Pages
 
 All pages use `PageHero` + `StitchSection` + `StitchReveal` for consistency.
+
+## Stitch MCP (Cursor)
+
+Pull exact screen layouts from [stitch.withgoogle.com](https://stitch.withgoogle.com):
+
+```bash
+# One-time setup (opens browser for Google login)
+npx @_davideast/stitch-mcp init -c cursor -y
+
+# Verify connection
+npx @_davideast/stitch-mcp doctor
+
+# List screens in your Stitch project
+npx @_davideast/stitch-mcp screens --project YOUR_PROJECT_ID
+```
+
+Project MCP config: `.cursor/mcp.json` — restart Cursor after `init` completes.
+
+Then ask Cursor: *"Pull Home, Services, and Contact screens from Stitch project X and implement them."*

@@ -1,17 +1,13 @@
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { VenueMarketplace } from "@/components/venues/venue-marketplace";
 
-export const metadata = generateSEO({
-  title: "Venues",
-  description:
-    "Discover premium event venues across India — ballrooms, gardens, convention centers, and beachfront estates.",
-  path: "/venues",
-});
+export const metadata = stitchMetadata("venues");
 
 export default function VenuesPage() {
   return (
-    <>
+    <StitchRoute screen="venues">
       <PageHero
         title="Venue Marketplace"
         subtitle="Find the perfect setting for your extraordinary event"
@@ -21,6 +17,6 @@ export default function VenuesPage() {
           <VenueMarketplace />
         </div>
       </section>
-    </>
+    </StitchRoute>
   );
 }

@@ -16,7 +16,11 @@
     "db:push": "npx prisma db push --schema=prisma/schema.prisma",
     "db:seed": "npx ts-node prisma/seed.ts",
     "images:fetch": "npx ts-node scripts/fetch-images.ts",
-    "lint": "cd apps/web && npm run lint"
+    "lint": "cd apps/web && npm run lint",
+    "stitch:generate": "node scripts/stitch-generate.mjs",
+    "stitch:fetch": "node scripts/stitch-fetch-code.mjs",
+    "stitch:all": "node scripts/stitch-batch.mjs",
+    "stitch:batch": "node scripts/stitch-batch.mjs"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

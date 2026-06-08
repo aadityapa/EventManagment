@@ -1,17 +1,14 @@
 import Image from "next/image";
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { EVENT_IMAGES } from "@/lib/images";
 import { PageHero } from "@/components/shared/page-hero";
 
-export const metadata = generateSEO({
-  title: "Gallery",
-  description: "Browse our stunning event gallery — weddings, corporate events, concerts, and more.",
-  path: "/gallery",
-});
+export const metadata = stitchMetadata("gallery");
 
 export default function GalleryPage() {
   return (
-    <>
+    <StitchRoute screen="gallery">
       <PageHero
         title="Event Gallery"
         subtitle="A visual journey through our most memorable celebrations"
@@ -38,6 +35,6 @@ export default function GalleryPage() {
           </div>
         </div>
       </section>
-    </>
+    </StitchRoute>
   );
 }

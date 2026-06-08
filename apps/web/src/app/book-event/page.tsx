@@ -1,16 +1,13 @@
-import { generateSEO } from "@/lib/seo";
 import { PageHero } from "@/components/shared/page-hero";
 import { BookingWizard } from "@/components/booking/booking-wizard";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 
-export const metadata = generateSEO({
-  title: "Book Event",
-  description:
-    "Book your event with Glitz Events & Promotions — our 9-step wizard makes planning effortless.",
-  path: "/book-event",
-});
+export const metadata = stitchMetadata("book-event");
 
 export default function BookEventPage() {
   return (
+    <StitchRoute screen="book-event">
     <>
       <PageHero
         title="Book Your Event"
@@ -22,5 +19,6 @@ export default function BookEventPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }

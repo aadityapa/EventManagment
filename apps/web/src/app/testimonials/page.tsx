@@ -1,18 +1,16 @@
 import Image from "next/image";
 import { Star, Play } from "lucide-react";
 import { testimonials } from "@/data/cms";
-import { generateSEO } from "@/lib/seo";
+import { StitchRoute } from "@/components/stitch/stitch-route";
+import { stitchMetadata } from "@/lib/stitch/pages";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 
-export const metadata = generateSEO({
-  title: "Testimonials",
-  description: "Read what our clients say about Glitz Events & Promotions — 4.9 star rated luxury event management.",
-  path: "/testimonials",
-});
+export const metadata = stitchMetadata("testimonials");
 
 export default function TestimonialsPage() {
   return (
+    <StitchRoute screen="testimonials">
     <>
       <PageHero
         title="Client Testimonials"
@@ -78,5 +76,6 @@ export default function TestimonialsPage() {
         </div>
       </section>
     </>
+    </StitchRoute>
   );
 }
