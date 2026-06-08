@@ -28,9 +28,10 @@ npm run dev
 ## Deploy to Vercel
 
 1. Import [aadityapa/EventManagment](https://github.com/aadityapa/EventManagment)
-2. Set **Root Directory** to `apps/web`
-3. Add env vars: `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_COMPANY_PHONE`, etc.
-4. Deploy
+2. **Settings → General → Root Directory** → set to `apps/web` (required)
+3. **Settings → Build & Development** → leave Install/Build commands empty (use Next.js defaults)
+4. Add env vars: `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_COMPANY_PHONE`, `NEXT_PUBLIC_WHATSAPP_NUMBER`
+5. Redeploy
 
 ## Docker Production
 
