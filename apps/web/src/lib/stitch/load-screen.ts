@@ -28,10 +28,6 @@ function normalizeStitchHtml(html: string): string {
     '$1/logo.jpg$2'
   );
 
-  out = out.replace(/\bpx-24\b/g, "px-6 md:px-12 lg:px-24");
-  out = out.replace(/\bpy-64\b/g, "py-16 md:py-32 lg:py-64");
-  out = out.replace(/\bpy-32\b/g, "py-16 md:py-24 lg:py-32");
-
   for (const [hash, route] of Object.entries(ROUTE_MAP)) {
     out = out.replace(new RegExp(`href="${hash}"`, "gi"), `href="${route}"`);
   }

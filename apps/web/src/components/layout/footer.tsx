@@ -40,7 +40,7 @@ export function Footer() {
   const serviceLinks = services.slice(0, 6);
 
   return (
-    <footer className="gradient-dark border-t border-border/50 text-foreground">
+    <footer className="site-chrome border-t border-border/60 bg-[#f5f0e8] text-foreground">
       <div className="container-page py-12 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 xl:grid-cols-5">
           <div className="space-y-4 lg:col-span-2 xl:col-span-1">

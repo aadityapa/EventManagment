@@ -1,0 +1,241 @@
+/* Stitch 1:1 compatibility layer — light luxury palette */
+.stitch-shell {
+  --st-bg: #faf8f5;
+  --st-surface: #ffffff;
+  --st-text: #1c1814;
+  --st-muted: #6b6358;
+  --st-gold: #b8860b;
+  --st-gold-bright: #d4af37;
+  --st-gold-soft: #e8c547;
+  --st-glass: rgba(255, 255, 255, 0.82);
+  --st-glass-border: rgba(197, 160, 40, 0.28);
+  --st-shadow-glow: 0 0 24px rgba(212, 175, 55, 0.18);
+  background: var(--st-bg);
+  color: var(--st-text);
+  font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  width: 100%;
+  min-height: 100%;
+}
+
+.stitch-shell .glass-panel,
+.stitch-shell .bg-glass-bg {
+  background: var(--st-glass) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.stitch-shell .border-glass-border {
+  border-color: var(--st-glass-border) !important;
+}
+
+.stitch-shell .bg-bg-primary,
+.stitch-shell .bg-background {
+  background-color: var(--st-bg) !important;
+}
+
+.stitch-shell .bg-bg-elevated,
+.stitch-shell .bg-surface {
+  background-color: var(--st-surface) !important;
+}
+
+.stitch-shell .bg-bg-surface,
+.stitch-shell .bg-surface-container-low,
+.stitch-shell .bg-surface-container {
+  background-color: #f5f0e8 !important;
+}
+
+.stitch-shell .bg-surface-container-lowest {
+  background-color: #ede8df !important;
+}
+
+.stitch-shell .text-text-primary,
+.stitch-shell .text-on-surface {
+  color: var(--st-text) !important;
+}
+
+.stitch-shell .text-text-muted,
+.stitch-shell .text-on-surface-variant {
+  color: var(--st-muted) !important;
+}
+
+.stitch-shell .text-primary,
+.stitch-shell .text-gold-soft {
+  color: var(--st-gold) !important;
+}
+
+.stitch-shell .bg-primary,
+.stitch-shell .bg-primary-container {
+  background-color: var(--st-gold-bright) !important;
+}
+
+.stitch-shell .text-gradient-gold {
+  background: linear-gradient(to right, var(--st-gold-soft), var(--st-gold-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stitch-shell .bg-gradient-gold,
+.stitch-shell .gold-shimmer {
+  background: linear-gradient(135deg, var(--st-gold-bright), var(--st-gold-soft)) !important;
+  color: #1c1814 !important;
+}
+
+.stitch-shell .shadow-glow,
+.stitch-shell .hover-glow:hover {
+  box-shadow: var(--st-shadow-glow) !important;
+}
+
+.stitch-shell .hover-lift {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.stitch-shell .hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(184, 134, 11, 0.15);
+}
+
+.stitch-shell .font-display-h1,
+.stitch-shell .font-display-h1-mobile,
+.stitch-shell .font-heading-h2,
+.stitch-shell .font-heading-h2-mobile {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+}
+
+.stitch-shell .font-body-lg,
+.stitch-shell .font-body-md,
+.stitch-shell .font-heading-h3,
+.stitch-shell .font-eyebrow,
+.stitch-shell .font-cta {
+  font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
+}
+
+.stitch-shell .text-display-h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.stitch-shell .text-display-h1-mobile {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.stitch-shell .text-heading-h2 {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.stitch-shell .text-heading-h3 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.stitch-shell .text-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.stitch-shell .text-body-md {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.stitch-shell .text-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.stitch-shell .text-cta {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.stitch-shell .masonry-grid {
+  column-count: 1;
+  column-gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .stitch-shell .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stitch-shell .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.stitch-shell .masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+.stitch-shell .fade-up-hidden,
+.stitch-shell .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stitch-shell .fade-up,
+.stitch-shell .reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stitch-shell .fade-up {
+  animation: stitch-fade-up 0.8s ease-out forwards;
+}
+
+.stitch-shell .reveal {
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+@keyframes stitch-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stitch-shell .particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.45;
+}
+
+.stitch-shell img {
+  max-width: 100%;
+  height: auto;
+}
+
+.stitch-shell section {
+  position: relative;
+}
+
+/* Hide duplicate chrome when stitch owns the page */
+html[data-stitch-active] .site-chrome {
+  display: none !important;
+}
+
+html[data-stitch-active] main.app-main {
+  padding-bottom: 0 !important;
+}

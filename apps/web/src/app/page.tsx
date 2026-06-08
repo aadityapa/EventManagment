@@ -19,7 +19,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <StitchRoute screen="home" className="-mt-4 md:mt-0">
+      <StitchRoute screen="home">
         <HeroSection />
         <StatsSection />
         <ServicesSection />

@@ -50,8 +50,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#faf8f5" },
   ],
 };
 
@@ -63,7 +63,7 @@ export default function RootLayout({
   const schema = organizationSchema();
 
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="dark">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="light">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
@@ -77,10 +77,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${poppins.variable} ${playfair.variable} ${cinzel.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-foreground`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <PageLoader />
           <Header />
-          <main className="flex-1 pb-20 md:pb-0">{children}</main>
+          <main className="app-main flex-1 pb-20 md:pb-0">{children}</main>
           <Footer />
           <FloatingCTA />
           <ExitIntentPopup />

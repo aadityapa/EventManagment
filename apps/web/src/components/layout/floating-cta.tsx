@@ -7,6 +7,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export function FloatingCTA() {
   return (
+    <div className="site-chrome">
     <>
       {/* Mobile + tablet sticky bottom bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/50 bg-background/95 backdrop-blur-xl safe-bottom md:hidden">
@@ -36,5 +37,6 @@ export function FloatingCTA() {
         </Button>
       </div>
     </>
+    </div>
   );
 }
