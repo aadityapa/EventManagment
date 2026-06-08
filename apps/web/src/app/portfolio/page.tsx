@@ -1,12 +1,8 @@
-import { PortfolioPageContent } from "@/components/pages/portfolio-page-content";
 import { generateSEO } from "@/lib/seo";
+import { PortfolioView } from "@/brand";
 
-export const metadata = generateSEO({
-  title: "Event Portfolio — Luxury Celebrations",
-  description: "Explore Glitz Events portfolio — weddings, corporate galas, concerts, and destination celebrations across India.",
-  path: "/portfolio",
-});
+export const metadata = generateSEO({ title: "Portfolio — Luxury Case Studies", description: "Explore extraordinary events crafted by Glitz Events across India.", path: "/portfolio" });
 
 export default function PortfolioPage() {
-  return <PortfolioPageContent />;
+  return <PortfolioView />;
 }

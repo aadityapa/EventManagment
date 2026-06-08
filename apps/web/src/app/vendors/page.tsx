@@ -1,12 +1,8 @@
-import { VendorsPageContent } from "@/components/pages/vendors-page-content";
 import { generateSEO } from "@/lib/seo";
+import { VendorsView } from "@/brand";
 
-export const metadata = generateSEO({
-  title: "Premium Vendor Partners",
-  description: "Curated network of luxury photographers, decorators, caterers, entertainers, and artisans.",
-  path: "/vendors",
-});
+export const metadata = generateSEO({ title: "Premium Vendor Partners", description: "Curated luxury vendor ecosystem — photography, decor, catering, entertainment.", path: "/vendors" });
 
 export default function VendorsPage() {
-  return <VendorsPageContent />;
+  return <VendorsView />;
 }

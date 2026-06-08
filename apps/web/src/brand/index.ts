@@ -1,0 +1,13 @@
+export { HomeView } from "./views/home-view";
+export { AboutView } from "./views/about-view";
+export { ServicesView } from "./views/services-view";
+export { PortfolioView } from "./views/portfolio-view";
+export { VenuesView } from "./views/venues-view";
+export { VendorsView } from "./views/vendors-view";
+export { GalleryView } from "./views/gallery-view";
+export { PricingView } from "./views/pricing-view";
+export { BlogView } from "./views/blog-view";
+export { ContactView } from "./views/contact-view";
+export { BookView } from "./views/book-view";
+export { TestimonialsView } from "./views/testimonials-view";
+export { FaqsView } from "./views/faqs-view";

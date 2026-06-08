@@ -1,12 +1,8 @@
-import { BlogPageContent } from "@/components/pages/blog-page-content";
 import { generateSEO } from "@/lib/seo";
+import { BlogView } from "@/brand";
 
-export const metadata = generateSEO({
-  title: "Event Insights & Inspiration",
-  description: "Luxury event trends, wedding inspiration, corporate strategy, and expert perspectives from Glitz Events.",
-  path: "/blog",
-});
+export const metadata = generateSEO({ title: "The Glitz Journal", description: "Luxury event insights, wedding trends, and editorial perspectives.", path: "/blog" });
 
 export default function BlogPage() {
-  return <BlogPageContent />;
+  return <BlogView />;
 }

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../lib/stitch/stitch-theme.css";
+@import "../brand/design-system/tokens.css";
 
 :root {
   --background: #0a0a0a;

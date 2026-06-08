@@ -1,12 +1,8 @@
-import { VenuesPageContent } from "@/components/pages/venues-page-content";
 import { generateSEO } from "@/lib/seo";
+import { VenuesView } from "@/brand";
 
-export const metadata = generateSEO({
-  title: "Luxury Venues — Pune, Mumbai, Goa, Jaipur",
-  description: "Explore exclusive venues for weddings, corporate events, and destination celebrations across India.",
-  path: "/venues",
-});
+export const metadata = generateSEO({ title: "Luxury Venues", description: "Exclusive venues across Pune, Mumbai, Goa, Jaipur, and Udaipur.", path: "/venues" });
 
 export default function VenuesPage() {
-  return <VenuesPageContent />;
+  return <VenuesView />;
 }

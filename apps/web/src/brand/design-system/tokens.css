@@ -1,0 +1,97 @@
+/* Glitz Brand Design System — Google Stitch / Apple luxury principles */
+
+:root {
+  --glitz-bg: #0a0a0a;
+  --glitz-surface: #121212;
+  --glitz-surface-elevated: #1a1a1a;
+  --glitz-gold: #d4af37;
+  --glitz-gold-light: #f4e4a1;
+  --glitz-text: #ffffff;
+  --glitz-muted: #a8a8a8;
+  --glitz-border: rgba(212, 175, 55, 0.14);
+  --glitz-glow: 0 0 48px rgba(212, 175, 55, 0.18);
+  --glitz-radius: 12px;
+  --glitz-container: 90rem;
+  --glitz-section-mobile: 5rem;
+  --glitz-section-tablet: 7.5rem;
+  --glitz-section-desktop: 10rem;
+  --glitz-gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e4a1 50%, #d4af37 100%);
+  --glitz-gradient-hero: linear-gradient(180deg, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0.92) 100%);
+}
+
+.brand-root {
+  background: var(--glitz-bg);
+  color: var(--glitz-text);
+}
+
+.brand-container {
+  width: 100%;
+  max-width: var(--glitz-container);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.brand-section {
+  padding-block: var(--glitz-section-mobile);
+}
+
+@media (min-width: 768px) {
+  .brand-section {
+    padding-block: var(--glitz-section-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  .brand-section {
+    padding-block: var(--glitz-section-desktop);
+  }
+}
+
+.brand-surface {
+  background: var(--glitz-surface);
+  border: 1px solid var(--glitz-border);
+  border-radius: var(--glitz-radius);
+}
+
+.brand-gold-text {
+  background: var(--glitz-gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glitz-gold), transparent);
+}
+
+.brand-marquee {
+  display: flex;
+  width: max-content;
+  animation: brand-marquee 45s linear infinite;
+}
+
+@keyframes brand-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.brand-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--glitz-gold);
+}
+
+.brand-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.brand-heading {
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
+}
+
+.brand-body {
+  font-family: var(--font-manrope), var(--font-inter), system-ui, sans-serif;
+}

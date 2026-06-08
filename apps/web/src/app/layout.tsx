@@ -2,46 +2,20 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter, Manrope, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { FloatingCTA } from "@/components/layout/floating-cta";
-import { ExitIntentPopup } from "@/components/layout/exit-intent-popup";
-import { LiveChat } from "@/components/layout/live-chat";
-import { PageLoader } from "@/components/layout/page-loader";
+import { BrandHeader } from "@/brand/shell/brand-header";
+import { BrandFooter } from "@/brand/shell/brand-footer";
+import { BrandFab } from "@/brand/shell/brand-fab";
 import { generateSEO, organizationSchema } from "@/lib/seo";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
+const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], display: "swap" });
+const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], display: "swap" });
+const cormorant = Cormorant_Garamond({ variable: "--font-cormorant", weight: ["400", "500", "600", "700"], subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   ...generateSEO(),
-  icons: {
-    icon: "/logo.jpg",
-    apple: "/logo.jpg",
-  },
+  icons: { icon: "/logo.jpg", apple: "/logo.jpg" },
 };
 
 export const viewport: Viewport = {
@@ -49,38 +23,22 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0A0A0A" },
-    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
-  ],
+  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#0A0A0A" }, { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const schema = organizationSchema();
-
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="dark">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </head>
-      <body
-        className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cormorant.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-foreground`}
-      >
+      <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <PageLoader />
-          <Header />
+          <BrandHeader />
           <main className="app-main flex-1 pb-20 md:pb-0">{children}</main>
-          <Footer />
-          <FloatingCTA />
-          <ExitIntentPopup />
-          <LiveChat />
+          <BrandFooter />
+          <BrandFab />
           <ToastProvider />
         </ThemeProvider>
       </body>
