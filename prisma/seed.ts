@@ -15,16 +15,16 @@ const EVENT_IMAGES = {
 };
 
 async function main() {
-  console.log("🌱 Seeding JIJU Events database...\n");
+  console.log("🌱 Seeding Glitz Events & Promotions database...\n");
 
   const existing = await prisma.companyProfile.findFirst();
   if (!existing) {
     await prisma.companyProfile.create({
       data: {
-        introduction: "JIJU Events is a premier international event management company.",
+        introduction: "Glitz Events & Promotions is a premier international event management company.",
         vision: "To redefine luxury event experiences worldwide.",
         mission: "Creating unforgettable moments through exceptional planning and execution.",
-        story: "Founded in 2010, JIJU Events has grown to become a trusted name in premium event management.",
+        story: "Founded in 2010, Glitz Events & Promotions has grown to become a trusted name in premium event management.",
         eventsManaged: 2500,
         happyClients: 1800,
         yearsExperience: 15,
@@ -35,8 +35,8 @@ async function main() {
 
   const adminHash = await bcrypt.hash("admin123", 12);
   await prisma.user.upsert({
-    where: { email: "admin@jijuevents.com" },
-    create: { email: "admin@jijuevents.com", name: "Admin", passwordHash: adminHash, role: "ADMIN" },
+    where: { email: "admin@Glitzevents.com" },
+    create: { email: "admin@Glitzevents.com", name: "Admin", passwordHash: adminHash, role: "ADMIN" },
     update: {},
   });
 

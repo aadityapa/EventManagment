@@ -22,10 +22,11 @@ export const SITE_CONFIG = {
 export const SEO_KEYWORDS = [
   "Event Management Company Pune",
   "Wedding Planner Pune",
+  "Corporate Event Planner Pune",
+  "Destination Wedding Planner India",
+  "Luxury Wedding Planner India",
   "Corporate Event Organizer",
   "Luxury Event Planner",
-  "Destination Wedding Planner",
-  "Event Promotion Agency",
   "Celebrity Event Management Pune",
   "Concert Management Pune",
   "Product Launch Events Pune",

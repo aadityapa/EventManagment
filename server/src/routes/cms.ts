@@ -9,10 +9,10 @@ router.get("/company", async (_req, res) => {
     if (!profile) {
       profile = await prisma.companyProfile.create({
         data: {
-          introduction: "JIJU Events is a premier international event management company.",
+          introduction: "Glitz Events & Promotions is a premier international event management company.",
           vision: "To redefine luxury event experiences worldwide.",
           mission: "Creating unforgettable moments through exceptional planning and execution.",
-          story: "Founded in 2010, JIJU Events has grown to become a trusted name in premium event management.",
+          story: "Founded in 2010, Glitz Events & Promotions has grown to become a trusted name in premium event management.",
         },
       });
     }

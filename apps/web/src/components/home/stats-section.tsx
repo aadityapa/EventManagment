@@ -1,68 +1,74 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { useRef } from "react";
 import { companyProfile } from "@/data/cms";
-import { SectionHeading } from "@/components/shared/section-heading";
-import { StitchGlowCard, StitchSection, StitchSectionItem } from "@/components/stitch";
+import { LuxurySection } from "@/components/shared/luxury-section";
+import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 
-const stats = [
+const STATS = [
   { key: "eventsManaged" as const, label: "Events Managed", suffix: "+" },
   { key: "happyClients" as const, label: "Happy Clients", suffix: "+" },
-  { key: "yearsExperience" as const, label: "Years of Excellence", suffix: "+" },
-  { key: "citiesCovered" as const, label: "Cities Worldwide", suffix: "+" },
+  { key: "yearsExperience" as const, label: "Years Experience", suffix: "+" },
+  { key: "citiesCovered" as const, label: "Cities Covered", suffix: "+" },
 ];
 
-function AnimatedCounter({ value, suffix = "", inView }: { value: number; suffix?: string; inView: boolean }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 2000;
-    const steps = 60;
-    const increment = value / steps;
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      setCount(Math.min(Math.round(increment * step), value));
-      if (step >= steps) clearInterval(timer);
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [inView, value]);
-
-  return (
-    <span>
-      {count.toLocaleString()}
-      {suffix}
-    </span>
-  );
-}
-
 export function StatsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useGsapContext(
+    gridRef,
+    () => {
+      const counters = gridRef.current?.querySelectorAll("[data-counter]");
+      counters?.forEach((el) => {
+        const value = Number((el as HTMLElement).dataset.value);
+        const suffix = (el as HTMLElement).dataset.suffix ?? "";
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: value,
+          duration: 2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            once: true,
+          },
+          onUpdate: () => {
+            (el as HTMLElement).textContent = `${Math.round(obj.val).toLocaleString("en-IN")}${suffix}`;
+          },
+        });
+      });
+    },
+    []
+  );
 
   return (
-    <StitchSection className="relative bg-[#f5f0e8]">
-      <div className="container-page relative">
-        <SectionHeading eyebrow="Our Legacy" title="Numbers That Speak" />
-        <div ref={ref} className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <StitchSectionItem key={stat.key}>
-              <StitchGlowCard hover3d={false} className="p-6 text-center sm:p-8">
-                <p className="font-display text-3xl font-bold gradient-text sm:text-4xl lg:text-5xl">
-                  <AnimatedCounter
-                    value={companyProfile.stats[stat.key]}
-                    suffix={stat.suffix}
-                    inView={inView}
-                  />
-                </p>
-                <p className="mt-2 text-sm text-muted sm:text-base">{stat.label}</p>
-              </StitchGlowCard>
-            </StitchSectionItem>
-          ))}
-        </div>
+    <LuxurySection
+      label="Our Legacy"
+      title="Numbers That Speak Excellence"
+      subtitle="Over a decade of crafting unforgettable moments for India's most discerning clients."
+      className="border-y border-border/40 bg-secondary/50"
+    >
+      <div
+        ref={gridRef}
+        className="container-page grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-12"
+      >
+        {STATS.map((stat) => (
+          <div key={stat.key} className="text-center">
+            <p
+              data-counter
+              data-value={companyProfile.stats[stat.key]}
+              data-suffix={stat.suffix}
+              className="font-display text-4xl font-bold text-primary sm:text-5xl lg:text-6xl"
+              aria-label={`${companyProfile.stats[stat.key]}${stat.suffix} ${stat.label}`}
+            >
+              0{stat.suffix}
+            </p>
+            <p className="mt-2 text-sm font-medium uppercase tracking-wider text-muted">
+              {stat.label}
+            </p>
+          </div>
+        ))}
       </div>
-    </StitchSection>
+    </LuxurySection>
   );
 }

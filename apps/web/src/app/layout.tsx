@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Montserrat, Playfair_Display, Poppins } from "next/font/google";
+import { Cormorant_Garamond, Inter, Manrope, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { Header } from "@/components/layout/header";
@@ -11,15 +11,14 @@ import { PageLoader } from "@/components/layout/page-loader";
 import { generateSEO, organizationSchema } from "@/lib/seo";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["300", "400", "500", "600", "700"],
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
 });
@@ -30,8 +29,9 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -50,8 +50,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: light)", color: "#0A0A0A" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
   ],
 };
 
@@ -63,21 +63,17 @@ export default function RootLayout({
   const schema = organizationSchema();
 
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="light">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="dark">
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       </head>
       <body
-        className={`${montserrat.variable} ${poppins.variable} ${playfair.variable} ${cinzel.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cormorant.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-foreground`}
       >
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <PageLoader />
           <Header />
           <main className="app-main flex-1 pb-20 md:pb-0">{children}</main>

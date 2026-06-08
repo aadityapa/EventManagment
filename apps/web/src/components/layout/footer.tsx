@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS, FOOTER_LEGAL } from "@/lib/constants";
 import { services } from "@/data/cms";
 import { NewsletterForm } from "@/components/engagement/newsletter-form";
@@ -22,11 +22,13 @@ function SocialIcon({ name }: { name: string }) {
   };
 
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
       {paths[name]}
     </svg>
   );
 }
+
+const LOCATIONS = ["Pune", "Mumbai", "Goa", "Jaipur", "Udaipur", "Bangalore"];
 
 const socialIcons = [
   { href: SITE_CONFIG.social.instagram, name: "Instagram", label: "Instagram" },
@@ -40,13 +42,38 @@ export function Footer() {
   const serviceLinks = services.slice(0, 6);
 
   return (
-    <footer className="site-chrome border-t border-border/60 bg-[#f5f0e8] text-foreground">
+    <footer className="site-chrome relative border-t border-border/40 bg-card text-foreground">
+      <div className="gold-divider absolute top-0 left-0 right-0" />
+
       <div className="container-page py-12 sm:py-16">
+        <div className="mb-10 rounded-2xl border border-primary/20 bg-primary/5 p-6 text-center sm:p-8">
+          <h3 className="font-display text-xl font-semibold sm:text-2xl">
+            Ready to Plan Your Extraordinary Event?
+          </h3>
+          <p className="mt-2 text-sm text-muted">Speak with our luxury event specialists today.</p>
+          <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex touch-target items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-105"
+            >
+              <MessageCircle className="h-4 w-4" /> WhatsApp Us
+            </a>
+            <a
+              href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+              className="inline-flex touch-target items-center gap-2 rounded-full border border-primary/40 px-6 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/10"
+            >
+              <Phone className="h-4 w-4" /> {SITE_CONFIG.phone}
+            </a>
+          </div>
+        </div>
+
         <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 xl:grid-cols-5">
           <div className="space-y-4 lg:col-span-2 xl:col-span-1">
             <Logo />
             <p className="max-w-xs text-sm leading-relaxed text-muted">
-              {SITE_CONFIG.tagline}. Pune&apos;s luxury event management &amp; promotions experts.
+              {SITE_CONFIG.tagline}. India&apos;s premier luxury event management house.
             </p>
             <div className="flex gap-3">
               {socialIcons.map(({ href, name, label }) => (
@@ -56,7 +83,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg glass transition-all hover:bg-primary/20 hover:text-primary"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border/60 transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
                 >
                   <SocialIcon name={name} />
                 </a>
@@ -71,10 +98,7 @@ export function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted transition-colors hover:text-primary"
-                  >
+                  <Link href={link.href} className="text-sm text-muted transition-colors hover:text-primary">
                     {link.label}
                   </Link>
                 </li>
@@ -89,11 +113,23 @@ export function Footer() {
             <ul className="space-y-2">
               {serviceLinks.map((service) => (
                 <li key={service.slug}>
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="text-sm text-muted transition-colors hover:text-primary"
-                  >
+                  <Link href={`/services/${service.slug}`} className="text-sm text-muted transition-colors hover:text-primary">
                     {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-primary">
+              Locations
+            </h3>
+            <ul className="space-y-2">
+              {LOCATIONS.map((city) => (
+                <li key={city}>
+                  <Link href="/venues" className="text-sm text-muted transition-colors hover:text-primary">
+                    {city}
                   </Link>
                 </li>
               ))}
@@ -106,24 +142,18 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-muted">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
                 <span>{SITE_CONFIG.address}</span>
               </li>
               <li>
-                <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-3 text-sm text-muted transition-colors hover:text-primary"
-                >
-                  <Phone className="h-4 w-4 shrink-0 text-primary" />
+                <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="flex items-center gap-3 text-sm text-muted transition-colors hover:text-primary">
+                  <Phone className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                   {SITE_CONFIG.phone}
                 </a>
               </li>
               <li>
-                <a
-                  href={`mailto:${SITE_CONFIG.email}`}
-                  className="flex items-center gap-3 text-sm text-muted transition-colors hover:text-primary"
-                >
-                  <Mail className="h-4 w-4 shrink-0 text-primary" />
+                <a href={`mailto:${SITE_CONFIG.email}`} className="flex items-center gap-3 text-sm text-muted transition-colors hover:text-primary">
+                  <Mail className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                   {SITE_CONFIG.email}
                 </a>
               </li>
@@ -134,17 +164,16 @@ export function Footer() {
             <h3 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-primary">
               Newsletter
             </h3>
-            <p className="mb-4 text-sm text-muted">
-              Get event inspiration, trends, and exclusive offers.
-            </p>
+            <p className="mb-4 text-sm text-muted">Exclusive event inspiration and luxury trends.</p>
             <NewsletterForm variant="footer" />
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/30 pt-8 sm:flex-row">
+        <div className="gold-divider my-8" />
+
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-muted">
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center gap-6 text-sm">
             {FOOTER_LEGAL.map((link) => (

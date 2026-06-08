@@ -1,40 +1,12 @@
-import Image from "next/image";
-import { StitchRoute } from "@/components/stitch/stitch-route";
-import { stitchMetadata } from "@/lib/stitch/pages";
-import { EVENT_IMAGES } from "@/lib/images";
-import { PageHero } from "@/components/shared/page-hero";
+import { GalleryPageContent } from "@/components/gallery/gallery-page-content";
+import { generateSEO } from "@/lib/seo";
 
-export const metadata = stitchMetadata("gallery");
+export const metadata = generateSEO({
+  title: "Visual Stories Gallery",
+  description: "Immersive gallery of luxury weddings, corporate galas, concerts, and destination celebrations by Glitz Events.",
+  path: "/gallery",
+});
 
 export default function GalleryPage() {
-  return (
-    <StitchRoute screen="gallery">
-      <PageHero
-        title="Event Gallery"
-        subtitle="A visual journey through our most memorable celebrations"
-      />
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-            {EVENT_IMAGES.gallery.map((src, i) => (
-              <div
-                key={src}
-                className="mb-4 break-inside-avoid overflow-hidden rounded-xl"
-              >
-                <Image
-                  src={src}
-                  alt={`Event gallery image ${i + 1}`}
-                  width={600}
-                  height={i % 3 === 0 ? 800 : i % 3 === 1 ? 500 : 650}
-                  loading="lazy"
-                  className="w-full object-cover transition-transform duration-500 hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </StitchRoute>
-  );
+  return <GalleryPageContent />;
 }

@@ -121,6 +121,13 @@ export function StitchMain({ html, className }: StitchMainProps) {
       }
     }
 
+    root.querySelectorAll(".gallery-item").forEach((item, index) => {
+      item.classList.add("visible");
+      (item as HTMLElement).style.opacity = "1";
+      (item as HTMLElement).style.transform = "translateY(0)";
+      (item as HTMLElement).style.transitionDelay = `${(index % 3) * 0.1}s`;
+    });
+
     root.querySelectorAll(".reveal, .scroll-reveal, .fade-up-hidden").forEach((el) => {
       const observer = new IntersectionObserver(
         (entries) => {

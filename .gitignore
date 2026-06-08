@@ -15,3 +15,4 @@ apps/web/public/images/manifest.json
 .turbo/
 coverage/
 *.tsbuildinfo
+apps/web/data/leads.json

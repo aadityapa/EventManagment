@@ -1,40 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/branding/logo";
-import { StitchReveal, StitchSection } from "@/components/stitch";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function CTASection() {
   return (
-    <StitchSection className="pb-24">
-      <div className="container-page">
-        <StitchReveal variant="fadeScale">
-          <div className="relative overflow-hidden rounded-3xl border border-primary/30 px-6 py-16 text-center sm:px-12 sm:py-20">
-            <div className="absolute inset-0 shimmer-gold opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.15),transparent_50%)]" />
+    <section className="relative overflow-hidden py-20 sm:py-28">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10" />
+      <div className="gold-divider absolute top-0 left-0 right-0" />
 
-            <div className="relative z-10">
-              <Logo href={undefined} className="mx-auto !h-16 !max-w-[200px]" />
-              <h2 className="mt-6 font-display text-3xl font-bold text-black sm:text-4xl md:text-5xl">
-                Ready to Create Magic?
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-base text-black/75 sm:text-lg">
-                Schedule a complimentary consultation with our Pune event experts today.
-              </p>
-              <div className="mt-8">
-                <Button asChild size="xl" className="shadow-glow">
-                  <Link href="/contact">
-                    <Calendar className="h-5 w-5" />
-                    Book Consultation
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </StitchReveal>
+      <div className="container-page relative text-center">
+        <motion.span
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-xs font-semibold uppercase tracking-[0.25em] text-primary"
+        >
+          Begin Your Story
+        </motion.span>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-4 font-display text-[clamp(2rem,4vw,3rem)] font-bold"
+        >
+          Ready to Create Something{" "}
+          <span className="gradient-text">Extraordinary?</span>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mx-auto mt-4 max-w-xl text-muted"
+        >
+          Schedule a private consultation with our luxury event specialists. Your extraordinary
+          experience begins with a single conversation.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
+          <Button size="lg" className="min-w-[220px] shadow-glow" asChild>
+            <Link href="/book-event">
+              Book Consultation <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button size="lg" variant="outline" className="min-w-[220px] border-primary/40" asChild>
+            <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}>
+              <Phone className="mr-2 h-4 w-4" /> {SITE_CONFIG.phone}
+            </a>
+          </Button>
+        </motion.div>
       </div>
-    </StitchSection>
+
+      <div className="gold-divider absolute bottom-0 left-0 right-0" />
+    </section>
   );
 }

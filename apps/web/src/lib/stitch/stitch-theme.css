@@ -296,3 +296,69 @@ html[data-stitch-active] {
   padding-top: clamp(4rem, 8vw, 6rem) !important;
   padding-bottom: clamp(4rem, 8vw, 6rem) !important;
 }
+
+.stitch-shell .gallery-item {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.stitch-shell .hero-bg {
+  background: linear-gradient(180deg, #f5f0e8 0%, #faf8f5 100%) !important;
+}
+
+.stitch-shell .glass-pill {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(197, 160, 40, 0.25) !important;
+  color: #5a5248 !important;
+}
+
+.stitch-shell .glass-pill.active {
+  color: #b8860b !important;
+  border-color: #d4af37 !important;
+}
+
+.stitch-shell section .flex.flex-wrap {
+  justify-content: center !important;
+}
+
+.stitch-shell .max-w-7xl {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 80rem !important;
+}
+
+.stitch-shell .absolute.translate-x-1\/2,
+.stitch-shell .absolute.-translate-x-1\/2 {
+  display: none !important;
+}
+
+.stitch-shell .masonry-grid {
+  column-count: 1;
+  column-gap: 1.25rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .stitch-shell .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stitch-shell .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.stitch-shell .masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.stitch-shell .gallery-item img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  border-radius: 0.75rem;
+}

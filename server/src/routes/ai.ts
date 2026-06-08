@@ -13,11 +13,11 @@ router.post("/chat", async (req, res) => {
     });
 
     const lowerMsg = message.toLowerCase();
-    let response = "Thank you for reaching out to JIJU Events! How can I help you plan your perfect event today?";
+    let response = "Thank you for reaching out to Glitz Events & Promotions! How can I help you plan your perfect event today?";
     let leadScore = session.leadScore;
 
     if (lowerMsg.includes("wedding")) {
-      response = "Wonderful! JIJU Events specializes in luxury weddings and destination weddings. Our packages start from ₹5 Lakhs. Would you like to schedule a free consultation?";
+      response = "Wonderful! Glitz Events & Promotions specializes in luxury weddings and destination weddings. Our packages start from ₹5 Lakhs. Would you like to schedule a free consultation?";
       leadScore += 20;
     } else if (lowerMsg.includes("corporate")) {
       response = "We excel at corporate events, conferences, and product launches. We've managed 500+ corporate events. Shall I connect you with our corporate events specialist?";
@@ -94,7 +94,7 @@ router.post("/plan", async (req, res) => {
         tips: [
           `For ${eventType || "your event"} with ${guestCount || 100} guests, book 6-8 months in advance`,
           "Consider off-season dates for 20-30% savings",
-          "Bundle services through JIJU for exclusive discounts",
+          "Bundle services through Glitz for exclusive discounts",
         ],
       },
     });

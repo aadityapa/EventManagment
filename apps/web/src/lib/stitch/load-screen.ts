@@ -58,6 +58,13 @@ function sanitizeStitchHtml(html: string): string {
 
   out = out.replace(/w-32 h-32/g, "w-24 h-24 sm:w-28 sm:h-28");
 
+  out = out.replace(
+    /\.gallery-item\s*\{[^}]*opacity:\s*0[^}]*\}/gi,
+    ".gallery-item { opacity: 1; transform: none; }"
+  );
+
+  out = out.replace(/class="gallery-item group"/g, 'class="gallery-item group visible"');
+
   for (const [hash, route] of Object.entries(ROUTE_MAP)) {
     out = out.replace(new RegExp(`href="${hash}"`, "gi"), `href="${route}"`);
   }
