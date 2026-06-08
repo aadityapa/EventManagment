@@ -43,8 +43,7 @@ export function TestimonialsSection() {
   }, [emblaApi]);
 
   return (
-    <StitchSection dark className="relative">
-      <div className="absolute inset-0 gradient-dark opacity-40" />
+    <StitchSection className="relative bg-white">
       <div className="container-page relative">
         <SectionHeading eyebrow="Testimonials" title="What Our Clients Say" />
 

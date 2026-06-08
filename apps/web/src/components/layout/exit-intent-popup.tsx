@@ -26,7 +26,7 @@ export function ExitIntentPopup() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div className="site-widget fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
       <div className="glass-card relative max-w-md p-8 text-center shadow-glow">
         <button
           type="button"

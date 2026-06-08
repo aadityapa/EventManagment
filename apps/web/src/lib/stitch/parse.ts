@@ -9,6 +9,8 @@ export function extractStitchContent(fullHtml: string): string {
   body = body.replace(/<script[\s\S]*?<\/script>/gi, "");
   body = body.replace(/<header[\s\S]*?<\/header>/gi, "");
   body = body.replace(/<footer[\s\S]*?<\/footer>/gi, "");
+  body = body.replace(/<canvas[^>]*particle[^>]*><\/canvas>/gi, "");
+  body = body.replace(/<a[^>]*aria-label="WhatsApp[^"]*"[^>]*>[\s\S]*?<\/a>/gi, "");
 
   const mainMatch = body.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
   if (mainMatch) return mainMatch[1];
@@ -16,7 +18,6 @@ export function extractStitchContent(fullHtml: string): string {
   return body;
 }
 
-/** @deprecated use extractStitchContent */
 export function extractMainHtml(fullHtml: string): string {
   return extractStitchContent(fullHtml);
 }
@@ -29,10 +30,9 @@ export function extractHeadStyles(fullHtml: string): string {
     let css = m[1]?.trim() || "";
     css = css.replace(/#0A0A0A/gi, "#FAF8F5");
     css = css.replace(/#0a0a0a/gi, "#FAF8F5");
-    css = css.replace(/#000000/gi, "#FAF8F5");
-    css = css.replace(/#FAFAFA/gi, "#1C1814");
+    css = css.replace(/rgba\(13,\s*13,\s*13/gi, "rgba(255, 255, 255");
     css = css.replace(/background-color:\s*#16130b/gi, "background-color: #FAF8F5");
-    css = css.replace(/color:\s*#FAFAFA/gi, "color: #1C1814");
+    css = css.replace(/\.glass-panel\s*\{[^}]*\}/gi, "");
     if (css) styles.push(css);
   }
   return styles.join("\n");
@@ -50,12 +50,21 @@ export function extractTailwindConfig(fullHtml: string): Record<string, unknown>
   }
 }
 
+const BLOCKED_SCRIPT_PATTERNS = [
+  /particleCanvas/i,
+  /particlesArray/i,
+  /getElementById\(['"]particleCanvas/i,
+];
+
 export function extractScripts(fullHtml: string): string[] {
   const scripts: string[] = [];
   const re = /<script(?![^>]*\bsrc=)(?![^>]*id="tailwind-config")[^>]*>([\s\S]*?)<\/script>/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(fullHtml)) !== null) {
-    if (m[1]?.trim()) scripts.push(m[1]);
+    const source = m[1]?.trim() || "";
+    if (!source) continue;
+    if (BLOCKED_SCRIPT_PATTERNS.some((p) => p.test(source))) continue;
+    scripts.push(source);
   }
   return scripts;
 }

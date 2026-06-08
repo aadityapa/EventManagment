@@ -10,6 +10,7 @@ export function LiveChat() {
   const [message, setMessage] = useState("");
 
   return (
+    <div className="site-widget">
     <>
       <button
         type="button"
@@ -51,5 +52,6 @@ export function LiveChat() {
         </div>
       )}
     </>
+    </div>
   );
 }

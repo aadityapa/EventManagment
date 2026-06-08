@@ -25,7 +25,7 @@ export function StitchSection({ children, className, id, dark = false }: StitchS
       }}
       className={cn(
         "relative py-14 sm:py-20 md:py-28",
-        dark && "bg-black",
+        dark && "bg-[#f0ebe3]",
         className
       )}
     >

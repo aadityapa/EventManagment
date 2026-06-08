@@ -1,4 +1,3 @@
-import { StitchRoute } from "@/components/stitch/stitch-route";
 import { stitchMetadata } from "@/lib/stitch/pages";
 import { organizationSchema } from "@/lib/seo";
 import { HeroSection } from "@/components/home/hero-section";
@@ -19,14 +18,12 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <StitchRoute screen="home">
-        <HeroSection />
-        <StatsSection />
-        <ServicesSection />
-        <PortfolioSection />
-        <TestimonialsSection />
-        <CTASection />
-      </StitchRoute>
+      <HeroSection />
+      <StatsSection />
+      <ServicesSection />
+      <PortfolioSection />
+      <TestimonialsSection />
+      <CTASection />
     </>
   );
 }

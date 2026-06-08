@@ -24,7 +24,7 @@ export function CTASection() {
                 Schedule a complimentary consultation with our Pune event experts today.
               </p>
               <div className="mt-8">
-                <Button asChild size="xl" className="bg-black text-white shadow-lg hover:bg-black/90">
+                <Button asChild size="xl" className="shadow-glow">
                   <Link href="/contact">
                     <Calendar className="h-5 w-5" />
                     Book Consultation

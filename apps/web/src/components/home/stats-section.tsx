@@ -43,8 +43,7 @@ export function StatsSection() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <StitchSection dark className="relative">
-      <div className="absolute inset-0 gradient-dark opacity-60" />
+    <StitchSection className="relative bg-[#f5f0e8]">
       <div className="container-page relative">
         <SectionHeading eyebrow="Our Legacy" title="Numbers That Speak" />
         <div ref={ref} className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">

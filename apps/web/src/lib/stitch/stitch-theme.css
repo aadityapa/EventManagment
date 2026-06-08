@@ -231,11 +231,68 @@
   position: relative;
 }
 
-/* Hide duplicate chrome when stitch owns the page */
-html[data-stitch-active] .site-chrome {
+/* Keep header visible; hide duplicate floating widgets on stitch pages */
+html[data-stitch-active] .site-widget {
   display: none !important;
 }
 
-html[data-stitch-active] main.app-main {
-  padding-bottom: 0 !important;
+html[data-stitch-active] {
+  overflow-x: hidden;
+}
+
+.stitch-shell .min-h-screen {
+  min-height: auto;
+  padding-top: 2rem;
+}
+
+.stitch-shell section:first-child {
+  padding-top: 2rem;
+}
+
+.stitch-shell h1,
+.stitch-shell h2,
+.stitch-shell h3 {
+  color: #1c1814 !important;
+}
+
+.stitch-shell p {
+  color: #5a5248;
+}
+
+.stitch-shell .text-\[\#1c1814\] {
+  color: #1c1814 !important;
+}
+
+.stitch-shell .text-\[\#5a5248\] {
+  color: #5a5248 !important;
+}
+
+.stitch-shell img[class*="opacity"] {
+  opacity: 0.5 !important;
+}
+
+.stitch-shell .gold-shimmer {
+  color: #1c1814 !important;
+  -webkit-text-fill-color: #1c1814 !important;
+}
+
+.stitch-shell a.fixed,
+.stitch-shell .fixed.bottom-8,
+.stitch-shell .fixed.bottom-24 {
+  display: none !important;
+}
+
+.stitch-shell .px-24 {
+  padding-left: clamp(1rem, 4vw, 6rem) !important;
+  padding-right: clamp(1rem, 4vw, 6rem) !important;
+}
+
+.stitch-shell .py-64 {
+  padding-top: clamp(3rem, 6vw, 8rem) !important;
+  padding-bottom: clamp(3rem, 6vw, 8rem) !important;
+}
+
+.stitch-shell .py-96 {
+  padding-top: clamp(4rem, 8vw, 6rem) !important;
+  padding-bottom: clamp(4rem, 8vw, 6rem) !important;
 }

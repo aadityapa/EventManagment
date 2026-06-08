@@ -55,7 +55,7 @@ function ensureTailwind(config: Record<string, unknown> | null): Promise<void> {
       script.dataset.stitchTailwind = "1";
       script.onload = () => {
         applyConfig();
-        setTimeout(finish, 120);
+        setTimeout(finish, 100);
       };
       script.onerror = finish;
       document.head.appendChild(script);
@@ -78,11 +78,13 @@ export function StitchMain({ html, className }: StitchMainProps) {
     document.documentElement.setAttribute("data-stitch-active", "true");
     document.documentElement.classList.remove("dark");
     document.documentElement.classList.add("light");
+    document.body.style.overflowX = "hidden";
 
     ensureTailwind(config).then(() => setReady(true));
 
     return () => {
       document.documentElement.removeAttribute("data-stitch-active");
+      document.body.style.overflowX = "";
     };
   }, [config]);
 
@@ -115,10 +117,7 @@ export function StitchMain({ html, className }: StitchMainProps) {
         const fn = new Function(source);
         fn();
       } catch {
-        const el = document.createElement("script");
-        el.textContent = source;
-        document.body.appendChild(el);
-        cleanups.push(() => el.remove());
+        /* skip broken inline scripts */
       }
     }
 
@@ -145,11 +144,11 @@ export function StitchMain({ html, className }: StitchMainProps) {
   return (
     <div
       ref={rootRef}
-      className={`stitch-shell ${className ?? ""}`}
-      style={{ opacity: ready ? 1 : 0, transition: "opacity 0.35s ease" }}
+      className={`stitch-shell overflow-x-hidden ${className ?? ""}`}
+      style={{ opacity: ready ? 1 : 0.3, transition: "opacity 0.25s ease" }}
     >
       {styles ? <style dangerouslySetInnerHTML={{ __html: styles }} /> : null}
-      <div className="stitch-main" dangerouslySetInnerHTML={{ __html: content }} />
+      <div className="stitch-main w-full overflow-x-hidden" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 }
