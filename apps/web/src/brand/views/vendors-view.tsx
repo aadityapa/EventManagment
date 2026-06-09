@@ -27,7 +27,7 @@ export function VendorsView() {
           <button key={c} type="button" onClick={() => setCat(c)} className={cn("flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold", cat === c ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-[var(--glitz-muted)]")}>{c !== "All" && Icon && <Icon className="h-4 w-4" />}{c}</button>
         ); })}</div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((v, i) => (
+          {filtered.map((v) => (
             <motion.article key={v.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="brand-surface group overflow-hidden">
               <div className="relative h-48 overflow-hidden"><BrandImage src={v.images[0]} alt={v.businessName} fill sizes="33vw" className="transition-transform duration-700 group-hover:scale-110" />{v.verified && <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-[var(--glitz-gold)] px-2 py-1 text-[10px] font-bold text-[#0A0A0A]"><BadgeCheck className="h-3 w-3" /> Verified</span>}</div>
               <div className="p-5">

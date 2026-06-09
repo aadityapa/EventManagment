@@ -30,7 +30,7 @@ export function BlogView() {
       </BrandSection>
       <BrandSection alt>
         <div className="grid gap-8 md:grid-cols-2">
-          {rest.map((post, i) => (
+          {rest.map((post) => (
             <motion.div key={post.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <Link href={`/blog/${post.slug}`} className="group brand-surface block overflow-hidden">
                 <div className="relative h-56"><BrandImage src={post.image} alt={post.title} fill sizes="50vw" className="transition-transform duration-700 group-hover:scale-105" /></div>

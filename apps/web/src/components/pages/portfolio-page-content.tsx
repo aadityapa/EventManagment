@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Users, ArrowUpRight } from "lucide-react";
 import { CinematicHero } from "@/components/shared/cinematic-hero";
-import { PageSection, SectionHeader } from "@/components/shared/page-section";
+import { PageSection } from "@/components/shared/page-section";
 import { LuxuryImage } from "@/components/shared/luxury-image";
 import { portfolioItems } from "@/data/cms";
 import { IMAGES } from "@/lib/images";

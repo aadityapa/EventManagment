@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { motion } from "framer-motion";
 import { BrandImage } from "./brand-image";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 

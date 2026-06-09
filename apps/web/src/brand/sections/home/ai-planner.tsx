@@ -10,6 +10,26 @@ const BUDGETS = ["₹1L – 5L", "₹5L – 20L", "₹20L – 50L", "₹50L+"];
 const GUESTS = ["Under 100", "100 – 300", "300 – 500", "500+"];
 const LOCS = ["Pune", "Mumbai", "Goa", "Jaipur", "Udaipur"];
 
+function OptionChips({ options, val, onSelect }: { options: string[]; val: string; onSelect: (v: string) => void }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map((o) => (
+        <button
+          key={o}
+          type="button"
+          onClick={() => onSelect(o)}
+          className={cn(
+            "rounded-full border px-4 py-2 text-sm",
+            val === o ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)]"
+          )}
+        >
+          {o}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function buildPlan(type: string, budget: string, guests: string, loc: string) {
   return {
     timeline: [`Month 1–2: Discovery for your ${type.toLowerCase()} in ${loc}`, "Month 3–4: Venue & vendor curation", "Month 5–6: Design finalization & rehearsals", "Event Week: Flawless on-ground execution"],
@@ -33,21 +53,15 @@ export function HomeAiPlanner() {
     setTimeout(() => { setPlan(buildPlan(type, budget, guests, loc)); setLoading(false); }, 1000);
   };
 
-  const Chip = ({ options, val, set }: { options: string[]; val: string; set: (v: string) => void }) => (
-    <div className="flex flex-wrap gap-2">{options.map((o) => (
-      <button key={o} type="button" onClick={() => set(o)} className={cn("rounded-full border px-4 py-2 text-sm", val === o ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)]")}>{o}</button>
-    ))}</div>
-  );
-
   return (
     <BrandSection>
       <BrandHeader label="AI Powered" title="Intelligent Event Planner" subtitle="Instant bespoke blueprint — timeline, budget, venues, and vendors." center />
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="brand-surface space-y-5 p-6 sm:p-8">
-          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Sparkles className="h-4 w-4 text-[var(--glitz-gold)]" /> Event Type</label><Chip options={EVENTS} val={type} set={setType} /></div>
-          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Wallet className="h-4 w-4 text-[var(--glitz-gold)]" /> Budget</label><Chip options={BUDGETS} val={budget} set={setBudget} /></div>
-          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Users className="h-4 w-4 text-[var(--glitz-gold)]" /> Guests</label><Chip options={GUESTS} val={guests} set={setGuests} /></div>
-          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><MapPin className="h-4 w-4 text-[var(--glitz-gold)]" /> Location</label><Chip options={LOCS} val={loc} set={setLoc} /></div>
+          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Sparkles className="h-4 w-4 text-[var(--glitz-gold)]" /> Event Type</label><OptionChips options={EVENTS} val={type} onSelect={setType} /></div>
+          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Wallet className="h-4 w-4 text-[var(--glitz-gold)]" /> Budget</label><OptionChips options={BUDGETS} val={budget} onSelect={setBudget} /></div>
+          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Users className="h-4 w-4 text-[var(--glitz-gold)]" /> Guests</label><OptionChips options={GUESTS} val={guests} onSelect={setGuests} /></div>
+          <div><label className="mb-2 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><MapPin className="h-4 w-4 text-[var(--glitz-gold)]" /> Location</label><OptionChips options={LOCS} val={loc} onSelect={setLoc} /></div>
           <button type="button" onClick={generate} disabled={!type || !budget || !guests || !loc || loading} className="w-full rounded-lg bg-[var(--glitz-gold)] py-3.5 text-sm font-semibold text-[#0A0A0A] shadow-[var(--glitz-glow)] disabled:opacity-40">{loading ? "Crafting..." : "Generate Luxury Proposal"}</button>
         </div>
         <div className="brand-surface p-6 sm:p-8">

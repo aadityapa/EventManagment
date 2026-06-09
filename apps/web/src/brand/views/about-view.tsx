@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Award, ArrowRight, Eye, Target, Gem } from "lucide-react";
 import { BrandPageHero } from "@/brand/primitives/brand-hero";

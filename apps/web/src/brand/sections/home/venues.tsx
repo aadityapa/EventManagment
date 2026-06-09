@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MapPin, Users, Star } from "lucide-react";
+import { Users, Star } from "lucide-react";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";

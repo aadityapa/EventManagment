@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MapPin, Users, Star } from "lucide-react";
+import { Users, Star } from "lucide-react";
 import { LuxurySection } from "@/components/shared/luxury-section";
 import { EVENT_IMAGES } from "@/lib/images";
 import { formatCurrency } from "@/lib/utils";
