@@ -14,18 +14,21 @@ interface BrandButtonProps {
 
 export function BrandButton({ href, children, variant = "gold", className }: BrandButtonProps) {
   return (
-    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+    <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.98 }}>
       <Link
         href={href}
         className={cn(
-          "inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg px-8 py-3 text-sm font-semibold tracking-wide transition-colors",
+          "relative inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 py-3 text-sm font-semibold tracking-wide",
           variant === "gold"
-            ? "bg-[var(--glitz-gold)] text-[#0A0A0A] shadow-[var(--glitz-glow)] hover:bg-[var(--glitz-gold-light)]"
-            : "border border-[var(--glitz-gold)]/40 bg-transparent text-white hover:bg-[var(--glitz-gold)]/10",
+            ? "btn-gold-metallic"
+            : "border border-[var(--glitz-gold)]/45 bg-[var(--glitz-glass)] text-[var(--glitz-text)] backdrop-blur-sm hover:border-[var(--glitz-gold)]/70 hover:bg-[var(--glitz-gold)]/8 hover:shadow-[var(--glitz-glow)]",
           className
         )}
       >
-        {children}
+        {variant === "gold" && (
+          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        )}
+        <span className="relative z-10">{children}</span>
       </Link>
     </motion.div>
   );

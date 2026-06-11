@@ -1,69 +1,60 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 import { GoldParticles } from "@/components/effects/gold-particles";
-import { cn } from "@/lib/utils";
 
 type Props = {
-  isLight: boolean;
   active: number;
 };
 
-export function HeroCinematicFx({ isLight, active }: Props) {
+export function HeroCinematicFx({ active }: Props) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden [transform-style:preserve-3d]">
+    <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
       {/* Gold light rays */}
       <motion.div
-        className="absolute -left-1/4 top-0 h-full w-[70%] opacity-40"
+        className="absolute -left-[10%] top-0 h-full w-[55%]"
         style={{
-          background: isLight
-            ? "linear-gradient(105deg, transparent 0%, rgba(245,215,110,0.18) 35%, rgba(212,175,55,0.08) 55%, transparent 75%)"
-            : "linear-gradient(105deg, transparent 0%, rgba(212,175,55,0.22) 30%, rgba(255,215,0,0.08) 50%, transparent 70%)",
+          background: isDark
+            ? "linear-gradient(108deg, transparent 0%, rgba(212,175,55,0.14) 40%, rgba(255,215,0,0.06) 58%, transparent 80%)"
+            : "linear-gradient(108deg, transparent 0%, rgba(230,198,122,0.22) 38%, rgba(201,162,39,0.1) 55%, transparent 78%)",
         }}
-        animate={{ opacity: [0.25, 0.45, 0.25] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ opacity: [0.35, 0.55, 0.35] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Sweeping gold arc */}
+      {/* Lens flare */}
+      <motion.div
+        className="absolute left-[18%] top-[22%] h-32 w-32 rounded-full blur-3xl md:h-48 md:w-48"
+        style={{
+          background: isDark
+            ? "radial-gradient(circle, rgba(255,215,0,0.18) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(230,198,122,0.28) 0%, transparent 70%)",
+        }}
+        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.08, 1] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Sweeping arc — subtle */}
       <motion.div
         key={active}
-        className="absolute left-1/2 top-1/3 h-[120vmin] w-[120vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30"
+        className="absolute right-[-10%] top-[15%] h-[90vmin] w-[90vmin] rounded-full opacity-20"
         style={{
-          background: isLight
-            ? "conic-gradient(from 0deg, transparent, rgba(245,215,110,0.15), transparent)"
-            : "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.18), transparent)",
+          background: isDark
+            ? "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.12), transparent)"
+            : "conic-gradient(from 0deg, transparent, rgba(201,162,39,0.15), transparent)",
         }}
         animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Floating decorative shapes */}
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          className={cn(
-            "absolute rounded-full border",
-            isLight ? "border-[#D4AF37]/25 bg-[#F5D76E]/10" : "border-[#D4AF37]/20 bg-[#D4AF37]/5"
-          )}
-          style={{
-            width: 80 + i * 40,
-            height: 80 + i * 40,
-            right: `${12 + i * 8}%`,
-            top: `${18 + i * 12}%`,
-            translateZ: `${40 + i * 20}px`,
-          }}
-          animate={{ y: [0, -12 - i * 4, 0], opacity: [0.15, 0.35, 0.15] }}
-          transition={{ duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-        />
-      ))}
-
-      {/* Particles layer */}
-      <div className="absolute inset-0 opacity-50">
+      {/* Particles — lighter in light mode */}
+      <div className={isDark ? "absolute inset-0 opacity-35" : "absolute inset-0 opacity-20"}>
         <GoldParticles className="h-full w-full" />
       </div>
-
-      {/* Depth blur edges */}
-      <div className="absolute inset-0 backdrop-blur-[1px] [mask-image:linear-gradient(to_right,black,transparent_20%,transparent_80%,black)]" />
     </div>
   );
 }

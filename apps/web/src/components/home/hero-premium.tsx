@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
-import { useTheme } from "next-themes";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { ScrollIndicator } from "@/components/effects/scroll-indicator";
@@ -29,16 +28,16 @@ const heroReveal = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.4 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.35 },
   },
 };
 
 const itemReveal = {
-  hidden: { opacity: 0, y: 36 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -48,8 +47,6 @@ function wrapIndex(i: number, len: number) {
 
 export function HeroPremium() {
   const reducedMotion = useReducedMotion();
-  const { resolvedTheme } = useTheme();
-  const isLight = resolvedTheme === "light";
 
   const [slides, setSlides] = useState<HeroSlide[]>(HERO_CATEGORIES);
   const [active, setActive] = useState(0);
@@ -61,12 +58,12 @@ export function HeroPremium() {
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 55, damping: 22 });
-  const springY = useSpring(mouseY, { stiffness: 55, damping: 22 });
-  const bgX = useTransform(springX, (v) => v * 22);
-  const bgY = useTransform(springY, (v) => v * 14);
-  const fxX = useTransform(springX, (v) => v * 32);
-  const fxY = useTransform(springY, (v) => v * 20);
+  const springX = useSpring(mouseX, { stiffness: 50, damping: 24 });
+  const springY = useSpring(mouseY, { stiffness: 50, damping: 24 });
+  const bgX = useTransform(springX, (v) => v * 16);
+  const bgY = useTransform(springY, (v) => v * 10);
+  const fxX = useTransform(springX, (v) => v * 24);
+  const fxY = useTransform(springY, (v) => v * 14);
 
   useEffect(() => {
     activeRef.current = active;
@@ -95,12 +92,12 @@ export function HeroPremium() {
     const words = headlineRef.current?.querySelectorAll("[data-word]");
     if (!words?.length) return;
     gsap.from(words, {
-      y: 80,
+      y: 64,
       opacity: 0,
-      duration: 1.1,
-      stagger: 0.07,
+      duration: 1,
+      stagger: 0.06,
       ease: "power3.out",
-      delay: 0.5,
+      delay: 0.45,
     });
   }, []);
 
@@ -127,16 +124,9 @@ export function HeroPremium() {
     setBroken((b) => (b[index] ? b : { ...b, [index]: true }));
   };
 
-  const textColor = isLight ? "text-[#1A1400]" : "text-white";
-  const mutedColor = isLight ? "text-[#4A4030]/80" : "text-white/75";
-  const goldAccent = "text-[#D4AF37]";
-
   return (
     <section
-      className={cn(
-        "relative flex h-[100vh] min-h-[100dvh] flex-col overflow-hidden border-b",
-        isLight ? "border-[#E8DCC5] bg-[#FDFBF5]" : "border-[#D4AF37]/10 bg-[#050505]"
-      )}
+      className="relative flex h-[100vh] min-h-[100dvh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--glitz-bg)]"
       onMouseMove={onMouseMove}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => {
@@ -145,41 +135,27 @@ export function HeroPremium() {
         mouseY.set(0);
       }}
     >
-      {/* Layer 1 — fullscreen background image */}
+      {/* Fullscreen background image */}
       <motion.div className="absolute inset-0 z-0" style={{ x: bgX, y: bgY }}>
-        <HeroCinematicBackground
-          slides={slides}
-          active={active}
-          broken={broken}
-          onBroken={onBroken}
-          isLight={isLight}
-        />
+        <HeroCinematicBackground slides={slides} active={active} broken={broken} onBroken={onBroken} />
       </motion.div>
 
-      {/* Layer 2 — gold glow, particles, fog */}
+      {/* Gold rays, lens flare, particles */}
       <motion.div className="absolute inset-0 z-[5]" style={{ x: fxX, y: fxY }}>
-        <HeroCinematicFx isLight={isLight} active={active} />
+        <HeroCinematicFx active={active} />
       </motion.div>
 
-      {/* Layer 3 — content */}
-      <div className="brand-container relative z-20 flex flex-1 flex-col justify-center pt-24 pb-20 lg:pt-28">
-        <motion.div
-          variants={heroReveal}
-          initial="hidden"
-          animate="visible"
-          className="max-w-2xl [transform:translateZ(60px)]"
-        >
-          <motion.span variants={itemReveal} className={cn("brand-label", goldAccent)}>
+      {/* Content */}
+      <div className="brand-container relative z-20 flex flex-1 flex-col justify-center pt-20 pb-16 md:pt-24">
+        <motion.div variants={heroReveal} initial="hidden" animate="visible" className="max-w-2xl">
+          <motion.span variants={itemReveal} className="brand-label">
             Glitz Events & Promotions
           </motion.span>
 
           <motion.h1
             variants={itemReveal}
             ref={headlineRef}
-            className={cn(
-              "mt-5 font-[family-name:var(--font-playfair)] text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.05]",
-              textColor
-            )}
+            className="mt-4 font-[family-name:var(--font-playfair)] text-[clamp(2.35rem,6.5vw,4.5rem)] font-bold leading-[1.04] text-[var(--glitz-text)] drop-shadow-sm"
           >
             {"Creating Extraordinary Experiences".split(" ").map((word, i) => (
               <span key={i} className="mr-[0.22em] inline-block overflow-hidden">
@@ -190,10 +166,13 @@ export function HeroPremium() {
             ))}
           </motion.h1>
 
-          <motion.ul variants={itemReveal} className={cn("mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm md:text-base", mutedColor)}>
+          <motion.ul
+            variants={itemReveal}
+            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[var(--glitz-muted)] md:text-base"
+          >
             {SUB_POINTS.map((point) => (
               <li key={point} className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
+                <span className="h-1 w-1 rounded-full bg-[var(--glitz-gold-metallic)]" />
                 {point}
               </li>
             ))}
@@ -201,19 +180,12 @@ export function HeroPremium() {
 
           <motion.div variants={itemReveal} className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <MagneticButton>
-              <BrandButton href="/book-event" className="min-w-[170px] bg-[#D4AF37] text-[#050505] hover:bg-[#F5D76E]">
+              <BrandButton href="/book-event" variant="gold" className="min-w-[168px]">
                 Book Event
               </BrandButton>
             </MagneticButton>
             <MagneticButton>
-              <BrandButton
-                href="/book-event"
-                variant="outline"
-                className={cn(
-                  "min-w-[170px]",
-                  isLight ? "border-[#D4AF37]/50 text-[#1A1400] hover:bg-[#D4AF37]/10" : "border-[#D4AF37]/40"
-                )}
-              >
+              <BrandButton href="/book-event" variant="outline" className="min-w-[168px]">
                 Get Consultation
               </BrandButton>
             </MagneticButton>
@@ -222,16 +194,15 @@ export function HeroPremium() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[48px] min-w-[170px] items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-[#25D366]/20"
+                className="inline-flex min-h-[48px] min-w-[168px] items-center justify-center gap-2 rounded-lg border border-emerald-600/30 bg-emerald-600/10 px-6 py-3 text-sm font-semibold tracking-wide text-[var(--glitz-text)] transition-all hover:bg-emerald-600/18 hover:shadow-md"
               >
-                <MessageCircle className="h-4 w-4" /> WhatsApp
+                <MessageCircle className="h-4 w-4 text-emerald-500" /> WhatsApp
               </a>
             </MagneticButton>
           </motion.div>
 
-          {/* Category tag + slide progress */}
-          <motion.div variants={itemReveal} className="mt-10 flex items-center gap-4">
-            <span className={cn("text-xs font-semibold uppercase tracking-[0.25em]", goldAccent)}>
+          <motion.div variants={itemReveal} className="mt-10 flex flex-wrap items-center gap-4">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--glitz-gold-metallic)]">
               {slides[active]?.category}
             </span>
             <div className="flex gap-1.5">
@@ -243,7 +214,9 @@ export function HeroPremium() {
                   onClick={() => goTo(i)}
                   className={cn(
                     "h-1 rounded-full transition-all duration-500",
-                    i === active ? "w-10 bg-[#D4AF37]" : "w-1.5 bg-white/30 hover:bg-[#F5D76E]/60"
+                    i === active
+                      ? "w-10 bg-[var(--glitz-gold-metallic)] shadow-[var(--glitz-glow)]"
+                      : "w-1.5 bg-[var(--glitz-text)]/25 hover:bg-[var(--glitz-gold)]/60"
                   )}
                 />
               ))}

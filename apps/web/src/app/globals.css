@@ -2,47 +2,58 @@
 @import "../lib/stitch/stitch-theme.css";
 @import "../brand/design-system/tokens.css";
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --card: #121212;
-  --surface: #121212;
-  --card-border: rgba(194, 178, 128, 0.18);
-  --muted: #b8b8b8;
-  --muted-foreground: #8a8a8a;
-  --primary: #d4af37;
-  --primary-foreground: #0a0a0a;
-  --secondary: #1a1a1a;
-  --accent: #f4e08d;
-  --gold: #d4af37;
-  --gold-light: #f4e08d;
+:root,
+.light {
+  --background: #fdfbf5;
+  --foreground: #111111;
+  --card: #ffffff;
+  --surface: #f7f3eb;
+  --card-border: rgba(184, 134, 11, 0.2);
+  --muted: #5c5348;
+  --muted-foreground: #8a8278;
+  --primary: #c9a227;
+  --primary-foreground: #111111;
+  --secondary: #f7f3eb;
+  --accent: #e6c67a;
+  --gold: #c9a227;
+  --gold-light: #d4af37;
   --destructive: #ef4444;
-  --border: rgba(212, 175, 55, 0.12);
-  --ring: #d4af37;
-  --glass: rgba(18, 18, 18, 0.72);
-  --glass-border: rgba(212, 175, 55, 0.22);
-  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e08d 45%, #d4af37 100%);
-  --gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0a0a0a 100%);
-  --gradient-hero: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(10,10,10,0.92) 100%);
-  --shadow-glow: 0 0 40px rgba(194, 178, 128, 0.2);
-  --shadow-glow-lg: 0 0 80px rgba(194, 178, 128, 0.15);
+  --border: rgba(184, 134, 11, 0.18);
+  --ring: #b8860b;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(184, 134, 11, 0.22);
+  --gradient-gold: linear-gradient(135deg, #b8860b 0%, #e6c67a 45%, #c9a227 100%);
+  --gradient-dark: linear-gradient(180deg, #fdfbf5 0%, #f7f3eb 50%, #fdfbf5 100%);
+  --gradient-hero: linear-gradient(90deg, rgba(253, 251, 245, 0.55) 0%, transparent 70%);
+  --shadow-glow: 0 0 32px rgba(201, 162, 39, 0.22);
+  --shadow-glow-lg: 0 0 56px rgba(212, 175, 55, 0.28);
   --radius: 0.75rem;
 }
 
-.light {
-  --background: #faf8f5;
-  --foreground: #1c1814;
-  --card: rgba(255, 255, 255, 0.92);
-  --card-border: rgba(197, 160, 40, 0.22);
-  --muted: #6b6358;
-  --muted-foreground: #8a8278;
-  --primary: #b8860b;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f0e8;
-  --glass: rgba(255, 255, 255, 0.82);
-  --glass-border: rgba(197, 160, 40, 0.28);
-  --gradient-dark: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 40%, #ede8df 100%);
-  --gradient-hero: linear-gradient(180deg, rgba(250,248,245,0.2) 0%, rgba(250,248,245,0.95) 100%);
+.dark {
+  --background: #050505;
+  --foreground: #ffffff;
+  --card: #181818;
+  --surface: #111111;
+  --card-border: rgba(212, 175, 55, 0.18);
+  --muted: #b0b0b0;
+  --muted-foreground: #888888;
+  --primary: #d4af37;
+  --primary-foreground: #050505;
+  --secondary: #111111;
+  --accent: #e6c67a;
+  --gold: #d4af37;
+  --gold-light: #e6c67a;
+  --destructive: #ef4444;
+  --border: rgba(212, 175, 55, 0.14);
+  --ring: #d4af37;
+  --glass: rgba(17, 17, 17, 0.65);
+  --glass-border: rgba(212, 175, 55, 0.2);
+  --gradient-gold: linear-gradient(135deg, #c9a227 0%, #ffd700 40%, #d4af37 100%);
+  --gradient-dark: linear-gradient(180deg, #050505 0%, #111111 50%, #050505 100%);
+  --gradient-hero: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, transparent 68%);
+  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.25);
+  --shadow-glow-lg: 0 0 64px rgba(255, 215, 0, 0.2);
 }
 
 @theme inline {

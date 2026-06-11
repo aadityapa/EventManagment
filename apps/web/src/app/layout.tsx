@@ -27,18 +27,21 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#0A0A0A" }, { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }],
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FDFBF5" },
+    { media: "(prefers-color-scheme: dark)", color: "#050505" },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const schema = organizationSchema();
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="dark">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="glitz-theme" disableTransitionOnChange={false}>
           <CinematicProvider>
             <BrandHeader />
             <main className="app-main flex-1 pb-20 md:pb-0">{children}</main>

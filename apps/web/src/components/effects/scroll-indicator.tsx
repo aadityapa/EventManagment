@@ -14,7 +14,7 @@ export function ScrollIndicator() {
     >
       <span className="text-[10px] font-semibold uppercase tracking-[0.3em]">Scroll</span>
       <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
-        <ChevronDown className="h-5 w-5 text-[var(--glitz-gold)]" />
+        <ChevronDown className="h-5 w-5 text-[var(--glitz-gold-metallic)]" />
       </motion.div>
     </motion.div>
   );

@@ -45,7 +45,7 @@ export function GoldParticles({ className }: { className?: string }) {
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+        ctx.fillStyle = `rgba(201, 162, 39, ${p.opacity})`;
         ctx.fill();
       }
       animationId = requestAnimationFrame(draw);

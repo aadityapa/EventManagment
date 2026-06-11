@@ -1,41 +1,67 @@
-/* Glitz Brand Design System — Google Stitch / Apple luxury principles */
+/* Glitz Brand Design System — Dual Luxury Theme */
 
-:root {
-  --glitz-bg: #050505;
-  --glitz-surface: #121212;
-  --glitz-surface-elevated: #1a1a1a;
-  --glitz-gold: #d4af37;
-  --glitz-gold-light: #f5d76e;
-  --glitz-gold-metallic: #ffd700;
+/* Light luxury (default) */
+:root,
+.light {
+  --glitz-bg: #fdfbf5;
+  --glitz-surface: #f7f3eb;
+  --glitz-surface-elevated: #ffffff;
+  --glitz-card: #ffffff;
+  --glitz-gold: #c9a227;
+  --glitz-gold-light: #d4af37;
+  --glitz-gold-metallic: #b8860b;
+  --glitz-gold-shine: #e6c67a;
   --glitz-dune: #d8b26e;
-  --glitz-dune-glow: #e6c67a;
+  --glitz-dune-glow: #f5d76e;
   --glitz-ivory: #fdfbf5;
-  --glitz-text: #ffffff;
-  --glitz-muted: #a8a8a8;
-  --glitz-border: rgba(212, 175, 55, 0.14);
-  --glitz-glow: 0 0 48px rgba(212, 175, 55, 0.18);
+  --glitz-text: #111111;
+  --glitz-muted: #5c5348;
+  --glitz-border: rgba(184, 134, 11, 0.22);
+  --glitz-glass: rgba(255, 255, 255, 0.72);
+  --glitz-glow: 0 0 32px rgba(201, 162, 39, 0.22);
+  --glitz-glow-strong: 0 0 48px rgba(212, 175, 55, 0.35);
   --glitz-radius: 12px;
   --glitz-container: 90rem;
   --glitz-section-mobile: 5rem;
   --glitz-section-tablet: 7.5rem;
   --glitz-section-desktop: 10rem;
-  --glitz-gradient-gold: linear-gradient(135deg, #c9a227 0%, #f5d76e 48%, #d4af37 100%);
-  --glitz-gradient-hero: linear-gradient(180deg, rgba(5,5,5,0.35) 0%, rgba(5,5,5,0.92) 100%);
+  --glitz-gradient-gold: linear-gradient(135deg, #b8860b 0%, #e6c67a 42%, #c9a227 78%, #d4af37 100%);
+  --glitz-gradient-gold-hover: linear-gradient(135deg, #c9a227 0%, #f5d76e 50%, #d4af37 100%);
+  --glitz-gradient-hero: linear-gradient(90deg, rgba(253, 251, 245, 0.55) 0%, rgba(253, 251, 245, 0.12) 45%, transparent 72%);
+  --glitz-hero-scrim: linear-gradient(90deg, rgba(253, 251, 245, 0.72) 0%, rgba(247, 243, 235, 0.28) 38%, transparent 68%);
+  --glitz-hero-bottom: linear-gradient(to top, rgba(247, 243, 235, 0.45) 0%, transparent 35%);
 }
 
-.light {
-  --glitz-bg: #fdfbf5;
-  --glitz-surface: #f7f3eb;
-  --glitz-surface-elevated: #e8dcc5;
-  --glitz-text: #1a1400;
-  --glitz-muted: #6b6358;
-  --glitz-border: rgba(201, 162, 39, 0.2);
-  --glitz-gradient-hero: linear-gradient(180deg, rgba(253,251,245,0.2) 0%, rgba(247,243,235,0.95) 100%);
+/* Dark luxury */
+.dark {
+  --glitz-bg: #050505;
+  --glitz-surface: #111111;
+  --glitz-surface-elevated: #181818;
+  --glitz-card: #181818;
+  --glitz-gold: #d4af37;
+  --glitz-gold-light: #e6c67a;
+  --glitz-gold-metallic: #c9a227;
+  --glitz-gold-shine: #ffd700;
+  --glitz-dune: #d8b26e;
+  --glitz-dune-glow: #e6c67a;
+  --glitz-ivory: #fdfbf5;
+  --glitz-text: #ffffff;
+  --glitz-muted: #b0b0b0;
+  --glitz-border: rgba(212, 175, 55, 0.18);
+  --glitz-glass: rgba(17, 17, 17, 0.65);
+  --glitz-glow: 0 0 40px rgba(212, 175, 55, 0.25);
+  --glitz-glow-strong: 0 0 56px rgba(255, 215, 0, 0.28);
+  --glitz-gradient-gold: linear-gradient(135deg, #c9a227 0%, #ffd700 38%, #d4af37 72%, #e6c67a 100%);
+  --glitz-gradient-gold-hover: linear-gradient(135deg, #d4af37 0%, #ffd700 45%, #e6c67a 100%);
+  --glitz-gradient-hero: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.12) 42%, transparent 70%);
+  --glitz-hero-scrim: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.14) 40%, transparent 68%);
+  --glitz-hero-bottom: linear-gradient(to top, rgba(5, 5, 5, 0.35) 0%, transparent 38%);
 }
 
 .brand-root {
   background: var(--glitz-bg);
   color: var(--glitz-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .brand-container {
@@ -96,7 +122,7 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--glitz-gold);
+  color: var(--glitz-gold-metallic);
 }
 
 .brand-display {
@@ -109,4 +135,20 @@
 
 .brand-body {
   font-family: var(--font-manrope), var(--font-inter), system-ui, sans-serif;
+}
+
+.btn-gold-metallic {
+  background: var(--glitz-gradient-gold);
+  color: #111111;
+  box-shadow: var(--glitz-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+}
+
+.btn-gold-metallic:hover {
+  background: var(--glitz-gradient-gold-hover);
+  box-shadow: var(--glitz-glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.dark .btn-gold-metallic {
+  color: #050505;
 }
