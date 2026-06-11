@@ -14,6 +14,13 @@ Premium black & gold event management website for **Glitz Events & Promotions**,
 | Payments | Razorpay, Stripe, PayPal |
 | DevOps | Docker, Docker Compose, NGINX, GitHub Actions, Vercel |
 
+## Production Notes (Important)
+
+- **Never commit `.env`**: keep your `OPENAI_API_KEY`, `RAZORPAY_KEY_SECRET`, and other secrets only in environment variables.
+- **Auth**: web login/register uses a **httpOnly cookie** (`glitz_token`) set by `apps/web` route handlers (`/api/auth/*`).
+- **Payments (Razorpay)**: the API creates a real Razorpay order and verifies the **signature** before confirming bookings.
+  - Set: `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`
+
 ## Quick Start
 
 ```bash

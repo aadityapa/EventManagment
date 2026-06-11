@@ -2,7 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import prisma from "../lib/prisma";
-import { generateOTP, generateToken } from "../middleware/auth";
+import { authenticate, AuthRequest, generateOTP, generateToken } from "../middleware/auth";
 
 const router = Router();
 
@@ -94,6 +94,19 @@ router.post("/otp/verify", async (req, res) => {
     res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role }, token });
   } catch {
     res.status(500).json({ error: "OTP verification failed" });
+  }
+});
+
+router.get("/me", authenticate, async (req: AuthRequest, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: { id: true, name: true, email: true, phone: true, role: true, avatar: true, createdAt: true },
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({ user });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch user" });
   }
 });
 

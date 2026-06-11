@@ -37,12 +37,25 @@ router.get("/availability", async (req, res) => {
 
 router.post("/calculate", async (req, res) => {
   try {
-    const { budget, guestCount, additionalServices = [], couponCode } = req.body;
-    let subtotal = budget || guestCount * 500;
+    const { venueId, guestCount, additionalServices = [], couponCode } = req.body as {
+      venueId?: string;
+      guestCount?: number;
+      additionalServices?: string[];
+      couponCode?: string;
+    };
+
+    const guests = typeof guestCount === "number" && guestCount > 0 ? guestCount : 100;
+    let venueCost = 0;
+    if (venueId) {
+      const venue = await prisma.venue.findUnique({ where: { id: venueId }, select: { pricePerDay: true } });
+      if (venue) venueCost = venue.pricePerDay;
+    }
+
+    let subtotal = venueCost;
     additionalServices.forEach((service: string) => {
       const prices: Record<string, number> = {
         photography: 50000, videography: 75000, decoration: 100000,
-        catering: guestCount * 800, dj: 30000, live_band: 150000,
+        catering: guests * 800, dj: 30000, live_band: 150000,
         makeup: 25000, transport: 20000, security: 15000,
       };
       subtotal += prices[service] || 10000;
@@ -60,7 +73,7 @@ router.post("/calculate", async (req, res) => {
 
     const afterDiscount = subtotal - discount;
     const { gst, total } = calculateGST(afterDiscount);
-    res.json({ subtotal, discount, gstAmount: gst, totalAmount: total });
+    res.json({ venueCost, servicesTotal: subtotal - venueCost, subtotal, discount, gstAmount: gst, totalAmount: total });
   } catch {
     res.status(500).json({ error: "Price calculation failed" });
   }
@@ -69,7 +82,14 @@ router.post("/calculate", async (req, res) => {
 router.post("/", authenticate, async (req: AuthRequest, res) => {
   try {
     const data = bookingSchema.parse(req.body);
-    let subtotal = data.budget;
+    let venueCost = 0;
+    if (data.venueId) {
+      const venue = await prisma.venue.findUnique({ where: { id: data.venueId }, select: { pricePerDay: true } });
+      if (!venue) return res.status(400).json({ error: "Invalid venueId" });
+      venueCost = venue.pricePerDay;
+    }
+
+    let subtotal = venueCost;
     data.additionalServices.forEach((service: string) => {
       const prices: Record<string, number> = {
         photography: 50000, videography: 75000, decoration: 100000,

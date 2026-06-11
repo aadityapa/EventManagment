@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import {
   LayoutDashboard,
   Calendar,
@@ -11,7 +12,7 @@ import {
   MessageSquare,
   CreditCard,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, formatDate } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -23,13 +24,58 @@ const navItems = [
   { href: "/dashboard?tab=payments", label: "Payments", icon: CreditCard },
 ];
 
-const mockBookings = [
-  { id: "Glitz-A1B2C3", event: "Royal Udaipur Wedding", date: "2026-12-15", status: "Confirmed", progress: 65 },
-  { id: "Glitz-D4E5F6", event: "TechCorp Annual Gala", date: "2026-09-20", status: "Planning", progress: 35 },
-];
+type BookingRow = {
+  id: string;
+  bookingNumber: string;
+  eventType: string;
+  eventDate: string;
+  status: string;
+  paymentStatus: string;
+  totalAmount: number;
+};
 
 export function ClientDashboard() {
   const pathname = usePathname();
+  const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/bookings/my", { method: "GET", cache: "no-store" });
+        const data = (await res.json().catch(() => [])) as unknown;
+        if (!ignore && res.ok && Array.isArray(data)) {
+          const rows = (data as unknown[]).map((raw) => {
+            const r = (raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {}) as Record<string, unknown>;
+            return {
+              id: String(r.id ?? ""),
+              bookingNumber: String(r.bookingNumber ?? ""),
+              eventType: String(r.eventType ?? ""),
+              eventDate: String(r.eventDate ?? ""),
+              status: String(r.status ?? ""),
+              paymentStatus: String(r.paymentStatus ?? ""),
+              totalAmount: Number(r.totalAmount ?? 0),
+            };
+          }).filter((b) => b.id && b.bookingNumber);
+          setBookings(rows);
+        }
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const stats = useMemo(() => {
+    const active = bookings.filter((b) => b.status !== "CANCELLED").length;
+    const upcoming = bookings.filter((b) => new Date(b.eventDate) > new Date()).length;
+    const paid = bookings.filter((b) => b.paymentStatus === "PAID").length;
+    const total = bookings.reduce((sum, b) => sum + (Number.isFinite(b.totalAmount) ? b.totalAmount : 0), 0);
+    return { active, upcoming, paid, total };
+  }, [bookings]);
 
   return (
     <div className="flex min-h-[calc(100dvh-4rem)] flex-col lg:flex-row">
@@ -60,10 +106,10 @@ export function ClientDashboard() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { label: "Active Bookings", value: "2" },
-            { label: "Upcoming Events", value: "1" },
-            { label: "Budget Used", value: "42%" },
-            { label: "Unread Messages", value: "3" },
+            { label: "Active Bookings", value: loading ? "—" : String(stats.active) },
+            { label: "Upcoming Events", value: loading ? "—" : String(stats.upcoming) },
+            { label: "Paid Bookings", value: loading ? "—" : String(stats.paid) },
+            { label: "Total Value", value: loading ? "—" : formatCurrency(stats.total) },
           ].map((stat) => (
             <div key={stat.label} className="glass-card p-5">
               <p className="text-sm text-muted">{stat.label}</p>
@@ -74,33 +120,36 @@ export function ClientDashboard() {
 
         <div className="mt-8 space-y-4">
           <h2 className="font-display text-xl font-semibold">Your Bookings</h2>
-          {mockBookings.map((booking) => (
-            <div key={booking.id} className="glass-card p-5">
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                <div>
-                  <p className="font-semibold">{booking.event}</p>
-                  <p className="text-sm text-muted">
-                    {booking.id} · {booking.date}
-                  </p>
-                </div>
-                <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  {booking.status}
-                </span>
-              </div>
-              <div className="mt-4">
-                <div className="mb-1 flex justify-between text-xs text-muted">
-                  <span>Progress</span>
-                  <span>{booking.progress}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-border">
-                  <div
-                    className="h-full gradient-gold"
-                    style={{ width: `${booking.progress}%` }}
-                  />
+          {loading ? (
+            <div className="glass-card p-5 text-sm text-muted">Loading your bookings…</div>
+          ) : bookings.length ? (
+            bookings.map((b) => (
+              <div key={b.id} className="glass-card p-5">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <div>
+                    <p className="font-semibold">{b.eventType}</p>
+                    <p className="text-sm text-muted">
+                      {b.bookingNumber} · {formatDate(b.eventDate)}
+                    </p>
+                    <p className="mt-1 text-sm text-primary">{formatCurrency(b.totalAmount)}</p>
+                  </div>
+                  <div className="flex flex-col items-start gap-2 sm:items-end">
+                    <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                      {b.status}
+                    </span>
+                    <span className="text-xs text-muted">Payment: {b.paymentStatus}</span>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="glass-card p-5">
+              <p className="text-sm text-muted">No bookings yet.</p>
+              <Link href="/book-event" className="mt-3 inline-block text-sm font-semibold text-primary">
+                Book your first event →
+              </Link>
             </div>
-          ))}
+          )}
         </div>
       </main>
     </div>

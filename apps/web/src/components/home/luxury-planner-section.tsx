@@ -7,7 +7,7 @@ import { LuxurySection } from "@/components/shared/luxury-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 const STEPS = ["Event Type", "Budget", "Guests", "Date", "Location", "Contact", "Confirm"];
@@ -39,6 +39,15 @@ const initial: LeadData = {
   phone: "",
 };
 
+function parseBudgetAmount(range: string): number | undefined {
+  if (!range) return undefined;
+  if (range.includes("1L") && range.includes("5L")) return 500000;
+  if (range.includes("5L") && range.includes("20L")) return 2000000;
+  if (range.includes("20L") && range.includes("50L")) return 5000000;
+  if (range.includes("50L")) return 8000000;
+  return undefined;
+}
+
 export function LuxuryPlannerSection() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<LeadData>(initial);
@@ -60,10 +69,22 @@ export function LuxuryPlannerSection() {
   const submit = async () => {
     setSubmitting(true);
     try {
-      const res = await fetch("/api/leads", {
+      const res = await fetch(getApiUrl("/leads/consultation"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          eventType: data.eventType,
+          budget: parseBudgetAmount(data.budget),
+          message: `Guests: ${data.guests}; Date: ${data.date}; Location: ${data.location}; Budget range: ${data.budget}`,
+          source: "luxury-planner",
+          guests: data.guests,
+          date: data.date,
+          location: data.location,
+          budgetRange: data.budget,
+        }),
       });
       if (!res.ok) throw new Error("Failed");
       toast.success("Your consultation request has been received!");

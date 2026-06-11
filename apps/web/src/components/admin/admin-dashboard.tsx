@@ -1,15 +1,15 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import dynamic from "next/dynamic";
 import { Users, Calendar, TrendingUp, DollarSign } from "lucide-react";
+
+const AdminRevenueChart = dynamic(
+  () => import("./admin-revenue-chart").then((m) => m.AdminRevenueChart),
+  {
+    ssr: false,
+    loading: () => <div className="h-64 min-h-[256px] w-full animate-pulse rounded-xl bg-white/5" />,
+  }
+);
 
 const revenueData = [
   { month: "Jan", revenue: 45 },
@@ -58,17 +58,7 @@ export function AdminDashboard() {
 
       <div className="mt-8 glass-card p-6">
         <h2 className="mb-4 font-display text-xl font-semibold">Revenue Overview</h2>
-        <div className="h-64 min-h-[256px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(v) => `₹${v}L`} />
-              <Tooltip formatter={(v) => [`₹${v} Lakhs`, "Revenue"]} />
-              <Bar dataKey="revenue" fill="#c9a962" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <AdminRevenueChart data={revenueData} />
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-2">

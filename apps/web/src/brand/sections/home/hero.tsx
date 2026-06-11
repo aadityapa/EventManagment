@@ -14,6 +14,7 @@ export function HomeHero() {
       video={BRAND_IMAGES.hero.video}
       image={BRAND_IMAGES.hero.poster}
       full
+      threeD
     >
       <div className="flex flex-col gap-4 sm:flex-row">
         <BrandButton href="/book-event">Book Consultation</BrandButton>

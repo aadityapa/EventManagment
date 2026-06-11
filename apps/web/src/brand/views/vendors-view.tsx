@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import { Star, BadgeCheck, Camera, Palette, Utensils, Music, Mic } from "lucide-react";
 import { BrandPageHero } from "@/brand/primitives/brand-hero";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
@@ -9,23 +10,68 @@ import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { vendors } from "@/data/cms";
 import { SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getApiUrl } from "@/lib/utils";
 
 const CATS = ["All", "Photographers", "Decorators", "Caterers", "DJs", "Bands", "Makeup Artists"] as const;
-const ICONS: Record<string, React.ElementType> = { Photographers: Camera, Decorators: Palette, Caterers: Utensils, DJs: Music, Bands: Mic, "Makeup Artists": Star };
+type Cat = (typeof CATS)[number];
+const ICONS: Partial<Record<Cat, LucideIcon>> = {
+  Photographers: Camera,
+  Decorators: Palette,
+  Caterers: Utensils,
+  DJs: Music,
+  Bands: Mic,
+  "Makeup Artists": Star,
+};
 
 export function VendorsView() {
-  const [cat, setCat] = useState<string>("All");
-  const filtered = cat === "All" ? vendors : vendors.filter((v) => v.category === cat);
+  const [cat, setCat] = useState<Cat>("All");
+  const [items, setItems] = useState(vendors);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(getApiUrl("/vendors"), { method: "GET" });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as unknown;
+        if (!ignore && Array.isArray(data)) setItems(data as typeof vendors);
+      } catch {
+        // Keep fallback data
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const filtered = cat === "All" ? items : items.filter((v) => v.category === cat);
 
   return (
     <div className="brand-root">
       <BrandPageHero label="Partners" title="Luxury Vendor Ecosystem" subtitle="Verified artisans who share our standard of excellence." image={BRAND_IMAGES.vendors[0]} />
       <BrandSection>
         <BrandHeader label="Categories" title="Premium Partners" />
-        <div className="mb-10 flex flex-wrap gap-2">{CATS.map((c) => { const Icon = ICONS[c]; return (
-          <button key={c} type="button" onClick={() => setCat(c)} className={cn("flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold", cat === c ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-[var(--glitz-muted)]")}>{c !== "All" && Icon && <Icon className="h-4 w-4" />}{c}</button>
-        ); })}</div>
+        <div className="mb-10 flex flex-wrap gap-2">
+          {CATS.map((c) => {
+            const Icon = ICONS[c];
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setCat(c)}
+                className={cn(
+                  "flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold",
+                  cat === c
+                    ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]"
+                    : "border-[var(--glitz-border)] text-[var(--glitz-muted)]"
+                )}
+              >
+                {c !== "All" && Icon ? <Icon className="h-4 w-4" /> : null}
+                {c}
+              </button>
+            );
+          })}
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((v) => (
             <motion.article key={v.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="brand-surface group overflow-hidden">

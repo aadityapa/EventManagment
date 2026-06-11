@@ -1,8 +1,14 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { BrandImage } from "./brand-image";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
+
+const HeroThreeCanvas = dynamic(
+  () => import("@/components/three/hero-three-canvas").then((m) => m.HeroThreeCanvas),
+  { ssr: false, loading: () => null }
+);
 
 interface BrandHeroProps {
   label?: string;
@@ -11,10 +17,11 @@ interface BrandHeroProps {
   image?: string;
   video?: string;
   full?: boolean;
+  threeD?: boolean;
   children?: ReactNode;
 }
 
-export function BrandHero({ label, title, subtitle, image, video, full = false, children }: BrandHeroProps) {
+export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -44,6 +51,8 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
         <div className="absolute inset-0 bg-[var(--glitz-gradient-hero)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />
       </div>
+
+      {threeD && full && <HeroThreeCanvas />}
       <div className={`brand-container relative z-10 flex flex-col justify-end ${full ? "min-h-[100dvh] pb-20 pt-28" : "pb-16 pt-32"}`}>
         {label && <span className="brand-label mb-4">{label}</span>}
         <h1 ref={titleRef} className="brand-display max-w-5xl text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.08]">

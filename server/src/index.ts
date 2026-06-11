@@ -35,7 +35,14 @@ app.use(
   })
 );
 app.use(morgan("dev"));
-app.use(express.json({ limit: "10mb" }));
+app.use(
+  express.json({
+    limit: "10mb",
+    verify: (req, _res, buf) => {
+      (req as unknown as { rawBody?: string }).rawBody = buf.toString("utf8");
+    },
+  })
+);
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 });
 app.use("/api/", limiter);

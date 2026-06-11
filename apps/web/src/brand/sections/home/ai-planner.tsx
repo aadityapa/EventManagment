@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Sparkles, Calendar, Wallet, Users, MapPin, Download } from "lucide-react";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, getApiUrl } from "@/lib/utils";
 
 const EVENTS = ["Wedding", "Corporate", "Birthday", "Product Launch", "Concert"];
 const BUDGETS = ["₹1L – 5L", "₹5L – 20L", "₹20L – 50L", "₹50L+"];
@@ -36,8 +36,36 @@ function buildPlan(type: string, budget: string, guests: string, loc: string) {
     vendors: budget.includes("50L") ? ["Premium Decor Studio", "Gourmet Affairs", "Lens & Light", "Harmony Band"] : ["Bloom & Blossom", "Gourmet Affairs", "Beat Masters DJ"],
     venues: [`Exclusive ${loc} venues matched to ${guests} guests`],
     estimate: budget,
+    tips: ["Book early for premium availability", "Share your theme preferences for a better plan", "Talk to us on WhatsApp for a bespoke quote"],
   };
 }
+
+function parseGuestCount(range: string): number {
+  if (range.toLowerCase().includes("under")) return 100;
+  if (range.includes("100") && range.includes("300")) return 300;
+  if (range.includes("300") && range.includes("500")) return 500;
+  if (range.includes("500")) return 800;
+  return 150;
+}
+
+function parseBudgetAmount(range: string): number {
+  if (range.includes("1L") && range.includes("5L")) return 500000;
+  if (range.includes("5L") && range.includes("20L")) return 2000000;
+  if (range.includes("20L") && range.includes("50L")) return 5000000;
+  if (range.includes("50L")) return 8000000;
+  return 800000;
+}
+
+type PlanApiTimeline = { phase: string; tasks: string[] };
+type PlanApiVenue = { name: string; city?: string; pricePerDay?: number };
+type PlanApiVendor = { businessName?: string; name?: string };
+type PlanApiRecommendations = {
+  timeline?: PlanApiTimeline[];
+  venues?: PlanApiVenue[];
+  vendors?: PlanApiVendor[];
+  tips?: string[];
+};
+type PlanApiResponse = { recommendations?: PlanApiRecommendations };
 
 export function HomeAiPlanner() {
   const [type, setType] = useState("");
@@ -47,10 +75,49 @@ export function HomeAiPlanner() {
   const [plan, setPlan] = useState<ReturnType<typeof buildPlan> | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const generate = () => {
+  const generate = async () => {
     if (!type || !budget || !guests || !loc) return;
     setLoading(true);
-    setTimeout(() => { setPlan(buildPlan(type, budget, guests, loc)); setLoading(false); }, 1000);
+    try {
+      const res = await fetch(getApiUrl("/ai/plan"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventType: type,
+          guestCount: parseGuestCount(guests),
+          budget: parseBudgetAmount(budget),
+          city: loc,
+          preferences: "",
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as PlanApiResponse;
+      const rec = data.recommendations;
+      if (!res.ok || !rec) throw new Error("plan_failed");
+
+      const timeline = rec.timeline?.map((t) => `${t.phase}: ${t.tasks.join(", ")}`.trim()) ?? [];
+
+      const venues =
+        rec.venues?.map((v) => {
+          const cityText = v.city ? ` · ${v.city}` : "";
+          const priceText = typeof v.pricePerDay === "number" ? ` — ${formatCurrency(v.pricePerDay)}/day` : "";
+          return `${v.name}${cityText}${priceText}`;
+        }) ?? [];
+
+      const vendors = rec.vendors?.map((v) => v.businessName || v.name || "Vendor") ?? [];
+
+      setPlan({
+        timeline: timeline.length ? timeline : buildPlan(type, budget, guests, loc).timeline,
+        venues: venues.length ? venues : buildPlan(type, budget, guests, loc).venues,
+        vendors: vendors.length ? vendors : buildPlan(type, budget, guests, loc).vendors,
+        estimate: budget,
+        tips: rec.tips?.length ? rec.tips : buildPlan(type, budget, guests, loc).tips,
+      });
+    } catch {
+      setPlan(buildPlan(type, budget, guests, loc));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,6 +139,16 @@ export function HomeAiPlanner() {
               <div><h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]"><Calendar className="h-4 w-4" /> Timeline</h4><ol className="space-y-1">{plan.timeline.map((t, i) => <li key={i} className="text-sm text-[var(--glitz-muted)]">{i + 1}. {t}</li>)}</ol></div>
               <div><h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">Venues</h4>{plan.venues.map((v) => <p key={v} className="text-sm text-[var(--glitz-muted)]">{v}</p>)}</div>
               <div><h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">Vendors</h4><div className="flex flex-wrap gap-2">{plan.vendors.map((v) => <span key={v} className="rounded-full border border-[var(--glitz-border)] px-3 py-1 text-xs">{v}</span>)}</div></div>
+              {!!plan.tips?.length && (
+                <div>
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">Tips</h4>
+                  <ul className="space-y-1">
+                    {plan.tips.map((t) => (
+                      <li key={t} className="text-sm text-[var(--glitz-muted)]">• {t}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <button type="button" className="flex items-center gap-2 text-sm font-semibold text-[var(--glitz-gold)]"><Download className="h-4 w-4" /> Download PDF Proposal (Contact us)</button>
             </div>
           ) : (

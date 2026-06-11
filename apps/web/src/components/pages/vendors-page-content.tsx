@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import { Star, BadgeCheck, Camera, Music, Utensils, Palette, Mic } from "lucide-react";
 import { CinematicHero } from "@/components/shared/cinematic-hero";
 import { PageSection, SectionHeader } from "@/components/shared/page-section";
@@ -13,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const CATEGORIES = ["All", "Photographers", "Decorators", "Caterers", "DJs", "Bands", "Makeup Artists"] as const;
+type Category = (typeof CATEGORIES)[number];
 
-const CAT_ICONS: Record<string, React.ElementType> = {
+const CAT_ICONS: Partial<Record<Category, LucideIcon>> = {
   Photographers: Camera,
   Decorators: Palette,
   Caterers: Utensils,
@@ -24,7 +26,7 @@ const CAT_ICONS: Record<string, React.ElementType> = {
 };
 
 export function VendorsPageContent() {
-  const [active, setActive] = useState<string>("All");
+  const [active, setActive] = useState<Category>("All");
 
   const filtered = active === "All" ? vendors : vendors.filter((v) => v.category === active);
 
@@ -46,7 +48,7 @@ export function VendorsPageContent() {
         />
         <div className="mb-10 flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => {
-            const Icon = CAT_ICONS[cat] ?? Star;
+            const Icon = cat === "All" ? null : (CAT_ICONS[cat] ?? Star);
             return (
               <button
                 key={cat}
@@ -57,7 +59,7 @@ export function VendorsPageContent() {
                   active === cat ? "border-primary bg-primary/10 text-primary" : "border-border/60 text-muted hover:border-primary/40"
                 )}
               >
-                {cat !== "All" && <Icon className="h-4 w-4" />}
+                {Icon ? <Icon className="h-4 w-4" /> : null}
                 {cat}
               </button>
             );

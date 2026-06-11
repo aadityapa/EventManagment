@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -14,7 +14,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import { venues } from "@/data/cms";
+import { venues as fallbackVenues } from "@/data/cms";
 import {
   ADDITIONAL_SERVICES,
   BUDGET_RANGES,
@@ -24,7 +24,8 @@ import { DynamicIcon } from "@/components/shared/dynamic-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, getApiUrl } from "@/lib/utils";
+import { toast } from "sonner";
 
 const STEPS = [
   "Event Type",
@@ -51,6 +52,43 @@ interface BookingState {
   bookingNumber: string;
 }
 
+type VenueOption = {
+  id: string;
+  name: string;
+  city: string;
+  capacity: number;
+  pricePerDay: number;
+};
+
+type MeResponse = {
+  authenticated?: boolean;
+  user?: { name?: string; email?: string; phone?: string };
+};
+
+type BookingCreated = { id: string; bookingNumber: string };
+type RazorpayOrderCreated = { key: string; orderId: string; paymentId: string; amount: number; currency?: string; bookingNumber?: string };
+
+type RazorpaySuccessResponse = {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+};
+
+type RazorpayInstance = { open: () => void };
+type RazorpayCtor = new (opts: {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  prefill?: { name?: string; email?: string; contact?: string };
+  notes?: Record<string, string>;
+  theme?: { color: string };
+  handler: (resp: RazorpaySuccessResponse) => void;
+  modal?: { ondismiss?: () => void };
+}) => RazorpayInstance;
+
 const initialState: BookingState = {
   eventType: "",
   date: "",
@@ -65,8 +103,51 @@ const initialState: BookingState = {
 export function BookingWizard() {
   const [step, setStep] = useState(1);
   const [state, setState] = useState<BookingState>(initialState);
+  const [venueOptions, setVenueOptions] = useState<VenueOption[]>(
+    fallbackVenues.map((v) => ({
+      id: v.id,
+      name: v.name,
+      city: v.city,
+      capacity: v.capacity,
+      pricePerDay: v.pricePerDay,
+    }))
+  );
+  const [venuesLoadedFromApi, setVenuesLoadedFromApi] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
 
-  const selectedVenue = venues.find((v) => v.id === state.venueId);
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(getApiUrl("/venues"), { method: "GET" });
+        const data = (await res.json().catch(() => null)) as unknown;
+        if (!ignore && res.ok && Array.isArray(data)) {
+          const mapped = (data as unknown[]).map((raw) => {
+            if (!raw || typeof raw !== "object") return null;
+            const r = raw as Record<string, unknown>;
+            const id = typeof r.id === "string" ? r.id : String(r.id ?? "");
+            const name = typeof r.name === "string" ? r.name : String(r.name ?? "");
+            const city = typeof r.city === "string" ? r.city : String(r.city ?? "");
+            const capacity = typeof r.capacity === "number" ? r.capacity : Number(r.capacity ?? 0);
+            const pricePerDay = typeof r.pricePerDay === "number" ? r.pricePerDay : Number(r.pricePerDay ?? 0);
+            if (!id || !name) return null;
+            return { id, name, city, capacity, pricePerDay };
+          }).filter((v): v is VenueOption => Boolean(v));
+          if (mapped.length) {
+            setVenueOptions(mapped);
+            setVenuesLoadedFromApi(true);
+          }
+        }
+      } catch {
+        // keep fallback
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const selectedVenue = venueOptions.find((v) => v.id === state.venueId);
   const selectedBudget = BUDGET_RANGES.find((b) => b.id === state.budgetId);
   const selectedEvent = EVENT_TYPES.find((e) => e.id === state.eventType);
 
@@ -105,16 +186,182 @@ export function BookingWizard() {
       case 7:
         return true;
       case 8:
-        return !!state.paymentMethod;
+        return !!state.paymentMethod && !isPaying;
       default:
         return true;
     }
   };
 
-  const next = () => {
+  const loadRazorpay = async (): Promise<boolean> => {
+    if (typeof window === "undefined") return false;
+    const w = window as unknown as { Razorpay?: RazorpayCtor };
+    if (w.Razorpay) return true;
+    await new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector<HTMLScriptElement>('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+      if (existing) {
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener("error", () => reject(new Error("load_failed")), { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("load_failed"));
+      document.body.appendChild(script);
+    });
+    return !!(window as unknown as { Razorpay?: RazorpayCtor }).Razorpay;
+  };
+
+  const handleConfirmAndPay = async () => {
+    if (state.paymentMethod !== "razorpay") {
+      toast.error("Only Razorpay is enabled right now.");
+      return;
+    }
+    if (!selectedVenue) {
+      toast.error("Please select a venue.");
+      return;
+    }
+    if (!venuesLoadedFromApi) {
+      toast.error("Backend venues not loaded. Please start the API (server) or try again.");
+      return;
+    }
+    if (!selectedBudget) {
+      toast.error("Please select a budget range.");
+      return;
+    }
+
+    setIsPaying(true);
+    try {
+      // Check session (cookie)
+      const meRes = await fetch("/api/auth/me", { method: "GET", cache: "no-store" });
+      const me = (await meRes.json().catch(() => ({}))) as MeResponse;
+      if (!me?.authenticated) {
+        toast.error("Please sign in to confirm and pay.");
+        window.location.href = `/login?next=${encodeURIComponent("/book-event")}`;
+        return;
+      }
+
+      // 1) Create booking in DB
+      const bookingRes = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventType: state.eventType,
+          eventDate: state.date,
+          venueId: state.venueId,
+          guestCount: state.guestCount,
+          budget: selectedBudget.max,
+          additionalServices: state.services,
+          notes: "",
+        }),
+      });
+      const bookingJson = (await bookingRes.json().catch(() => ({}))) as unknown;
+      if (!bookingRes.ok) {
+        const err =
+          bookingJson && typeof bookingJson === "object"
+            ? String((bookingJson as Record<string, unknown>).error ?? "Failed to create booking")
+            : "Failed to create booking";
+        throw new Error(err);
+      }
+      const bookingObj = bookingJson as Record<string, unknown>;
+      const booking: BookingCreated = {
+        id: String(bookingObj.id ?? ""),
+        bookingNumber: String(bookingObj.bookingNumber ?? ""),
+      };
+      if (!booking.id || !booking.bookingNumber) throw new Error("Invalid booking response");
+
+      // 2) Create Razorpay order (advance)
+      const orderRes = await fetch("/api/payments/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: booking.id }),
+      });
+      const orderJson = (await orderRes.json().catch(() => ({}))) as unknown;
+      if (!orderRes.ok) {
+        const err =
+          orderJson && typeof orderJson === "object"
+            ? String((orderJson as Record<string, unknown>).error ?? "Failed to create payment order")
+            : "Failed to create payment order";
+        throw new Error(err);
+      }
+      const orderObj = orderJson as Record<string, unknown>;
+      const order: RazorpayOrderCreated = {
+        key: String(orderObj.key ?? ""),
+        orderId: String(orderObj.orderId ?? ""),
+        paymentId: String(orderObj.paymentId ?? ""),
+        amount: Number(orderObj.amount ?? 0),
+        currency: typeof orderObj.currency === "string" ? orderObj.currency : undefined,
+        bookingNumber: typeof orderObj.bookingNumber === "string" ? orderObj.bookingNumber : undefined,
+      };
+      if (!order.key || !order.orderId || !order.paymentId || !order.amount) throw new Error("Invalid payment order response");
+
+      // 3) Open Razorpay checkout
+      const ok = await loadRazorpay();
+      if (!ok) throw new Error("Failed to load Razorpay");
+
+      const Razorpay = (window as unknown as { Razorpay?: RazorpayCtor }).Razorpay;
+      if (!Razorpay) throw new Error("Razorpay is not available");
+
+      const rzp = new Razorpay({
+        key: order.key,
+        amount: Math.round(Number(order.amount) * 100),
+        currency: order.currency || "INR",
+        name: "Glitz Events & Promotions",
+        description: `Advance for booking ${order.bookingNumber || booking.bookingNumber}`,
+        order_id: order.orderId,
+        prefill: {
+          name: me.user?.name,
+          email: me.user?.email,
+          contact: me.user?.phone,
+        },
+        notes: {
+          bookingId: booking.id,
+          bookingNumber: booking.bookingNumber,
+        },
+        theme: { color: "#d4af37" },
+        handler: async (resp: RazorpaySuccessResponse) => {
+          try {
+            const verifyRes = await fetch("/api/payments/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentId: order.paymentId,
+                razorpay_order_id: resp.razorpay_order_id,
+                razorpay_payment_id: resp.razorpay_payment_id,
+                razorpay_signature: resp.razorpay_signature,
+              }),
+            });
+            const verified = await verifyRes.json().catch(() => ({}));
+            if (!verifyRes.ok) throw new Error(verified.error || "Verification failed");
+
+            toast.success("Payment successful. Booking confirmed.");
+            setState((s) => ({ ...s, bookingNumber: booking.bookingNumber }));
+            setStep(9);
+          } catch (e) {
+            toast.error(e instanceof Error ? e.message : "Payment verification failed");
+          } finally {
+            setIsPaying(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setIsPaying(false);
+          },
+        },
+      });
+
+      rzp.open();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Payment failed");
+      setIsPaying(false);
+    }
+  };
+
+  const next = async () => {
     if (step === 8) {
-      const bookingNumber = `Glitz-${Date.now().toString(36).toUpperCase()}`;
-      setState((s) => ({ ...s, bookingNumber }));
+      await handleConfirmAndPay();
+      return;
     }
     if (step < STEPS.length) setStep((s) => s + 1);
   };
@@ -225,7 +472,7 @@ export function BookingWizard() {
 
               {step === 3 && (
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {venues.map((venue) => (
+                  {venueOptions.map((venue) => (
                     <button
                       key={venue.id}
                       type="button"
@@ -380,18 +627,17 @@ export function BookingWizard() {
               {step === 8 && (
                 <div className="grid gap-4 sm:grid-cols-3">
                   {[
-                    { id: "razorpay", label: "Razorpay", desc: "UPI, Cards, Net Banking" },
-                    { id: "stripe", label: "Stripe", desc: "International Cards" },
-                    { id: "paypal", label: "PayPal", desc: "Global Payments" },
+                    { id: "razorpay", label: "Razorpay", desc: "UPI, Cards, Net Banking", enabled: true },
+                    { id: "stripe", label: "Stripe", desc: "Coming soon", enabled: false },
+                    { id: "paypal", label: "PayPal", desc: "Coming soon", enabled: false },
                   ].map((method) => (
                     <button
                       key={method.id}
                       type="button"
-                      onClick={() =>
-                        setState((s) => ({ ...s, paymentMethod: method.id }))
-                      }
+                      onClick={() => method.enabled && setState((s) => ({ ...s, paymentMethod: method.id }))}
+                      disabled={!method.enabled}
                       className={cn(
-                        "glass-card p-6 text-center transition-all hover:shadow-glow",
+                        "glass-card p-6 text-center transition-all hover:shadow-glow disabled:opacity-40 disabled:hover:shadow-none",
                         state.paymentMethod === method.id && "ring-2 ring-primary shadow-glow"
                       )}
                     >
@@ -433,8 +679,8 @@ export function BookingWizard() {
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <Button onClick={next} disabled={!canProceed()} className="w-full sm:w-auto">
-                {step === 8 ? "Confirm & Pay" : "Continue"}
+              <Button onClick={() => void next()} disabled={!canProceed()} className="w-full sm:w-auto">
+                {step === 8 ? (isPaying ? "Processing..." : "Confirm & Pay") : "Continue"}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>

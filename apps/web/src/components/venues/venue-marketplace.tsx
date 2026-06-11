@@ -1,29 +1,59 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Search, Star, GitCompare } from "lucide-react";
 import { venues } from "@/data/cms";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getApiUrl } from "@/lib/utils";
+
+type VenueItem = {
+  id: string;
+  name: string;
+  city: string;
+  description: string;
+  capacity: number;
+  pricePerDay: number;
+  rating: number;
+  images: string[];
+  amenities: string[];
+};
 
 export function VenueMarketplace() {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("ALL");
   const [compare, setCompare] = useState<string[]>([]);
+  const [items, setItems] = useState<VenueItem[]>(venues as unknown as VenueItem[]);
 
-  const cities = ["ALL", ...Array.from(new Set(venues.map((v) => v.city)))];
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(getApiUrl("/venues"), { method: "GET" });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as unknown;
+        if (!ignore && Array.isArray(data)) setItems(data as VenueItem[]);
+      } catch {
+        // Keep fallback data
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const cities = ["ALL", ...Array.from(new Set(items.map((v) => v.city)))];
 
   const filtered = useMemo(() => {
-    return venues.filter((v) => {
+    return items.filter((v) => {
       const matchesSearch =
         v.name.toLowerCase().includes(search.toLowerCase()) ||
         v.description.toLowerCase().includes(search.toLowerCase());
       const matchesCity = city === "ALL" || v.city === city;
       return matchesSearch && matchesCity;
     });
-  }, [search, city]);
+  }, [search, city, items]);
 
   const toggleCompare = (id: string) => {
     setCompare((prev) =>

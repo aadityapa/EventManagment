@@ -41,6 +41,7 @@ export function LiveChat({ open: controlledOpen, onOpenChange }: LiveChatProps =
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,10 +69,13 @@ export function LiveChat({ open: controlledOpen, onOpenChange }: LiveChatProps =
       const res = await fetch(getApiUrl("/ai/chat"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed }),
+        body: JSON.stringify({ message: trimmed, sessionId }),
       });
 
       const data = await res.json().catch(() => ({}));
+      if (typeof data.sessionId === "string" && data.sessionId.trim()) {
+        setSessionId(data.sessionId.trim());
+      }
       const reply =
         data.reply ||
         data.message ||

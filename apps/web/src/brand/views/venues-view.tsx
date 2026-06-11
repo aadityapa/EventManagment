@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, Users, Star, Filter } from "lucide-react";
@@ -9,14 +9,33 @@ import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { venues } from "@/data/cms";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, getApiUrl } from "@/lib/utils";
 
 const CITIES = ["All", "Pune", "Mumbai", "Delhi", "Bangalore", "Goa", "Jaipur", "Udaipur"];
 const EXT = [...venues, { id: "e5", name: "Royal Palace Gardens", slug: "palace-jaipur", city: "Jaipur", capacity: 1200, pricePerDay: 1200000, rating: 4.9, images: [BRAND_IMAGES.hero.palace], amenities: ["Heritage", "Garden"], description: "Majestic palace for royal weddings." }, { id: "e6", name: "Lake Palace Terrace", slug: "lake-udaipur", city: "Udaipur", capacity: 600, pricePerDay: 1500000, rating: 5.0, images: [BRAND_IMAGES.destinations[1]], amenities: ["Lake View"], description: "Iconic lakefront venue." }, { id: "e7", name: "Pune Convention", slug: "pune-conv", city: "Pune", capacity: 2500, pricePerDay: 450000, rating: 4.7, images: [BRAND_IMAGES.venues[2]], amenities: ["AV", "Parking"], description: "Premier Pune venue." }];
 
 export function VenuesView() {
   const [city, setCity] = useState("All");
-  const filtered = city === "All" ? EXT : EXT.filter((v) => v.city === city);
+  const [items, setItems] = useState(EXT);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(getApiUrl("/venues"), { method: "GET" });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as unknown;
+        if (!ignore && Array.isArray(data)) setItems(data as typeof EXT);
+      } catch {
+        // Keep fallback data
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const filtered = city === "All" ? items : items.filter((v) => v.city === city);
 
   return (
     <div className="brand-root">

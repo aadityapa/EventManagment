@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { Input } from "@/components/ui/input";
 import { SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 const STEPS = ["Event", "Budget", "Guests", "Date", "Location", "Contact"];
@@ -15,6 +15,15 @@ const BUDGETS = ["₹1L – 5L", "₹5L – 20L", "₹20L – 50L", "₹50L+"];
 const LOCS = ["Pune", "Mumbai", "Goa", "Jaipur", "Udaipur", "Other"];
 
 type Form = { eventType: string; budget: string; guests: string; date: string; location: string; name: string; email: string; phone: string };
+
+function parseBudgetAmount(range: string): number | undefined {
+  if (!range) return undefined;
+  if (range.includes("1L") && range.includes("5L")) return 500000;
+  if (range.includes("5L") && range.includes("20L")) return 2000000;
+  if (range.includes("20L") && range.includes("50L")) return 5000000;
+  if (range.includes("50L")) return 8000000;
+  return undefined;
+}
 
 export function HomePlanner() {
   const [step, setStep] = useState(0);
@@ -35,7 +44,23 @@ export function HomePlanner() {
   const submit = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const res = await fetch(getApiUrl("/leads/consultation"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          eventType: data.eventType,
+          budget: parseBudgetAmount(data.budget),
+          message: `Guests: ${data.guests}; Date: ${data.date}; Location: ${data.location}; Budget range: ${data.budget}`,
+          source: "home-planner",
+          guests: data.guests,
+          date: data.date,
+          location: data.location,
+          budgetRange: data.budget,
+        }),
+      });
       if (!res.ok) throw new Error();
       toast.success("Consultation request received!");
       const msg = encodeURIComponent(`Hi Glitz! ${data.eventType} in ${data.location}. Budget: ${data.budget}. Guests: ${data.guests}. Date: ${data.date}. ${data.name}`);

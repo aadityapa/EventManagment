@@ -1,22 +1,51 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Star, BadgeCheck } from "lucide-react";
 import { vendors } from "@/data/cms";
 import { VENDOR_CATEGORIES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getApiUrl } from "@/lib/utils";
+
+type VendorItem = {
+  id: string;
+  businessName: string;
+  category: string;
+  city: string;
+  rating: number;
+  priceRange: string;
+  verified: boolean;
+  images: string[];
+};
 
 export function VendorMarketplace() {
   const [category, setCategory] = useState("ALL");
+  const [items, setItems] = useState<VendorItem[]>(vendors as unknown as VendorItem[]);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(getApiUrl("/vendors"), { method: "GET" });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as unknown;
+        if (!ignore && Array.isArray(data)) setItems(data as VendorItem[]);
+      } catch {
+        // Keep fallback data
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
-    if (category === "ALL") return vendors;
-    return vendors.filter((v) => v.category === category);
-  }, [category]);
+    if (category === "ALL") return items;
+    return items.filter((v) => v.category === category);
+  }, [category, items]);
 
   const categories = ["ALL", ...VENDOR_CATEGORIES.filter((c) =>
-    vendors.some((v) => v.category === c)
+    items.some((v) => v.category === c)
   )];
 
   return (
