@@ -19,10 +19,11 @@ interface BrandHeroProps {
   full?: boolean;
   threeD?: boolean;
   decoration?: ReactNode;
+  scrollIndicator?: ReactNode;
   children?: ReactNode;
 }
 
-export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, decoration, children }: BrandHeroProps) {
+export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, decoration, scrollIndicator, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -67,6 +68,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
         {subtitle && <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--glitz-muted)] sm:text-lg">{subtitle}</p>}
         {children && <div className="mt-8">{children}</div>}
       </div>
+      {scrollIndicator}
     </section>
   );
 }

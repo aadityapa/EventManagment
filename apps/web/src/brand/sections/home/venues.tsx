@@ -8,11 +8,11 @@ import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 
 const VENUES = [
-  { city: "Pune", name: "Skyline Convention", capacity: 2500, price: "₹4.5L", rating: 4.8, image: BRAND_IMAGES.venues[2] },
-  { city: "Mumbai", name: "The Grand Ballroom", capacity: 800, price: "₹5L", rating: 4.9, image: BRAND_IMAGES.venues[0] },
-  { city: "Goa", name: "Beachfront Paradise", capacity: 500, price: "₹9L", rating: 4.9, image: BRAND_IMAGES.venues[3] },
-  { city: "Jaipur", name: "Royal Palace Estate", capacity: 1200, price: "₹12L", rating: 4.9, image: BRAND_IMAGES.hero.palace },
-  { city: "Udaipur", name: "Lake Palace Gardens", capacity: 600, price: "₹15L", rating: 5.0, image: BRAND_IMAGES.destinations[1] },
+  { city: "Pune", name: "Skyline Convention", capacity: 2500, price: "₹4.5L", rating: 4.8, image: BRAND_IMAGES.venues[0] },
+  { city: "Mumbai", name: "The Grand Ballroom", capacity: 800, price: "₹5L", rating: 4.9, image: BRAND_IMAGES.venues[1] },
+  { city: "Goa", name: "Beachfront Paradise", capacity: 500, price: "₹9L", rating: 4.9, image: BRAND_IMAGES.venues[2] },
+  { city: "Jaipur", name: "Royal Palace Estate", capacity: 1200, price: "₹12L", rating: 4.9, image: BRAND_IMAGES.venues[3] },
+  { city: "Udaipur", name: "Lake Palace Gardens", capacity: 600, price: "₹15L", rating: 5.0, image: BRAND_IMAGES.venues[4] },
 ];
 
 export function HomeVenues() {

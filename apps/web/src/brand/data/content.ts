@@ -1,10 +1,10 @@
 import { BRAND_IMAGES } from "./imagery";
 
 export const BRAND_STATS = [
-  { value: 1800, suffix: "+", label: "Events Managed" },
-  { value: 1400, suffix: "+", label: "Happy Clients" },
-  { value: 12, suffix: "+", label: "Years Experience" },
-  { value: 35, suffix: "+", label: "Cities Covered" },
+  { value: 1000, suffix: "+", label: "Events Managed" },
+  { value: 500, suffix: "+", label: "Happy Clients" },
+  { value: 10, suffix: "+", label: "Years Experience" },
+  { value: 50, suffix: "+", label: "Premium Venues" },
 ] as const;
 
 export const BRAND_TRUST = [
