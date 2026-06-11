@@ -1,5 +1,8 @@
 import { IMAGES } from "@/lib/images";
 
+const U = (id: string, w = 1920) =>
+  `https://images.unsplash.com/${id}?w=${w}&q=88&auto=format&fit=crop`;
+
 export type HeroSlide = {
   src: string;
   alt: string;
@@ -7,53 +10,56 @@ export type HeroSlide = {
   query: string;
 };
 
+/** Landscape luxury event photography — no portraits or influencer-style shots */
 export const HERO_CATEGORIES: HeroSlide[] = [
   {
-    category: "Luxury Weddings",
-    query: "luxury wedding ceremony",
-    alt: "Luxury wedding celebration",
-    src: IMAGES.weddings[0],
+    category: "Luxury Wedding",
+    query: "luxury wedding reception venue decor",
+    alt: "Luxury wedding reception with elegant decor",
+    src: U("photo-1519741497674-611481863552"),
   },
   {
-    category: "Corporate Events",
-    query: "corporate gala event",
-    alt: "Corporate event production",
-    src: IMAGES.corporate[0],
+    category: "Destination Wedding",
+    query: "destination wedding palace venue",
+    alt: "Destination wedding at heritage palace",
+    src: U("photo-1566073771259-6a8506099945"),
   },
   {
-    category: "Concerts",
-    query: "concert stage lights",
-    alt: "Concert stage production",
-    src: IMAGES.concerts[0],
+    category: "Corporate Event",
+    query: "corporate gala ballroom event",
+    alt: "Corporate gala in grand ballroom",
+    src: U("photo-1540575467063-178a50c2df87"),
   },
   {
-    category: "Award Shows",
-    query: "award ceremony stage",
-    alt: "Award ceremony event",
-    src: IMAGES.gallery[3],
+    category: "Concert",
+    query: "concert stage production lights",
+    alt: "Concert stage with dramatic lighting",
+    src: U("photo-1459749411175-04bf5292ceea"),
   },
   {
-    category: "Fashion Shows",
-    query: "fashion show runway",
-    alt: "Fashion show runway",
-    src: IMAGES.gallery[6],
+    category: "Award Function",
+    query: "award ceremony stage event",
+    alt: "Award ceremony stage production",
+    src: U("photo-1492684223066-81342ee5ff30"),
   },
   {
-    category: "Destination Weddings",
-    query: "destination wedding palace",
-    alt: "Destination wedding venue",
-    src: IMAGES.weddings[1],
+    category: "Fashion Show",
+    query: "fashion runway event production",
+    alt: "Fashion show runway event",
+    src: U("photo-1552664730-d307ca884978"),
   },
   {
-    category: "Birthday Events",
-    query: "luxury birthday celebration",
-    alt: "Luxury birthday celebration",
-    src: IMAGES.gallery[9],
+    category: "Celebrity Event",
+    query: "vip red carpet event venue",
+    alt: "VIP celebrity event venue",
+    src: U("photo-1519167758481-83f550bb49b3"),
   },
   {
-    category: "Celebrity Events",
-    query: "vip red carpet event",
-    alt: "Celebrity VIP event",
-    src: IMAGES.palace,
+    category: "Brand Promotion",
+    query: "luxury brand launch event",
+    alt: "Luxury brand promotion event",
+    src: U("photo-1475721027785-f74eccf877e2"),
   },
 ];
+
+export const HERO_FALLBACK = IMAGES.hero.main;

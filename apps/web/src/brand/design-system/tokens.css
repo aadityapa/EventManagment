@@ -1,11 +1,15 @@
 /* Glitz Brand Design System — Google Stitch / Apple luxury principles */
 
 :root {
-  --glitz-bg: #0a0a0a;
+  --glitz-bg: #050505;
   --glitz-surface: #121212;
   --glitz-surface-elevated: #1a1a1a;
   --glitz-gold: #d4af37;
-  --glitz-gold-light: #f4e08d;
+  --glitz-gold-light: #f5d76e;
+  --glitz-gold-metallic: #ffd700;
+  --glitz-dune: #d8b26e;
+  --glitz-dune-glow: #e6c67a;
+  --glitz-ivory: #fdfbf5;
   --glitz-text: #ffffff;
   --glitz-muted: #a8a8a8;
   --glitz-border: rgba(212, 175, 55, 0.14);
@@ -15,8 +19,18 @@
   --glitz-section-mobile: 5rem;
   --glitz-section-tablet: 7.5rem;
   --glitz-section-desktop: 10rem;
-  --glitz-gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e08d 48%, #d4af37 100%);
-  --glitz-gradient-hero: linear-gradient(180deg, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0.92) 100%);
+  --glitz-gradient-gold: linear-gradient(135deg, #c9a227 0%, #f5d76e 48%, #d4af37 100%);
+  --glitz-gradient-hero: linear-gradient(180deg, rgba(5,5,5,0.35) 0%, rgba(5,5,5,0.92) 100%);
+}
+
+.light {
+  --glitz-bg: #fdfbf5;
+  --glitz-surface: #f7f3eb;
+  --glitz-surface-elevated: #e8dcc5;
+  --glitz-text: #1a1400;
+  --glitz-muted: #6b6358;
+  --glitz-border: rgba(201, 162, 39, 0.2);
+  --glitz-gradient-hero: linear-gradient(180deg, rgba(253,251,245,0.2) 0%, rgba(247,243,235,0.95) 100%);
 }
 
 .brand-root {
