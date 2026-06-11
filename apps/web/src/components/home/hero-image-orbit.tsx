@@ -4,19 +4,14 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { IMAGES } from "@/lib/images";
 
 type HeroImage = { src: string; alt: string };
 
-const FALLBACK: HeroImage[] = [
-  { src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&q=80&auto=format&fit=crop", alt: "Luxury ballroom event" },
-  { src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80&auto=format&fit=crop", alt: "Wedding celebration" },
-  { src: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&q=80&auto=format&fit=crop", alt: "Event decor" },
-  { src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80&auto=format&fit=crop", alt: "Corporate networking" },
-  { src: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1200&q=80&auto=format&fit=crop", alt: "Concert production" },
-  { src: "https://images.unsplash.com/photo-1505373877841-8d25f39c466e?w=1200&q=80&auto=format&fit=crop", alt: "Conference stage" },
-  { src: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=1200&q=80&auto=format&fit=crop", alt: "Luxury dining setup" },
-  { src: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&q=80&auto=format&fit=crop", alt: "Event ambience" },
-];
+const FALLBACK: HeroImage[] = IMAGES.gallery.slice(0, 12).map((src, i) => ({
+  src,
+  alt: `Event inspiration ${i + 1}`,
+}));
 
 function useReducedMotion() {
   return useMemo(() => {
@@ -28,6 +23,7 @@ function useReducedMotion() {
 export function HeroImageOrbit({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   const [images, setImages] = useState<HeroImage[]>(FALLBACK);
+  const [broken, setBroken] = useState<Record<string, true>>({});
   const layout = useMemo(() => {
     if (typeof window === "undefined") return { radius: 220, size: 88 };
     const lg = window.matchMedia?.("(min-width: 1024px)")?.matches ?? true;
@@ -53,7 +49,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
     };
   }, []);
 
-  const items = images.slice(0, 10);
+  const items = images.filter((img) => !broken[img.src]).slice(0, 10);
 
   return (
     <div className={cn("pointer-events-none absolute inset-0", className)} aria-hidden>
@@ -94,6 +90,9 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                       height={mobileLayout.size}
                       className="relative rounded-full object-cover"
                       sizes={`${mobileLayout.size}px`}
+                      unoptimized
+                      referrerPolicy="no-referrer"
+                      onError={() => setBroken((b) => (b[img.src] ? b : { ...b, [img.src]: true }))}
                     />
                   </motion.div>
                 </div>
@@ -142,6 +141,9 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                       height={layout.size}
                       className="relative rounded-full object-cover shadow-[0_0_40px_rgba(212,175,55,0.12)]"
                       sizes={`${layout.size}px`}
+                      unoptimized
+                      referrerPolicy="no-referrer"
+                      onError={() => setBroken((b) => (b[img.src] ? b : { ...b, [img.src]: true }))}
                     />
                   </motion.div>
                 </div>
