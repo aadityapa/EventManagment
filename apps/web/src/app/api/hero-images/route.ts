@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { HERO_CATEGORIES } from "@/components/home/hero-carousel-data";
 import { IMAGES } from "@/lib/images";
 
 type HeroImage = { src: string; alt: string };
+type HeroSlide = { src: string; alt: string; category: string; query: string };
 
 const FALLBACK: HeroImage[] = IMAGES.gallery.slice(0, 12).map((src, i) => ({
   src,
@@ -26,20 +28,93 @@ function isAllowedImageUrl(src: string): boolean {
   }
 }
 
+async function tryUnsplashQuery(query: string): Promise<HeroImage | null> {
+  const key = process.env.UNSPLASH_ACCESS_KEY?.trim();
+  if (!key) return null;
+
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape&content_filter=high`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Client-ID ${key}` },
+    next: { revalidate: 60 * 60 * 6 },
+  });
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as unknown;
+  const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
+  const results = Array.isArray(root?.results) ? root.results : [];
+  const first = results[0] && typeof results[0] === "object" ? (results[0] as Record<string, unknown>) : null;
+  if (!first) return null;
+
+  const urls = first.urls && typeof first.urls === "object" ? (first.urls as Record<string, unknown>) : {};
+  const src = typeof urls.regular === "string" ? urls.regular : "";
+  const alt =
+    (typeof first.alt_description === "string" && first.alt_description) ||
+    (typeof first.description === "string" && first.description) ||
+    query;
+
+  if (!isAllowedImageUrl(src)) return null;
+  return { src, alt };
+}
+
+async function tryPexelsQuery(query: string): Promise<HeroImage | null> {
+  const key = process.env.PEXELS_API_KEY?.trim();
+  if (!key) return null;
+
+  const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`;
+  const res = await fetch(url, {
+    headers: { Authorization: key },
+    next: { revalidate: 60 * 60 * 6 },
+  });
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as unknown;
+  const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
+  const photos = Array.isArray(root?.photos) ? root.photos : [];
+  const first = photos[0] && typeof photos[0] === "object" ? (photos[0] as Record<string, unknown>) : null;
+  if (!first) return null;
+
+  const srcObj = first.src && typeof first.src === "object" ? (first.src as Record<string, unknown>) : {};
+  const src =
+    (typeof srcObj.large === "string" && srcObj.large) ||
+    (typeof srcObj.medium === "string" && srcObj.medium) ||
+    "";
+  const alt = (typeof first.alt === "string" && first.alt) || query;
+
+  if (!isAllowedImageUrl(src)) return null;
+  return { src, alt };
+}
+
+async function buildSlides(): Promise<HeroSlide[]> {
+  const slides = await Promise.all(
+    HERO_CATEGORIES.map(async (cat) => {
+      const remote =
+        (await tryUnsplashQuery(cat.query)) ||
+        (await tryPexelsQuery(cat.query));
+
+      return {
+        category: cat.category,
+        query: cat.query,
+        src: remote?.src ?? cat.src,
+        alt: remote?.alt ?? cat.alt,
+      };
+    })
+  );
+  return slides;
+}
+
 async function tryGoogleCse(): Promise<HeroImage[] | null> {
   const key = process.env.GOOGLE_CSE_API_KEY?.trim();
   const cx = process.env.GOOGLE_CSE_CX?.trim();
   if (!key || !cx) return null;
 
-  const q = encodeURIComponent("luxury wedding decor event stage conference");
+  const q = encodeURIComponent("luxury wedding corporate event concert fashion award");
   const url = `https://www.googleapis.com/customsearch/v1?key=${key}&cx=${cx}&q=${q}&searchType=image&safe=active&num=10&imgType=photo`;
   const res = await fetch(url, { next: { revalidate: 60 * 60 * 6 } });
   if (!res.ok) return null;
 
   const data = (await res.json()) as unknown;
   const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
-  const itemsRaw = root?.items;
-  const items = Array.isArray(itemsRaw) ? itemsRaw : [];
+  const items = Array.isArray(root?.items) ? root.items : [];
 
   const images: HeroImage[] = items
     .map((it) => {
@@ -50,8 +125,7 @@ async function tryGoogleCse(): Promise<HeroImage[] | null> {
     })
     .filter((x) => {
       try {
-        const u = new URL(x.src);
-        return u.protocol === "https:";
+        return new URL(x.src).protocol === "https:";
       } catch {
         return false;
       }
@@ -64,17 +138,18 @@ async function tryUnsplash(): Promise<HeroImage[] | null> {
   const key = process.env.UNSPLASH_ACCESS_KEY?.trim();
   if (!key) return null;
 
-  const query = encodeURIComponent("luxury wedding decor event stage conference");
+  const query = encodeURIComponent("luxury wedding corporate event concert fashion award");
   const url = `https://api.unsplash.com/search/photos?query=${query}&per_page=12&orientation=landscape&content_filter=high`;
   const res = await fetch(url, {
     headers: { Authorization: `Client-ID ${key}` },
     next: { revalidate: 60 * 60 * 6 },
   });
   if (!res.ok) return null;
+
   const data = (await res.json()) as unknown;
   const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
-  const resultsRaw = root?.results;
-  const results = Array.isArray(resultsRaw) ? resultsRaw : [];
+  const results = Array.isArray(root?.results) ? root.results : [];
+
   const images: HeroImage[] = results
     .map((r) => {
       const rec = r && typeof r === "object" ? (r as Record<string, unknown>) : {};
@@ -87,6 +162,7 @@ async function tryUnsplash(): Promise<HeroImage[] | null> {
       return { src, alt };
     })
     .filter((x: HeroImage) => isAllowedImageUrl(x.src));
+
   return images.length ? images : null;
 }
 
@@ -94,17 +170,18 @@ async function tryPexels(): Promise<HeroImage[] | null> {
   const key = process.env.PEXELS_API_KEY?.trim();
   if (!key) return null;
 
-  const query = encodeURIComponent("luxury wedding decor event stage conference");
+  const query = encodeURIComponent("luxury wedding corporate event concert fashion award");
   const url = `https://api.pexels.com/v1/search?query=${query}&per_page=12&orientation=landscape`;
   const res = await fetch(url, {
     headers: { Authorization: key },
     next: { revalidate: 60 * 60 * 6 },
   });
   if (!res.ok) return null;
+
   const data = (await res.json()) as unknown;
   const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
-  const photosRaw = root?.photos;
-  const photos = Array.isArray(photosRaw) ? photosRaw : [];
+  const photos = Array.isArray(root?.photos) ? root.photos : [];
+
   const images: HeroImage[] = photos
     .map((p) => {
       const rec = p && typeof p === "object" ? (p as Record<string, unknown>) : {};
@@ -117,47 +194,24 @@ async function tryPexels(): Promise<HeroImage[] | null> {
       return { src, alt };
     })
     .filter((x: HeroImage) => isAllowedImageUrl(x.src));
-  return images.length ? images : null;
-}
 
-async function tryPixabay(): Promise<HeroImage[] | null> {
-  const key = process.env.PIXABAY_API_KEY?.trim();
-  if (!key) return null;
-
-  const query = encodeURIComponent("luxury wedding decor event stage conference");
-  const url = `https://pixabay.com/api/?key=${key}&q=${query}&image_type=photo&per_page=12&safesearch=true`;
-  const res = await fetch(url, { next: { revalidate: 60 * 60 * 6 } });
-  if (!res.ok) return null;
-  const data = (await res.json()) as unknown;
-  const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
-  const hitsRaw = root?.hits;
-  const hits = Array.isArray(hitsRaw) ? hitsRaw : [];
-  const images: HeroImage[] = hits
-    .map((h) => {
-      const rec = h && typeof h === "object" ? (h as Record<string, unknown>) : {};
-      const src =
-        (typeof rec.largeImageURL === "string" && rec.largeImageURL) ||
-        (typeof rec.webformatURL === "string" && rec.webformatURL) ||
-        "";
-      const alt = (typeof rec.tags === "string" && rec.tags) || "Event photo";
-      return { src, alt };
-    })
-    .filter((x: HeroImage) => isAllowedImageUrl(x.src));
   return images.length ? images : null;
 }
 
 export async function GET() {
   try {
+    const slides = await buildSlides();
     const images =
       (await tryGoogleCse()) ||
       (await tryUnsplash()) ||
       (await tryPexels()) ||
-      (await tryPixabay()) ||
       FALLBACK;
 
-    return NextResponse.json({ images }, { status: 200 });
+    return NextResponse.json({ slides, images }, { status: 200 });
   } catch {
-    return NextResponse.json({ images: FALLBACK }, { status: 200 });
+    return NextResponse.json(
+      { slides: HERO_CATEGORIES, images: FALLBACK },
+      { status: 200 }
+    );
   }
 }
-

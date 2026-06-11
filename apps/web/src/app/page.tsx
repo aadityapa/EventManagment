@@ -1,4 +1,4 @@
-import { generateSEO, organizationSchema } from "@/lib/seo";
+import { generateSEO } from "@/lib/seo";
 import { HomeView } from "@/brand";
 
 export const metadata = generateSEO({
@@ -9,11 +9,5 @@ export const metadata = generateSEO({
 });
 
 export default function HomePage() {
-  const schema = organizationSchema();
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <HomeView />
-    </>
-  );
+  return <HomeView />;
 }

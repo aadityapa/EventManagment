@@ -26,7 +26,7 @@ export const IMAGES = {
   venues: [
     U("photo-1519167758481-83f550bb49b3"),
     U("photo-1464366400600-7168b8af9bc3"),
-    U("photo-1478146896988-eee32b6380b2"),
+    U("photo-1464366400600-7168b8af9bc3"),
     U("photo-1519225421980-715cb0215aed"),
     U("photo-1606216794074-735e91aa2c92"),
   ],

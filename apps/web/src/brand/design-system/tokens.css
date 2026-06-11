@@ -4,18 +4,18 @@
   --glitz-bg: #0a0a0a;
   --glitz-surface: #121212;
   --glitz-surface-elevated: #1a1a1a;
-  --glitz-gold: #c2b280; /* Subtle Dune accent */
-  --glitz-gold-light: #e0d8bf; /* Lighter Dune accent */
+  --glitz-gold: #d4af37;
+  --glitz-gold-light: #f4e08d;
   --glitz-text: #ffffff;
   --glitz-muted: #a8a8a8;
-  --glitz-border: rgba(194, 178, 128, 0.14);
-  --glitz-glow: 0 0 48px rgba(194, 178, 128, 0.18);
+  --glitz-border: rgba(212, 175, 55, 0.14);
+  --glitz-glow: 0 0 48px rgba(212, 175, 55, 0.18);
   --glitz-radius: 12px;
   --glitz-container: 90rem;
   --glitz-section-mobile: 5rem;
   --glitz-section-tablet: 7.5rem;
   --glitz-section-desktop: 10rem;
-  --glitz-gradient-gold: linear-gradient(135deg, #a6966c 0%, #e0d8bf 48%, #c2b280 100%);
+  --glitz-gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e08d 48%, #d4af37 100%);
   --glitz-gradient-hero: linear-gradient(180deg, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0.92) 100%);
 }
 

@@ -10,18 +10,18 @@
   --card-border: rgba(194, 178, 128, 0.18);
   --muted: #b8b8b8;
   --muted-foreground: #8a8a8a;
-  --primary: #c2b280; /* Subtle Dune accent */
+  --primary: #d4af37;
   --primary-foreground: #0a0a0a;
   --secondary: #1a1a1a;
-  --accent: #e0d8bf; /* Lighter Dune accent */
-  --gold: #c2b280; /* Subtle Dune accent */
-  --gold-light: #e0d8bf; /* Lighter Dune accent */
+  --accent: #f4e08d;
+  --gold: #d4af37;
+  --gold-light: #f4e08d;
   --destructive: #ef4444;
-  --border: rgba(194, 178, 128, 0.12);
-  --ring: #c2b280;
+  --border: rgba(212, 175, 55, 0.12);
+  --ring: #d4af37;
   --glass: rgba(18, 18, 18, 0.72);
-  --glass-border: rgba(194, 178, 128, 0.22);
-  --gradient-gold: linear-gradient(135deg, #a6966c 0%, #e0d8bf 45%, #c2b280 100%);
+  --glass-border: rgba(212, 175, 55, 0.22);
+  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e08d 45%, #d4af37 100%);
   --gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0a0a0a 100%);
   --gradient-hero: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(10,10,10,0.92) 100%);
   --shadow-glow: 0 0 40px rgba(194, 178, 128, 0.2);
