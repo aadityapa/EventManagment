@@ -18,12 +18,13 @@ interface BrandHeroProps {
   video?: string;
   full?: boolean;
   threeD?: boolean;
+  backgroundLayers?: ReactNode;
   decoration?: ReactNode;
   scrollIndicator?: ReactNode;
   children?: ReactNode;
 }
 
-export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, decoration, scrollIndicator, children }: BrandHeroProps) {
+export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, backgroundLayers, decoration, scrollIndicator, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -52,6 +53,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
         ) : null}
         <div className="absolute inset-0 bg-[var(--glitz-gradient-hero)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />
+        {backgroundLayers}
       </div>
 
       {threeD && full && <HeroThreeCanvas />}

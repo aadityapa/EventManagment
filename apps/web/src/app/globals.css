@@ -7,25 +7,25 @@
   --foreground: #ffffff;
   --card: #121212;
   --surface: #121212;
-  --card-border: rgba(212, 175, 55, 0.18);
+  --card-border: rgba(194, 178, 128, 0.18);
   --muted: #b8b8b8;
   --muted-foreground: #8a8a8a;
-  --primary: #d4af37;
+  --primary: #c2b280; /* Subtle Dune accent */
   --primary-foreground: #0a0a0a;
   --secondary: #1a1a1a;
-  --accent: #f4e4a1;
-  --gold: #d4af37;
-  --gold-light: #f4e4a1;
+  --accent: #e0d8bf; /* Lighter Dune accent */
+  --gold: #c2b280; /* Subtle Dune accent */
+  --gold-light: #e0d8bf; /* Lighter Dune accent */
   --destructive: #ef4444;
-  --border: rgba(212, 175, 55, 0.12);
-  --ring: #d4af37;
+  --border: rgba(194, 178, 128, 0.12);
+  --ring: #c2b280;
   --glass: rgba(18, 18, 18, 0.72);
-  --glass-border: rgba(212, 175, 55, 0.22);
-  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e4a1 45%, #d4af37 100%);
+  --glass-border: rgba(194, 178, 128, 0.22);
+  --gradient-gold: linear-gradient(135deg, #a6966c 0%, #e0d8bf 45%, #c2b280 100%);
   --gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0a0a0a 100%);
   --gradient-hero: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(10,10,10,0.92) 100%);
-  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.2);
-  --shadow-glow-lg: 0 0 80px rgba(212, 175, 55, 0.15);
+  --shadow-glow: 0 0 40px rgba(194, 178, 128, 0.2);
+  --shadow-glow-lg: 0 0 80px rgba(194, 178, 128, 0.15);
   --radius: 0.75rem;
 }
 
@@ -61,10 +61,10 @@
   --color-bg-surface: #1a1a1a;
   --color-text-primary: #ffffff;
   --color-text-muted: #b8b8b8;
-  --color-gold-soft: #f4e4a1;
-  --color-primary-container: #d4af37;
+  --color-gold-soft: #e0d8bf;
+  --color-primary-container: #c2b280;
   --color-on-primary-container: #1a1400;
-  --color-glass-border: rgba(212, 175, 55, 0.22);
+  --color-glass-border: rgba(194, 178, 128, 0.22);
   --color-glass-bg: rgba(18, 18, 18, 0.72);
   --color-surface-container-low: #1a1a1a;
   --color-surface-container-lowest: #121212;
@@ -292,7 +292,7 @@ body {
 }
 
 .shimmer-gold {
-  background: linear-gradient(90deg, #d4af37 0%, #f4e4a1 50%, #d4af37 100%);
+  background: linear-gradient(90deg, #a6966c 0%, #e0d8bf 50%, #c2b280 100%);
   background-size: 200% auto;
   animation: shimmer 3s linear infinite;
 }

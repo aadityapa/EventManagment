@@ -8,6 +8,7 @@ import { HeroImageOrbit } from "@/components/home/hero-image-orbit";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { ScrollIndicator } from "@/components/effects/scroll-indicator";
 import { GoldParticles } from "@/components/effects/gold-particles";
+import { CircularMotionBackground } from "@/components/effects/circular-motion-background";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Glitz Events, I'd like to discuss an event.")}`;
@@ -18,15 +19,15 @@ export function HomeHero() {
       label="Glitz Events & Promotions"
       title="Creating Extraordinary Experiences"
       subtitle="Luxury weddings, corporate galas, destination celebrations, and premium experiences across India."
-      video={BRAND_IMAGES.hero.video}
       image={BRAND_IMAGES.hero.poster}
       full
-      decoration={
+      backgroundLayers={
         <>
-          <GoldParticles className="pointer-events-none absolute inset-0 z-[1] opacity-60" />
-          <HeroImageOrbit />
+          <CircularMotionBackground className="opacity-95" />
+          <GoldParticles className="opacity-45" />
         </>
       }
+      decoration={<HeroImageOrbit />}
       scrollIndicator={<ScrollIndicator />}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">

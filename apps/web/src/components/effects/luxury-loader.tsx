@@ -65,18 +65,18 @@ export function LuxuryLoader({ onComplete }: { onComplete: () => void }) {
       <div className="relative flex h-56 w-56 items-center justify-center sm:h-72 sm:w-72">
         <div
           ref={glowRef}
-          className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.35),transparent_65%)] blur-2xl"
+          className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(194,178,128,0.35),transparent_65%)] blur-2xl"
         />
         <div
           ref={ringRef}
-          className="absolute inset-0 rounded-full border-2 border-[var(--glitz-gold)]/40 shadow-[0_0_60px_rgba(212,175,55,0.25)]"
+          className="absolute inset-0 rounded-full border-2 border-[var(--glitz-gold)]/40 shadow-[0_0_60px_rgba(194,178,128,0.25)]"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.35), transparent, rgba(244,224,161,0.2), transparent)",
+              "conic-gradient(from 0deg, transparent, rgba(194,178,128,0.35), transparent, rgba(224,216,191,0.2), transparent)",
           }}
         />
         <div ref={logoRef} className="relative z-10 flex flex-col items-center gap-3">
-          <Image src="/logo.jpg" alt="Glitz Events & Promotions" width={120} height={120} priority className="rounded-xl shadow-[0_0_40px_rgba(212,175,55,0.2)]" />
+          <Image src="/logo.jpg" alt="Glitz Events & Promotions" width={120} height={120} priority className="rounded-xl shadow-[0_0_40px_rgba(194,178,128,0.2)]" />
           <p className="brand-label text-[var(--glitz-gold)]">Luxury Events</p>
         </div>
       </div>
