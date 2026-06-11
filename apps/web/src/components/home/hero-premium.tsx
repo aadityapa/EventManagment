@@ -8,7 +8,8 @@ import { MagneticButton } from "@/components/effects/magnetic-button";
 import { ScrollIndicator } from "@/components/effects/scroll-indicator";
 import { HeroCinematicBackground } from "@/components/home/hero-cinematic-background";
 import { HeroCinematicFx } from "@/components/home/hero-cinematic-fx";
-import { HERO_CATEGORIES, type HeroSlide } from "@/components/home/hero-carousel-data";
+import { HERO_CATEGORIES, HERO_FALLBACK, type HeroSlide } from "@/components/home/hero-carousel-data";
+import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -124,8 +125,18 @@ export function HeroPremium() {
     setBroken((b) => (b[index] ? b : { ...b, [index]: true }));
   };
 
+  const activeSlide = slides[active];
+  const activeSrc = broken[active] ? HERO_FALLBACK : activeSlide?.src ?? HERO_FALLBACK;
+  const setAdaptiveRef = useAdaptiveBackdrop({
+    imageSrc: activeSrc,
+    region: "left-third",
+    priority: 100,
+  });
+
   return (
     <section
+      ref={setAdaptiveRef}
+      data-adaptive-backdrop=""
       className="relative flex h-[100vh] min-h-[100dvh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--glitz-bg)]"
       onMouseMove={onMouseMove}
       onMouseEnter={() => setPaused(true)}
@@ -155,7 +166,7 @@ export function HeroPremium() {
           <motion.h1
             variants={itemReveal}
             ref={headlineRef}
-            className="mt-4 font-[family-name:var(--font-playfair)] text-[clamp(2.35rem,6.5vw,4.5rem)] font-bold leading-[1.04] text-[var(--glitz-text)] drop-shadow-sm"
+            className="mt-4 font-[family-name:var(--font-playfair)] text-[clamp(2.35rem,6.5vw,4.5rem)] font-bold leading-[1.04] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
           >
             {"Creating Extraordinary Experiences".split(" ").map((word, i) => (
               <span key={i} className="mr-[0.22em] inline-block overflow-hidden">
@@ -168,7 +179,7 @@ export function HeroPremium() {
 
           <motion.ul
             variants={itemReveal}
-            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[var(--glitz-muted)] md:text-base"
+            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[var(--adaptive-muted)] md:text-base"
           >
             {SUB_POINTS.map((point) => (
               <li key={point} className="flex items-center gap-2">
@@ -194,7 +205,7 @@ export function HeroPremium() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[48px] min-w-[168px] items-center justify-center gap-2 rounded-lg border border-emerald-600/30 bg-emerald-600/10 px-6 py-3 text-sm font-semibold tracking-wide text-[var(--glitz-text)] transition-all hover:bg-emerald-600/18 hover:shadow-md"
+                className="inline-flex min-h-[48px] min-w-[168px] items-center justify-center gap-2 rounded-lg border border-emerald-600/30 bg-emerald-600/10 px-6 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] transition-all hover:bg-emerald-600/18 hover:shadow-md"
               >
                 <MessageCircle className="h-4 w-4 text-emerald-500" /> WhatsApp
               </a>
@@ -202,7 +213,7 @@ export function HeroPremium() {
           </motion.div>
 
           <motion.div variants={itemReveal} className="mt-10 flex flex-wrap items-center gap-4">
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--glitz-gold-metallic)]">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
               {slides[active]?.category}
             </span>
             <div className="flex gap-1.5">
@@ -215,8 +226,8 @@ export function HeroPremium() {
                   className={cn(
                     "h-1 rounded-full transition-all duration-500",
                     i === active
-                      ? "w-10 bg-[var(--glitz-gold-metallic)] shadow-[var(--glitz-glow)]"
-                      : "w-1.5 bg-[var(--glitz-text)]/25 hover:bg-[var(--glitz-gold)]/60"
+                      ? "w-10 bg-[var(--adaptive-accent)] shadow-[var(--adaptive-shadow)]"
+                      : "w-1.5 bg-[var(--adaptive-text)]/25 hover:bg-[var(--adaptive-accent)]/60"
                   )}
                 />
               ))}

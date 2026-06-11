@@ -54,8 +54,8 @@ export function BrandHeader() {
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                 pathname === l.href
-                  ? "text-[var(--glitz-gold-metallic)]"
-                  : "text-[var(--glitz-text)]/80 hover:text-[var(--glitz-gold-metallic)]"
+                  ? "text-[var(--adaptive-accent)]"
+                  : "text-[var(--adaptive-text)]/80 hover:text-[var(--adaptive-accent)]"
               )}
             >
               {l.label}
@@ -66,7 +66,7 @@ export function BrandHeader() {
         <div className="hidden items-center gap-2.5 md:flex">
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-            className="hidden items-center gap-1.5 text-sm text-[var(--glitz-gold-metallic)] lg:flex"
+            className="hidden items-center gap-1.5 text-sm text-[var(--adaptive-accent)] lg:flex"
           >
             <Phone className="h-3.5 w-3.5" />
             {SITE_CONFIG.phone}

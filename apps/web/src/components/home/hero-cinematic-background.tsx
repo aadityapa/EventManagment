@@ -65,8 +65,10 @@ export function HeroCinematicBackground({ slides, active, broken, onBroken }: Pr
         style={{ background: "var(--glitz-hero-bottom)" }}
       />
 
-      {/* Subtle vignette — very light */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,transparent_50%,rgba(0,0,0,0.12)_100%)] dark:bg-[radial-gradient(ellipse_at_70%_40%,transparent_55%,rgba(0,0,0,0.2)_100%)]" />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{ background: "radial-gradient(ellipse at 70% 40%, transparent 52%, var(--adaptive-overlay) 100%)" }}
+      />
     </div>
   );
 }

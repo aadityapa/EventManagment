@@ -35,7 +35,7 @@ export function HomeIntro() {
           </p>
           <ul className="space-y-3">
             {DIFFERENTIATORS.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-white/90">
+              <li key={item} className="flex items-start gap-3 text-sm text-[var(--adaptive-muted)]">
                 <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--glitz-gold)]" />
                 {item}
               </li>

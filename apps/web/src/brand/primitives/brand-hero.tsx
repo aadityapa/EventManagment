@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
 import dynamic from "next/dynamic";
 import { BrandImage } from "./brand-image";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
@@ -27,6 +28,14 @@ interface BrandHeroProps {
 export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, backgroundLayers, decoration, scrollIndicator, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const setAdaptiveRef = useAdaptiveBackdrop({
+    imageSrc: image,
+    videoRef,
+    region: "left-third",
+    priority: 80,
+    enabled: Boolean(image || video),
+  });
 
   useEffect(() => {
     registerGsap();
@@ -42,16 +51,21 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
   const words = title.split(" ");
 
   return (
-    <section className={`relative overflow-hidden border-b border-[var(--glitz-border)] ${full ? "min-h-[100dvh]" : "min-h-[55vh] pt-16"}`}>
+    <section
+      ref={setAdaptiveRef}
+      data-adaptive-backdrop=""
+      className={`relative overflow-hidden border-b border-[var(--glitz-border)] ${full ? "min-h-[100dvh]" : "min-h-[55vh] pt-16"}`}
+    >
       <div ref={bgRef} className="absolute inset-0 origin-center">
         {video ? (
-          <video autoPlay muted loop playsInline poster={image} className="h-full w-full object-cover" aria-hidden>
+          <video ref={videoRef} autoPlay muted loop playsInline poster={image} className="h-full w-full object-cover" aria-hidden>
             <source src={video} type="video/mp4" />
           </video>
         ) : image ? (
           <BrandImage src={image} alt="" fill priority sizes="100vw" aria-hidden />
         ) : null}
-        <div className="absolute inset-0 bg-[var(--glitz-gradient-hero)]" />
+        <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
+        <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />
         {backgroundLayers}
       </div>
@@ -60,14 +74,14 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
       {decoration}
       <div className={`brand-container relative z-10 flex flex-col justify-end ${full ? "min-h-[100dvh] pb-20 pt-28" : "pb-16 pt-32"}`}>
         {label && <span className="brand-label mb-4">{label}</span>}
-        <h1 ref={titleRef} className="brand-display max-w-5xl text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.08]">
+        <h1 ref={titleRef} className="brand-display max-w-5xl text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.08] text-[var(--adaptive-text)]">
           {words.map((w, i) => (
             <span key={i} className="mr-[0.2em] inline-block overflow-hidden">
               <span data-word className="inline-block">{w}</span>
             </span>
           ))}
         </h1>
-        {subtitle && <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--glitz-muted)] sm:text-lg">{subtitle}</p>}
+        {subtitle && <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--adaptive-muted)] sm:text-lg">{subtitle}</p>}
         {children && <div className="mt-8">{children}</div>}
       </div>
       {scrollIndicator}

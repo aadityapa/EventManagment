@@ -21,7 +21,7 @@ export function BrandButton({ href, children, variant = "gold", className }: Bra
           "relative inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 py-3 text-sm font-semibold tracking-wide",
           variant === "gold"
             ? "btn-gold-metallic"
-            : "border border-[var(--glitz-gold)]/45 bg-[var(--glitz-glass)] text-[var(--glitz-text)] backdrop-blur-sm hover:border-[var(--glitz-gold)]/70 hover:bg-[var(--glitz-gold)]/8 hover:shadow-[var(--glitz-glow)]",
+            : "border border-[var(--adaptive-accent)]/45 bg-[var(--glitz-glass)] text-[var(--adaptive-text)] backdrop-blur-sm hover:border-[var(--adaptive-accent)]/70 hover:bg-[var(--adaptive-accent)]/8 hover:shadow-[var(--adaptive-shadow)]",
           className
         )}
       >

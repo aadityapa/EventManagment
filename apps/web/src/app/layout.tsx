@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, Manrope, Montserrat, Playfair_Display, Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AdaptiveThemeProvider } from "@/components/adaptive/adaptive-theme-provider";
 import { CinematicProvider } from "@/components/providers/cinematic-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { BrandHeader } from "@/brand/shell/brand-header";
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="glitz-theme" disableTransitionOnChange={false}>
+          <AdaptiveThemeProvider>
           <CinematicProvider>
             <BrandHeader />
             <main className="app-main flex-1 pb-20 md:pb-0">{children}</main>
@@ -49,6 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <BrandFab />
             <ToastProvider />
           </CinematicProvider>
+          </AdaptiveThemeProvider>
         </ThemeProvider>
       </body>
     </html>
