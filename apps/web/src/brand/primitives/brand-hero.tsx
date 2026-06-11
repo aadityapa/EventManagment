@@ -18,10 +18,11 @@ interface BrandHeroProps {
   video?: string;
   full?: boolean;
   threeD?: boolean;
+  decoration?: ReactNode;
   children?: ReactNode;
 }
 
-export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, children }: BrandHeroProps) {
+export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, decoration, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -53,6 +54,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
       </div>
 
       {threeD && full && <HeroThreeCanvas />}
+      {decoration}
       <div className={`brand-container relative z-10 flex flex-col justify-end ${full ? "min-h-[100dvh] pb-20 pt-28" : "pb-16 pt-32"}`}>
         {label && <span className="brand-label mb-4">{label}</span>}
         <h1 ref={titleRef} className="brand-display max-w-5xl text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.08]">

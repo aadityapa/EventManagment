@@ -3,6 +3,7 @@
 import { BrandHero } from "@/brand/primitives/brand-hero";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
+import { HeroImageOrbit } from "@/components/home/hero-image-orbit";
 import { Play } from "lucide-react";
 
 export function HomeHero() {
@@ -14,7 +15,7 @@ export function HomeHero() {
       video={BRAND_IMAGES.hero.video}
       image={BRAND_IMAGES.hero.poster}
       full
-      threeD
+      decoration={<HeroImageOrbit />}
     >
       <div className="flex flex-col gap-4 sm:flex-row">
         <BrandButton href="/book-event">Book Consultation</BrandButton>
