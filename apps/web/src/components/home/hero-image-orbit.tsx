@@ -20,6 +20,15 @@ function useReducedMotion() {
   }, []);
 }
 
+function shuffle<T>(arr: T[]) {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 export function HeroImageOrbit({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   const [images, setImages] = useState<HeroImage[]>(FALLBACK);
@@ -38,7 +47,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
         const res = await fetch("/api/hero-images", { method: "GET" });
         const json = (await res.json().catch(() => ({}))) as { images?: HeroImage[] };
         if (!ignore && Array.isArray(json.images) && json.images.length >= 6) {
-          setImages(json.images);
+          setImages(shuffle(json.images));
         }
       } catch {
         // keep fallback
@@ -49,6 +58,15 @@ export function HeroImageOrbit({ className }: { className?: string }) {
     };
   }, []);
 
+  // Keep the hero looking “alive”: cycle images even if the API returns a stable list.
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(() => {
+      setImages((prev) => (prev.length > 1 ? [...prev.slice(1), prev[0]] : prev));
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [reduced]);
+
   const items = images.filter((img) => !broken[img.src]).slice(0, 10);
 
   return (
@@ -57,8 +75,10 @@ export function HeroImageOrbit({ className }: { className?: string }) {
       <div className="absolute left-1/2 top-24 -translate-x-1/2 md:hidden">
         <div className="relative h-[320px] w-[320px] opacity-[0.62]">
           <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_60%)] backdrop-blur-sm" />
-          <div
-            className={cn("absolute inset-0", reduced ? "" : "animate-spin [animation-duration:42s]")}
+          <motion.div
+            className="absolute inset-0"
+            animate={reduced ? undefined : { rotate: 360 }}
+            transition={reduced ? undefined : { duration: 42, repeat: Infinity, ease: "linear" }}
             style={{
               maskImage: "radial-gradient(circle at center, rgba(0,0,0,1) 58%, rgba(0,0,0,0) 78%)",
               WebkitMaskImage: "radial-gradient(circle at center, rgba(0,0,0,1) 58%, rgba(0,0,0,0) 78%)",
@@ -98,18 +118,17 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
 
       <div className="absolute right-[-180px] top-1/2 hidden -translate-y-1/2 md:block lg:right-[-140px]">
         <div className="relative h-[460px] w-[460px] opacity-[0.92] lg:h-[560px] lg:w-[560px]">
           <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_62%)] backdrop-blur-sm" />
-          <div
-            className={cn(
-              "absolute inset-0",
-              reduced ? "" : "animate-spin [animation-duration:36s]"
-            )}
+          <motion.div
+            className="absolute inset-0"
+            animate={reduced ? undefined : { rotate: 360 }}
+            transition={reduced ? undefined : { duration: 36, repeat: Infinity, ease: "linear" }}
             style={{
               maskImage: "radial-gradient(circle at center, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 72%)",
               WebkitMaskImage: "radial-gradient(circle at center, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 72%)",
@@ -149,7 +168,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
 
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--glitz-gold)]/25 bg-black/35 px-6 py-4 text-center backdrop-blur">
             <p className="brand-label">Gallery</p>

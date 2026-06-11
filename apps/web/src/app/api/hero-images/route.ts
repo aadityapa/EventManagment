@@ -26,6 +26,40 @@ function isAllowedImageUrl(src: string): boolean {
   }
 }
 
+async function tryGoogleCse(): Promise<HeroImage[] | null> {
+  const key = process.env.GOOGLE_CSE_API_KEY?.trim();
+  const cx = process.env.GOOGLE_CSE_CX?.trim();
+  if (!key || !cx) return null;
+
+  const q = encodeURIComponent("luxury wedding decor event stage conference");
+  const url = `https://www.googleapis.com/customsearch/v1?key=${key}&cx=${cx}&q=${q}&searchType=image&safe=active&num=10&imgType=photo`;
+  const res = await fetch(url, { next: { revalidate: 60 * 60 * 6 } });
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as unknown;
+  const root = data && typeof data === "object" ? (data as Record<string, unknown>) : null;
+  const itemsRaw = root?.items;
+  const items = Array.isArray(itemsRaw) ? itemsRaw : [];
+
+  const images: HeroImage[] = items
+    .map((it) => {
+      const rec = it && typeof it === "object" ? (it as Record<string, unknown>) : {};
+      const link = typeof rec.link === "string" ? rec.link : "";
+      const title = typeof rec.title === "string" ? rec.title : "Event photo";
+      return { src: link, alt: title };
+    })
+    .filter((x) => {
+      try {
+        const u = new URL(x.src);
+        return u.protocol === "https:";
+      } catch {
+        return false;
+      }
+    });
+
+  return images.length ? images : null;
+}
+
 async function tryUnsplash(): Promise<HeroImage[] | null> {
   const key = process.env.UNSPLASH_ACCESS_KEY?.trim();
   if (!key) return null;
@@ -115,6 +149,7 @@ async function tryPixabay(): Promise<HeroImage[] | null> {
 export async function GET() {
   try {
     const images =
+      (await tryGoogleCse()) ||
       (await tryUnsplash()) ||
       (await tryPexels()) ||
       (await tryPixabay()) ||
