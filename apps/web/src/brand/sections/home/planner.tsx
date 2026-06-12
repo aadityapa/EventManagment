@@ -76,8 +76,8 @@ export function HomePlanner() {
       <div className="mx-auto max-w-xl">
         <div className="mb-8 flex justify-between">{STEPS.map((s, i) => (
           <div key={s} className="flex flex-col items-center gap-1">
-            <div className={cn("flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold", i <= step ? "bg-[var(--glitz-gold)] text-[#0A0A0A]" : "border border-[var(--glitz-border)] text-[var(--glitz-muted)]")}>{i < step ? <Check className="h-4 w-4" /> : i + 1}</div>
-            <span className="hidden text-[10px] uppercase text-[var(--glitz-muted)] sm:block">{s}</span>
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold", i <= step ? "bg-[var(--glitz-gold)] text-[#0A0A0A]" : "border border-[var(--glitz-border)] text-muted")}>{i < step ? <Check className="h-4 w-4" /> : i + 1}</div>
+            <span className="hidden text-[10px] uppercase text-muted sm:block">{s}</span>
           </div>
         ))}</div>
         <div className="brand-surface p-6 sm:p-8">
@@ -89,12 +89,12 @@ export function HomePlanner() {
               {step === 3 && <><h3 className="brand-display text-xl font-semibold">Event date?</h3><Input type="date" value={data.date} onChange={(e) => set("date", e.target.value)} className="mt-4 h-12 border-[var(--glitz-border)] bg-[var(--glitz-bg)]" /></>}
               {step === 4 && <GridPick label="Location?" options={LOCS} value={data.location} onPick={(v) => set("location", v)} />}
               {step === 5 && <div className="space-y-3"><h3 className="brand-display text-xl font-semibold">Contact details</h3><Input placeholder="Name" value={data.name} onChange={(e) => set("name", e.target.value)} className="h-12 border-[var(--glitz-border)] bg-[var(--glitz-bg)]" /><Input type="email" placeholder="Email" value={data.email} onChange={(e) => set("email", e.target.value)} className="h-12 border-[var(--glitz-border)] bg-[var(--glitz-bg)]" /><Input type="tel" placeholder="Phone" value={data.phone} onChange={(e) => set("phone", e.target.value)} className="h-12 border-[var(--glitz-border)] bg-[var(--glitz-bg)]" /></div>}
-              {step === 6 && <div className="py-6 text-center"><Check className="mx-auto h-12 w-12 text-[var(--glitz-gold)]" /><h3 className="mt-4 brand-display text-2xl font-semibold">Thank You</h3><p className="mt-2 text-[var(--glitz-muted)]">We&apos;ll contact you within 24 hours.</p><a href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white"><MessageCircle className="h-4 w-4" /> WhatsApp</a></div>}
+              {step === 6 && <div className="py-6 text-center"><Check className="mx-auto h-12 w-12 text-[var(--glitz-gold)]" /><h3 className="mt-4 brand-display text-2xl font-semibold">Thank You</h3><p className="mt-2 text-muted">We&apos;ll contact you within 24 hours.</p><a href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white"><MessageCircle className="h-4 w-4" /> WhatsApp</a></div>}
             </motion.div>
           </AnimatePresence>
           {step < 6 && (
             <div className="mt-8 flex justify-between">
-              <button type="button" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="flex items-center gap-1 text-sm text-[var(--glitz-muted)] disabled:opacity-40"><ArrowLeft className="h-4 w-4" /> Back</button>
+              <button type="button" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="flex items-center gap-1 text-sm text-muted disabled:opacity-40"><ArrowLeft className="h-4 w-4" /> Back</button>
               {step < 5 ? <button type="button" onClick={() => setStep((s) => s + 1)} disabled={!ok()} className="flex items-center gap-1 rounded-lg bg-[var(--glitz-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-40">Next <ArrowRight className="h-4 w-4" /></button>
                 : <button type="button" onClick={submit} disabled={!ok() || loading} className="rounded-lg bg-[var(--glitz-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-40">{loading ? "Sending..." : "Submit & WhatsApp"}</button>}
             </div>

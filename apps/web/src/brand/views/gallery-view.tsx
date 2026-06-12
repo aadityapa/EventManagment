@@ -24,7 +24,7 @@ export function GalleryView() {
       <BrandPageHero label="Visual Stories" title="Immersive Gallery" subtitle="Pinterest-quality luxury masonry." image={BRAND_IMAGES.gallery[0]} />
       <BrandSection>
         <div className="mb-10 flex flex-wrap justify-center gap-3">{FILTERS.map((f) => (
-          <button key={f} type="button" onClick={() => setActive(f)} className={cn("rounded-full border px-5 py-2.5 text-sm font-semibold", active === f ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-[var(--glitz-muted)]")}>{f}</button>
+          <button key={f} type="button" onClick={() => setActive(f)} className={cn("rounded-full border px-5 py-2.5 text-sm font-semibold", active === f ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-muted")}>{f}</button>
         ))}</div>
         <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
           {filtered.map((item, i) => (

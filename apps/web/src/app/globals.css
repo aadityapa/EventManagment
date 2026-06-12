@@ -7,18 +7,18 @@
 :root,
 .light {
   --background: #fdfbf5;
-  --foreground: #111111;
-  --card: #ffffff;
-  --surface: #f7f3eb;
+  --foreground: var(--text-primary);
+  --card: var(--glitz-card);
+  --surface: var(--glitz-surface);
   --card-border: rgba(184, 134, 11, 0.2);
-  --muted: #5c5348;
-  --muted-foreground: #8a8278;
-  --primary: #c9a227;
+  --muted: var(--text-muted);
+  --muted-foreground: var(--text-secondary);
+  --primary: var(--glitz-gold);
   --primary-foreground: #111111;
   --secondary: #f7f3eb;
   --accent: #e6c67a;
-  --gold: #c9a227;
-  --gold-light: #d4af37;
+  --gold: var(--gold);
+  --gold-light: var(--gold-light);
   --destructive: #ef4444;
   --border: rgba(184, 134, 11, 0.18);
   --ring: #b8860b;
@@ -34,18 +34,18 @@
 
 .dark {
   --background: #050505;
-  --foreground: #ffffff;
-  --card: #181818;
-  --surface: #111111;
+  --foreground: var(--text-primary);
+  --card: var(--glitz-card);
+  --surface: var(--glitz-surface);
   --card-border: rgba(212, 175, 55, 0.18);
-  --muted: #b0b0b0;
-  --muted-foreground: #888888;
-  --primary: #d4af37;
+  --muted: var(--text-muted);
+  --muted-foreground: var(--text-secondary);
+  --primary: var(--glitz-gold);
   --primary-foreground: #050505;
   --secondary: #111111;
   --accent: #e6c67a;
-  --gold: #d4af37;
-  --gold-light: #e6c67a;
+  --gold: var(--gold);
+  --gold-light: var(--gold-light);
   --destructive: #ef4444;
   --border: rgba(212, 175, 55, 0.14);
   --ring: #d4af37;
@@ -69,11 +69,12 @@
   --color-border: var(--border);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
-  --color-bg-primary: #0a0a0a;
-  --color-bg-elevated: #121212;
-  --color-bg-surface: #1a1a1a;
-  --color-text-primary: #ffffff;
-  --color-text-muted: #b8b8b8;
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-bg-primary: var(--background);
+  --color-bg-elevated: var(--surface);
+  --color-bg-surface: var(--card);
   --color-gold-soft: #e0d8bf;
   --color-primary-container: #c2b280;
   --color-on-primary-container: #1a1400;

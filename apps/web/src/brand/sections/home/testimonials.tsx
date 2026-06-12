@@ -43,7 +43,7 @@ export function HomeTestimonials() {
                   <div className="mb-2 flex gap-1">{Array.from({ length: t.rating }).map((_, j) => <Star key={j} className="h-4 w-4 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div>
                   <blockquote className="brand-display text-lg leading-relaxed">&ldquo;{t.content}&rdquo;</blockquote>
                   <p className="mt-3 font-semibold">{t.name}</p>
-                  <p className="text-sm text-[var(--glitz-muted)]">{t.role}</p>
+                  <p className="text-sm text-muted">{t.role}</p>
                 </div>
               </div>
             </div>

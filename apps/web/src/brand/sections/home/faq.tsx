@@ -22,17 +22,17 @@ export function HomeFaq() {
 
         <div className="mt-10 flex flex-col items-center gap-4 rounded-xl border border-[var(--glitz-gold)]/20 bg-[var(--glitz-surface-elevated)] p-6 text-center sm:flex-row sm:justify-between sm:p-8 sm:text-left">
           <div>
-            <p className="brand-display text-lg font-semibold text-[var(--glitz-text)]">
+            <p className="brand-display text-lg font-semibold text-primary">
               Still have questions?
             </p>
-            <p className="mt-1 text-sm text-[var(--glitz-muted)]">
+            <p className="mt-1 text-sm text-muted">
               Our luxury event specialists are ready to help — complimentary consultation included.
             </p>
           </div>
           <Link
             href="/contact"
             onClick={() => analytics.ctaClick("chat_with_team", "home_faq")}
-            className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-lg bg-[var(--glitz-gold)] px-6 py-3 text-sm font-semibold text-[var(--adaptive-button-text,#111)] transition-all hover:shadow-[var(--glitz-glow)] btn-premium-hover tap-target"
+            className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-lg bg-[var(--glitz-gold)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] transition-all hover:shadow-[var(--glitz-glow)] btn-premium-hover tap-target"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
             Chat with our team
@@ -40,7 +40,7 @@ export function HomeFaq() {
           </Link>
         </div>
 
-        <p className="mt-6 text-center text-sm text-[var(--glitz-muted)]">
+        <p className="mt-6 text-center text-sm text-muted">
           View all answers on our{" "}
           <Link
             href="/faqs"

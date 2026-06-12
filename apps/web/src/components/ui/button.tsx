@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "gradient-gold text-black shadow-glow hover:opacity-90 hover:scale-[1.02]",
-        secondary: "bg-secondary text-white hover:bg-secondary/90",
+        secondary: "bg-secondary text-foreground hover:bg-secondary/90",
         outline: "border border-primary/30 bg-transparent hover:bg-primary/10 text-foreground",
         ghost: "hover:bg-primary/10 text-foreground",
         glass: "glass text-foreground hover:bg-white/10",

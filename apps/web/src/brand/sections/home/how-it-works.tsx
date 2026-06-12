@@ -56,15 +56,15 @@ export function HomeHowItWorks() {
                     {item.step}
                   </span>
                 </div>
-                <h3 className="brand-display text-xl font-semibold text-[var(--glitz-text)]">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--glitz-muted)]">{item.text}</p>
+                <h3 className="brand-display text-xl font-semibold text-primary">{item.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{item.text}</p>
               </li>
             );
           })}
         </ol>
 
         <div className="mt-12 text-center">
-          <p className="mx-auto mb-6 max-w-lg text-sm text-[var(--glitz-muted)]">
+          <p className="mx-auto mb-6 max-w-lg text-sm text-muted">
             Begin with a private consultation — no obligation, just clarity on how Glitz brings your celebration to life.
           </p>
           <BrandButton

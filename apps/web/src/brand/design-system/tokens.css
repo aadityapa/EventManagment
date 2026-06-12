@@ -3,19 +3,31 @@
 /* Light luxury (default) */
 :root,
 .light {
-  --glitz-bg: #fdfbf5;
-  --glitz-surface: #f7f3eb;
-  --glitz-surface-elevated: #ffffff;
-  --glitz-card: #ffffff;
-  --glitz-gold: #c9a227;
-  --glitz-gold-light: #d4af37;
-  --glitz-gold-metallic: #b8860b;
+  /* Canonical theme tokens */
+  --background: #fdfbf5;
+  --surface: #f7f3eb;
+  --card: #ffffff;
+  --text-primary: #111111;
+  --text-secondary: #444444;
+  --text-muted: #666666;
+  --gold: #b8860b;
+  --gold-light: #c9a227;
+
+  /* Glitz aliases — map legacy vars to canonical tokens */
+  --glitz-bg: var(--background);
+  --glitz-surface: var(--surface);
+  --glitz-surface-elevated: var(--card);
+  --glitz-card: var(--card);
+  --glitz-gold: var(--gold);
+  --glitz-gold-light: var(--gold-light);
+  --glitz-gold-metallic: var(--gold);
   --glitz-gold-shine: #e6c67a;
   --glitz-dune: #d8b26e;
   --glitz-dune-glow: #f5d76e;
-  --glitz-ivory: #fdfbf5;
-  --glitz-text: #111111;
-  --glitz-muted: #5c5348;
+  --glitz-ivory: var(--background);
+  --glitz-text: var(--text-primary);
+  --glitz-text-secondary: var(--text-secondary);
+  --glitz-muted: var(--text-muted);
   --glitz-border: rgba(184, 134, 11, 0.22);
   --glitz-glass: rgba(255, 255, 255, 0.72);
   --glitz-glow: 0 0 32px rgba(201, 162, 39, 0.22);
@@ -34,19 +46,29 @@
 
 /* Dark luxury */
 .dark {
-  --glitz-bg: #050505;
-  --glitz-surface: #111111;
-  --glitz-surface-elevated: #181818;
-  --glitz-card: #181818;
-  --glitz-gold: #d4af37;
-  --glitz-gold-light: #e6c67a;
-  --glitz-gold-metallic: #c9a227;
+  --background: #050505;
+  --surface: #111111;
+  --card: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d1d1;
+  --text-muted: #a0a0a0;
+  --gold: #d4af37;
+  --gold-light: #e6c67a;
+
+  --glitz-bg: var(--background);
+  --glitz-surface: var(--surface);
+  --glitz-surface-elevated: var(--card);
+  --glitz-card: var(--card);
+  --glitz-gold: var(--gold);
+  --glitz-gold-light: var(--gold-light);
+  --glitz-gold-metallic: var(--gold);
   --glitz-gold-shine: #ffd700;
   --glitz-dune: #d8b26e;
   --glitz-dune-glow: #e6c67a;
   --glitz-ivory: #fdfbf5;
-  --glitz-text: #ffffff;
-  --glitz-muted: #b0b0b0;
+  --glitz-text: var(--text-primary);
+  --glitz-text-secondary: var(--text-secondary);
+  --glitz-muted: var(--text-muted);
   --glitz-border: rgba(212, 175, 55, 0.18);
   --glitz-glass: rgba(17, 17, 17, 0.65);
   --glitz-glow: 0 0 40px rgba(212, 175, 55, 0.25);
@@ -58,36 +80,36 @@
   --glitz-hero-bottom-static: linear-gradient(to top, rgba(5, 5, 5, 0.35) 0%, transparent 38%);
 }
 
-/* Adaptive theme intelligence — content-aware fallbacks */
+/* Adaptive theme intelligence — hero/backdrop fallbacks only (not surface sections) */
 :root,
 .light {
-  --_adaptive-text: #111111;
-  --_adaptive-muted: #5c5348;
-  --_adaptive-accent: #c9a227;
+  --_adaptive-text: var(--text-primary);
+  --_adaptive-muted: var(--text-muted);
+  --_adaptive-accent: var(--gold-light);
   --_adaptive-accent-light: #e6c67a;
   --_adaptive-overlay: rgba(253, 251, 245, 0.58);
   --_adaptive-scrim: var(--glitz-hero-scrim-static);
   --_adaptive-scrim-bottom: var(--glitz-hero-bottom-static);
   --_adaptive-shadow: 0 0 32px rgba(201, 162, 39, 0.22);
   --_adaptive-shadow-strong: 0 0 48px rgba(212, 175, 55, 0.35);
-  --_adaptive-button: linear-gradient(135deg, #b8860b 0%, #e6c67a 42%, #c9a227 78%, #d4af37 100%);
+  --_adaptive-button: var(--glitz-gradient-gold);
   --_adaptive-button-text: #111111;
-  --_adaptive-gradient-gold: linear-gradient(135deg, #b8860b 0%, #e6c67a 42%, #c9a227 78%, #d4af37 100%);
+  --_adaptive-gradient-gold: var(--glitz-gradient-gold);
 }
 
 .dark {
-  --_adaptive-text: #ffffff;
-  --_adaptive-muted: #b0b0b0;
-  --_adaptive-accent: #d4af37;
-  --_adaptive-accent-light: #e6c67a;
+  --_adaptive-text: var(--text-primary);
+  --_adaptive-muted: var(--text-muted);
+  --_adaptive-accent: var(--gold);
+  --_adaptive-accent-light: var(--gold-light);
   --_adaptive-overlay: rgba(5, 5, 5, 0.32);
   --_adaptive-scrim: var(--glitz-hero-scrim-static);
   --_adaptive-scrim-bottom: var(--glitz-hero-bottom-static);
   --_adaptive-shadow: 0 0 40px rgba(212, 175, 55, 0.25);
   --_adaptive-shadow-strong: 0 0 56px rgba(255, 215, 0, 0.28);
-  --_adaptive-button: linear-gradient(135deg, #c9a227 0%, #ffd700 38%, #d4af37 72%, #e6c67a 100%);
+  --_adaptive-button: var(--glitz-gradient-gold);
   --_adaptive-button-text: #111111;
-  --_adaptive-gradient-gold: linear-gradient(135deg, #c9a227 0%, #ffd700 38%, #d4af37 72%, #e6c67a 100%);
+  --_adaptive-gradient-gold: var(--glitz-gradient-gold);
 }
 
 :root {
@@ -121,7 +143,7 @@ html[data-adaptive-active="true"] body {
 
 .brand-root {
   background: var(--glitz-bg);
-  color: var(--glitz-text);
+  color: var(--text-primary);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
@@ -152,10 +174,11 @@ html[data-adaptive-active="true"] body {
   background: var(--glitz-surface);
   border: 1px solid var(--glitz-border);
   border-radius: var(--glitz-radius);
+  color: var(--text-primary);
 }
 
 .brand-gold-text {
-  background: var(--adaptive-gradient-gold);
+  background: var(--glitz-gradient-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -163,7 +186,7 @@ html[data-adaptive-active="true"] body {
 
 .brand-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glitz-gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 .brand-marquee {
@@ -183,7 +206,7 @@ html[data-adaptive-active="true"] body {
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--adaptive-accent);
+  color: var(--gold);
 }
 
 .brand-display {
@@ -199,13 +222,26 @@ html[data-adaptive-active="true"] body {
 }
 
 .btn-gold-metallic {
-  background: var(--adaptive-button);
-  color: var(--adaptive-button-text);
-  box-shadow: var(--adaptive-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: var(--glitz-gradient-gold);
+  color: #111111;
+  box-shadow: var(--glitz-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease, color 0.35s ease;
 }
 
 .btn-gold-metallic:hover {
   filter: brightness(1.06);
-  box-shadow: var(--adaptive-shadow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  box-shadow: var(--glitz-glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Semantic text utilities */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
 }

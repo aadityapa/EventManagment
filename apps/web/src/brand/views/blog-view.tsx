@@ -23,8 +23,8 @@ export function BlogView() {
           <div className="flex flex-col justify-center p-8 lg:p-12">
             <div className="flex gap-2">{featured.tags.map((t) => <span key={t} className="text-xs font-semibold text-[var(--glitz-gold)]">{t}</span>)}</div>
             <h2 className="mt-4 brand-display text-2xl font-bold group-hover:text-[var(--glitz-gold)] sm:text-4xl">{featured.title}</h2>
-            <p className="mt-4 text-[var(--glitz-muted)] leading-relaxed">{featured.excerpt}</p>
-            <div className="mt-6 flex gap-4 text-sm text-[var(--glitz-muted)]"><span>{featured.author}</span><span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{formatDate(featured.publishedAt)}</span><span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />6 min</span></div>
+            <p className="mt-4 text-muted leading-relaxed">{featured.excerpt}</p>
+            <div className="mt-6 flex gap-4 text-sm text-muted"><span>{featured.author}</span><span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{formatDate(featured.publishedAt)}</span><span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />6 min</span></div>
           </div>
         </Link>
       </BrandSection>
@@ -34,7 +34,7 @@ export function BlogView() {
             <motion.div key={post.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <Link href={`/blog/${post.slug}`} className="group brand-surface block overflow-hidden">
                 <div className="relative h-56"><BrandImage src={post.image} alt={post.title} fill sizes="50vw" className="transition-transform duration-700 group-hover:scale-105" /></div>
-                <div className="p-6"><h3 className="brand-display text-xl font-semibold group-hover:text-[var(--glitz-gold)]">{post.title}</h3><p className="mt-2 text-sm text-[var(--glitz-muted)] line-clamp-2">{post.excerpt}</p><p className="mt-4 text-xs text-[var(--glitz-muted)]">{post.author} · {formatDate(post.publishedAt)}</p></div>
+                <div className="p-6"><h3 className="brand-display text-xl font-semibold group-hover:text-[var(--glitz-gold)]">{post.title}</h3><p className="mt-2 text-sm text-muted line-clamp-2">{post.excerpt}</p><p className="mt-4 text-xs text-muted">{post.author} · {formatDate(post.publishedAt)}</p></div>
               </Link>
             </motion.div>
           ))}

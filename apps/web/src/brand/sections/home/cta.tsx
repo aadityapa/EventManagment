@@ -29,10 +29,10 @@ export function HomeCta() {
         >
           <div className="brand-divider mx-auto mb-8 max-w-xs" aria-hidden="true" />
           <span className="brand-label">Begin Your Story</span>
-          <h2 id="cta-heading" className="mt-4 brand-display text-section-title font-bold text-[var(--glitz-text)]">
+          <h2 id="cta-heading" className="mt-4 brand-display text-section-title font-bold text-primary">
             Ready to Create Something <span className="brand-gold-text">Extraordinary?</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[var(--glitz-muted)]">
+          <p className="mx-auto mt-4 max-w-xl text-secondary">
             Schedule a private consultation with our luxury event specialists — weddings, corporate galas, and destination celebrations crafted exclusively for you.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
@@ -49,7 +49,7 @@ export function HomeCta() {
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
                 onClick={() => analytics.ctaClick("call_now", "home_cta")}
-                className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[var(--glitz-gold)]/40 px-8 py-3 text-sm font-semibold text-[var(--glitz-text)] transition-colors hover:bg-[var(--glitz-gold)]/10 btn-premium-hover"
+                className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[var(--glitz-gold)]/40 px-8 py-3 text-sm font-semibold text-primary transition-colors hover:bg-[var(--glitz-gold)]/10 btn-premium-hover"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" /> Call Now
               </a>
@@ -60,13 +60,13 @@ export function HomeCta() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => analytics.ctaClick("whatsapp", "home_cta")}
-                className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-8 py-3 text-sm font-semibold text-[var(--glitz-text)] transition-colors hover:bg-[#25D366]/20 btn-premium-hover"
+                className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-8 py-3 text-sm font-semibold text-primary transition-colors hover:bg-[#25D366]/20 btn-premium-hover"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp
               </a>
             </MagneticButton>
           </div>
-          <p className="mt-8 text-xs text-[var(--glitz-muted)]">
+          <p className="mt-8 text-xs text-muted">
             Response within 24 hours · Complimentary initial consultation · Pune &amp; pan-India
           </p>
         </motion.div>

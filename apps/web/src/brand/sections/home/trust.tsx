@@ -7,11 +7,11 @@ export function HomeTrust() {
     <section className="border-y border-[var(--glitz-border)] bg-[var(--glitz-surface)] py-8" aria-label="Trusted by leading brands and venues">
       <div className="brand-container mb-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-4">
         <p className="brand-label">Trusted By Industry Leaders</p>
-        <div className="flex items-center gap-1 text-xs text-[var(--glitz-muted)]" aria-label="4.9 out of 5 stars from 500+ clients">
+        <div className="flex items-center gap-1 text-xs text-muted" aria-label="4.9 out of 5 stars from 500+ clients">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" aria-hidden="true" />
           ))}
-          <span className="ml-1 font-semibold text-[var(--glitz-text)]">4.9</span>
+          <span className="ml-1 font-semibold text-primary">4.9</span>
           <span>from 500+ clients</span>
         </div>
       </div>
@@ -22,7 +22,7 @@ export function HomeTrust() {
           {items.map((name, i) => (
             <span
               key={`${name}-${i}`}
-              className="flex shrink-0 items-center gap-3 whitespace-nowrap brand-display text-sm text-[var(--glitz-muted)] sm:text-base"
+              className="flex shrink-0 items-center gap-3 whitespace-nowrap brand-display text-sm text-muted sm:text-base"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--glitz-gold)]" aria-hidden="true" />
               {name}

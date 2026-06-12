@@ -49,7 +49,7 @@ export function HomeServices() {
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <h3 className="brand-display text-lg font-semibold group-hover:text-[var(--glitz-gold)]">{s.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--glitz-muted)]">{s.narrative}</p>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{s.narrative}</p>
                   <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
                     Explore <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
                   </span>
@@ -109,7 +109,7 @@ export function HomeServices() {
                   </div>
                   <div className="p-5">
                     <h3 className="brand-display text-lg font-semibold group-hover:text-[var(--glitz-gold)]">{s.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-[var(--glitz-muted)]">{s.narrative}</p>
+                    <p className="mt-2 line-clamp-2 text-sm text-muted">{s.narrative}</p>
                   </div>
                 </Link>
               </motion.div>

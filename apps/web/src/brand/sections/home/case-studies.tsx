@@ -21,13 +21,13 @@ export function HomeCaseStudies() {
               <div className={`flex flex-col justify-center p-8 lg:p-10 ${i % 2 === 1 ? "lg:[direction:ltr]" : ""}`}>
                 <span className="brand-label">{cs.category}</span>
                 <h3 className="mt-2 brand-display text-2xl font-semibold">{cs.title}</h3>
-                <p className="mt-3 text-sm text-[var(--glitz-muted)]">{cs.story}</p>
-                <div className="mt-4 flex flex-wrap gap-4 text-xs text-[var(--glitz-muted)]">
+                <p className="mt-3 text-sm text-muted">{cs.story}</p>
+                <div className="mt-4 flex flex-wrap gap-4 text-xs text-muted">
                   <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5 text-[var(--glitz-gold)]" />{cs.venue}</span>
                   <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5 text-[var(--glitz-gold)]" />{cs.guests} guests</span>
-                  <span className="text-[var(--glitz-gold)]">Investment: {cs.budget}</span>
+                  <span className="font-semibold text-secondary">Investment: {cs.budget}</span>
                 </div>
-                <blockquote className="mt-4 border-l-2 border-[var(--glitz-gold)]/40 pl-4 text-sm italic text-[var(--glitz-muted)]">&ldquo;{cs.testimonial}&rdquo; — {cs.client}</blockquote>
+                <blockquote className="mt-4 border-l-2 border-[var(--glitz-gold)]/40 pl-4 text-sm italic text-muted">&ldquo;{cs.testimonial}&rdquo; — {cs.client}</blockquote>
               </div>
             </div>
           </motion.article>

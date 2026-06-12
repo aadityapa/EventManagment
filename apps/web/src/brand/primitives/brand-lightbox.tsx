@@ -34,7 +34,7 @@ export function BrandLightbox({ images, index, onClose, onNavigate }: BrandLight
           <button type="button" onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)]" aria-label="Next"><ChevronRight /></button>
           <motion.div key={index} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="relative max-h-[85vh] max-w-[92vw]" onClick={(e) => e.stopPropagation()}>
             <BrandImage src={images[index].src} alt={images[index].alt} width={1600} height={1000} className="max-h-[85vh] w-auto rounded-lg" priority />
-            <p className="mt-3 text-center text-sm text-[var(--glitz-muted)]">{images[index].alt}</p>
+            <p className="mt-3 text-center text-sm text-muted">{images[index].alt}</p>
           </motion.div>
         </motion.div>
       )}

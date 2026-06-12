@@ -161,7 +161,7 @@ export function LiveChat({ open: controlledOpen, onOpenChange }: LiveChatProps =
                     className={cn(
                       "flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
                       msg.role === "user"
-                        ? "bg-secondary text-white"
+                        ? "bg-secondary text-foreground"
                         : "gradient-gold text-black"
                     )}
                   >

@@ -27,14 +27,14 @@ export function ContactForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <FormInput id="phone" name="phone" label="Phone" type="tel" required placeholder="+91 9730594753" autoComplete="tel" />
         <div className="space-y-1.5">
-          <label htmlFor="eventType" className="block text-sm font-medium text-[var(--glitz-text)]">
+          <label htmlFor="eventType" className="block text-sm font-medium text-primary">
             Event Type <span className="text-[var(--color-error,#ef4444)]" aria-hidden="true">*</span>
           </label>
           <select
             id="eventType"
             name="eventType"
             required
-            className="flex h-11 w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-surface-elevated,var(--glitz-card))] px-4 py-2 text-sm text-[var(--glitz-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]"
+            className="flex h-11 w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-surface-elevated,var(--glitz-card))] px-4 py-2 text-sm text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]"
           >
             <option value="">Select event type</option>
             {EVENT_TYPES.map((t) => (

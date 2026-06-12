@@ -29,11 +29,11 @@ export function HomeVenues() {
               </div>
               <div className="p-4">
                 <h3 className="brand-display text-base font-semibold group-hover:text-[var(--glitz-gold)]">{v.name}</h3>
-                <div className="mt-2 flex gap-3 text-xs text-[var(--glitz-muted)]">
+                <div className="mt-2 flex gap-3 text-xs text-muted">
                   <span className="flex items-center gap-1"><Users className="h-3 w-3" />{v.capacity}</span>
                   <span className="flex items-center gap-1"><Star className="h-3 w-3 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />{v.rating}</span>
                 </div>
-                <p className="mt-2 text-sm font-medium text-[var(--glitz-gold)]">From {v.price}/day</p>
+                <p className="mt-2 text-sm font-medium text-secondary">From {v.price}/day</p>
               </div>
             </Link>
           </motion.div>

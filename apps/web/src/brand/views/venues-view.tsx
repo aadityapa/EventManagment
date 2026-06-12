@@ -41,16 +41,16 @@ export function VenuesView() {
     <div className="brand-root">
       <BrandPageHero label="Venues" title="Luxury Venue Explorer" subtitle="Handpicked destinations across India." image={BRAND_IMAGES.venues[0]} />
       <BrandSection>
-        <div className="mb-8 flex items-center gap-2 text-sm text-[var(--glitz-muted)]"><Filter className="h-4 w-4 text-[var(--glitz-gold)]" /> Filter by city</div>
-        <div className="mb-8 flex flex-wrap gap-2">{CITIES.map((c) => <button key={c} type="button" onClick={() => setCity(c)} className={cn("rounded-full border px-4 py-2 text-xs font-semibold", city === c ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-[var(--glitz-muted)]")}>{c}</button>)}</div>
+        <div className="mb-8 flex items-center gap-2 text-sm text-muted"><Filter className="h-4 w-4 text-[var(--glitz-gold)]" /> Filter by city</div>
+        <div className="mb-8 flex flex-wrap gap-2">{CITIES.map((c) => <button key={c} type="button" onClick={() => setCity(c)} className={cn("rounded-full border px-4 py-2 text-xs font-semibold", city === c ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]" : "border-[var(--glitz-border)] text-muted")}>{c}</button>)}</div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((v, i) => (
             <motion.article key={v.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className="brand-surface group overflow-hidden">
               <div className="relative h-56 overflow-hidden"><BrandImage src={v.images[0]} alt={v.name} fill sizes="33vw" className="transition-transform duration-700 group-hover:scale-110" /><span className="absolute left-3 top-3 rounded-full border border-[var(--glitz-gold)]/30 bg-black/60 px-3 py-1 text-xs font-semibold text-[var(--glitz-gold)]">{v.city}</span></div>
               <div className="p-5">
                 <h3 className="brand-display text-lg font-semibold group-hover:text-[var(--glitz-gold)]">{v.name}</h3>
-                <p className="mt-1 text-sm text-[var(--glitz-muted)] line-clamp-2">{v.description}</p>
-                <div className="mt-3 flex gap-3 text-xs text-[var(--glitz-muted)]"><span className="flex items-center gap-1"><Users className="h-3 w-3 text-[var(--glitz-gold)]" />{v.capacity}</span><span className="flex items-center gap-1"><Star className="h-3 w-3 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />{v.rating}</span><span className="flex items-center gap-1"><MapPin className="h-3 w-3 text-[var(--glitz-gold)]" />{v.city}</span></div>
+                <p className="mt-1 text-sm text-muted line-clamp-2">{v.description}</p>
+                <div className="mt-3 flex gap-3 text-xs text-muted"><span className="flex items-center gap-1"><Users className="h-3 w-3 text-[var(--glitz-gold)]" />{v.capacity}</span><span className="flex items-center gap-1"><Star className="h-3 w-3 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />{v.rating}</span><span className="flex items-center gap-1"><MapPin className="h-3 w-3 text-[var(--glitz-gold)]" />{v.city}</span></div>
                 <p className="mt-2 text-sm font-semibold text-[var(--glitz-gold)]">From {formatCurrency(v.pricePerDay)}/day</p>
                 <Link href="/book-event" className="mt-4 block rounded-lg border border-[var(--glitz-gold)]/40 py-2.5 text-center text-sm font-semibold text-[var(--glitz-gold)] hover:bg-[var(--glitz-gold)]/10">Request Availability</Link>
               </div>

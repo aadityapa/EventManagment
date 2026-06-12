@@ -33,8 +33,8 @@ export function CookieConsent() {
     >
       <div className="flex items-start gap-3">
         <div className="flex-1">
-          <p className="text-sm font-semibold text-[var(--glitz-text)]">We value your privacy</p>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--glitz-muted)]">
+          <p className="text-sm font-semibold text-primary">We value your privacy</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted">
             We use cookies to enhance your experience and analyze site traffic. By continuing, you agree to our{" "}
             <Link href="/privacy" className="text-[var(--glitz-gold)] underline-offset-2 hover:underline">Privacy Policy</Link>.
           </p>
@@ -49,7 +49,7 @@ export function CookieConsent() {
         <button
           type="button"
           onClick={accept}
-          className="tap-target shrink-0 rounded-lg p-1 text-[var(--glitz-muted)] hover:text-[var(--glitz-text)]"
+          className="tap-target shrink-0 rounded-lg p-1 text-muted hover:text-primary"
           aria-label="Dismiss cookie notice"
         >
           <X className="h-4 w-4" />

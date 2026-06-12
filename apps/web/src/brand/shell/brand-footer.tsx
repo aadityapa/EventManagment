@@ -40,15 +40,15 @@ export function BrandFooter() {
 
         {/* Trust badges */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-6 border-b border-[var(--glitz-border)] pb-8">
-          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <Shield className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
             <span>Licensed &amp; Insured</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <Award className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
             <span>{BRAND_AWARDS[0]?.title ?? "Award-Winning"} · {BRAND_AWARDS[0]?.year ?? "2025"}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <span className="font-semibold text-[var(--glitz-gold)]">4.9★</span>
             <span>500+ Verified Reviews</span>
           </div>
@@ -57,7 +57,7 @@ export function BrandFooter() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-4 lg:col-span-1">
             <Logo />
-            <p className="text-sm leading-relaxed text-[var(--glitz-muted)]">
+            <p className="text-sm leading-relaxed text-muted">
               India&apos;s premier luxury event management house — weddings, corporate galas, and destination celebrations.
             </p>
             <div className="flex gap-3">
@@ -68,7 +68,7 @@ export function BrandFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Follow Glitz Events on ${label}`}
-                  className="tap-target flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-muted)] transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
+                  className="tap-target flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-muted transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </a>
@@ -80,7 +80,7 @@ export function BrandFooter() {
             <ul className="space-y-2">
               {NAV_LINKS.slice(0, 6).map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{l.label}</Link>
+                  <Link href={l.href} className="text-sm text-muted transition-colors hover:text-[var(--glitz-gold)]">{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -90,7 +90,7 @@ export function BrandFooter() {
             <ul className="space-y-2">
               {BRAND_SERVICES.slice(0, 6).map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/services/${s.slug}`} className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{s.title}</Link>
+                  <Link href={`/services/${s.slug}`} className="text-sm text-muted transition-colors hover:text-[var(--glitz-gold)]">{s.title}</Link>
                 </li>
               ))}
             </ul>
@@ -100,14 +100,14 @@ export function BrandFooter() {
             <ul className="space-y-2">
               {LOCATIONS.map((c) => (
                 <li key={c}>
-                  <Link href="/venues" className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{c}</Link>
+                  <Link href="/venues" className="text-sm text-muted transition-colors hover:text-[var(--glitz-gold)]">{c}</Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
             <h4 className="brand-label mb-4">Contact</h4>
-            <ul className="space-y-3 text-sm text-[var(--glitz-muted)]">
+            <ul className="space-y-3 text-sm text-muted">
               <li className="flex gap-2">
                 <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
                 {SITE_CONFIG.address}
@@ -128,7 +128,7 @@ export function BrandFooter() {
           </div>
         </div>
         <div className="brand-divider my-8" aria-hidden="true" />
-        <div className="flex flex-col items-center justify-between gap-4 text-sm text-[var(--glitz-muted)] sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted sm:flex-row">
           <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
           <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-4 sm:gap-6">
             {FOOTER_LEGAL.map((l) => (

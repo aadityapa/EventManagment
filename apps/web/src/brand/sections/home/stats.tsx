@@ -56,7 +56,7 @@ export function HomeStats() {
                 >
                   0{s.suffix}
                 </p>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-muted)]">{s.label}</p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-muted">{s.label}</p>
               </div>
             );
           })}

@@ -31,14 +31,14 @@ export function HomeIntro() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="brand-surface space-y-5 p-8 sm:p-10"
         >
-          <p className="text-[var(--glitz-muted)] leading-relaxed">
+          <p className="text-muted leading-relaxed">
             For over a decade, we have transformed weddings, corporate galas, concerts, and destination celebrations into
             immersive worlds of elegance. Every event is a bespoke narrative — designed, produced, and delivered with
             obsessive attention to detail.
           </p>
           <ul className="space-y-3">
             {DIFFERENTIATORS.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-[var(--adaptive-muted)]">
+              <li key={item} className="flex items-start gap-3 text-sm text-muted">
                 <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--glitz-gold)]" />
                 {item}
               </li>

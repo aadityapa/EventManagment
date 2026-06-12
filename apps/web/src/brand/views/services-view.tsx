@@ -57,10 +57,10 @@ export function ServicesView() {
             <div className={i % 2 === 1 ? "lg:[direction:ltr]" : ""}>
               <span className="brand-label">Service</span>
               <h2 className="mt-2 brand-display text-3xl font-semibold sm:text-4xl">{s.title}</h2>
-              <p className="mt-4 text-[var(--glitz-muted)] leading-relaxed">{s.narrative}</p>
+              <p className="mt-4 text-muted leading-relaxed">{s.narrative}</p>
               <ul className="mt-6 grid gap-2 sm:grid-cols-2">
                 {FEATURES.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[var(--glitz-text)]">
+                  <li key={f} className="flex items-center gap-2 text-sm text-primary">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" />
                     {f}
                   </li>
@@ -70,7 +70,7 @@ export function ServicesView() {
                 <Link href={`/services/${s.slug}`} className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--glitz-gold)] hover:underline">
                   View Details <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/book-event" className="text-sm text-[var(--glitz-muted)] hover:text-[var(--glitz-text)]">
+                <Link href="/book-event" className="text-sm text-muted hover:text-primary">
                   Book consultation →
                 </Link>
               </div>

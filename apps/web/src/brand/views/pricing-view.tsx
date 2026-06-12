@@ -63,15 +63,15 @@ export function PricingView() {
                 className={cn(
                   "rounded-full px-5 py-2 text-sm font-semibold transition-all tap-target",
                   billing === mode
-                    ? "bg-[var(--glitz-gold)] text-[var(--adaptive-button-text,#111)] shadow-[var(--glitz-glow)]"
-                    : "text-[var(--glitz-muted)] hover:text-[var(--glitz-text)]"
+                    ? "bg-[var(--glitz-gold)] text-[var(--primary-foreground)] shadow-[var(--glitz-glow)]"
+                    : "text-muted hover:text-primary"
                 )}
               >
                 {mode === "per-event" ? BILLING_LABELS[mode].left : BILLING_LABELS[mode].right}
               </button>
             ))}
           </div>
-          <p className="text-sm text-[var(--glitz-muted)]">{BILLING_LABELS[billing].note}</p>
+          <p className="text-sm text-muted">{BILLING_LABELS[billing].note}</p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -91,18 +91,18 @@ export function PricingView() {
                 )}
               >
                 {col.featured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--glitz-gold)] px-4 py-1 text-xs font-bold text-[var(--adaptive-button-text,#111)]">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--glitz-gold)] px-4 py-1 text-xs font-bold text-[var(--primary-foreground)]">
                     Most Popular
                   </span>
                 )}
                 <Icon className="mb-4 h-10 w-10 text-[var(--glitz-gold)]" aria-hidden="true" />
                 <h3 className="brand-display text-2xl font-semibold">{col.name}</h3>
-                <p className="mt-1 text-sm italic text-[var(--glitz-gold)]/80">{col.tagline}</p>
+                <p className="mt-1 text-sm italic text-secondary">{col.tagline}</p>
                 <p className="mt-4 brand-display text-3xl font-bold brand-gold-text">{price}</p>
                 {billing === "retainer" && !col.featured && (
-                  <p className="mt-1 text-xs text-[var(--glitz-muted)]">Custom retainer pricing available</p>
+                  <p className="mt-1 text-xs text-muted">Custom retainer pricing available</p>
                 )}
-                <p className="mt-4 text-sm text-[var(--glitz-muted)]">{col.narrative}</p>
+                <p className="mt-4 text-sm text-muted">{col.narrative}</p>
                 <ul className="mt-6 flex-1 space-y-2">
                   {col.includes.map((item) => (
                     <li key={item} className="flex gap-2 text-sm">

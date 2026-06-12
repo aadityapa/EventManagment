@@ -39,7 +39,7 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
           <AccordionPrimitive.Header className="flex">
             <AccordionPrimitive.Trigger
               className={cn(
-                "flex flex-1 items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-[var(--glitz-text)] transition-colors sm:px-6 sm:py-5 sm:text-base",
+                "flex flex-1 items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-primary transition-colors sm:px-6 sm:py-5 sm:text-base",
                 "hover:text-[var(--glitz-gold)]",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--glitz-bg)]",
                 "data-[state=open]:text-[var(--glitz-gold)]",
@@ -48,7 +48,7 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
             >
               {faq.question}
               <ChevronDown
-                className="h-4 w-4 shrink-0 text-[var(--glitz-muted)] transition-transform duration-300"
+                className="h-4 w-4 shrink-0 text-muted transition-transform duration-300"
                 aria-hidden="true"
               />
             </AccordionPrimitive.Trigger>
@@ -56,7 +56,7 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
           <AccordionPrimitive.Content
             className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
           >
-            <div className="border-t border-[var(--glitz-gold)]/15 px-5 pb-5 pt-4 leading-relaxed text-[var(--glitz-muted)] sm:px-6 sm:pb-6">
+            <div className="border-t border-[var(--glitz-gold)]/15 px-5 pb-5 pt-4 leading-relaxed text-muted sm:px-6 sm:pb-6">
               {faq.answer}
             </div>
           </AccordionPrimitive.Content>

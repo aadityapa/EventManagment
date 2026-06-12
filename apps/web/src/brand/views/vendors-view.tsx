@@ -63,7 +63,7 @@ export function VendorsView() {
                   "flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold",
                   cat === c
                     ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]"
-                    : "border-[var(--glitz-border)] text-[var(--glitz-muted)]"
+                    : "border-[var(--glitz-border)] text-muted"
                 )}
               >
                 {c !== "All" && Icon ? <Icon className="h-4 w-4" /> : null}
@@ -79,7 +79,7 @@ export function VendorsView() {
               <div className="p-5">
                 <span className="brand-label">{v.category}</span>
                 <h3 className="mt-1 brand-display text-lg font-semibold">{v.businessName}</h3>
-                <div className="mt-2 flex gap-3 text-sm text-[var(--glitz-muted)]"><Star className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />{v.rating} · {v.city}</div>
+                <div className="mt-2 flex gap-3 text-sm text-muted"><Star className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />{v.rating} · {v.city}</div>
                 <p className="mt-2 text-sm font-medium text-[var(--glitz-gold)]">{v.priceRange}</p>
                 <a href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(`Inquiry: ${v.businessName}`)}`} target="_blank" rel="noopener noreferrer" className="mt-4 block rounded-lg border border-[var(--glitz-gold)]/40 py-2.5 text-center text-sm font-semibold text-[var(--glitz-gold)] hover:bg-[var(--glitz-gold)]/10">Inquire</a>
               </div>

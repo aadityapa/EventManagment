@@ -58,11 +58,11 @@ export function HeroCinematicBackground({ slides, active, broken, onBroken }: Pr
       {/* Left text scrim only — max ~35% opacity, image stays visible */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--glitz-hero-scrim)" }}
+        style={{ background: "var(--adaptive-scrim, var(--glitz-hero-scrim-static))" }}
       />
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--glitz-hero-bottom)" }}
+        style={{ background: "var(--adaptive-scrim-bottom, var(--glitz-hero-bottom-static))" }}
       />
 
       <div

@@ -34,6 +34,15 @@ export function BrandHeader() {
 
   const glass = scrolled || !isHome;
   const adaptiveChrome = isHome && !scrolled;
+  const chromeLinkActive = adaptiveChrome
+    ? "text-[var(--adaptive-accent)]"
+    : "text-[var(--glitz-gold)]";
+  const chromeLinkIdle = adaptiveChrome
+    ? "text-[var(--adaptive-text)]/85 hover:text-[var(--adaptive-accent)]"
+    : "text-primary/80 hover:text-[var(--glitz-gold)]";
+  const chromeAccent = adaptiveChrome
+    ? "text-[var(--adaptive-accent)]"
+    : "text-[var(--glitz-gold)]";
 
   return (
     <header
@@ -56,13 +65,7 @@ export function BrandHeader() {
               aria-current={pathname === l.href ? "page" : undefined}
               className={cn(
                 "tap-target rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                pathname === l.href
-                  ? adaptiveChrome
-                    ? "text-[var(--adaptive-accent)]"
-                    : "text-[var(--glitz-gold)]"
-                  : adaptiveChrome
-                    ? "text-[var(--adaptive-text)]/80 hover:text-[var(--adaptive-accent)]"
-                    : "text-[var(--glitz-text)]/80 hover:text-[var(--glitz-gold)]"
+                pathname === l.href ? chromeLinkActive : chromeLinkIdle
               )}
             >
               {l.label}
@@ -75,14 +78,20 @@ export function BrandHeader() {
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
             className={cn(
               "hidden items-center gap-1.5 text-sm transition-colors hover:brightness-110 lg:flex",
-              adaptiveChrome ? "text-[var(--adaptive-accent)]" : "text-[var(--glitz-gold)]"
+              chromeAccent
             )}
             aria-label={`Call ${SITE_CONFIG.phone}`}
           >
             <Phone className="h-3.5 w-3.5" aria-hidden="true" />
             {SITE_CONFIG.phone}
           </a>
-          <ThemeToggle />
+          <ThemeToggle
+            className={
+              adaptiveChrome
+                ? "border-[var(--adaptive-accent)]/35 text-[var(--adaptive-accent)] hover:border-[var(--adaptive-accent)]/60"
+                : undefined
+            }
+          />
           <Link
             href="/book-event"
             className="btn-gold-metallic btn-premium-hover rounded-lg px-4 py-2.5 text-sm font-semibold tap-target"
@@ -92,10 +101,16 @@ export function BrandHeader() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
+          <ThemeToggle
+            className={
+              adaptiveChrome
+                ? "border-[var(--adaptive-accent)]/35 text-[var(--adaptive-accent)] hover:border-[var(--adaptive-accent)]/60"
+                : undefined
+            }
+          />
           <button
             type="button"
-            className="tap-target rounded-lg p-2 text-[var(--glitz-gold-metallic)]"
+            className={cn("tap-target rounded-lg p-2", chromeAccent)}
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -128,7 +143,7 @@ export function BrandHeader() {
                     "tap-target rounded-lg px-4 py-3 text-base",
                     pathname === l.href
                       ? "bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold-metallic)]"
-                      : "text-[var(--glitz-text)]"
+                      : "text-primary"
                   )}
                 >
                   {l.label}
