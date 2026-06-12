@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "../lib/stitch/stitch-theme.css";
 @import "../brand/design-system/tokens.css";
+@import "../styles/design-system.css";
+@import "../styles/responsive.css";
 
 :root,
 .light {

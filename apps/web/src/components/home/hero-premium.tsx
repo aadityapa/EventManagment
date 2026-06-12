@@ -159,6 +159,14 @@ export function HeroPremium() {
       {/* Content */}
       <div className="brand-container relative z-20 flex flex-1 flex-col justify-center pt-20 pb-16 md:pt-24">
         <motion.div variants={heroReveal} initial="hidden" animate="visible" className="max-w-2xl">
+          <motion.div variants={itemReveal} className="mb-4 flex flex-wrap items-center gap-3">
+            <span className="trust-badge">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--adaptive-accent)]" aria-hidden="true" />
+              India&apos;s Premier Luxury Event House
+            </span>
+            <span className="text-xs font-medium text-[var(--adaptive-muted)]">Est. 2012 · Pune</span>
+          </motion.div>
+
           <motion.span variants={itemReveal} className="brand-label">
             Glitz Events & Promotions
           </motion.span>
@@ -212,7 +220,19 @@ export function HeroPremium() {
             </MagneticButton>
           </motion.div>
 
-          <motion.div variants={itemReveal} className="mt-10 flex flex-wrap items-center gap-4">
+          <motion.div variants={itemReveal} className="social-proof-strip mt-10">
+            <div className="social-proof-item">
+              <span className="social-proof-value">1,000+</span> Events Delivered
+            </div>
+            <div className="social-proof-item">
+              <span className="social-proof-value">4.9★</span> Client Rating
+            </div>
+            <div className="social-proof-item">
+              <span className="social-proof-value">35+</span> Cities Served
+            </div>
+          </motion.div>
+
+          <motion.div variants={itemReveal} className="mt-8 flex flex-wrap items-center gap-4">
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
               {slides[active]?.category}
             </span>

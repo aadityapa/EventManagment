@@ -4,8 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { EVENT_TYPES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { FormInput, FormTextarea } from "@/components/ui/form-input";
 
 export function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -20,29 +19,22 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="glass-card space-y-4 p-6 md:p-8">
+    <form onSubmit={handleSubmit} className="glass-card space-y-4 p-6 md:p-8" aria-label="Contact form">
       <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className="mb-1 block text-sm font-medium">Full Name</label>
-          <Input id="name" name="name" required placeholder="Your name" />
-        </div>
-        <div>
-          <label htmlFor="email" className="mb-1 block text-sm font-medium">Email</label>
-          <Input id="email" name="email" type="email" required placeholder="you@example.com" />
-        </div>
+        <FormInput id="name" name="name" label="Full Name" required placeholder="Your name" autoComplete="name" />
+        <FormInput id="email" name="email" label="Email" type="email" required placeholder="you@example.com" autoComplete="email" />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="phone" className="mb-1 block text-sm font-medium">Phone</label>
-          <Input id="phone" name="phone" type="tel" required placeholder="+91 9730594753" />
-        </div>
-        <div>
-          <label htmlFor="eventType" className="mb-1 block text-sm font-medium">Event Type</label>
+        <FormInput id="phone" name="phone" label="Phone" type="tel" required placeholder="+91 9730594753" autoComplete="tel" />
+        <div className="space-y-1.5">
+          <label htmlFor="eventType" className="block text-sm font-medium text-[var(--glitz-text)]">
+            Event Type <span className="text-[var(--color-error,#ef4444)]" aria-hidden="true">*</span>
+          </label>
           <select
             id="eventType"
             name="eventType"
             required
-            className="flex h-11 w-full rounded-lg border border-border bg-background/50 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="flex h-11 w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-surface-elevated,var(--glitz-card))] px-4 py-2 text-sm text-[var(--glitz-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]"
           >
             <option value="">Select event type</option>
             {EVENT_TYPES.map((t) => (
@@ -51,11 +43,8 @@ export function ContactForm() {
           </select>
         </div>
       </div>
-      <div>
-        <label htmlFor="message" className="mb-1 block text-sm font-medium">Message</label>
-        <Textarea id="message" name="message" required placeholder="Tell us about your event..." rows={5} />
-      </div>
-      <Button type="submit" size="lg" disabled={loading} className="w-full sm:w-auto">
+      <FormTextarea id="message" name="message" label="Message" required placeholder="Tell us about your event..." rows={5} />
+      <Button type="submit" size="lg" disabled={loading} className="w-full sm:w-auto btn-premium-hover">
         {loading ? "Sending..." : "Send Message"}
       </Button>
     </form>

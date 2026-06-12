@@ -15,13 +15,13 @@ export function HomeView() {
   return (
     <div className="brand-root">
       <HomeHero />
-      <HomeIntro />
       <HomeTrust />
-      <HomeStats />
+      <HomeIntro />
       <HomeServices />
-      <HomeCaseStudies />
+      <HomeStats />
       <HomeWhyChoose />
       <HomeTestimonials />
+      <HomeCaseStudies />
       <HomeVenues />
       <HomePlanner />
       <HomeAiPlanner />

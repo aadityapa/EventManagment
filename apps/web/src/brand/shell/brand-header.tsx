@@ -24,7 +24,7 @@ export function BrandHeader() {
   }, [open]);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 16);
+    const fn = () => setScrolled(window.scrollY > 20);
     fn();
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
@@ -37,22 +37,24 @@ export function BrandHeader() {
   return (
     <header
       className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-500 safe-top",
+        "fixed top-0 z-[var(--z-nav,9999)] w-full transition-all duration-500 safe-top",
         glass
-          ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[0_8px_32px_rgba(0,0,0,0.06)] backdrop-blur-xl backdrop-saturate-150"
+          ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent"
       )}
+      role="banner"
     >
-      <div className="brand-container flex h-12 items-center justify-between sm:h-[3.25rem]">
+      <div className="brand-container flex h-14 items-center justify-between sm:h-[3.75rem]">
         <Logo priority />
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main navigation">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.href}
               href={l.href}
+              aria-current={pathname === l.href ? "page" : undefined}
               className={cn(
-                "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                "tap-target rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 pathname === l.href
                   ? "text-[var(--adaptive-accent)]"
                   : "text-[var(--adaptive-text)]/80 hover:text-[var(--adaptive-accent)]"
@@ -66,13 +68,17 @@ export function BrandHeader() {
         <div className="hidden items-center gap-2.5 md:flex">
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-            className="hidden items-center gap-1.5 text-sm text-[var(--adaptive-accent)] lg:flex"
+            className="hidden items-center gap-1.5 text-sm text-[var(--adaptive-accent)] transition-colors hover:brightness-110 lg:flex"
+            aria-label={`Call ${SITE_CONFIG.phone}`}
           >
-            <Phone className="h-3.5 w-3.5" />
+            <Phone className="h-3.5 w-3.5" aria-hidden="true" />
             {SITE_CONFIG.phone}
           </a>
           <ThemeToggle />
-          <Link href="/book-event" className="btn-gold-metallic rounded-lg px-4 py-2 text-sm font-semibold">
+          <Link
+            href="/book-event"
+            className="btn-gold-metallic btn-premium-hover rounded-lg px-4 py-2.5 text-sm font-semibold tap-target"
+          >
             Book Consultation
           </Link>
         </div>
@@ -81,43 +87,62 @@ export function BrandHeader() {
           <ThemeToggle />
           <button
             type="button"
-            className="rounded-lg p-2 text-[var(--glitz-gold-metallic)]"
+            className="tap-target rounded-lg p-2 text-[var(--glitz-gold-metallic)]"
             onClick={() => setOpen(!open)}
-            aria-label="Menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-nav"
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="border-t border-[var(--glitz-border)] bg-[var(--glitz-glass)] backdrop-blur-xl lg:hidden">
-          <nav className="brand-container flex flex-col gap-1 py-3">
-            {NAV_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  "rounded-lg px-4 py-2.5 text-base",
-                  pathname === l.href
-                    ? "bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold-metallic)]"
-                    : "text-[var(--glitz-text)]"
-                )}
+        <>
+          <div
+            className="fixed inset-0 top-14 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+            aria-hidden="true"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            id="mobile-nav"
+            className="relative z-50 border-t border-[var(--glitz-border)] bg-[var(--glitz-glass)] backdrop-blur-xl lg:hidden"
+          >
+            <nav className="brand-container flex flex-col gap-1 py-4" aria-label="Mobile navigation">
+              {NAV_LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={pathname === l.href ? "page" : undefined}
+                  className={cn(
+                    "tap-target rounded-lg px-4 py-3 text-base",
+                    pathname === l.href
+                      ? "bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold-metallic)]"
+                      : "text-[var(--glitz-text)]"
+                  )}
+                >
+                  {l.label}
+                </Link>
+              ))}
+              <a
+                href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+                className="tap-target flex items-center gap-2 rounded-lg px-4 py-3 text-[var(--glitz-gold)]"
               >
-                {l.label}
+                <Phone className="h-4 w-4" aria-hidden="true" />
+                {SITE_CONFIG.phone}
+              </a>
+              <Link
+                href="/book-event"
+                onClick={() => setOpen(false)}
+                className="btn-gold-metallic btn-premium-hover mt-2 rounded-lg py-3 text-center font-semibold tap-target"
+              >
+                Book Consultation
               </Link>
-            ))}
-            <Link
-              href="/book-event"
-              onClick={() => setOpen(false)}
-              className="btn-gold-metallic mt-2 rounded-lg py-2.5 text-center font-semibold"
-            >
-              Book Consultation
-            </Link>
-          </nav>
-        </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );

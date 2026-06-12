@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/ui/form-input";
 import { toast } from "sonner";
 
 export function RegisterForm() {
@@ -39,30 +39,17 @@ export function RegisterForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8">
+    <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8" aria-label="Create account form">
       <h1 className="font-display text-2xl font-bold">Create account</h1>
       <p className="mt-1 text-sm text-muted">Book, pay, and track your event journey.</p>
 
       <div className="mt-6 space-y-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Full name</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} required />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Email</label>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Phone (optional)</label>
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Password</label>
-          <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
-          <p className="mt-1 text-xs text-muted">Minimum 8 characters.</p>
-        </div>
+        <FormInput label="Full name" name="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
+        <FormInput label="Email" name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+        <FormInput label="Phone" name="phone" type="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} hint="Optional — for event coordination updates" />
+        <FormInput label="Password" name="password" type="password" autoComplete="new-password" required value={password} onChange={(e) => setPassword(e.target.value)} hint="Minimum 8 characters." />
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full btn-premium-hover" disabled={loading}>
           {loading ? "Creating..." : "Create account"}
         </Button>
       </div>
@@ -76,4 +63,3 @@ export function RegisterForm() {
     </form>
   );
 }
-

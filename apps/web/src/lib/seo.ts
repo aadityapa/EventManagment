@@ -45,8 +45,27 @@ export function generateSEO({
       title: fullTitle,
       description,
       images: [image],
+      creator: "@glitzevents",
+      site: "@glitzevents",
     },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
+  };
+}
+
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_CONFIG.url}/#website`,
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.url,
+    description: SITE_CONFIG.description,
+    publisher: { "@id": `${SITE_CONFIG.url}/#organization` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_CONFIG.url}/services?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 

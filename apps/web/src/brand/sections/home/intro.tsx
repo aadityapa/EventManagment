@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const DIFFERENTIATORS = [
   "Bespoke luxury planning from concept to curtain call",
@@ -11,9 +12,11 @@ const DIFFERENTIATORS = [
 ];
 
 export function HomeIntro() {
+  const ref = useScrollReveal<HTMLDivElement>();
+
   return (
     <BrandSection>
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <div ref={ref} className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <BrandHeader
             label="Who We Are"

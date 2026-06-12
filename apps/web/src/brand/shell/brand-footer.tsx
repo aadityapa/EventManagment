@@ -1,53 +1,140 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Share2, Globe, ExternalLink, Shield, Award } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS, FOOTER_LEGAL } from "@/lib/constants";
-import { BRAND_SERVICES } from "@/brand/data/content";
+import { BRAND_SERVICES, BRAND_AWARDS } from "@/brand/data/content";
 import { Logo } from "@/components/branding/logo";
 
 const LOCATIONS = ["Pune", "Mumbai", "Goa", "Jaipur", "Udaipur", "Bangalore"];
 
+const SOCIAL = [
+  { href: SITE_CONFIG.social.instagram, icon: Share2, label: "Instagram" },
+  { href: SITE_CONFIG.social.facebook, icon: Globe, label: "Facebook" },
+  { href: SITE_CONFIG.social.linkedin, icon: ExternalLink, label: "LinkedIn" },
+  { href: SITE_CONFIG.social.youtube, icon: ExternalLink, label: "YouTube" },
+];
+
 export function BrandFooter() {
   return (
-    <footer className="border-t border-[var(--glitz-border)] bg-[var(--glitz-surface)]">
-      <div className="brand-divider" />
+    <footer className="border-t border-[var(--glitz-border)] bg-[var(--glitz-surface)]" role="contentinfo">
+      <div className="brand-divider" aria-hidden="true" />
       <div className="brand-container py-14 sm:py-16">
         <div className="mb-10 rounded-2xl border border-[var(--glitz-gold)]/20 bg-[var(--glitz-gold)]/5 p-8 text-center">
           <h3 className="brand-display text-xl font-semibold sm:text-2xl">Ready to Plan Your Extraordinary Event?</h3>
           <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
-            <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-[var(--glitz-gold)]/40 px-6 py-3 text-sm font-semibold text-[var(--glitz-gold)]"><Phone className="h-4 w-4" /> {SITE_CONFIG.phone}</a>
+            <a
+              href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tap-target inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white btn-premium-hover"
+            >
+              <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp
+            </a>
+            <a
+              href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+              className="tap-target inline-flex items-center gap-2 rounded-full border border-[var(--glitz-gold)]/40 px-6 py-3 text-sm font-semibold text-[var(--glitz-gold)] btn-premium-hover"
+            >
+              <Phone className="h-4 w-4" aria-hidden="true" /> {SITE_CONFIG.phone}
+            </a>
           </div>
         </div>
+
+        {/* Trust badges */}
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-6 border-b border-[var(--glitz-border)] pb-8">
+          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+            <Shield className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
+            <span>Licensed &amp; Insured</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+            <Award className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
+            <span>{BRAND_AWARDS[0]?.title ?? "Award-Winning"} · {BRAND_AWARDS[0]?.year ?? "2025"}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-[var(--glitz-muted)]">
+            <span className="font-semibold text-[var(--glitz-gold)]">4.9★</span>
+            <span>500+ Verified Reviews</span>
+          </div>
+        </div>
+
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-1">
             <Logo />
-            <p className="text-sm text-[var(--glitz-muted)]">India&apos;s premier luxury event management house.</p>
+            <p className="text-sm leading-relaxed text-[var(--glitz-muted)]">
+              India&apos;s premier luxury event management house — weddings, corporate galas, and destination celebrations.
+            </p>
+            <div className="flex gap-3">
+              {SOCIAL.map(({ href, icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow Glitz Events on ${label}`}
+                  className="tap-target flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-muted)] transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
+                >
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
           </div>
           <div>
             <h4 className="brand-label mb-4">Quick Links</h4>
-            <ul className="space-y-2">{NAV_LINKS.slice(0, 6).map((l) => <li key={l.href}><Link href={l.href} className="text-sm text-[var(--glitz-muted)] hover:text-[var(--glitz-gold)]">{l.label}</Link></li>)}</ul>
+            <ul className="space-y-2">
+              {NAV_LINKS.slice(0, 6).map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <h4 className="brand-label mb-4">Services</h4>
-            <ul className="space-y-2">{BRAND_SERVICES.slice(0, 6).map((s) => <li key={s.slug}><Link href={`/services/${s.slug}`} className="text-sm text-[var(--glitz-muted)] hover:text-[var(--glitz-gold)]">{s.title}</Link></li>)}</ul>
+            <ul className="space-y-2">
+              {BRAND_SERVICES.slice(0, 6).map((s) => (
+                <li key={s.slug}>
+                  <Link href={`/services/${s.slug}`} className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{s.title}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <h4 className="brand-label mb-4">Locations</h4>
-            <ul className="space-y-2">{LOCATIONS.map((c) => <li key={c}><Link href="/venues" className="text-sm text-[var(--glitz-muted)] hover:text-[var(--glitz-gold)]">{c}</Link></li>)}</ul>
+            <ul className="space-y-2">
+              {LOCATIONS.map((c) => (
+                <li key={c}>
+                  <Link href="/venues" className="text-sm text-[var(--glitz-muted)] transition-colors hover:text-[var(--glitz-gold)]">{c}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <h4 className="brand-label mb-4">Contact</h4>
             <ul className="space-y-3 text-sm text-[var(--glitz-muted)]">
-              <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" />{SITE_CONFIG.address}</li>
-              <li><a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="flex gap-2 hover:text-[var(--glitz-gold)]"><Phone className="h-4 w-4 text-[var(--glitz-gold)]" />{SITE_CONFIG.phone}</a></li>
-              <li><a href={`mailto:${SITE_CONFIG.email}`} className="flex gap-2 hover:text-[var(--glitz-gold)]"><Mail className="h-4 w-4 text-[var(--glitz-gold)]" />{SITE_CONFIG.email}</a></li>
+              <li className="flex gap-2">
+                <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
+                {SITE_CONFIG.address}
+              </li>
+              <li>
+                <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="flex gap-2 transition-colors hover:text-[var(--glitz-gold)]">
+                  <Phone className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
+                  {SITE_CONFIG.phone}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${SITE_CONFIG.email}`} className="flex gap-2 transition-colors hover:text-[var(--glitz-gold)]">
+                  <Mail className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
+                  {SITE_CONFIG.email}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
-        <div className="brand-divider my-8" />
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row text-sm text-[var(--glitz-muted)]">
-          <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}</p>
-          <div className="flex gap-6">{FOOTER_LEGAL.map((l) => <Link key={l.href} href={l.href} className="hover:text-[var(--glitz-gold)]">{l.label}</Link>)}</div>
+        <div className="brand-divider my-8" aria-hidden="true" />
+        <div className="flex flex-col items-center justify-between gap-4 text-sm text-[var(--glitz-muted)] sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
+          <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-4 sm:gap-6">
+            {FOOTER_LEGAL.map((l) => (
+              <Link key={l.href} href={l.href} className="transition-colors hover:text-[var(--glitz-gold)]">{l.label}</Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

@@ -1,0 +1,13 @@
+{
+  "name": "Glitz Events & Promotions",
+  "short_name": "Glitz Events",
+  "description": "India's premier luxury event management company",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFBF5",
+  "theme_color": "#C9A227",
+  "icons": [
+    { "src": "/logo.jpg", "sizes": "512x512", "type": "image/jpeg" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

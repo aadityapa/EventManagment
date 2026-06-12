@@ -7,10 +7,12 @@ import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { testimonials } from "@/data/cms";
 import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 export function HomeTestimonials() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [sel, setSel] = useState(0);
+  const sectionRef = useScrollReveal<HTMLDivElement>();
   const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
@@ -24,7 +26,8 @@ export function HomeTestimonials() {
 
   return (
     <BrandSection>
-      <BrandHeader label="Client Stories" title="Voices of Excellence" center />
+      <div ref={sectionRef}>
+        <BrandHeader label="Client Stories" title="Voices of Excellence" subtitle="Trusted by families, brands, and institutions across India." center />
       <div className="mb-6 flex justify-end gap-2">
         <button type="button" onClick={prev} className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)]" aria-label="Previous"><ChevronLeft /></button>
         <button type="button" onClick={next} className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)]" aria-label="Next"><ChevronRight /></button>
@@ -46,6 +49,7 @@ export function HomeTestimonials() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </BrandSection>
   );

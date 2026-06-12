@@ -233,8 +233,11 @@ export function useAdaptiveBackdrop({
   const ctx = useAdaptiveTheme();
   const id = useId();
   const imageSrcRef = useRef(imageSrc);
-  imageSrcRef.current = imageSrc;
   const cleanupRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    imageSrcRef.current = imageSrc;
+  }, [imageSrc]);
 
   const setRef = useCallback(
     (node: HTMLElement | null) => {

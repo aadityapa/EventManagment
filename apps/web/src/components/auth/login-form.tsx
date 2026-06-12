@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/ui/form-input";
 import { toast } from "sonner";
 
 export function LoginForm() {
@@ -37,21 +37,32 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8">
+    <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8" aria-label="Sign in form">
       <h1 className="font-display text-2xl font-bold">Sign in</h1>
       <p className="mt-1 text-sm text-muted">Access your bookings, payments, and timeline.</p>
 
       <div className="mt-6 space-y-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Email</label>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Password</label>
-          <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
-        </div>
+        <FormInput
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+        />
+        <FormInput
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full btn-premium-hover" disabled={loading}>
           {loading ? "Signing in..." : "Sign in"}
         </Button>
       </div>
@@ -65,4 +76,3 @@ export function LoginForm() {
     </form>
   );
 }
-
