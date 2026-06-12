@@ -2,6 +2,7 @@
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import Link from "next/link";
+import { captureException } from "@/lib/monitoring/sentry";
 
 interface Props {
   children: ReactNode;
@@ -22,6 +23,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
+    captureException(error, { componentStack: info.componentStack });
     if (process.env.NODE_ENV === "development") {
       console.error("ErrorBoundary caught:", error, info.componentStack);
     }

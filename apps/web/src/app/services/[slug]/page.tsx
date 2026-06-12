@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Check } from "lucide-react";
 import { services } from "@/data/cms";
-import { generateSEO, breadcrumbSchema, serviceSchema } from "@/lib/seo";
+import { getServiceFaqs } from "@/data/service-faqs";
+import { generateSEO, breadcrumbSchema, serviceSchema, faqSchema } from "@/lib/seo";
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
+import { ServiceFaqSection } from "@/components/services/service-faq-section";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 
@@ -34,6 +36,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
 
+  const serviceFaqs = getServiceFaqs(slug);
   const related = services.filter((s) => s.slug !== slug).slice(0, 3);
   const schema = breadcrumbSchema([
     { name: "Home", url: "/" },
@@ -47,6 +50,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     image: service.image,
     price: service.basePrice,
   });
+  const faqLd = serviceFaqs.length > 0 ? faqSchema(serviceFaqs) : null;
 
   return (
     <>
@@ -58,6 +62,12 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(svcSchema) }}
       />
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
 
       <section className="relative flex min-h-[50vh] items-end overflow-hidden">
         <Image
@@ -117,6 +127,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               </Button>
             </div>
           </div>
+
+          <ServiceFaqSection faqs={serviceFaqs} serviceTitle={service.title} slug={slug} />
 
           {related.length > 0 && (
             <div className="mt-20">

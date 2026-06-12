@@ -100,16 +100,23 @@ npm run db:seed       # Seed data (if configured)
 
 ---
 
-## Error Tracking (Sentry Placeholder)
+## Error Tracking (Sentry)
+
+Lightweight client-side integration via `@sentry/browser`. Gracefully no-ops when DSN is unset.
 
 Add to Vercel env when ready:
 
 ```
-SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 ```
 
-Install: `@sentry/nextjs` in `apps/web`, `@sentry/node` in `server`. Wrap `next.config` with `withSentryConfig`.
+**Wiring:**
+- `lib/monitoring/sentry.ts` — conditional init and `captureException`
+- `components/monitoring/sentry-init.tsx` — client bootstrap in root layout
+- `components/shared/error-boundary.tsx` — reports React render errors
+
+No `next.config` wrapper required. Install is scoped to `apps/web` only.
 
 ---
 

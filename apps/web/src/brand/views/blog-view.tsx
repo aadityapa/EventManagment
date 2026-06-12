@@ -20,7 +20,7 @@ export function BlogView() {
   const featured = blogPosts[0];
 
   const filteredPosts =
-    category === "All" ? blogPosts : blogPosts.filter((p) => p.category === category || p.tags.some((t) => t.includes(category.split(" ")[0])));
+    category === "All" ? blogPosts : blogPosts.filter((p) => p.category === category);
 
   const topicPreview =
     category === "All"
@@ -109,7 +109,7 @@ export function BlogView() {
       <BrandSection alt>
         <h2 className="mb-2 text-center brand-display text-2xl font-semibold">Editorial Pipeline</h2>
         <p className="mb-8 text-center text-sm text-muted">
-          {BLOG_TOPIC_TEMPLATES.length}+ topic templates across {BLOG_CATEGORIES.length} categories — curated for luxury event hosts.
+          {blogPosts.length} published articles across {BLOG_CATEGORIES.length} categories — curated for luxury event hosts.
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {topicPreview.map((topic) => (

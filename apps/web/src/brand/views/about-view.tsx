@@ -63,7 +63,10 @@ export function AboutView() {
               subtitle={companyProfile.introduction}
             />
             <p className="mt-4 text-muted leading-relaxed">
-              Founded by Priya Sharma in Pune, Glitz began as an intimate wedding studio with a singular belief: every celebration carries the weight of memory. That responsibility drives everything we do at Glitz Events & Promotions.
+              Founded by Priya Sharma in Pune in 2012, Glitz began as an intimate wedding studio with a singular belief: every celebration carries the weight of memory. What started with one family&apos;s dream wedding in Koregaon Park has grown into a luxury event house trusted by 1,400+ clients across 35 cities — yet the founding principle remains unchanged.
+            </p>
+            <p className="mt-4 text-muted leading-relaxed">
+              Priya&apos;s background in hospitality and visual arts shaped Glitz&apos;s signature approach — meticulous vendor curation, ivory-and-gold design language, and the conviction that flawless logistics should feel invisible to guests. Today, our 50-person team carries that philosophy into palace weddings in Udaipur, black-tie galas for Fortune 500 brands, and stadium concerts across Maharashtra.
             </p>
             <p className="mt-4 text-muted leading-relaxed">{companyProfile.story}</p>
             <BrandButton href="/book-event" className="mt-6">

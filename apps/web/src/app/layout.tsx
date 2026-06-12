@@ -8,6 +8,7 @@ import { BrandHeader } from "@/brand/shell/brand-header";
 import { BrandFooter } from "@/brand/shell/brand-footer";
 import { BrandFab } from "@/brand/shell/brand-fab";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
+import { SentryInit } from "@/components/monitoring/sentry-init";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { ExitIntentPopup } from "@/components/engagement/exit-intent-popup";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="glitz-theme" disableTransitionOnChange={false}>
+          <SentryInit />
           <AnalyticsProvider />
           <AdaptiveThemeProvider>
           <CinematicProvider>

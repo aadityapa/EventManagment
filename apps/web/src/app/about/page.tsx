@@ -1,8 +1,20 @@
-import { generateSEO } from "@/lib/seo";
+import { generateSEO, aboutPageSchema } from "@/lib/seo";
 import { AboutView } from "@/brand";
+import { teamMembers } from "@/data/cms";
 
-export const metadata = generateSEO({ title: "About — Luxury Event Management", description: "Discover Glitz Events — 12+ years, 1800+ events, India's premier luxury event house.", path: "/about" });
+export const metadata = generateSEO({
+  title: "About — Luxury Event Management",
+  description: "Discover Glitz Events — 12+ years, 1800+ events, India's premier luxury event house.",
+  path: "/about",
+});
 
 export default function AboutPage() {
-  return <AboutView />;
+  const schema = aboutPageSchema(teamMembers, "Priya Sharma");
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <AboutView />
+    </>
+  );
 }

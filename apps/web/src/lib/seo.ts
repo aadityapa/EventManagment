@@ -234,6 +234,8 @@ export function articleSchema(article: {
   author: string;
   publishedAt: string;
   tags?: string[];
+  section?: string;
+  wordCount?: number;
 }) {
   return {
     "@context": "https://schema.org",
@@ -248,6 +250,10 @@ export function articleSchema(article: {
     mainEntityOfPage: `${SITE_CONFIG.url}/blog/${article.slug}`,
     url: `${SITE_CONFIG.url}/blog/${article.slug}`,
     keywords: article.tags?.join(", "),
+    articleSection: article.section,
+    wordCount: article.wordCount,
+    inLanguage: "en-IN",
+    isAccessibleForFree: true,
   };
 }
 
@@ -262,6 +268,60 @@ export function itemListSchema(items: { name: string; url: string; image?: strin
       url: `${SITE_CONFIG.url}${item.url}`,
       ...(item.image && { image: item.image }),
     })),
+  };
+}
+
+export function personSchema(person: {
+  name: string;
+  jobTitle: string;
+  description: string;
+  image?: string;
+  url?: string;
+  sameAs?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_CONFIG.url}/about#${person.name.replace(/\s+/g, "-").toLowerCase()}`,
+    name: person.name,
+    jobTitle: person.jobTitle,
+    description: person.description,
+    image: person.image,
+    url: person.url ?? `${SITE_CONFIG.url}/about`,
+    worksFor: { "@id": `${SITE_CONFIG.url}/#organization` },
+    ...(person.sameAs?.length && { sameAs: person.sameAs }),
+  };
+}
+
+export function aboutPageSchema(
+  team: { name: string; role: string; bio: string; image?: string }[],
+  founderName: string,
+) {
+  const founder = team.find((m) => m.name === founderName) ?? team[0];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        ...organizationSchema(),
+        founder: { "@id": `${SITE_CONFIG.url}/about#${founder.name.replace(/\s+/g, "-").toLowerCase()}` },
+      },
+      personSchema({
+        name: founder.name,
+        jobTitle: founder.role,
+        description: founder.bio,
+        image: founder.image,
+        url: `${SITE_CONFIG.url}/about`,
+      }),
+      ...team.slice(0, 6).map((member) =>
+        personSchema({
+          name: member.name,
+          jobTitle: member.role,
+          description: member.bio,
+          image: member.image,
+          url: `${SITE_CONFIG.url}/about`,
+        }),
+      ),
+    ],
   };
 }
 
