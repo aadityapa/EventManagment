@@ -154,3 +154,102 @@ export function eventSchema(event: {
     organizer: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
   };
 }
+
+export function serviceSchema(service: {
+  name: string;
+  description: string;
+  slug: string;
+  image?: string;
+  price?: number;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE_CONFIG.url}/services/${service.slug}#service`,
+    name: service.name,
+    description: service.description,
+    url: `${SITE_CONFIG.url}/services/${service.slug}`,
+    image: service.image,
+    provider: { "@id": `${SITE_CONFIG.url}/#organization` },
+    areaServed: { "@type": "AdministrativeArea", name: "Maharashtra, India" },
+    ...(service.price && {
+      offers: {
+        "@type": "Offer",
+        price: service.price,
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+      },
+    }),
+  };
+}
+
+export function reviewSchema(reviews: {
+  author: string;
+  reviewBody: string;
+  ratingValue: number;
+  datePublished?: string;
+}[]) {
+  return reviews.map((r) => ({
+    "@context": "https://schema.org",
+    "@type": "Review",
+    author: { "@type": "Person", name: r.author },
+    reviewBody: r.reviewBody,
+    reviewRating: { "@type": "Rating", ratingValue: r.ratingValue, bestRating: 5 },
+    itemReviewed: { "@id": `${SITE_CONFIG.url}/#organization` },
+    ...(r.datePublished && { datePublished: r.datePublished }),
+  }));
+}
+
+export function venueSchema(venue: {
+  name: string;
+  description: string;
+  slug: string;
+  city: string;
+  capacity: number;
+  image?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EventVenue",
+    name: venue.name,
+    description: venue.description,
+    url: `${SITE_CONFIG.url}/venues#${venue.slug}`,
+    image: venue.image,
+    maximumAttendeeCapacity: venue.capacity,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: venue.city,
+      addressRegion: "Maharashtra",
+      addressCountry: "IN",
+    },
+  };
+}
+
+/** AI-friendly entity block for GEO — clear definitions for LLM crawlers */
+export function entityDefinitionSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_CONFIG.url}/#organization`,
+    name: SITE_CONFIG.name,
+    alternateName: SITE_CONFIG.shortName,
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    foundingDate: "2012",
+    knowsAbout: [
+      "Luxury Wedding Planning",
+      "Corporate Event Management",
+      "Destination Weddings",
+      "Concert Management",
+      "Exhibition Management",
+      "Celebrity Event Management",
+      "Product Launch Events",
+    ],
+    slogan: SITE_CONFIG.tagline,
+    numberOfEmployees: { "@type": "QuantitativeValue", minValue: 50 },
+    award: [
+      "Best Event Management Company — Event Industry Awards India 2025",
+      "Luxury Wedding Planner of the Year — Wedding Sutra 2024",
+    ],
+  };
+}

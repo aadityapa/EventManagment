@@ -4,7 +4,7 @@ export const SITE_CONFIG = {
   tagline: "Creating Extraordinary Experiences",
   description:
     "Premier luxury event management company in Pune specializing in weddings, corporate events, celebrity management, concerts, exhibitions, product launches, and destination celebrations.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://glitzevents.in",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://event-managment-mocha.vercel.app",
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@glitzevents.in",

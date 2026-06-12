@@ -4,7 +4,14 @@ import { SITE_CONFIG, NAV_LINKS, FOOTER_LEGAL } from "@/lib/constants";
 import { BRAND_SERVICES, BRAND_AWARDS } from "@/brand/data/content";
 import { Logo } from "@/components/branding/logo";
 
-const LOCATIONS = ["Pune", "Mumbai", "Goa", "Jaipur", "Udaipur", "Bangalore"];
+const LOCAL_SEO_LINKS = [
+  { href: "/event-management-company-pune", label: "Event Management Pune" },
+  { href: "/wedding-planner-pune", label: "Wedding Planner Pune" },
+  { href: "/corporate-event-management-pune", label: "Corporate Events Pune" },
+  { href: "/luxury-wedding-planner-maharashtra", label: "Luxury Weddings Maharashtra" },
+  { href: "/destination-wedding-planner-pune", label: "Destination Weddings" },
+  { href: "/exhibition-management-pune", label: "Exhibition Management" },
+];
 
 const SOCIAL = [
   { href: SITE_CONFIG.social.instagram, icon: Share2, label: "Instagram" },
@@ -96,11 +103,11 @@ export function BrandFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="brand-label mb-4">Locations</h4>
+            <h4 className="brand-label mb-4">Local SEO</h4>
             <ul className="space-y-2">
-              {LOCATIONS.map((c) => (
-                <li key={c}>
-                  <Link href="/venues" className="text-sm text-muted transition-colors hover:text-[var(--glitz-gold)]">{c}</Link>
+              {LOCAL_SEO_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-sm text-muted transition-colors hover:text-[var(--glitz-gold)]">{l.label}</Link>
                 </li>
               ))}
             </ul>

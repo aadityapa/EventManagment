@@ -10,7 +10,7 @@ import { BrandFab } from "@/brand/shell/brand-fab";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
-import { generateSEO, organizationSchema, websiteSchema } from "@/lib/seo";
+import { generateSEO, organizationSchema, websiteSchema, entityDefinitionSchema } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: true });
@@ -45,11 +45,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const orgSchema = organizationSchema();
   const siteSchema = websiteSchema();
+  const entitySchema = entityDefinitionSchema();
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entitySchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>

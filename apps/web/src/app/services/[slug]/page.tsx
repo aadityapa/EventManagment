@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Check } from "lucide-react";
 import { services } from "@/data/cms";
-import { generateSEO, breadcrumbSchema } from "@/lib/seo";
+import { generateSEO, breadcrumbSchema, serviceSchema } from "@/lib/seo";
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
@@ -40,12 +40,23 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     { name: "Services", url: "/services" },
     { name: service.title, url: `/services/${slug}` },
   ]);
+  const svcSchema = serviceSchema({
+    name: service.title,
+    description: service.description,
+    slug: service.slug,
+    image: service.image,
+    price: service.basePrice,
+  });
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(svcSchema) }}
       />
 
       <section className="relative flex min-h-[50vh] items-end overflow-hidden">

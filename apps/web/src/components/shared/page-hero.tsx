@@ -50,7 +50,7 @@ export function PageHero({ title, subtitle, className, children }: PageHeroProps
             <motion.p
               variants={stitchVariants.fadeUp}
               transition={{ ...stitchTransition, delay: 0.1 }}
-              className="mt-4 text-lg text-white/70 md:text-xl"
+              className="mt-4 text-lg text-neutral-300 md:text-xl"
             >
               {subtitle}
             </motion.p>

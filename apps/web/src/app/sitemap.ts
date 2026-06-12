@@ -1,9 +1,17 @@
 import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 import { services, blogPosts } from "@/data/cms";
+import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE_CONFIG.url;
+
+  const localPages = LOCAL_SEO_PAGES.map((p) => ({
+    url: `${base}/${p.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
 
   const staticPages = [
     "", "/about", "/services", "/portfolio", "/venues", "/vendors",
@@ -30,5 +38,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...servicePages, ...blogPages];
+  return [...staticPages, ...localPages, ...servicePages, ...blogPages];
 }
