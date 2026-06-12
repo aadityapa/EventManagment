@@ -226,6 +226,45 @@ export function venueSchema(venue: {
 }
 
 /** AI-friendly entity block for GEO — clear definitions for LLM crawlers */
+export function articleSchema(article: {
+  title: string;
+  description: string;
+  slug: string;
+  image: string;
+  author: string;
+  publishedAt: string;
+  tags?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    image: article.image,
+    author: { "@type": "Person", name: article.author },
+    publisher: { "@id": `${SITE_CONFIG.url}/#organization` },
+    datePublished: article.publishedAt,
+    dateModified: article.publishedAt,
+    mainEntityOfPage: `${SITE_CONFIG.url}/blog/${article.slug}`,
+    url: `${SITE_CONFIG.url}/blog/${article.slug}`,
+    keywords: article.tags?.join(", "),
+  };
+}
+
+export function itemListSchema(items: { name: string; url: string; image?: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      url: `${SITE_CONFIG.url}${item.url}`,
+      ...(item.image && { image: item.image }),
+    })),
+  };
+}
+
 export function entityDefinitionSchema() {
   return {
     "@context": "https://schema.org",

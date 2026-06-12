@@ -60,6 +60,12 @@ export const HERO_CATEGORIES: HeroSlide[] = [
     alt: "Fashion show runway event",
     src: U("photo-1552664730-d307ca884978"),
   },
+  {
+    category: "Brand Activation",
+    query: "luxury brand activation experiential marketing",
+    alt: "Luxury brand activation event",
+    src: U("photo-1530103862676-de8c9debad1d"),
+  },
 ];
 
 export const HERO_FALLBACK = IMAGES.hero.wedding;

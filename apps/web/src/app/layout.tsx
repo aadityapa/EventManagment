@@ -9,6 +9,7 @@ import { BrandFooter } from "@/brand/shell/brand-footer";
 import { BrandFab } from "@/brand/shell/brand-fab";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CookieConsent } from "@/components/shared/cookie-consent";
+import { ExitIntentPopup } from "@/components/engagement/exit-intent-popup";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { generateSEO, organizationSchema, websiteSchema, entityDefinitionSchema } from "@/lib/seo";
 import "./globals.css";
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <BrandFooter />
             <BrandFab />
             <CookieConsent />
+            <ExitIntentPopup />
             <ToastProvider />
           </CinematicProvider>
           </AdaptiveThemeProvider>

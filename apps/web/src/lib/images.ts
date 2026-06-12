@@ -90,6 +90,7 @@ export const EVENT_IMAGES = {
   celebrity: IMAGES.hero.drone,
   brandPromotion: IMAGES.gallery[12],
   fashionShow: IMAGES.gallery[6],
+  brandActivation: IMAGES.gallery[13],
   musicFestival: IMAGES.concerts[0],
   awardFunction: IMAGES.corporate[2],
   about: IMAGES.about,

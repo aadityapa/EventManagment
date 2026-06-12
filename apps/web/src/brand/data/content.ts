@@ -104,9 +104,37 @@ export const BRAND_TIMELINE = [
   { year: "2012", event: "Founded in Pune as a boutique luxury wedding studio." },
   { year: "2015", event: "First major corporate gala — 800 guests, zero delays." },
   { year: "2018", event: "Destination wedding division launched across Rajasthan and Goa." },
-  { year: "2021", event: "Named Best Event Management Company — Event Industry Awards India." },
-  { year: "2024", event: "1,800+ events delivered across 35 cities nationwide." },
+  { year: "2020", event: "Hybrid and virtual event production studio — broadcast-quality live streams." },
+  { year: "2025", event: "1,800+ events delivered across 35 cities — India's premier luxury event house." },
 ];
+
+export const BRAND_PROCESS_STEPS = [
+  { step: "01", title: "Discovery", desc: "Private consultation to understand your vision, culture, and guest experience goals." },
+  { step: "02", title: "Design", desc: "Bespoke creative concept, mood boards, and venue curation aligned to your brand." },
+  { step: "03", title: "Production", desc: "Vendor orchestration, timeline management, and technical rehearsals." },
+  { step: "04", title: "Execution", desc: "On-ground command center delivering flawless celebration day-of." },
+  { step: "05", title: "Legacy", desc: "Post-event analytics, media deliverables, and referral concierge." },
+] as const;
+
+export const BRAND_SERVICE_STATS = [
+  { value: 1800, suffix: "+", label: "Events Delivered" },
+  { value: 98, suffix: "%", label: "Client Satisfaction" },
+  { value: 35, suffix: "+", label: "Cities Served" },
+  { value: 120, suffix: "+", label: "On-Ground Team" },
+] as const;
+
+/** Nine core service categories for the services page */
+export const BRAND_SERVICE_CATEGORIES = [
+  { slug: "wedding-planning", title: "Wedding", narrative: "Bespoke ceremonies where every floral arrangement and candlelit moment is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0], caseStudy: "Royal Udaipur Wedding — 800 guests, 5 days, Vogue India feature." },
+  { slug: "corporate-events", title: "Corporate", narrative: "Black-tie excellence for brands that demand flawless C-suite galas and product launches.", image: BRAND_IMAGES.corporate[0], caseStudy: "TechCorp Annual Gala — 1,500 executives, broadcast-quality production." },
+  { slug: "destination-weddings", title: "Destination", narrative: "From Udaipur palaces to Goa sunsets — seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0], caseStudy: "Sunset Beach Wedding — 8M social impressions, perfect golden hour." },
+  { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Music Fest 2025 — 10,000 attendees, 50+ artists, zero incidents." },
+  { slug: "celebrity-management", title: "Celebrity", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences.", image: BRAND_IMAGES.hero.palace, caseStudy: "Brand ambassador launch — 12 media outlets, 50M impressions." },
+  { slug: "award-functions", title: "Awards", narrative: "Red-carpet galas with broadcast-quality production and celebrity coordination.", image: BRAND_IMAGES.awards, caseStudy: "Industry awards night — 600 VIP guests, live broadcast." },
+  { slug: "brand-promotions", title: "Brand Promotions", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[12], caseStudy: "Product activation — 3x footfall vs. previous year." },
+  { slug: "fashion-shows", title: "Fashion Shows", narrative: "Runway productions with lighting design, styling, and front-row experiences.", image: BRAND_IMAGES.gallery[7], caseStudy: "Fashion Week finale — 500 front-row guests, global press." },
+  { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[12], caseStudy: "Auto expo pavilion — 40% lead capture increase." },
+] as const;
 
 export const BRAND_AWARDS = [
   { title: "Best Event Management Company", org: "Event Industry Awards India", year: 2025 },

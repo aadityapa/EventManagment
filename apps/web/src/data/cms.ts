@@ -100,6 +100,8 @@ export const blogPosts = [
   { slug: "concert-production-pune", title: "Concert Production in Pune: What Goes Into a Stadium Show", excerpt: "Behind the scenes of large-scale concert management — artist logistics, stage design, security, and crowd flow.", image: EVENT_IMAGES.concert, author: "Vikram Singh", tags: ["Concerts", "Production"], category: "Entertainment", publishedAt: "2026-02-01", readTime: "11 min" },
 ];
 
+export { BLOG_CATEGORIES, BLOG_TOPIC_TEMPLATES } from "@/data/blog-topics";
+
 export const pricingPlans = [
   { name: "Essential", price: 300000, description: "Perfect for intimate gatherings", features: ["Event consultation", "Vendor recommendations", "Day-of coordination", "Basic decor guidance", "Timeline management"], popular: false },
   { name: "Premium", price: 800000, description: "Our most popular package", features: ["Full event planning", "Custom design & decor", "Vendor management", "Guest coordination", "Rehearsal management", "Premium support"], popular: true },

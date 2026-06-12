@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { blogPosts } from "@/data/cms";
-import { generateSEO, breadcrumbSchema } from "@/lib/seo";
+import { generateSEO, breadcrumbSchema, articleSchema } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -59,18 +59,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) notFound();
 
   const paragraphs = blogContent[slug] ?? [post.excerpt];
-  const schema = breadcrumbSchema([
+  const breadcrumb = breadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "Blog", url: "/blog" },
     { name: post.title, url: `/blog/${slug}` },
   ]);
+  const article = articleSchema({
+    title: post.title,
+    description: post.excerpt,
+    slug,
+    image: post.image,
+    author: post.author,
+    publishedAt: post.publishedAt,
+    tags: post.tags,
+  });
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} />
 
       <article>
         <div className="relative h-[40vh] min-h-[300px] overflow-hidden md:h-[50vh]">
@@ -79,6 +86,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             alt={post.title}
             fill
             priority
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDBQEAAAAAAAAAAAAAAQIDAAQRBQYhEjFBUf/EABUBAQEAAAAAAAAAAAAAAAAAAAME/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AzmitzJqcpJTyFslZ0k+or6VYYqSlJTyFslZ0k+or6VYY//Z"
             className="object-cover"
             sizes="100vw"
           />

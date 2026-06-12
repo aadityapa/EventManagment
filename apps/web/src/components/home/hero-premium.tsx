@@ -154,12 +154,17 @@ export function HeroPremium() {
 
       {/* Gold rays, lens flare, particles */}
       <motion.div className="absolute inset-0 z-[5]" style={{ x: fxX, y: fxY }}>
-        <HeroCinematicFx active={active} />
+        <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
       </motion.div>
 
-      {/* Content */}
+      {/* Content glass panel */}
       <div className="brand-container relative z-20 flex flex-1 flex-col justify-center pt-20 pb-16 md:pt-24">
-        <motion.div variants={heroReveal} initial="hidden" animate="visible" className="max-w-2xl">
+        <motion.div
+          variants={heroReveal}
+          initial="hidden"
+          animate="visible"
+          className="max-w-2xl rounded-2xl border border-[var(--adaptive-border,var(--glitz-border))]/40 bg-[var(--adaptive-surface,var(--glitz-surface))]/[0.42] p-6 shadow-[var(--adaptive-shadow,var(--glitz-glow))] backdrop-blur-xl backdrop-saturate-150 md:p-8"
+        >
           <motion.div variants={itemReveal} className="mb-4 flex flex-wrap items-center gap-3">
             <span className="trust-badge">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--adaptive-accent)]" aria-hidden="true" />
@@ -248,11 +253,14 @@ export function HeroPremium() {
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
               {slides[active]?.category}
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5" role="tablist" aria-label="Hero image categories">
               {slides.map((_, i) => (
                 <button
                   key={i}
                   type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-current={i === active ? "true" : undefined}
                   aria-label={`Show ${slides[i]?.category}`}
                   onClick={() => goTo(i)}
                   className={cn(

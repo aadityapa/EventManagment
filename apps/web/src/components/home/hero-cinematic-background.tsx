@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { HERO_FALLBACK, type HeroSlide } from "./hero-carousel-data";
+import { BLUR_DATA_URL } from "@/lib/images";
 
 type Props = {
   slides: HeroSlide[];
@@ -46,6 +47,8 @@ export function HeroCinematicBackground({ slides, active, broken, onBroken }: Pr
               priority={active === 0}
               loading={active === 0 ? "eager" : "lazy"}
               sizes="100vw"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               className="object-cover object-center brightness-[1.02] contrast-[1.04] saturate-[1.06]"
               unoptimized
               referrerPolicy="no-referrer"

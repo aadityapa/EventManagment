@@ -30,7 +30,10 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
       className={cn("w-full space-y-3", className)}
       onValueChange={handleValueChange}
     >
-      {items.map((faq, i) => (
+      {items.map((faq, i) => {
+        const panelId = `faq-panel-${i}`;
+        const triggerId = `faq-trigger-${i}`;
+        return (
         <AccordionPrimitive.Item
           key={faq.question}
           value={`item-${i}`}
@@ -38,6 +41,8 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
         >
           <AccordionPrimitive.Header className="flex">
             <AccordionPrimitive.Trigger
+              id={triggerId}
+              aria-controls={panelId}
               className={cn(
                 "flex flex-1 items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-primary transition-colors sm:px-6 sm:py-5 sm:text-base",
                 "hover:text-[var(--glitz-gold)]",
@@ -54,6 +59,9 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
           <AccordionPrimitive.Content
+            id={panelId}
+            role="region"
+            aria-labelledby={triggerId}
             className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
           >
             <div className="border-t border-[var(--glitz-gold)]/15 px-5 pb-5 pt-4 leading-relaxed text-muted sm:px-6 sm:pb-6">
@@ -61,7 +69,8 @@ export function BrandFaqAccordion({ items, location, className }: BrandFaqAccord
             </div>
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>
-      ))}
+      );
+      })}
     </AccordionPrimitive.Root>
   );
 }

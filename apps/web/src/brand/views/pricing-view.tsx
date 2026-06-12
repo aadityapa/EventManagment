@@ -10,6 +10,7 @@ import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_INVESTMENTS } from "@/brand/data/content";
 import { GLITZ_FAQS } from "@/brand/data/faq";
 import { BrandFaqAccordion } from "@/brand/primitives/brand-faq-accordion";
+import { InlineBudgetCalculator } from "@/components/cro/budget-calculator";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -128,6 +129,8 @@ export function PricingView() {
           })}
         </div>
       </BrandSection>
+
+      <InlineBudgetCalculator />
 
       <BrandSection id="faq" alt>
         <BrandHeader
