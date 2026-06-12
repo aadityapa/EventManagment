@@ -87,14 +87,7 @@ export const portfolioItems = [
   { id: "6", title: "Product X Launch", slug: "product-x-launch", eventType: "PRODUCT_LAUNCH", image: EVENT_IMAGES.productLaunch, location: "Delhi", guestCount: 300, description: "Immersive launch experience with holographic displays." },
 ];
 
-export const faqs = [
-  { question: "How far in advance should I book Glitz Events?", answer: "We recommend booking 6-12 months in advance for weddings and 3-6 months for corporate events. However, we can accommodate shorter timelines based on availability.", category: "General" },
-  { question: "Do you handle destination events internationally?", answer: "Yes! We've managed events in 45+ cities worldwide including Dubai, Bali, Thailand, Europe, and the Maldives.", category: "Services" },
-  { question: "What is included in your wedding planning packages?", answer: "Our packages include venue selection, vendor coordination, design & decor, timeline management, day-of coordination, and post-event support. Custom packages are available.", category: "Weddings" },
-  { question: "How does your online booking system work?", answer: "Our 9-step booking wizard lets you select event type, date, venue, guest count, budget, and services. You can pay online and receive instant confirmation via email, SMS, and WhatsApp.", category: "Booking" },
-  { question: "What payment methods do you accept?", answer: "We accept Razorpay, Stripe, PayPal, bank transfers, and UPI. A 30% advance is required to confirm bookings.", category: "Payment" },
-  { question: "Can I track my event progress online?", answer: "Absolutely! Our client dashboard provides real-time booking tracking, budget monitoring, vendor management, document access, and direct communication with your event team.", category: "Dashboard" },
-];
+export { GLITZ_FAQS as faqs } from "@/brand/data/faq";
 
 export const blogPosts = [
   { slug: "destination-wedding-trends-2026", title: "Top Destination Wedding Trends for 2026", excerpt: "Discover the hottest destination wedding trends shaping luxury celebrations this year.", image: EVENT_IMAGES.destinationWedding, author: "Sneha Reddy", tags: ["Weddings", "Trends"], publishedAt: "2026-05-15" },

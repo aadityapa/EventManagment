@@ -8,6 +8,8 @@ import { BrandPageHero } from "@/brand/primitives/brand-hero";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_INVESTMENTS } from "@/brand/data/content";
+import { GLITZ_FAQS } from "@/brand/data/faq";
+import { BrandFaqAccordion } from "@/brand/primitives/brand-faq-accordion";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -124,6 +126,18 @@ export function PricingView() {
               </motion.div>
             );
           })}
+        </div>
+      </BrandSection>
+
+      <BrandSection id="faq" alt>
+        <BrandHeader
+          label="Questions Answered"
+          title="Investment & Booking FAQs"
+          subtitle="Clear answers on packages, payments, and what to expect when you partner with Glitz."
+          center
+        />
+        <div className="mx-auto max-w-3xl">
+          <BrandFaqAccordion items={GLITZ_FAQS} location="pricing_faq" />
         </div>
       </BrandSection>
     </div>
