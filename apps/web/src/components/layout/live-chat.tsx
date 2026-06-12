@@ -23,9 +23,9 @@ export function LiveChat() {
 
       {open && (
         <div className="fixed inset-x-3 bottom-[5.5rem] z-40 flex max-h-[min(70dvh,32rem)] flex-col overflow-hidden rounded-xl glass-card shadow-glow sm:inset-x-auto sm:bottom-24 sm:left-6 sm:w-full sm:max-w-sm md:bottom-24">
-          <div className="gradient-dark shrink-0 p-4 text-white">
+          <div className="gradient-dark shrink-0 p-4 text-primary">
             <h4 className="font-semibold">Glitz Live Chat</h4>
-            <p className="text-xs text-white/70">Typically replies within minutes</p>
+            <p className="text-xs text-muted">Typically replies within minutes</p>
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto p-4">
             <div className="glass-card mb-3 max-w-[85%] p-3 text-sm">
