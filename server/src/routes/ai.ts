@@ -200,10 +200,12 @@ router.post("/plan", async (req, res) => {
     let ai: z.infer<typeof planAiSchema> | null = null;
     const key = getOpenAIKey();
     if (key) {
-      const venueNames = venueSuggestions.map((v) => `${v.name} (${v.city})`).slice(0, 3);
+      const venueNames = venueSuggestions
+        .map((venue) => `${venue.name} (${venue.city})`)
+        .slice(0, 3);
       const vendorNames = vendorSuggestions
-        .filter(Boolean)
-        .map((v) => (v as any).businessName || (v as any).name || "Vendor")
+        .filter((vendor): vendor is NonNullable<typeof vendor> => vendor != null)
+        .map((vendor) => vendor.businessName || "Vendor")
         .slice(0, 4);
 
       const prompt = [
