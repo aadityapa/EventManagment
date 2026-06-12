@@ -5,6 +5,7 @@ import { MessageCircle, Phone, ArrowRight } from "lucide-react";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { SITE_CONFIG } from "@/lib/constants";
+import { analytics } from "@/lib/analytics";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Glitz Events, I'd like to book a consultation.")}`;
@@ -36,13 +37,18 @@ export function HomeCta() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
             <MagneticButton>
-              <BrandButton href="/book-event" className="btn-premium-hover min-w-[200px]">
+              <BrandButton
+                href="/book-event"
+                className="btn-premium-hover min-w-[200px]"
+                onClick={() => analytics.ctaClick("book_consultation", "home_cta")}
+              >
                 Book Consultation <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </BrandButton>
             </MagneticButton>
             <MagneticButton>
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+                onClick={() => analytics.ctaClick("call_now", "home_cta")}
                 className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[var(--glitz-gold)]/40 px-8 py-3 text-sm font-semibold text-[var(--glitz-text)] transition-colors hover:bg-[var(--glitz-gold)]/10 btn-premium-hover"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" /> Call Now
@@ -53,6 +59,7 @@ export function HomeCta() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => analytics.ctaClick("whatsapp", "home_cta")}
                 className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-8 py-3 text-sm font-semibold text-[var(--glitz-text)] transition-colors hover:bg-[#25D366]/20 btn-premium-hover"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp

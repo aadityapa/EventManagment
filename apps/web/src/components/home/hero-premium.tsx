@@ -12,6 +12,7 @@ import { HERO_CATEGORIES, HERO_FALLBACK, type HeroSlide } from "@/components/hom
 import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { SITE_CONFIG } from "@/lib/constants";
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const AUTO_MS = 5000;
@@ -199,12 +200,22 @@ export function HeroPremium() {
 
           <motion.div variants={itemReveal} className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <MagneticButton>
-              <BrandButton href="/book-event" variant="gold" className="min-w-[168px]">
+              <BrandButton
+                href="/book-event"
+                variant="gold"
+                className="min-w-[168px]"
+                onClick={() => analytics.ctaClick("book_event", "hero")}
+              >
                 Book Event
               </BrandButton>
             </MagneticButton>
             <MagneticButton>
-              <BrandButton href="/book-event" variant="outline" className="min-w-[168px]">
+              <BrandButton
+                href="/book-event"
+                variant="outline"
+                className="min-w-[168px]"
+                onClick={() => analytics.ctaClick("get_consultation", "hero")}
+              >
                 Get Consultation
               </BrandButton>
             </MagneticButton>
@@ -213,6 +224,7 @@ export function HeroPremium() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => analytics.ctaClick("whatsapp", "hero")}
                 className="inline-flex min-h-[48px] min-w-[168px] items-center justify-center gap-2 rounded-lg border border-emerald-600/30 bg-emerald-600/10 px-6 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] transition-all hover:bg-emerald-600/18 hover:shadow-md"
               >
                 <MessageCircle className="h-4 w-4 text-emerald-500" /> WhatsApp

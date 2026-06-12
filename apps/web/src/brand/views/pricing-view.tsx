@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Gem, Crown, Sparkles, Check } from "lucide-react";
@@ -8,6 +8,7 @@ import { BrandPageHero } from "@/brand/primitives/brand-hero";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_INVESTMENTS } from "@/brand/data/content";
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 type BillingMode = "per-event" | "retainer";
@@ -19,6 +20,15 @@ const BILLING_LABELS: Record<BillingMode, { left: string; right: string; note: s
 
 export function PricingView() {
   const [billing, setBilling] = useState<BillingMode>("per-event");
+
+  useEffect(() => {
+    analytics.pricingView();
+  }, []);
+
+  const handleBillingToggle = (mode: BillingMode) => {
+    setBilling(mode);
+    analytics.pricingToggle(mode);
+  };
 
   return (
     <div className="brand-root">
@@ -46,7 +56,7 @@ export function PricingView() {
               <button
                 key={mode}
                 type="button"
-                onClick={() => setBilling(mode)}
+                onClick={() => handleBillingToggle(mode)}
                 aria-pressed={billing === mode}
                 className={cn(
                   "rounded-full px-5 py-2 text-sm font-semibold transition-all tap-target",
@@ -101,6 +111,7 @@ export function PricingView() {
                 </ul>
                 <Link
                   href="/book-event"
+                  onClick={() => analytics.demoRequest(`pricing_${col.name.toLowerCase().replace(/\s+/g, "_")}`)}
                   className={cn(
                     "mt-8 block rounded-lg py-3 text-center text-sm font-semibold transition-all btn-premium-hover tap-target",
                     col.featured

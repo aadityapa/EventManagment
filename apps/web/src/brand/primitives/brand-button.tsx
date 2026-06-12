@@ -10,13 +10,15 @@ interface BrandButtonProps {
   children: ReactNode;
   variant?: "gold" | "outline";
   className?: string;
+  onClick?: () => void;
 }
 
-export function BrandButton({ href, children, variant = "gold", className }: BrandButtonProps) {
+export function BrandButton({ href, children, variant = "gold", className, onClick }: BrandButtonProps) {
   return (
     <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.98 }}>
       <Link
         href={href}
+        onClick={onClick}
         className={cn(
           "relative inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 py-3 text-sm font-semibold tracking-wide",
           variant === "gold"

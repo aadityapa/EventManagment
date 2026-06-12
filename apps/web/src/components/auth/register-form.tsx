@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/form-input";
 import { toast } from "sonner";
+import { analytics } from "@/lib/analytics";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function RegisterForm() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    analytics.signupStart();
     setLoading(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -29,6 +31,7 @@ export function RegisterForm() {
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) throw new Error(data.error || "Registration failed");
+      analytics.signupComplete();
       toast.success("Account created.");
       router.replace(next);
     } catch (err) {

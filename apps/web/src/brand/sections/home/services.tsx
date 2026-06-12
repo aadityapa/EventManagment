@@ -8,6 +8,7 @@ import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_SERVICES } from "@/brand/data/content";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { analytics } from "@/lib/analytics";
 
 const FEATURE_ICONS: Record<string, typeof Heart> = {
   "wedding-planning": Heart,
@@ -41,6 +42,7 @@ export function HomeServices() {
                 <Link
                   key={s.slug}
                   href={`/services/${s.slug}`}
+                  onClick={() => analytics.featureClick(s.slug, "home_services_grid")}
                   className="group brand-surface flex flex-col p-6 transition-all hover:-translate-y-1 hover:shadow-[var(--glitz-glow)]"
                 >
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] transition-colors group-hover:bg-[var(--glitz-gold)]/20">
@@ -98,6 +100,7 @@ export function HomeServices() {
               >
                 <Link
                   href={`/services/${s.slug}`}
+                  onClick={() => analytics.featureClick(s.slug, "home_services_carousel")}
                   className="group brand-surface block h-full overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[var(--glitz-glow)]"
                 >
                   <div className="relative h-48 overflow-hidden">
