@@ -33,6 +33,7 @@ export function BrandHeader() {
   if (hidden) return null;
 
   const glass = scrolled || !isHome;
+  const adaptiveChrome = isHome && !scrolled;
 
   return (
     <header
@@ -56,8 +57,12 @@ export function BrandHeader() {
               className={cn(
                 "tap-target rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 pathname === l.href
-                  ? "text-[var(--adaptive-accent)]"
-                  : "text-[var(--adaptive-text)]/80 hover:text-[var(--adaptive-accent)]"
+                  ? adaptiveChrome
+                    ? "text-[var(--adaptive-accent)]"
+                    : "text-[var(--glitz-gold)]"
+                  : adaptiveChrome
+                    ? "text-[var(--adaptive-text)]/80 hover:text-[var(--adaptive-accent)]"
+                    : "text-[var(--glitz-text)]/80 hover:text-[var(--glitz-gold)]"
               )}
             >
               {l.label}
@@ -68,7 +73,10 @@ export function BrandHeader() {
         <div className="hidden items-center gap-2.5 md:flex">
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-            className="hidden items-center gap-1.5 text-sm text-[var(--adaptive-accent)] transition-colors hover:brightness-110 lg:flex"
+            className={cn(
+              "hidden items-center gap-1.5 text-sm transition-colors hover:brightness-110 lg:flex",
+              adaptiveChrome ? "text-[var(--adaptive-accent)]" : "text-[var(--glitz-gold)]"
+            )}
             aria-label={`Call ${SITE_CONFIG.phone}`}
           >
             <Phone className="h-3.5 w-3.5" aria-hidden="true" />

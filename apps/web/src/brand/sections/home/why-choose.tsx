@@ -41,7 +41,7 @@ export function HomeWhyChoose() {
               <span className="absolute left-2 top-1 flex h-5 w-5 items-center justify-center rounded-full border border-[var(--glitz-gold)] bg-[var(--glitz-surface)] text-[9px] font-bold text-[var(--glitz-gold)] sm:left-4">
                 {item.step}
               </span>
-              <h3 className="brand-display text-xl font-semibold text-white">{item.title}</h3>
+              <h3 className="brand-display text-xl font-semibold text-[var(--glitz-text)]">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--glitz-muted)]">{item.text}</p>
             </div>
           ))}

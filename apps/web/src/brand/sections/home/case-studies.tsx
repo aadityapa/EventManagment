@@ -27,7 +27,7 @@ export function HomeCaseStudies() {
                   <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5 text-[var(--glitz-gold)]" />{cs.guests} guests</span>
                   <span className="text-[var(--glitz-gold)]">Investment: {cs.budget}</span>
                 </div>
-                <blockquote className="mt-4 border-l-2 border-[var(--glitz-gold)]/40 pl-4 text-sm italic text-white/80">&ldquo;{cs.testimonial}&rdquo; — {cs.client}</blockquote>
+                <blockquote className="mt-4 border-l-2 border-[var(--glitz-gold)]/40 pl-4 text-sm italic text-[var(--glitz-muted)]">&ldquo;{cs.testimonial}&rdquo; — {cs.client}</blockquote>
               </div>
             </div>
           </motion.article>

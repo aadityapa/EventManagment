@@ -30,3 +30,15 @@ export function mixRgb(a: [number, number, number], b: [number, number, number],
     a[2] + (b[2] - a[2]) * t,
   ];
 }
+
+/** Relative luminance below this → treat surface as dark (use light text). */
+export const BRIGHTNESS_THRESHOLD = 0.42;
+
+/** Light surfaces → dark text; dark surfaces → light text */
+export function contrastingText(luminance: number, threshold = BRIGHTNESS_THRESHOLD): string {
+  return luminance < threshold ? "#FFFFFF" : "#111111";
+}
+
+export function contrastingMuted(luminance: number, threshold = BRIGHTNESS_THRESHOLD): string {
+  return luminance < threshold ? "rgba(255, 255, 255, 0.72)" : "rgba(17, 17, 17, 0.62)";
+}

@@ -1,5 +1,10 @@
 import { cacheKey, getCachedPalette, setCachedPalette } from "./cache";
+import { BRIGHTNESS_THRESHOLD, contrastingMuted, contrastingText, relativeLuminance } from "./color-utils";
 import type { AdaptivePalette, ImageAnalysis, SampleRegion } from "./types";
+
+export { BRIGHTNESS_THRESHOLD };
+
+const BUTTON_SAMPLE_RGB: [number, number, number] = [201, 162, 39];
 
 const GOLD = {
   accent: "#C9A227",
@@ -20,12 +25,13 @@ export function generatePalette(analysis: ImageAnalysis, region: SampleRegion = 
   const cached = getCachedPalette(key);
   if (cached) return cached;
 
-  const { isDark, isWarm } = analysis;
+  const { isDark, isWarm, brightness } = analysis;
   const accentSet = isWarm ? GOLD : CHAMPAGNE;
 
-  const text = isDark ? "#FFFFFF" : "#111111";
-  const muted = isDark ? "rgba(255, 255, 255, 0.72)" : "rgba(17, 17, 17, 0.62)";
-  const buttonText = isDark ? "#111111" : "#111111";
+  const text = contrastingText(brightness, BRIGHTNESS_THRESHOLD);
+  const muted = contrastingMuted(brightness, BRIGHTNESS_THRESHOLD);
+  const buttonLuminance = relativeLuminance(...BUTTON_SAMPLE_RGB);
+  const buttonText = contrastingText(buttonLuminance, BRIGHTNESS_THRESHOLD);
 
   const overlayBase = isDark ? [5, 5, 5] : [253, 251, 245];
   const overlayAlpha = isDark ? 0.32 : 0.58;

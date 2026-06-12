@@ -47,7 +47,7 @@ export function AboutView() {
         <div className="grid gap-4 sm:grid-cols-2">{BRAND_AWARDS.map((a) => (
           <div key={a.title} className="brand-surface flex gap-4 p-6"><Award className="h-8 w-8 shrink-0 text-[var(--glitz-gold)]" /><div><h3 className="font-semibold">{a.title}</h3><p className="text-sm text-[var(--glitz-muted)]">{a.org} · {a.year}</p></div></div>
         ))}</div>
-        <div className="mt-10 flex flex-wrap justify-center gap-3">{BRAND_MEDIA.map((m) => <span key={m} className="rounded-full border border-[var(--glitz-border)] px-5 py-2 text-sm text-white/70">{m}</span>)}</div>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">{BRAND_MEDIA.map((m) => <span key={m} className="rounded-full border border-[var(--glitz-border)] px-5 py-2 text-sm text-[var(--glitz-muted)]">{m}</span>)}</div>
       </BrandSection>
     </div>
   );

@@ -13,8 +13,8 @@ export function BrandHeader({ label, title, subtitle, center }: { label?: string
   return (
     <header className={cn("mb-12 sm:mb-16", center && "mx-auto max-w-3xl text-center")}>
       {label && <span className="brand-label mb-3 block">{label}</span>}
-      <h2 className="brand-display text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-tight text-[var(--adaptive-text)]">{title}</h2>
-      {subtitle && <p className="mt-4 text-base leading-relaxed text-[var(--adaptive-muted)] sm:text-lg">{subtitle}</p>}
+      <h2 className="brand-display text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-tight text-[var(--glitz-text)]">{title}</h2>
+      {subtitle && <p className="mt-4 text-base leading-relaxed text-[var(--glitz-muted)] sm:text-lg">{subtitle}</p>}
     </header>
   );
 }

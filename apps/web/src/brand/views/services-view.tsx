@@ -60,7 +60,7 @@ export function ServicesView() {
               <p className="mt-4 text-[var(--glitz-muted)] leading-relaxed">{s.narrative}</p>
               <ul className="mt-6 grid gap-2 sm:grid-cols-2">
                 {FEATURES.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-white/85">
+                  <li key={f} className="flex items-center gap-2 text-sm text-[var(--glitz-text)]">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" />
                     {f}
                   </li>
@@ -70,7 +70,7 @@ export function ServicesView() {
                 <Link href={`/services/${s.slug}`} className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--glitz-gold)] hover:underline">
                   View Details <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/book-event" className="text-sm text-[var(--glitz-muted)] hover:text-white">
+                <Link href="/book-event" className="text-sm text-[var(--glitz-muted)] hover:text-[var(--glitz-text)]">
                   Book consultation →
                 </Link>
               </div>

@@ -155,7 +155,7 @@ html {
   font-weight: var(--weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--adaptive-accent);
+  color: var(--glitz-gold);
 }
 
 /* Social proof strip */
@@ -173,12 +173,12 @@ html {
   align-items: center;
   gap: 0.5rem;
   font-size: var(--text-sm);
-  color: var(--adaptive-muted);
+  color: var(--glitz-muted);
 }
 
 .social-proof-value {
   font-weight: var(--weight-bold);
-  color: var(--adaptive-text);
+  color: var(--glitz-text);
 }
 
 @media (prefers-reduced-motion: reduce) {

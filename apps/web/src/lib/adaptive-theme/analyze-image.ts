@@ -1,5 +1,5 @@
 import { cacheKey, getCachedAnalysis, setCachedAnalysis } from "./cache";
-import { colorWarmth, relativeLuminance } from "./color-utils";
+import { BRIGHTNESS_THRESHOLD, colorWarmth, relativeLuminance } from "./color-utils";
 import type { ImageAnalysis, SampleRegion } from "./types";
 
 const SAMPLE_SIZE = 64;
@@ -51,7 +51,7 @@ function analyzeImageData(data: ImageData): ImageAnalysis {
     dominant,
     warmth,
     isWarm: warmth > 0.06,
-    isDark: brightness < 0.42,
+    isDark: brightness < BRIGHTNESS_THRESHOLD,
   };
 }
 

@@ -15,6 +15,7 @@ import {
   analyzeImageUrl,
   analyzeVideoFrame,
   applyAdaptiveVars,
+  applyAdaptiveVarsToSection,
   generatePalette,
   resetAdaptiveVars,
 } from "@/lib/adaptive-theme";
@@ -61,14 +62,28 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
     return bestScore >= VISIBILITY_THRESHOLD ? best : null;
   }, []);
 
+  const clearAdaptiveState = useCallback((section?: HTMLElement | null) => {
+    const root = document.documentElement;
+    resetAdaptiveVars(root);
+    delete root.dataset.adaptiveActive;
+    if (section) {
+      resetAdaptiveVars(section);
+    }
+  }, []);
+
   const applyFromSource = useCallback(
-    async (src: string | undefined, region: SampleRegion, videoRef?: { current: HTMLVideoElement | null }) => {
+    async (
+      src: string | undefined,
+      region: SampleRegion,
+      section?: HTMLElement | null,
+      videoRef?: { current: HTMLVideoElement | null }
+    ) => {
       if (typeof document === "undefined") return;
 
       const root = document.documentElement;
 
       if (!src && !videoRef?.current) {
-        resetAdaptiveVars(root);
+        clearAdaptiveState(section);
         activeIdRef.current = null;
         return;
       }
@@ -88,45 +103,49 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
         }
 
         if (!analysis) {
-          resetAdaptiveVars(root);
+          clearAdaptiveState(section);
           return;
         }
 
         const palette = generatePalette(analysis, region);
         applyAdaptiveVars(root, palette);
+        root.dataset.adaptiveActive = "true";
+        if (section) {
+          applyAdaptiveVarsToSection(section, palette);
+        }
       } finally {
         analyzingRef.current = false;
       }
     },
-    []
+    [clearAdaptiveState]
   );
 
   const refreshActive = useCallback(async () => {
     if (forcedSrcRef.current) {
       const { src, region } = forcedSrcRef.current;
-      await applyFromSource(src, region);
+      const winner = pickWinner();
+      await applyFromSource(src, region, winner?.element, winner?.videoRef);
       return;
     }
 
     const winner = pickWinner();
     if (!winner) {
-      resetAdaptiveVars(document.documentElement);
+      clearAdaptiveState();
       activeIdRef.current = null;
       return;
     }
 
+    const src = winner.getImageSrc();
     if (activeIdRef.current === winner.id) {
-      const src = winner.getImageSrc();
       if (src || winner.videoRef?.current) {
-        await applyFromSource(src, winner.region ?? "left-third", winner.videoRef);
+        await applyFromSource(src, winner.region ?? "left-third", winner.element, winner.videoRef);
       }
       return;
     }
 
     activeIdRef.current = winner.id;
-    const src = winner.getImageSrc();
-    await applyFromSource(src, winner.region ?? "left-third", winner.videoRef);
-  }, [applyFromSource, pickWinner]);
+    await applyFromSource(src, winner.region ?? "left-third", winner.element, winner.videoRef);
+  }, [applyFromSource, clearAdaptiveState, pickWinner]);
 
   const register = useCallback(
     (options: RegisterOptions) => {
@@ -161,9 +180,10 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
   const pushImage = useCallback(
     (src: string, region: SampleRegion = "left-third") => {
       forcedSrcRef.current = { src, region };
-      void applyFromSource(src, region);
+      const winner = pickWinner();
+      void applyFromSource(src, region, winner?.element, winner?.videoRef);
     },
-    [applyFromSource]
+    [applyFromSource, pickWinner]
   );
 
   useEffect(() => {
@@ -202,7 +222,7 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
     const id = window.setInterval(() => {
       const winner = pickWinner();
       if (winner?.videoRef?.current && winner.visibility >= VISIBILITY_THRESHOLD) {
-        void applyFromSource(undefined, winner.region ?? "left-third", winner.videoRef);
+        void applyFromSource(undefined, winner.region ?? "left-third", winner.element, winner.videoRef);
       }
     }, 2500);
     return () => window.clearInterval(id);

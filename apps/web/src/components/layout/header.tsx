@@ -59,7 +59,7 @@ export function Header() {
                     ? "text-primary"
                     : scrolled || !isHome
                       ? "text-foreground/80 hover:text-primary"
-                      : "text-white/80 hover:text-primary"
+                      : "text-[var(--adaptive-text)]/80 hover:text-primary"
                 )}
               >
                 {link.label}

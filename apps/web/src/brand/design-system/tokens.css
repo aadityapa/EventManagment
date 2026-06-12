@@ -103,18 +103,15 @@
   --adaptive-button: var(--_adaptive-button);
   --adaptive-button-text: var(--_adaptive-button-text);
   --adaptive-gradient-gold: var(--_adaptive-gradient-gold);
+}
 
-  --glitz-text: var(--adaptive-text);
-  --glitz-muted: var(--adaptive-muted);
-  --glitz-gold: var(--adaptive-accent);
-  --glitz-gold-light: var(--adaptive-accent-light);
-  --glitz-gold-metallic: var(--adaptive-accent);
-  --glitz-gold-shine: var(--adaptive-accent-light);
-  --glitz-glow: var(--adaptive-shadow);
-  --glitz-glow-strong: var(--adaptive-shadow-strong);
-  --glitz-gradient-gold: var(--adaptive-gradient-gold);
-  --glitz-hero-scrim: var(--adaptive-scrim);
-  --glitz-hero-bottom: var(--adaptive-scrim-bottom);
+/* Per-section adaptive contrast — hero/backdrop content only */
+[data-adaptive-backdrop][data-adaptive-active="true"] {
+  color: var(--adaptive-text);
+}
+
+[data-adaptive-backdrop][data-adaptive-active="true"] .adaptive-backdrop-muted {
+  color: var(--adaptive-muted);
 }
 
 html[data-adaptive-active="true"] .brand-root,
