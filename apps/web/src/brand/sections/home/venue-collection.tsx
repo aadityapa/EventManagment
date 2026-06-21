@@ -21,11 +21,11 @@ export function HomeVenueCollection() {
     <section id="destinations" className="v4-section relative overflow-hidden bg-[var(--glitz-surface)]" aria-labelledby="destinations-heading">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">Destinations</span>
+          <span className="v4-kicker mb-6">Venues</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 id="destinations-heading" className="v4-display max-w-2xl">
-            Venue <span className="v4-gold-text">Universe</span>
+            Venue <span className="v4-gold-text">Explorer</span>
           </h2>
         </ScrollReveal>
         <ScrollReveal preset="fade" delay={0.14}>

@@ -47,16 +47,17 @@ export function HomePortfolioShowcase() {
     >
       <div className="brand-container flex min-h-[100svh] flex-col justify-center py-[var(--v4-section)]">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">The Archive</span>
+          <span className="v4-kicker mb-6">Portfolio</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 id="portfolio-heading" className="v4-display max-w-2xl">
-            Portfolio <span className="v4-gold-text">Universe</span>
+            Curated <span className="v4-gold-text">Productions</span>
           </h2>
         </ScrollReveal>
         <ScrollReveal preset="fade" delay={0.12}>
           <p className="v4-standfirst mt-5 max-w-xl">
-            Every celebration tells a story worth remembering — scroll through our signature productions.
+            Netflix-style scroll through our signature celebrations — each a cinematic story of
+            precision, beauty, and unforgettable guest experience.
           </p>
         </ScrollReveal>
 

@@ -77,7 +77,7 @@ export function HeroVideoBackground({ slides, active, broken, onBroken, videoRef
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.85, ease: [0.22, 1, 0.36, 1] }}
         >
           {usePoster ? (
             <KenBurnsPoster src={posterSrc} alt={slide?.alt ?? "Luxury event"} priority={active === 0} />

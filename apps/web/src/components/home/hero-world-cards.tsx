@@ -30,18 +30,10 @@ const HERO_WORLDS = [
   {
     id: "corporate",
     title: "Corporate World",
-    subtitle: "Galas & launches",
+    subtitle: "Galas & summits",
     preset: "corporate" as WorldPresetId,
     href: "/services/corporate-events?world=corporate",
     image: BRAND_IMAGES.corporate[0],
-  },
-  {
-    id: "concert",
-    title: "Concert World",
-    subtitle: "Stadium scale",
-    preset: "celebration" as WorldPresetId,
-    href: "/services/concert-management?world=celebration",
-    image: BRAND_IMAGES.gallery[3],
   },
   {
     id: "destination",
@@ -52,12 +44,28 @@ const HERO_WORLDS = [
     image: BRAND_IMAGES.destinations[1],
   },
   {
+    id: "celebrity",
+    title: "Celebrity World",
+    subtitle: "VIP & red carpet",
+    preset: "culture" as WorldPresetId,
+    href: "/services/celebrity-management?world=culture",
+    image: BRAND_IMAGES.hero.palace,
+  },
+  {
     id: "fashion",
     title: "Fashion World",
     subtitle: "Runway & front row",
     preset: "culture" as WorldPresetId,
     href: "/services/fashion-shows?world=culture",
     image: BRAND_IMAGES.gallery[12],
+  },
+  {
+    id: "brand",
+    title: "Brand Activations",
+    subtitle: "Experiential marketing",
+    preset: "corporate" as WorldPresetId,
+    href: "/services/brand-promotions?world=corporate",
+    image: BRAND_IMAGES.gallery[8],
   },
 ] as const;
 
@@ -84,9 +92,9 @@ export function HeroWorldCards({ mouseX, mouseY, className }: Props) {
         opacity: 0,
         scale: 0.94,
         duration: 0.9,
-        stagger: 0.1,
+        stagger: 0.08,
         ease: GSAP_EASE.luxe,
-        delay: 1.05,
+        delay: 0.85,
       });
     }, gridRef);
     return () => ctx.revert();
@@ -96,17 +104,15 @@ export function HeroWorldCards({ mouseX, mouseY, className }: Props) {
     <motion.div
       ref={gridRef}
       style={{ x: groupX, y: groupY }}
-      className={cn("relative w-full", className)}
+      className={cn("relative w-full max-w-xl lg:max-w-none", className)}
       aria-label="Experience worlds"
     >
-      {/* Desktop — staggered floating grid */}
       <div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 xl:gap-5">
         {HERO_WORLDS.map((world, i) => (
           <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} />
         ))}
       </div>
 
-      {/* Mobile — horizontal scroll snap */}
       <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
         {HERO_WORLDS.map((world, i) => (
           <div key={world.id} className="w-[72vw] max-w-[280px] shrink-0 snap-center first:pl-1 last:pr-1">
@@ -129,21 +135,18 @@ function WorldCard({
   reducedMotion: boolean;
   compact?: boolean;
 }) {
-  const floatOffset = index % 2 === 0 ? -6 : 6;
+  const floatOffset = index % 2 === 0 ? -5 : 5;
+  const staggerY = index === 1 || index === 4 ? "lg:translate-y-5" : index === 2 || index === 5 ? "lg:-translate-y-1" : "";
 
   return (
     <motion.div
       data-world-card=""
-      className={cn(compact ? "" : index === 1 || index === 4 ? "lg:translate-y-6" : index === 2 ? "lg:-translate-y-2" : "")}
-      animate={
-        reducedMotion
-          ? undefined
-          : { y: [floatOffset, floatOffset - 8, floatOffset] }
-      }
+      className={cn(compact ? "" : staggerY)}
+      animate={reducedMotion ? undefined : { y: [floatOffset, floatOffset - 7, floatOffset] }}
       transition={
         reducedMotion
           ? undefined
-          : { duration: 5 + index * 0.4, repeat: Infinity, ease: "easeInOut" }
+          : { duration: 5.5 + index * 0.35, repeat: Infinity, ease: "easeInOut" }
       }
     >
       <Link
@@ -159,7 +162,7 @@ function WorldCard({
           className={cn(
             "relative overflow-hidden p-0 transition-all duration-500",
             "hover:-translate-y-1.5 hover:shadow-[var(--v4-glow-gold)]",
-            compact ? "min-h-[168px]" : "min-h-[148px]"
+            compact ? "min-h-[168px]" : "min-h-[142px]"
           )}
         >
           <div className="absolute inset-0">
@@ -172,7 +175,8 @@ function WorldCard({
               unoptimized
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/28 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/32 to-black/12" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_42%)] opacity-60" />
           </div>
           <div className="relative flex min-h-[inherit] flex-col justify-end p-4">
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent,var(--glitz-gold))]">

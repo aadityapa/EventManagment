@@ -41,7 +41,7 @@ export function HomeExperienceWorlds() {
     >
       <div className="brand-container">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">Choose Your World</span>
+          <span className="v4-kicker mb-6">Discover</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 id="worlds-heading" className="v4-display max-w-2xl">

@@ -31,11 +31,11 @@ export function HomeTestimonialsV5() {
     <section id="voices" className="v4-section v4-dune-glow relative bg-[var(--glitz-bg)]" aria-labelledby="voices-heading">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">Voices</span>
+          <span className="v4-kicker mb-6">Testimonials</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 id="voices-heading" className="v4-display max-w-xl">
-            Stories They <span className="v4-gold-text">Inherit</span>
+            Client <span className="v4-gold-text">Stories</span>
           </h2>
         </ScrollReveal>
 

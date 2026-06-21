@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import { HomeHero } from "@/brand/sections/home/hero";
-import { HomeIntro } from "@/brand/sections/home/intro";
 import { HomeExperienceWorlds } from "@/brand/sections/home/experience-worlds";
 import { HomeSignatureExperiences } from "@/brand/sections/home/signature-experiences";
 
@@ -10,31 +9,34 @@ const HomePortfolioShowcase = dynamic(() =>
 const HomeVenueCollection = dynamic(() =>
   import("@/brand/sections/home/venue-collection").then((m) => m.HomeVenueCollection)
 );
+const HomeAwards = dynamic(() =>
+  import("@/brand/sections/home/home-awards").then((m) => m.HomeAwards)
+);
 const HomeTestimonialsV5 = dynamic(() =>
   import("@/brand/sections/home/testimonials-v5").then((m) => m.HomeTestimonialsV5)
 );
-const HomeMediaAwards = dynamic(() =>
-  import("@/brand/sections/home/media-awards").then((m) => m.HomeMediaAwards)
+const HomeMediaCoverage = dynamic(() =>
+  import("@/brand/sections/home/home-media-coverage").then((m) => m.HomeMediaCoverage)
 );
 const HomeLuxuryCta = dynamic(() =>
   import("@/brand/sections/home/luxury-cta").then((m) => m.HomeLuxuryCta)
 );
 
 /**
- * V5 Home — 9 cinematic chapters per wireframes.
- * Ch.1 Welcome → Ch.9 Commission + universe nav shell.
+ * Nexyyra homepage — cinematic hero + eight experience chapters.
+ * Emotion-first; logo supports the story, never leads it.
  */
 export function HomeView() {
   return (
     <div className="brand-root">
       <HomeHero />
-      <HomeIntro />
       <HomeExperienceWorlds />
       <HomeSignatureExperiences />
       <HomePortfolioShowcase />
       <HomeVenueCollection />
+      <HomeAwards />
       <HomeTestimonialsV5 />
-      <HomeMediaAwards />
+      <HomeMediaCoverage />
       <HomeLuxuryCta />
     </div>
   );

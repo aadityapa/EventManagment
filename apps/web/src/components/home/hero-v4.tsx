@@ -37,26 +37,10 @@ const HeroWorldCards = dynamic(
   { ssr: false }
 );
 
-const SERVICE_TAGS = [
-  "Luxury Weddings",
-  "Destination Weddings",
-  "Corporate Experiences",
-  "Celebrity Events",
-  "Brand Activations",
-] as const;
-
-const HERO_HEADLINES = [
-  "Crafting Extraordinary Experiences For Extraordinary People",
-  "Experience Architects For India's Finest Celebrations",
-  "Designing Memories That Last A Lifetime",
-] as const;
-
-const HEADLINE_INTERVAL_MS = 6000;
-
 const TRUST_METRICS = [
-  { value: "12+", label: "Years Experience" },
+  { value: "12+", label: "Years" },
   { value: "1000+", label: "Events" },
-  { value: "500+", label: "Happy Clients" },
+  { value: "500+", label: "Clients" },
 ] as const;
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
@@ -86,14 +70,14 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label="Nexyyra Events showreel"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-[var(--glitz-border)] bg-black shadow-[var(--v4-glow-gold)]"
+        className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-[var(--glitz-border)] bg-black shadow-[var(--v4-glow-gold)]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -119,8 +103,8 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
 }
 
 /**
- * V4 cinematic hero — two-column layout with crossfading video backdrop,
- * adaptive contrast, floating world cards, and GSAP entrance choreography.
+ * Cinematic homepage hero — emotion-first, experience-led.
+ * Fullscreen event film, left narrative, floating glass world cards.
  */
 export function HeroV4() {
   const reducedMotion = useReducedMotion();
@@ -130,7 +114,6 @@ export function HeroV4() {
   const [paused, setPaused] = useState(false);
   const [broken, setBroken] = useState<Record<number, true>>({});
   const [showreelOpen, setShowreelOpen] = useState(false);
-  const [headlineIndex, setHeadlineIndex] = useState(0);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -157,12 +140,12 @@ export function HeroV4() {
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: GSAP_EASE.luxe } });
-      tl.from(root.querySelector("[data-hero-label]"), { y: 16, opacity: 0, duration: 0.55 }, 0.2)
-        .from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 0.95 }, 0.32)
-        .from(root.querySelector("[data-hero-subhead]"), { y: 20, opacity: 0, duration: 0.7 }, 0.52)
-        .from(root.querySelectorAll("[data-hero-tag]"), { y: 14, opacity: 0, duration: 0.45, stagger: 0.06 }, 0.68)
-        .from(root.querySelectorAll("[data-hero-cta]"), { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.82)
-        .from(root.querySelectorAll("[data-hero-metric]"), { y: 16, opacity: 0, duration: 0.5, stagger: 0.07 }, 0.95);
+      tl.from(root.querySelector("[data-hero-label]"), { y: 16, opacity: 0, duration: 0.55 }, 0.15)
+        .from(root.querySelector("[data-hero-tagline]"), { y: 12, opacity: 0, duration: 0.5 }, 0.28)
+        .from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 1, }, 0.38)
+        .from(root.querySelector("[data-hero-subhead]"), { y: 20, opacity: 0, duration: 0.7 }, 0.58)
+        .from(root.querySelectorAll("[data-hero-cta]"), { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.78)
+        .from(root.querySelectorAll("[data-hero-metric]"), { y: 16, opacity: 0, duration: 0.5, stagger: 0.07 }, 0.92);
     }, contentRef);
 
     return () => ctx.revert();
@@ -172,15 +155,6 @@ export function HeroV4() {
     (index: number) => setActive(wrapIndex(index, slides.length)),
     [slides.length]
   );
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    const id = window.setInterval(
-      () => setHeadlineIndex((i) => (i + 1) % HERO_HEADLINES.length),
-      HEADLINE_INTERVAL_MS
-    );
-    return () => window.clearInterval(id);
-  }, [reducedMotion]);
 
   useEffect(() => {
     if (reducedMotion || paused) return;
@@ -215,7 +189,7 @@ export function HeroV4() {
         id="welcome"
         ref={setAdaptiveRef}
         data-adaptive-backdrop=""
-        className="relative flex min-h-[100svh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--v5-obsidian,var(--glitz-bg))] v5-dune-glow"
+        className="relative flex min-h-[100svh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-black v5-dune-glow"
         onMouseMove={onMouseMove}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => {
@@ -238,78 +212,50 @@ export function HeroV4() {
           <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
         </motion.div>
 
-        <div className="brand-container relative z-20 flex flex-1 items-center py-24 md:py-28 lg:py-20">
-          <div className="grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-            {/* Left — purpose & conversion */}
+        <div className="brand-container relative z-20 flex flex-1 items-center py-24 md:py-28 lg:py-16">
+          <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
             <div ref={contentRef} className="max-w-xl">
               <span
                 data-hero-label
-                className="brand-label mb-2 block text-[var(--adaptive-accent,var(--glitz-gold))]"
+                className="brand-label mb-3 block text-[var(--adaptive-accent,var(--glitz-gold))]"
               >
                 NEXYYRA EVENTS
               </span>
-              <span className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--adaptive-muted)]">
+              <span
+                data-hero-tagline
+                className="mb-5 block text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--adaptive-muted)]"
+              >
                 The Next Era of Celebrations
               </span>
 
               <h1
                 data-hero-headline
-                className="overflow-hidden font-[family-name:var(--font-playfair)] text-[clamp(2.25rem,5.8vw,3.75rem)] font-bold leading-[1.06] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
+                className="overflow-hidden font-[family-name:var(--font-playfair)] text-[clamp(2.35rem,5.5vw,3.85rem)] font-bold leading-[1.05] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
               >
-                <motion.span
-                  key={headlineIndex}
-                  initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="block"
-                >
-                  {HERO_HEADLINES[headlineIndex]}
-                </motion.span>
+                <span className="block">Crafting Extraordinary Experiences</span>
+                <span className="mt-1 block text-[var(--adaptive-accent,var(--glitz-gold))]">
+                  For Extraordinary People
+                </span>
               </h1>
 
               <p
                 data-hero-subhead
-                className="v5-standfirst v4-standfirst mt-5 max-w-lg text-[var(--adaptive-muted)]"
+                className="v5-standfirst mt-6 max-w-lg text-base leading-relaxed text-[var(--adaptive-muted)] md:text-lg"
               >
-                Experience architects, celebration designers, and memory creators — we craft
-                extraordinary weddings, corporate experiences, celebrity events, and destination
-                celebrations for India&apos;s most discerning hosts.
+                Nexyyra Events designs luxury weddings, destination celebrations, corporate
+                experiences, celebrity events and unforgettable moments across India.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                {SERVICE_TAGS.map((tag) => (
-                  <span
-                    key={tag}
-                    data-hero-tag
-                    className="rounded-full border border-[var(--adaptive-border,var(--glitz-border))]/50 bg-[var(--adaptive-surface,var(--glitz-glass))]/40 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--adaptive-muted)] backdrop-blur-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <div data-hero-cta>
                   <MagneticButton>
                     <BrandButton
                       href="/book-event"
                       variant="gold"
-                      className="min-w-[190px]"
+                      className="min-w-[200px]"
                       onClick={() => analytics.ctaClick("book_consultation", "hero")}
                     >
                       Book Consultation
-                    </BrandButton>
-                  </MagneticButton>
-                </div>
-                <div data-hero-cta>
-                  <MagneticButton>
-                    <BrandButton
-                      href="/services"
-                      variant="outline"
-                      className="min-w-[190px] border-[var(--adaptive-border,var(--glitz-border))]/60 text-[var(--adaptive-text)]"
-                      onClick={() => analytics.ctaClick("explore_experiences", "hero")}
-                    >
-                      Explore Experiences
                     </BrandButton>
                   </MagneticButton>
                 </div>
@@ -322,7 +268,7 @@ export function HeroV4() {
                         setShowreelOpen(true);
                       }}
                       className={cn(
-                        "inline-flex min-h-[48px] min-w-[190px] items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)] px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-sm transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/8 hover:shadow-[var(--glitz-glow)]"
+                        "inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)]/60 px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-md transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 hover:shadow-[var(--glitz-glow)]"
                       )}
                     >
                       <Play className="h-4 w-4 text-[var(--adaptive-accent,var(--glitz-gold))]" aria-hidden />
@@ -332,20 +278,20 @@ export function HeroV4() {
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-6">
+              <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-7">
                 {TRUST_METRICS.map((m) => (
-                  <div key={m.label} data-hero-metric className="flex items-baseline gap-2">
-                    <span className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-[var(--adaptive-accent)]">
+                  <div key={m.label} data-hero-metric className="flex flex-col">
+                    <span className="font-[family-name:var(--font-playfair)] text-2xl font-semibold text-[var(--adaptive-accent)]">
                       {m.value}
                     </span>
-                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--adaptive-muted)]">
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--adaptive-muted)]">
                       {m.label}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-[var(--adaptive-muted)]">
+              <div className="mt-7 flex flex-wrap items-center gap-5 text-sm text-[var(--adaptive-muted)]">
                 <a
                   href={telHref}
                   onClick={() => analytics.ctaClick("call", "hero")}
@@ -359,43 +305,45 @@ export function HeroV4() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => analytics.ctaClick("whatsapp", "hero")}
-                  className="inline-flex items-center gap-2 transition-colors hover:text-emerald-500"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-emerald-400"
                 >
-                  <MessageCircle className="h-4 w-4 text-emerald-500" aria-hidden />
+                  <MessageCircle className="h-4 w-4 text-emerald-400" aria-hidden />
                   WhatsApp
                 </a>
               </div>
             </div>
 
-            {/* Right — floating world cards */}
             <HeroWorldCards mouseX={springX} mouseY={springY} className="lg:justify-self-end" />
           </div>
         </div>
 
-        {/* Category indicator — quiet, bottom-right */}
-        <div className="brand-container absolute inset-x-0 bottom-10 z-20 hidden md:block">
-          <div className="flex items-center justify-end gap-4">
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
+        <div className="brand-container absolute inset-x-0 bottom-8 z-20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-[var(--adaptive-muted)] md:block">
               {activeSlide?.category}
             </span>
-            <div className="flex gap-1.5" role="tablist" aria-label="Hero video categories">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  aria-current={i === active ? "true" : undefined}
-                  aria-label={`Show ${slides[i]?.category}`}
-                  onClick={() => goTo(i)}
-                  className={cn(
-                    "h-1 rounded-full transition-all duration-500",
-                    i === active
-                      ? "w-10 bg-[var(--adaptive-accent)] shadow-[var(--adaptive-shadow)]"
-                      : "w-1.5 bg-[var(--adaptive-text)]/25 hover:bg-[var(--adaptive-accent)]/60"
-                  )}
-                />
-              ))}
+            <div className="ml-auto flex items-center gap-3">
+              <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)] md:hidden">
+                {activeSlide?.category}
+              </span>
+              <div className="flex gap-1.5" role="tablist" aria-label="Hero film categories">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === active}
+                    aria-label={`Show ${slides[i]?.category}`}
+                    onClick={() => goTo(i)}
+                    className={cn(
+                      "h-1 rounded-full transition-all duration-700",
+                      i === active
+                        ? "w-10 bg-[var(--adaptive-accent)] shadow-[var(--adaptive-shadow)]"
+                        : "w-1.5 bg-[var(--adaptive-text)]/25 hover:bg-[var(--adaptive-accent)]/60"
+                    )}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

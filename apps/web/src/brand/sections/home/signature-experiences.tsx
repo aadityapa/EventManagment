@@ -22,7 +22,7 @@ export function HomeSignatureExperiences() {
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 className="v4-display max-w-3xl">
-            Signature <span className="v4-gold-text">Experiences</span>
+            Signature <span className="v4-gold-text">Events</span>
           </h2>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.14}>

@@ -47,13 +47,13 @@ export function HomeLuxuryCta() {
 
         <ScrollReveal preset="scale">
           <GlassPanel glow className="mx-auto max-w-4xl px-8 py-14 text-center sm:px-16 sm:py-20">
-            <span className="v4-kicker mb-6 justify-center">The Commission</span>
+            <span className="v4-kicker mb-6 justify-center">Event Architect</span>
             <h2 id="commission-heading" className="v4-display">
-              Your extraordinary evening awaits an <span className="v4-gold-text">architect</span>.
+              Book Your <span className="v4-gold-text">Event Architect</span>
             </h2>
             <p className="v4-standfirst mx-auto mt-6 max-w-lg">
-              Begin a guided journey — dream, atmosphere, destination, experience level, then meet your
-              Event Architect. Response within 24 hours, complimentary and without obligation.
+              A complimentary consultation with a dedicated Nexyyra architect — we listen, design,
+              and deliver extraordinary celebrations tailored to your vision. Response within 48 hours.
             </p>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
@@ -64,7 +64,7 @@ export function HomeLuxuryCta() {
                   className="min-w-[200px]"
                   onClick={() => analytics.ctaClick("book_consultation", "home_commission")}
                 >
-                  Begin Your Journey
+                  Book Consultation
                 </BrandButton>
               </MagneticButton>
               <MagneticButton>
