@@ -185,6 +185,61 @@ a[role="button"] {
   line-height: 0;
 }
 
+/* Dual-theme logos — CSS swap avoids hydration CLS */
+.brand-logo.relative,
+.brand-logo--header,
+.brand-logo--footer,
+.brand-logo--menu {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.brand-logo__img--theme-dark,
+.brand-logo__img--theme-light {
+  grid-area: 1 / 1;
+}
+
+html.light .brand-logo__img--theme-dark {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+html:not(.light) .brand-logo__img--theme-light {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.brand-header-placeholder {
+  width: 100%;
+  min-height: var(--nav-height);
+  height: var(--nav-height);
+  pointer-events: none;
+}
+
+@keyframes hero-ken-burns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.hero-ken-burns {
+  animation: hero-ken-burns 8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ken-burns {
+    animation: none;
+  }
+}
+
 .brand-logo__full,
 .brand-logo__mark,
 .brand-logo__img {

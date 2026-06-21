@@ -99,7 +99,15 @@ export function BrandHeader() {
   }, [servicesOpen]);
 
   if (hidden) return null;
-  if (!skipPremiere && !premiereComplete) return null;
+
+  if (!skipPremiere && !premiereComplete) {
+    return (
+      <div
+        className="brand-header-placeholder brand-nav-bar safe-top"
+        aria-hidden="true"
+      />
+    );
+  }
 
   const glass = scrolled || !isHome;
 

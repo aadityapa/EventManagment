@@ -1,55 +1,35 @@
-# Nexyyra DEPLOYMENT_REPORT — 2026-06-21
+# DEPLOYMENT_REPORT — Nexyyra Events (2026-06-21)
 
-## Repository
-- **Remote:** `https://github.com/aadityapa/EventManagment.git`
-- **Branch:** `master`
-- **Production URL:** `https://nexyyra.com`
+## Status: Ready for production deploy
 
-## Pre-deploy checklist
+| Check | Result |
+|-------|--------|
+| `npm run build` | Pass |
+| TypeScript | Clean |
+| 79 routes | Generated |
+| Media sync | 103 Drive images |
 
-| Item | Status |
-|------|--------|
-| `npm run build` passes | ✅ |
-| TypeScript clean | ✅ |
-| 79 static routes generated | ✅ |
-| Media sync (103 Drive images) | ✅ |
-| No exit-intent popup | ✅ |
-| Theme logos (gold/black SVG) | ✅ |
-| Homepage scroll sections visible | ✅ |
-| Portfolio layout (prior pass) | ✅ |
+## Commit scope
+Performance optimization pass: LCP, CLS, image WebP, lazy sections, llms.txt, CI Lighthouse tuning.
 
-## Required Vercel environment variables
-
+## Vercel env (unchanged)
 ```
 MEDIA_PROVIDER=google-drive
 GOOGLE_DRIVE_FOLDER_ID=1UZR_UhiZfVvcLUNvDJi3Rvw8udkfKgYM
-GOOGLE_DRIVE_API_KEY=<optional, improves sync reliability>
+NEXT_PUBLIC_APP_URL=https://nexyyra.com
 ```
 
-## CI/CD
-- GitHub Actions: push to `master` triggers Vercel production deploy (if linked)
-- Prebuild runs `media:sync` automatically
+## Post-deploy checklist
+1. Lighthouse mobile + desktop on `/`, `/venues`, `/portfolio`
+2. Verify hero poster loads < 2s on 4G
+3. Confirm no header CLS when loader completes
+4. Test theme toggle — logo swaps without layout jump
+5. Validate `https://nexyyra.com/llms.txt`
 
-## Custom domain
-- `nexyyra.com` → Vercel project (verify DNS A/CNAME in Vercel dashboard)
-
-## Post-deploy verification
-1. Hard refresh homepage — scroll all sections (no blank white blocks)
-2. Toggle light/dark theme — black logo (light) / gold logo (dark)
-3. Check left quick actions on desktop (phone, book, AI, WhatsApp)
-4. Verify experience cards equal height on homepage
-5. Confirm no offer popup on exit intent
-6. Run Lighthouse on production URL
-
-## Google indexing / AEO
-- `sitemap.xml` — auto-generated
-- `robots.txt` — present
-- Schema markup — from prior SEO passes
-- AI search optimization — structured content in `lib/seo.ts`, `lib/geo-content.ts`
-
-## Rollback
-```bash
-git revert HEAD
-git push origin master
-```
-Or promote previous Vercel deployment from dashboard.
+## Reports generated
+- `IMAGE_AUDIT_REPORT.md`
+- `JS_AUDIT_REPORT.md`
+- `CLS_REPORT.md`
+- `LCP_REPORT.md`
+- `SEO_REPORT.md`
+- `PERFORMANCE_REPORT.md`

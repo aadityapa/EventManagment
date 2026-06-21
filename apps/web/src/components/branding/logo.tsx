@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -17,7 +16,7 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra logos — gold PNG for dark backgrounds, black PNG for light. */
+/** Official Nexyyra logos — gold + black PNG, CSS theme swap (no hydration CLS). */
 export const BRAND_LOGO_ASSETS = {
   gold: "/logo.png",
   black: "/logo-black.png",
@@ -28,50 +27,52 @@ export const BRAND_LOGO_ASSETS = {
   full: "/logo.png",
   loader: "/logo.png",
   symbol: "/brand/logo-symbol.png",
-  symbolLight: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",
-  jpg: "/logo.jpg",
 } as const;
+
+const LOGO_W = 440;
+const LOGO_H = 160;
 
 type BrandLogoImageProps = {
   className?: string;
   priority?: boolean;
   sizes?: string;
-  forceGold?: boolean;
 };
 
-function ThemeLogoImage({
+/** Dual raster logos — CSS shows correct variant per theme without client swap. */
+export function BrandLogoImage({
   className,
   priority = true,
   sizes = "(max-width: 768px) 140px, 180px",
-  forceGold = false,
 }: BrandLogoImageProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-
-  const isLight = mounted && resolvedTheme === "light" && !forceGold;
-  const src = isLight ? BRAND_LOGO_ASSETS.black : BRAND_LOGO_ASSETS.gold;
+  const shared = {
+    width: LOGO_W,
+    height: LOGO_H,
+    sizes,
+    className: cn("brand-logo__img brand-logo__img--raster", className),
+  };
 
   return (
-    <Image
-      src={src}
-      alt={SITE_CONFIG.name}
-      width={440}
-      height={160}
-      priority={priority}
-      fetchPriority={priority ? "high" : undefined}
-      sizes={sizes}
-      unoptimized
-      className={cn("brand-logo__img brand-logo__img--raster", className)}
-    />
+    <>
+      <Image
+        src={BRAND_LOGO_ASSETS.gold}
+        alt=""
+        aria-hidden
+        priority={priority}
+        fetchPriority={priority ? "high" : "auto"}
+        {...shared}
+        className={cn(shared.className, "brand-logo__img--theme-dark")}
+      />
+      <Image
+        src={BRAND_LOGO_ASSETS.black}
+        alt={SITE_CONFIG.name}
+        priority={priority}
+        fetchPriority={priority ? "auto" : undefined}
+        {...shared}
+        className={cn(shared.className, "brand-logo__img--theme-light")}
+      />
+    </>
   );
-}
-
-/** Theme-aware header/footer logo (~180px wide, retina-ready) */
-export function BrandLogoImage(props: BrandLogoImageProps) {
-  return <ThemeLogoImage {...props} />;
 }
 
 export function Logo({
@@ -94,8 +95,6 @@ export function Logo({
         width={96}
         height={96}
         priority={priority}
-        fetchPriority="high"
-        unoptimized
         aria-hidden
         className={cn("brand-logo__mark", className)}
       />
@@ -105,30 +104,29 @@ export function Logo({
       <Image
         src={BRAND_LOGO_ASSETS.loader}
         alt={SITE_CONFIG.name}
-        width={440}
-        height={160}
+        width={LOGO_W}
+        height={LOGO_H}
         priority
         fetchPriority="high"
-        unoptimized
         className={cn("brand-logo__img brand-logo__img--loader", className)}
       />
     );
   } else if (resolvedVariant === "footer") {
     content = (
-      <span className={cn("brand-logo brand-logo--footer inline-block", className)}>
-        <ThemeLogoImage priority={false} sizes="180px" className="brand-logo__full brand-logo__full--footer" />
+      <span className={cn("brand-logo brand-logo--footer relative inline-block", className)}>
+        <BrandLogoImage priority={false} sizes="180px" className="brand-logo__full brand-logo__full--footer" />
       </span>
     );
   } else if (resolvedVariant === "image") {
     content = (
-      <span className={cn("brand-logo inline-block", className)}>
-        <ThemeLogoImage priority={priority} className="brand-logo__full" />
+      <span className={cn("brand-logo relative inline-block", className)}>
+        <BrandLogoImage priority={priority} className="brand-logo__full" />
       </span>
     );
   } else if (resolvedVariant === "menu") {
     content = (
-      <span className={cn("brand-logo brand-logo--menu inline-flex min-w-0 items-center gap-3", className)}>
-        <ThemeLogoImage priority={priority} className="brand-logo__full brand-logo__full--menu" />
+      <span className={cn("brand-logo brand-logo--menu relative inline-flex min-w-0 items-center gap-3", className)}>
+        <BrandLogoImage priority={priority} className="brand-logo__full brand-logo__full--menu" />
         {showTagline && (
           <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
             {SITE_CONFIG.tagline}
@@ -138,8 +136,8 @@ export function Logo({
     );
   } else {
     content = (
-      <span className={cn("brand-logo brand-logo--header inline-flex min-w-0 items-center justify-center", className)}>
-        <ThemeLogoImage priority={priority} className="brand-logo__full brand-logo__full--header" />
+      <span className={cn("brand-logo brand-logo--header relative inline-flex min-w-0 items-center justify-center", className)}>
+        <BrandLogoImage priority={priority} className="brand-logo__full brand-logo__full--header" />
       </span>
     );
   }

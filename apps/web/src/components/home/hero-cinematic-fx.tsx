@@ -21,26 +21,24 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
   const reducedMotion = useReducedMotion();
   const isDark = resolvedTheme === "dark";
 
-  const spotlightX = useTransform(mouseX, (v) => `${50 + v * 18}%`);
-  const spotlightY = useTransform(mouseY, (v) => `${38 + v * 12}%`);
+  const spotlightX = useTransform(mouseX, (v) => `calc(-50% + ${v * 18}vmin)`);
+  const spotlightY = useTransform(mouseY, (v) => `calc(-50% + ${v * 12}vmin)`);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
-      {/* Dynamic mouse spotlight */}
       <motion.div
-        className="absolute h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+        className="absolute left-1/2 top-[38%] h-[70vmin] w-[70vmin] rounded-full blur-3xl will-change-transform"
         style={{
-          left: spotlightX,
-          top: spotlightY,
+          translateX: spotlightX,
+          translateY: spotlightY,
           background: isDark
             ? "radial-gradient(circle, rgba(212,175,55,0.14) 0%, transparent 68%)"
             : "radial-gradient(circle, rgba(201,162,39,0.2) 0%, transparent 68%)",
         }}
       />
 
-      {/* Lens flare — subtle gold warmth, no diagonal line */}
       <motion.div
-        className="absolute left-[18%] top-[22%] h-32 w-32 rounded-full blur-3xl md:h-48 md:w-48"
+        className="absolute left-[18%] top-[22%] h-32 w-32 rounded-full blur-3xl will-change-transform md:h-48 md:w-48"
         style={{
           background: isDark
             ? "radial-gradient(circle, rgba(255,215,0,0.14) 0%, transparent 70%)"
@@ -50,10 +48,9 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Sweeping arc — ambient depth */}
       <motion.div
         key={active}
-        className="absolute right-[-10%] top-[15%] h-[90vmin] w-[90vmin] rounded-full opacity-15"
+        className="absolute right-[-10%] top-[15%] h-[90vmin] w-[90vmin] rounded-full opacity-15 will-change-transform"
         style={{
           background: isDark
             ? "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.1), transparent)"
@@ -63,7 +60,6 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
         transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Gold dust particles */}
       {!reducedMotion && (
         <div className={isDark ? "absolute inset-0 opacity-40" : "absolute inset-0 opacity-25"}>
           <GoldParticles className="h-full w-full" />

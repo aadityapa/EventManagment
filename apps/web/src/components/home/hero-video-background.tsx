@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { HERO_VIDEO_FALLBACK, type HeroVideoSlide } from "./hero-video-data";
 import { BLUR_DATA_URL } from "@/lib/images";
 
@@ -24,26 +23,20 @@ function KenBurnsPoster({
   alt: string;
   priority?: boolean;
 }) {
-  const zoomRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (reducedMotion) return;
-    registerGsap();
-    const el = zoomRef.current;
-    if (!el) return;
-    gsap.killTweensOf(el);
-    gsap.fromTo(el, { scale: 1.02 }, { scale: 1.1, duration: 8, ease: "none" });
-  }, [src, reducedMotion]);
-
   return (
-    <div ref={zoomRef} className="absolute inset-[-3%] will-change-transform">
+    <div
+      className={`absolute inset-[-3%] will-change-transform ${reducedMotion ? "" : "hero-ken-burns"}`}
+    >
       <Image
         src={src}
         alt={alt}
         fill
         priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         sizes="100vw"
+        quality={80}
         placeholder="blur"
         blurDataURL={BLUR_DATA_URL}
         className="object-cover object-center brightness-[1.02] contrast-[1.04] saturate-[1.06]"
@@ -111,22 +104,16 @@ export function HeroVideoBackground({ slides, active, broken, onBroken, videoRef
         </motion.div>
       </AnimatePresence>
 
-      {/* Luxury readability — lighter scrim keeps venue imagery visible */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         aria-hidden
-        style={{
-          background: "linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15))",
-        }}
+        style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15))" }}
       />
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         aria-hidden
-        style={{
-          background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
-        }}
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)" }}
       />
-      {/* Adaptive scrim — layered with static cinematic base */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{ background: "var(--adaptive-scrim, transparent)" }}

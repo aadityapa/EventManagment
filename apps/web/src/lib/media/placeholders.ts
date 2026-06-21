@@ -1,12 +1,12 @@
-/** AI-generated coming soon placeholders — used when a folder has no uploads */
+/** AI-generated coming soon placeholders — WebP for smaller transfer */
 export const COMING_SOON_IMAGES = {
-  generic: "/images/placeholders/generic-coming-soon.png",
-  corporate: "/images/placeholders/corporate-coming-soon.png",
-  destination: "/images/placeholders/destination-coming-soon.png",
-  portfolio: "/images/placeholders/portfolio-coming-soon.png",
-  wedding: "/images/placeholders/generic-coming-soon.png",
-  celebrity: "/images/placeholders/generic-coming-soon.png",
-  stories: "/images/placeholders/generic-coming-soon.png",
+  generic: "/images/placeholders/generic-coming-soon.webp",
+  corporate: "/images/placeholders/corporate-coming-soon.webp",
+  destination: "/images/placeholders/destination-coming-soon.webp",
+  portfolio: "/images/placeholders/portfolio-coming-soon.webp",
+  wedding: "/images/placeholders/generic-coming-soon.webp",
+  celebrity: "/images/placeholders/generic-coming-soon.webp",
+  stories: "/images/placeholders/generic-coming-soon.webp",
 } as const;
 
 const PLACEHOLDER_SET = new Set<string>(Object.values(COMING_SOON_IMAGES));

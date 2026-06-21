@@ -18,7 +18,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { PortalTransition } from "@/lib/motion/portal-transition";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: true });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: false });
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], display: "swap", preload: true });
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], display: "swap", preload: true });
 const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], display: "swap" });
@@ -55,8 +55,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        <link rel="preload" href="/logo.png" as="image" type="image/png" fetchPriority="high" />
-        <link rel="preload" href="/logo.jpg" as="image" type="image/jpeg" />
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>

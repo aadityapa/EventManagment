@@ -11,8 +11,7 @@ function shouldAnimate(pathname: string) {
 }
 
 /**
- * V5 route curtain — Framer AnimatePresence fallback for marketing routes.
- * Dashboard/admin routes render without transition overlay.
+ * V5 route curtain — GPU scaleY only (no height animation).
  */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,7 +31,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: DUR.fast, ease: EASE.luxe }}
-          className="relative flex-1 flex flex-col"
+          className="relative flex flex-1 flex-col"
         >
           {children}
         </motion.div>
@@ -47,10 +46,10 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 function RouteCurtain() {
   return (
     <motion.div
-      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-0 origin-top bg-[var(--v5-obsidian,#050505)]"
-      initial={{ height: 0, opacity: 0 }}
+      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-full origin-top bg-[var(--v5-obsidian,#050505)] will-change-transform"
+      initial={{ scaleY: 0, opacity: 0 }}
       animate={{
-        height: ["0%", "100%", "0%"],
+        scaleY: [0, 1, 0],
         opacity: [0, 1, 0],
       }}
       transition={{

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { BrandImage } from "@/brand/primitives/brand-image";
 import {
   motion,
   useReducedMotion,
@@ -183,14 +183,13 @@ function WorldCard({
             )}
           >
             <div className="absolute inset-0">
-              <Image
+              <BrandImage
                 src={world.image}
                 alt={world.title}
                 fill
-                sizes={compact ? "280px" : "(max-width:1024px) 50vw, 320px"}
+                sizes="(max-width: 1024px) 280px, 320px"
+                loading="lazy"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                unoptimized
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/32 to-black/12" />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_42%)] opacity-60" />

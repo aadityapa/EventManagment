@@ -34,8 +34,9 @@ jobs:
           uploadArtifacts: true
           startServerCommand: npm run start --prefix apps/web
           startServerReadyPattern: "Ready"
-          runs: 1
+          runs: 3
           urls: |
             http://localhost:3000/
             http://localhost:3000/portfolio
+            http://localhost:3000/venues
             http://localhost:3000/book-event

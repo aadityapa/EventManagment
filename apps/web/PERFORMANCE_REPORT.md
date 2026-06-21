@@ -1,55 +1,43 @@
-# Nexyyra PERFORMANCE_REPORT — 2026-06-21
+# PERFORMANCE_REPORT — Nexyyra Events (2026-06-21)
 
-## Build metrics
-| Metric | Value |
-|--------|-------|
-| Framework | Next.js 16.2.7 (Turbopack) |
-| Static routes | 79 |
-| TypeScript | Clean |
-| Media assets | 103 images via Google Drive CDN |
-| Build time | ~35s (incl. media sync) |
+## Production optimization pass summary
 
-## Optimizations in this pass
+### Phase 1 — Images
+- Placeholders: 6.7 MB → 320 KB WebP
+- Hero: optimized delivery, no duplicate logo preloads
+- See `IMAGE_AUDIT_REPORT.md`
 
-### Animation / scroll performance
-- **Removed GSAP ScrollTrigger pin** from `HomePortfolioShowcase` — eliminates layout thrashing and blank pin spacers during Lenis scroll.
-- **ScrollReveal fallback** — prevents permanent `opacity: 0` DOM nodes (reduces repaints from invisible sections).
-- **ScrollTrigger.refresh()** on loader complete — corrects measurements after Lenis initializes.
+### Phase 2 — CLS
+- Header placeholder during loader
+- CSS theme logos
+- Section skeleton heights
+- See `CLS_REPORT.md`
 
-### Code splitting (existing)
-Homepage heavy sections already use `next/dynamic`:
-- `HomePortfolioShowcase`
-- `HomeVenueCollection`
-- `HomeAwards`
-- `HomeTestimonialsV5`
-- `HomeMediaCoverage`
-- `HomeLuxuryCta`
+### Phase 3 — LCP
+- Hero poster preload w1200
+- GSAP → CSS Ken Burns
+- See `LCP_REPORT.md`
 
-### Images
-- All brand media served from `lh3.googleusercontent.com` (no 103 JPGs in git)
-- `outputFileTracingExcludes` for `public/images/**` (prior pass)
-- Logo uses lightweight SVG wrappers pointing to single PNG source
+### Phase 4–7 — JS / animations / DOM
+- Dynamic homepage sections
+- GPU-only route curtain + spotlight
+- See `JS_AUDIT_REPORT.md`
 
-### Removed dead weight
-- Exit intent popup component + CSS
-- `exit-intent-shown` localStorage key from cache migration list
-- GSAP ScrollTrigger dependency in portfolio showcase (smaller client bundle for that chunk)
+### Phase 8 — Header
+- Logo CLS fix, grid layout (prior pass)
 
-## Lighthouse targets (estimated post-deploy)
+### Phase 9 — Scroll blank sections
+- ScrollReveal fallback (prior pass)
 
-| Category | Target | Notes |
-|----------|--------|-------|
-| Performance | > 95 | Requires live Vercel measurement; pin removal + dynamic imports help LCP/CLS |
-| Accessibility | 100 | FAB has aria-labels; header nav preserved |
-| Best Practices | 100 | HTTPS via Vercel, no mixed content on logos |
-| SEO | 100 | Sitemap, schema, meta from prior passes |
+### Phase 10–11 — A11y + llms.txt
+- See `SEO_REPORT.md`
 
-## Recommended follow-up (not blocking deploy)
-1. Run Lighthouse CI on preview URL after deploy
-2. Add `loading="lazy"` audit on below-fold `BrandImage` instances
-3. Consider `priority` only on hero LCP image
+### Phase 14 — CI/CD
+- `ci.yml`: lint, tsc, build
+- `lighthouse.yml`: 3 runs, added `/venues`
 
-## Core Web Vitals expectations
-- **LCP:** Hero image + loader gating — header hidden until complete avoids CLS from nav
-- **CLS:** Equal-height experience cards reduce layout shift
-- **INP:** Removed scroll pin reduces main-thread work during scroll
+## Build
+Next.js 16.2.7 — 79 routes, TypeScript clean.
+
+## Post-deploy validation
+Run Lighthouse mobile + desktop on https://nexyyra.com

@@ -16,13 +16,13 @@ const TERTIARY = BRAND_SERVICE_CATEGORIES.slice(4);
 
 export function HomeSignatureExperiences() {
   return (
-    <section id="craft" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]">
+    <section id="craft" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]" aria-labelledby="craft-heading">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
           <span className="v4-kicker mb-6">What We Craft</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
-          <h2 className="v4-display max-w-3xl">
+          <h2 id="craft-heading" className="v4-display max-w-3xl">
             Signature <span className="v4-gold-text">Events</span>
           </h2>
         </ScrollReveal>

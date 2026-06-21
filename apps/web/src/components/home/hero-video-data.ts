@@ -13,7 +13,7 @@ import {
 export const HERO_VIDEO_SLIDES: HeroVideoSlide[] = [...GENERATED_HERO_SLIDES];
 
 export const HERO_VIDEO_FALLBACK =
-  GENERATED_BRAND_IMAGES.hero.poster || "/images/placeholders/generic-coming-soon.png";
+  GENERATED_BRAND_IMAGES.hero.poster || "/images/placeholders/generic-coming-soon.webp";
 
 /** Optional showreel — set when a video is uploaded to public/videos */
 export const HERO_SHOWREEL_VIDEO = GENERATED_BRAND_IMAGES.hero.video;
