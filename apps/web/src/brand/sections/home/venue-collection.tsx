@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Star, Users } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
+import { ScrollReveal, Parallax, staggerParent, staggerItem, viewportOnce } from "@/lib/motion";
 import { analytics } from "@/lib/analytics";
 
 const VENUES = [
@@ -39,7 +39,7 @@ export function HomeVenueCollection() {
           variants={staggerParent}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={viewportOnce}
           className="mt-12 flex gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {VENUES.map((v) => (

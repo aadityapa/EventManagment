@@ -207,12 +207,12 @@ a[role="button"] {
 }
 
 html.light .brand-logo__img--light-theme {
-  filter: brightness(0.88) contrast(1.08) saturate(1.05);
+  filter: none;
 }
 
-.brand-logo__full--header {
-  width: 11.25rem;
-  max-width: 11.25rem;
+html.light .brand-logo__img--svg,
+html.light .brand-logo__img--raster {
+  filter: none;
 }
 
 .hero-brand-logo {
@@ -228,10 +228,10 @@ html.light .brand-logo__img--light-theme {
   overflow-wrap: break-word;
 }
 
-/* Light theme — raster logo tuning for ivory backgrounds */
+/* Light theme — separate black SVG asset; no filter needed */
 html.light .brand-logo__img--svg,
 html.light .brand-logo__img--raster {
-  filter: brightness(0.88) contrast(1.08) saturate(1.05);
+  filter: none;
 }
 
 html.dark .brand-logo__img--svg,
@@ -368,7 +368,7 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-grid {
-    grid-template-columns: 220px 1fr 320px;
+    grid-template-columns: 220px 1fr 360px;
   }
 }
 
@@ -505,8 +505,8 @@ html.premiere-active .brand-root {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.75rem;
-    max-width: 320px;
+    gap: 1.25rem; /* 20px */
+    max-width: 360px;
     justify-self: end;
   }
 }
@@ -778,6 +778,50 @@ html.premiere-active .brand-root {
   border-color: color-mix(in srgb, var(--footer-accent) 45%, transparent);
   box-shadow: var(--footer-glow);
   transform: translateY(-2px);
+}
+
+/* Experience cards — equal height grid */
+.experience-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .experience-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem; /* 32px */
+  }
+}
+
+.experience-card {
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.experience-card__image {
+  height: 360px;
+  flex-shrink: 0;
+}
+
+.experience-card__body {
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+/* Left floating quick actions */
+.quick-actions {
+  width: 72px;
+}
+
+.quick-actions__btn {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
 }
 
 .site-footer__marquee-fade {

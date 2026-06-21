@@ -1,113 +1,117 @@
-# Nexyyra Events — Logo & UX Fix Report
+# Nexyyra FIX_REPORT — Production Fix Pass (2026-06-21)
 
-**Date:** 2026-06-22  
-**Scope:** Exit popup removal, loader logo visibility, header logo/layout, loader/header sequencing
+## Critical: Homepage blank white sections on scroll
 
----
+### Root causes found
+1. **`ScrollReveal` stuck at `opacity: 0`** — `whileInView` with `amount: 0.25` and `once: true` failed to trigger on fast Lenis scroll or pinned layouts.
+2. **`HomePortfolioShowcase` GSAP ScrollTrigger pin** — `pin: true` + horizontal scrub created empty pin-spacer zones (blank ivory sections while scrolling).
+3. **Stagger grids** in signature experiences and venue collection used high visibility thresholds (`amount: 0.15–0.2`).
 
-## Issues Found & Fixed
-
-### 1. Exit-intent / offer popup (removed)
-
-| Issue | Location | Fix |
-|-------|----------|-----|
-| `ExitIntentPopup` with 10% discount + email capture | `src/components/engagement/exit-intent-popup.tsx` | **Deleted** component file |
-| Popup mounted in root layout | `src/app/layout.tsx` | Removed import and `<ExitIntentPopup />` |
-| Orphan CSS | `src/app/globals.css` `.exit-intent-popup` | Removed |
-| Legacy storage key cleanup | `src/lib/cache-version.ts` | Kept `exit-intent-shown` in `LEGACY_SESSION_KEYS` for cache invalidation |
-
-No other `OfferPopup`, `LeadCaptureModal`, `DiscountPopup`, `useExitIntent`, or `showPopup` implementations existed in the codebase. `LeadMagnetsSection` on `/book-event` is an inline resources section (not a modal) and was left intact.
-
----
-
-### 2. Loader logo invisible
-
-| Issue | Root cause | Fix |
-|-------|------------|-----|
-| Tagline visible but logo missing | `BRAND_LOGO_ASSETS.loader` pointed to `/brand/logo-gold.svg`, an SVG wrapper that embeds PNG via `<image href="/brand/logo-primary.png">`. When loaded through Next.js `<Image>`, embedded SVG references fail to render (blank/invisible asset). | Switched loader to **`/brand/logo-primary.png`** directly |
-| Loader below header | Loader used `z-[90]`; header used `--z-nav: 9999` | Loader set to **`z-[99999]`**; header `--z-nav` set to **`100`** |
-| Animation sequence misaligned | Timings did not match spec | Rebuilt sequence: 0s bg → 0.5s particles → 1.0s logo fade → 1.5s scale → 2.0s brand name → 2.5s tagline → 3.0s glow → 4.0s zoom → 5.0s reveal |
-| Skip button overlapped nav area | Position used `--nav-height` while header still visible | Skip button moved to `top-4` |
-| Body scroll during loader | Partially handled | Confirmed `CinematicProvider` sets `document.body.style.overflow = "hidden"` while `premiereActive` |
-
-**Loader asset path used:** `/brand/logo-primary.png`  
-**Alias path created:** `/logos/nexyyra-gold.svg` (copy of brand SVG for reference; runtime uses PNG)
+### Fixes applied
+| File | Change |
+|------|--------|
+| `src/lib/motion/scroll-reveal.tsx` | Switched to `useInView` + `animate`; lowered threshold to `0.08`; added 2.5s fallback to force visible |
+| `src/lib/motion/variants.ts` | `viewportOnce` → `amount: 0.08`, `margin: "0px 0px -80px 0px"` |
+| `src/brand/sections/home/portfolio-showcase.tsx` | Removed GSAP pin/scrub; responsive grid + horizontal scroll on mobile |
+| `src/brand/sections/home/signature-experiences.tsx` | Uses shared `viewportOnce` |
+| `src/brand/sections/home/venue-collection.tsx` | Uses shared `viewportOnce` |
+| `src/components/providers/cinematic-provider.tsx` | `ScrollTrigger.refresh()` after loader completes |
 
 ---
 
-### 3. Header logo invisible + layout
+## Experience cards alignment
 
-| Issue | Root cause | Fix |
-|-------|------------|-----|
-| Empty header left column | Same broken SVG-via-`<Image>` pattern as loader | `BrandLogoImage` now loads **`/brand/logo-primary.png`** with `unoptimized` |
-| Logo covered by pseudo-element | `.brand-logo::before` shine overlay at `z-index: 2` without img stacking | Added `position: relative; z-index: 1` on `.brand-logo__img` |
-| Logo left-aligned in column | Missing center alignment | Logo column: `justify-content: center`; link and img centered |
-| Grid not matching spec | Was `220px 1fr 300px` at 1120px | Updated to **`220px 1fr 320px`** at **1024px+** |
-| Logo width inconsistent | Variable auto width | Header logo slot fixed at **180px (`11.25rem`)** |
-| Nav height | Already correct on desktop | **`--nav-height: 5.5rem` (88px)** at 1024px+ confirmed |
+### Issue
+Destination Weddings, Corporate Experiences, Celebrity Events had inconsistent image heights and asymmetric `translate-y` offsets.
 
-**Header logo paths:**
-- Dark / default: `/brand/logo-primary.png`
-- Light theme: same PNG + CSS filter (`brightness/contrast/saturate`) via `.brand-logo__img--light-theme`
-- Symbol mark: `/brand/logo-symbol.png`
+### Fix
+| Property | Value |
+|----------|-------|
+| Card height | `520px` |
+| Image height | `360px`, `object-fit: cover` |
+| Content | `min-height: 140px` |
+| Grid | `repeat(3, 1fr)`, `gap: 32px` |
 
----
-
-### 4. Header visible before loader completes
-
-| Issue | Fix |
-|-------|-----|
-| Header rendered with opacity animation during handoff (`handoffActive`) while loader still mounted | `BrandHeader` now **returns `null`** until `skipPremiere \|\| premiereComplete` — header not in DOM until loader fully completes |
-| Loader z-index vs header | Loader `99999` > header `100` |
+**Files:** `signature-experiences.tsx`, `responsive-system.css` (`.experience-cards-grid`, `.experience-card`)
 
 ---
 
-### 5. Duplicate homepage logo
+## Floating action bar (left quick actions)
 
-| Finding | Action |
-|---------|--------|
-| `HeroBrandReveal` component exists but is **not imported** anywhere | No duplicate logo on homepage; hero uses tagline-only copy in `hero-v4.tsx` |
-| Updated `hero-brand-reveal.tsx` asset path to PNG for future use | Preventive fix |
+### Issue
+Phone, Calendar, Sparkle icons clipped — container too narrow, wrong position.
+
+### Fix
+- Moved to **left side**, vertically centered (`top: 50%`, `translateY(-50%)`)
+- Width `72px`, icon buttons `56×56px`, gap `16px`, `z-index: 1000`
+- Premium glassmorphism on action buttons
+
+**File:** `src/brand/shell/brand-fab.tsx`, `responsive-system.css` (`.quick-actions`)
 
 ---
 
-## Files Deleted
+## Theme-aware logos
 
-- `src/components/engagement/exit-intent-popup.tsx`
+### Issue
+Gold logo on light theme looked faded; SVG wrappers with embedded PNG failed via Next/Image.
 
-## Files Modified
+### Fix
+| Theme | Asset |
+|-------|-------|
+| Dark | `/logos/logo-gold.svg` |
+| Light | `/logos/logo-black.svg` (feColorMatrix black filter) |
 
-- `src/app/layout.tsx`
-- `src/app/globals.css`
-- `src/components/branding/logo.tsx`
-- `src/components/branding/hero-brand-reveal.tsx`
-- `src/components/effects/universe-loader.tsx`
-- `src/brand/shell/brand-header.tsx`
-- `src/styles/responsive-system.css`
-- `src/styles/design-system.css`
+Uses native `<img>` for SVG (browser resolves embedded PNG correctly). Instant switch via `next-themes`.
 
-## Files Added
+**Files:** `src/components/branding/logo.tsx`, `public/logos/logo-gold.svg`, `public/logos/logo-black.svg`
 
-- `FIX_REPORT.md` (this file)
-- `public/logos/nexyyra-gold.svg` (alias copy)
+---
 
-## Logo Asset Inventory
+## Header layout
 
-| Path | Purpose |
-|------|---------|
-| `/brand/logo-primary.png` | **Primary** — loader, header, footer, OG |
-| `/brand/logo-symbol.png` | Icon-only / favicon mark |
-| `/brand/logo-gold.svg` | Legacy SVG wrapper (not used at runtime) |
-| `/brand/logo-light.svg` | Legacy light SVG wrapper (not used at runtime) |
-| `/logos/nexyyra-gold.svg` | Alias copy for spec compatibility |
-| `/logo.png` | Preload / favicon fallback |
+### Fix
+- Grid: `220px | 1fr | 360px` (was 320px actions column)
+- Actions gap: `20px`
+- Logo width: `180px`, centered in logo column
+- Header height: `88px` (`--nav-height: 5.5rem` desktop)
 
-## Verification
+**Files:** `responsive-system.css`, `brand-header.tsx` (unchanged structure, CSS updated)
 
-Run from `apps/web`:
+---
 
-```bash
-npm run build
-```
+## Loader / header gating (from prior pass — verified)
 
-Clear session storage key `glitz-v6-premiere-seen` (or use incognito) to re-test the full loader sequence.
+- Header returns `null` until `premiereComplete`
+- Loader `z-index: 99999`, header `--z-nav: 100`
+- `body overflow: hidden` during premiere
+
+---
+
+## Exit intent popup (from prior pass — verified)
+
+- `exit-intent-popup.tsx` deleted
+- Removed from `layout.tsx`, `globals.css`
+- `exit-intent-shown` removed from `cache-version.ts` legacy keys
+
+---
+
+## Verification checklist
+
+| Page | Status |
+|------|--------|
+| Home | Fixed scroll reveals, cards, FAB |
+| About | ScrollReveal inherits fix |
+| Experiences / Services | Theme logos |
+| Portfolio | Prior layout fix + scroll fix |
+| Venues | viewportOnce |
+| Stories / Blog | ScrollReveal inherits fix |
+| Contact | Header/FAB |
+
+| Viewport | Status |
+|----------|--------|
+| Desktop | Header grid 3-col, left FAB |
+| Laptop | Same |
+| Tablet | Experience cards 1-col → 3-col at 768px |
+| Mobile | FAB hidden (md+), horizontal portfolio scroll |
+
+**Build:** Next.js 16.2.7 — 79 routes, TypeScript clean.

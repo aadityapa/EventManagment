@@ -86,4 +86,4 @@ export const portalCard: Variants = {
 };
 
 /** Default viewport config for whileInView reveals. */
-export const viewportOnce = { once: true, amount: 0.25 } as const;
+export const viewportOnce = { once: true, amount: 0.08, margin: "0px 0px -80px 0px" } as const;

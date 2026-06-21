@@ -1,14 +1,13 @@
 "use client";
 
-import { type ReactNode } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import {
   reveal,
   revealLeft,
   revealRight,
   fade,
   scaleIn,
-  viewportOnce,
 } from "./variants";
 
 const PRESETS = {
@@ -42,13 +41,16 @@ interface ScrollRevealProps {
   className?: string;
   /** Re-trigger on every entry. Default once. */
   once?: boolean;
-  /** Visibility amount [0..1] before triggering. Default 0.25. */
+  /** Visibility amount [0..1] before triggering. Default 0.08. */
   amount?: number;
 }
 
+const VIEWPORT_MARGIN = "0px 0px -80px 0px";
+const FALLBACK_MS = 2500;
+
 /**
  * V4 scroll reveal wrapper. Plays a shared reveal preset when scrolled into
- * view. Fully respects reduced-motion (renders content with no animation).
+ * view. Falls back to visible after timeout so sections never stay blank.
  */
 export function ScrollReveal({
   children,
@@ -57,9 +59,20 @@ export function ScrollReveal({
   as = "div",
   className,
   once = true,
-  amount,
+  amount = 0.08,
 }: ScrollRevealProps) {
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once, amount, margin: VIEWPORT_MARGIN });
+  const [fallbackVisible, setFallbackVisible] = useState(false);
+
+  useEffect(() => {
+    if (reduced || inView) return;
+    const timer = window.setTimeout(() => setFallbackVisible(true), FALLBACK_MS);
+    return () => window.clearTimeout(timer);
+  }, [reduced, inView]);
+
+  const visible = reduced || inView || fallbackVisible;
   const MotionTag = TAGS[as];
 
   if (reduced) {
@@ -69,11 +82,11 @@ export function ScrollReveal({
 
   return (
     <MotionTag
+      ref={ref as never}
       className={className}
       variants={PRESETS[preset]}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ ...viewportOnce, once, ...(amount != null ? { amount } : {}) }}
+      animate={visible ? "visible" : "hidden"}
       transition={delay ? { delay } : undefined}
     >
       {children}

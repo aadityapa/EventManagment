@@ -1,51 +1,23 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin, Play, Users } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import { ScrollReveal } from "@/lib/motion";
-import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
-import { useReducedMotion } from "framer-motion";
 
 export function HomePortfolioShowcase() {
-  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
-
-  useGsapContext(sectionRef, () => {
-    if (reducedMotion) return;
-    const track = trackRef.current;
-    const section = sectionRef.current;
-    if (!track || !section) return;
-    if (window.matchMedia("(max-width: 767px)").matches) return;
-
-    const getScrollDistance = () => Math.max(0, track.scrollWidth - section.offsetWidth);
-
-    gsap.to(track, {
-      x: () => -getScrollDistance(),
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${getScrollDistance() + 240}`,
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-      },
-    });
-  }, [reducedMotion]);
 
   return (
     <section
-      ref={sectionRef}
       id="archive"
       className="relative overflow-hidden bg-[var(--glitz-surface)]"
       aria-labelledby="portfolio-heading"
     >
-      <div className="brand-container flex min-h-[100svh] flex-col justify-center py-[var(--v4-section)]">
+      <div className="brand-container flex flex-col justify-center py-[var(--v4-section)]">
         <ScrollReveal preset="reveal">
           <span className="v4-kicker mb-6">Portfolio</span>
         </ScrollReveal>
@@ -61,13 +33,13 @@ export function HomePortfolioShowcase() {
           </p>
         </ScrollReveal>
 
-        <div className="mt-12 overflow-hidden">
+        <div className="mt-12 -mx-4 overflow-x-auto px-4 pb-2 scrollbar-thin md:-mx-0 md:px-0">
           <div
             ref={trackRef}
-            className={reducedMotion ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3" : "flex gap-6 will-change-transform md:gap-8"}
+            className="flex gap-6 md:gap-8 lg:grid lg:grid-cols-3 lg:gap-8"
           >
             {BRAND_CASE_STUDIES.map((cs) => (
-              <CaseCard key={cs.id} cs={cs} stacked={!!reducedMotion} />
+              <CaseCard key={cs.id} cs={cs} />
             ))}
           </div>
         </div>
@@ -87,42 +59,23 @@ export function HomePortfolioShowcase() {
   );
 }
 
-function CaseCard({
-  cs,
-  stacked,
-}: {
-  cs: (typeof BRAND_CASE_STUDIES)[number];
-  stacked: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
-
+function CaseCard({ cs }: { cs: (typeof BRAND_CASE_STUDIES)[number] }) {
   return (
-    <article
-      data-case-card
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className={
-        stacked
-          ? "group overflow-hidden rounded-[var(--v4-radius-lg)]"
-          : "group relative w-[85vw] shrink-0 overflow-hidden rounded-[var(--v4-radius-lg)] sm:w-[60vw] lg:w-[42vw]"
-      }
-    >
+    <article className="group relative w-[85vw] shrink-0 overflow-hidden rounded-[var(--v4-radius-lg)] sm:w-[60vw] lg:w-auto">
       <Link href={`/portfolio/${cs.id}`} className="block">
         <div className="relative aspect-[16/10] overflow-hidden">
           <BrandImage
             src={cs.image}
             alt={cs.title}
             fill
-            sizes="50vw"
+            sizes="(max-width:1024px) 70vw, 33vw"
             className="object-cover transition-transform duration-[1.2s] ease-[var(--v4-ease-luxe)] group-hover:scale-105"
           />
-          {hovered && !stacked && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity" aria-hidden>
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/50 bg-black/50">
-                <Play className="h-6 w-6 text-[var(--glitz-gold)]" />
-              </span>
-            </div>
-          )}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity duration-300 group-hover:bg-black/40 group-hover:opacity-100" aria-hidden>
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/50 bg-black/50">
+              <Play className="h-6 w-6 text-[var(--glitz-gold)]" />
+            </span>
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--glitz-gold)]">

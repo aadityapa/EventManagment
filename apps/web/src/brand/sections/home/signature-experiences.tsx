@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_SERVICE_CATEGORIES } from "@/brand/data/content";
-import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
+import { ScrollReveal, Parallax, staggerParent, staggerItem, viewportOnce } from "@/lib/motion";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const FEATURED = BRAND_SERVICE_CATEGORIES[0];
+/** Destination Weddings · Corporate Experiences · Celebrity Events */
 const SECONDARY = BRAND_SERVICE_CATEGORIES.slice(1, 4);
 const TERTIARY = BRAND_SERVICE_CATEGORIES.slice(4);
 
@@ -32,7 +33,6 @@ export function HomeSignatureExperiences() {
           </p>
         </ScrollReveal>
 
-        {/* Featured — Luxury Weddings */}
         <ScrollReveal preset="fade" delay={0.1} className="mt-14">
           <Link
             href={`/services/${FEATURED.slug}`}
@@ -64,31 +64,25 @@ export function HomeSignatureExperiences() {
           </Link>
         </ScrollReveal>
 
-        {/* Secondary row — asymmetric overlap */}
         <motion.div
           variants={staggerParent}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mt-8 grid gap-5 sm:grid-cols-3 lg:-mt-6 lg:grid-cols-3 lg:gap-6"
+          viewport={viewportOnce}
+          className="experience-cards-grid mt-10"
         >
-          {SECONDARY.map((s, i) => (
-            <motion.div
-              key={s.slug}
-              variants={staggerItem}
-              className={cn(i === 1 && "lg:translate-y-8")}
-            >
-              <ServiceCard service={s} size="md" location="home_signature_secondary" />
+          {SECONDARY.map((s) => (
+            <motion.div key={s.slug} variants={staggerItem}>
+              <ExperienceCard service={s} location="home_signature_secondary" />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Tertiary — compact grid */}
         <motion.div
           variants={staggerParent}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={viewportOnce}
           className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5"
         >
           {TERTIARY.map((s) => (
@@ -99,6 +93,45 @@ export function HomeSignatureExperiences() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function ExperienceCard({
+  service,
+  location,
+}: {
+  service: (typeof BRAND_SERVICE_CATEGORIES)[number];
+  location: string;
+}) {
+  return (
+    <Link
+      href={`/services/${service.slug}`}
+      onClick={() => analytics.featureClick(service.slug, location)}
+      className="experience-card group block overflow-hidden rounded-[var(--v4-radius-lg)] border border-[var(--glitz-border)] bg-[var(--glitz-surface)] transition-all duration-500 hover:-translate-y-1 hover:border-[var(--glitz-gold)]/35 hover:shadow-[var(--v4-glow-gold)]"
+    >
+      <div className="experience-card__image relative overflow-hidden">
+        <BrandImage
+          src={service.image}
+          alt={service.title}
+          fill
+          sizes="(max-width:1024px) 90vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+      </div>
+      <div className="experience-card__body">
+        <h3 className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-[var(--text-primary)]">
+          {service.title}
+        </h3>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[var(--text-secondary)]">
+          {service.narrative}
+        </p>
+        <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--glitz-gold)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          Explore
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </span>
+      </div>
+    </Link>
   );
 }
 

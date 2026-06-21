@@ -41,6 +41,9 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
       root.classList.remove("premiere-active");
       document.body.style.overflow = "";
       document.body.style.backgroundColor = "";
+      import("@/lib/gsap/use-gsap").then(({ ScrollTrigger }) => {
+        ScrollTrigger.refresh();
+      });
     }
     return () => {
       root.classList.remove("premiere-active");

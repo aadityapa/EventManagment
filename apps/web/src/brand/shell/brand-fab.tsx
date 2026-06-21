@@ -15,33 +15,31 @@ export function BrandFab() {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-[var(--z-fab,40)] flex max-w-[calc(100vw-2rem)] flex-col items-end gap-3 safe-bottom sm:bottom-6 sm:right-6"
+      className="quick-actions fixed left-6 top-1/2 z-[1000] hidden -translate-y-1/2 flex-col items-center gap-4 md:flex lg:left-6"
       role="group"
       aria-label="Quick actions"
     >
-      <div className="hidden flex-col gap-2 md:flex">
-        <a
-          href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-border)] bg-[var(--glitz-surface)] text-[var(--glitz-gold)] shadow-[var(--glitz-glow)]"
-          aria-label="Call"
-        >
-          <Phone className="h-5 w-5" />
-        </a>
-        <Link
-          href="/book-event"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--glitz-gold)] text-[#0A0A0A] shadow-[var(--glitz-glow)]"
-          aria-label="Book"
-        >
-          <Calendar className="h-5 w-5" />
-        </Link>
-        <Link
-          href="/book-event#ai-planner"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-border)] bg-[var(--glitz-surface)] text-[var(--glitz-gold)] shadow-[var(--glitz-glow)]"
-          aria-label="AI Event Planner"
-        >
-          <Sparkles className="h-5 w-5" />
-        </Link>
-      </div>
+      <a
+        href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+        className="quick-actions__btn flex items-center justify-center rounded-full border border-[var(--glitz-border)] bg-[var(--glitz-glass)] text-[var(--glitz-gold)] shadow-[var(--glitz-glow)] backdrop-blur-xl transition-transform hover:scale-105"
+        aria-label="Call Nexyyra Events"
+      >
+        <Phone className="h-6 w-6" aria-hidden="true" />
+      </a>
+      <Link
+        href="/book-event"
+        className="quick-actions__btn flex items-center justify-center rounded-full bg-[var(--glitz-gold)] text-[#0A0A0A] shadow-[var(--glitz-glow)] transition-transform hover:scale-105"
+        aria-label="Book consultation"
+      >
+        <Calendar className="h-6 w-6" aria-hidden="true" />
+      </Link>
+      <Link
+        href="/book-event#ai-planner"
+        className="quick-actions__btn flex items-center justify-center rounded-full border border-[var(--glitz-border)] bg-[var(--glitz-glass)] text-[var(--glitz-gold)] shadow-[var(--glitz-glow)] backdrop-blur-xl transition-transform hover:scale-105"
+        aria-label="AI Event Planner"
+      >
+        <Sparkles className="h-6 w-6" aria-hidden="true" />
+      </Link>
       <motion.a
         href={whatsappHref}
         target="_blank"
@@ -49,13 +47,11 @@ export function BrandFab() {
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          "flex min-h-[48px] min-w-[48px] items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg",
-          "max-[380px]:px-3"
+          "quick-actions__btn flex items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform"
         )}
         aria-label="WhatsApp"
       >
-        <MessageCircle className="h-5 w-5 shrink-0" aria-hidden />
-        <span className="max-[380px]:sr-only">WhatsApp</span>
+        <MessageCircle className="h-6 w-6 shrink-0" aria-hidden="true" />
       </motion.a>
     </div>
   );
