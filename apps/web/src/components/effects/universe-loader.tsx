@@ -11,10 +11,10 @@ import { EASE } from "@/lib/motion";
 export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
-/** First-visit cinematic intro — premium without delaying conversion. */
-export const LOADER_DURATION_MS = 2800;
-export const LOADER_HANDOFF_MS = 2200;
-export const LOADER_ZOOM_MS = 520;
+/** First-visit cinematic intro — 5s luxury brand reveal */
+export const LOADER_DURATION_MS = 5000;
+export const LOADER_HANDOFF_MS = 4500;
+export const LOADER_ZOOM_MS = 500;
 
 const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -181,7 +181,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
       return;
     }
 
-    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 1200);
+    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 2000);
 
     const handoffTimer = window.setTimeout(() => {
       onHandoff();
@@ -230,7 +230,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
             initial={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
             animate={
               exiting
-                ? { scale: 0.55, opacity: 0, filter: "blur(10px)" }
+                ? { scale: 1.25, opacity: 0, filter: "blur(12px)" }
                 : { scale: 1, opacity: 1, filter: "blur(0px)" }
             }
             transition={{ duration: LOADER_ZOOM_MS / 1000, ease: CINEMATIC, delay: exiting ? 0 : 0 }}
@@ -258,13 +258,13 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                 }}
               />
               <Image
-                src={BRAND_LOGO_ASSETS.gold}
+                src={BRAND_LOGO_ASSETS.loader}
                 alt={SITE_CONFIG.name}
                 width={880}
                 height={320}
                 priority
                 fetchPriority="high"
-                quality={100}
+                unoptimized
                 sizes="(max-width: 640px) 60vw, 420px"
                 className="relative mx-auto max-h-[clamp(100px,26vw,220px)] w-auto max-w-full object-contain transform-gpu"
               />

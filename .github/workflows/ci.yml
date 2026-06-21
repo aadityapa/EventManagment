@@ -32,6 +32,8 @@ jobs:
         env:
           NEXT_PUBLIC_APP_URL: https://nexyyra.com
           NEXT_PUBLIC_API_URL: https://nexyyra.com/api
+          MEDIA_PROVIDER: google-drive
+          GOOGLE_DRIVE_FOLDER_ID: 1UZR_UhiZfVvcLUNvDJi3Rvw8udkfKgYM
 
   api-check:
     runs-on: ubuntu-latest

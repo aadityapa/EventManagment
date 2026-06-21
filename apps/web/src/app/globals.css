@@ -339,3 +339,28 @@ html.lenis body {
   content-visibility: auto;
   contain-intrinsic-size: 380px 480px;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Aspect-ratio system — consistent image framing sitewide                    */
+/* -------------------------------------------------------------------------- */
+.aspect-hero { aspect-ratio: 16 / 9; }
+.aspect-card { aspect-ratio: 4 / 3; }
+.aspect-venue { aspect-ratio: 3 / 2; }
+.aspect-blog { aspect-ratio: 16 / 10; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-portrait { aspect-ratio: 3 / 4; }
+
+.aspect-hero > img,
+.aspect-card > img,
+.aspect-venue > img,
+.aspect-blog > img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Exit intent — always viewport-centered */
+.exit-intent-popup {
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}

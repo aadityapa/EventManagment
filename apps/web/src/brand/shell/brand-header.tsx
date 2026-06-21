@@ -144,10 +144,15 @@ export function BrandHeader() {
                         aria-hidden="true"
                       />
                     </button>
+                    <AnimatePresence>
                     {servicesOpen && (
-                      <div
+                      <motion.div
                         id="services-mega-menu"
                         role="menu"
+                        initial={{ opacity: 0, y: 8, scale: 0.98, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98, filter: "blur(4px)" }}
+                        transition={{ duration: 0.35, ease: EASE.silk }}
                         className="absolute left-1/2 top-full z-50 mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
                         onMouseLeave={() => setServicesOpen(false)}
                       >
@@ -242,8 +247,9 @@ export function BrandHeader() {
                           </ul>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    </motion.div>
+                    )}
+                    </AnimatePresence>
                 </div>
               );
             }

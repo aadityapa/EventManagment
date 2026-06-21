@@ -72,7 +72,7 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
               ? { opacity: 1, scale: 1 }
               : { opacity: 0, scale: 1.05 }
           }
-          transition={{ duration: 1, ease: EASE.silk }}
+          transition={{ duration: 1.2, ease: EASE.silk, delay: handoffActive ? 0 : 0.15 }}
         >
           <PageTransition>{children}</PageTransition>
         </motion.div>

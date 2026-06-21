@@ -165,9 +165,10 @@ a[role="button"] {
 /* Responsive brand logo — official raster, dual-theme, height-based           */
 /* -------------------------------------------------------------------------- */
 :root {
-  --brand-logo-height: 2.625rem; /* 42px mobile */
-  --nav-height: 4.5rem; /* 72px mobile */
+  --brand-logo-height: 2.75rem; /* 44px mobile */
+  --nav-height: 5rem; /* 80px mobile */
   --brand-nav-active: #c9a227;
+  --brand-nav-gap: 2rem; /* 32px mobile */
 }
 
 .brand-logo-link {
@@ -210,13 +211,13 @@ a[role="button"] {
   overflow-wrap: break-word;
 }
 
-/* Light theme — dark gold logo for contrast on cream nav */
-html.light .brand-logo__img--theme-aware {
-  filter: brightness(0.28) contrast(1.15) sepia(0.35) saturate(1.25);
+/* Light theme — SVG logo switches via component; no raster filter needed */
+html.light .brand-logo__img--svg {
+  filter: none;
 }
 
-html.dark .brand-logo__img--theme-aware,
-:root:not(.light) .brand-logo__img--theme-aware {
+html.dark .brand-logo__img--svg,
+:root:not(.light) .brand-logo__img--svg {
   filter: none;
 }
 
@@ -282,11 +283,12 @@ html:not(.light) .brand-logo::after {
   }
 }
 
-/* Tablet 768+ — 56px */
+/* Tablet 768+ */
 @media (min-width: 768px) {
   :root {
-    --brand-logo-height: 3rem; /* 48px tablet */
-    --nav-height: 4.75rem; /* 76px tablet */
+    --brand-logo-height: 3.5rem; /* 56px tablet */
+    --nav-height: 5.25rem; /* 84px tablet */
+    --brand-nav-gap: 2.5rem;
   }
 
   .brand-logo-link {
@@ -294,11 +296,12 @@ html:not(.light) .brand-logo::after {
   }
 }
 
-/* Laptop 1024+ */
+/* Laptop 1024+ — spec: 88px header, 64px logo */
 @media (min-width: 1024px) {
   :root {
-    --brand-logo-height: 3.4rem; /* 54px laptop */
-    --nav-height: 5.125rem; /* 82px laptop */
+    --brand-logo-height: 4rem; /* 64px desktop */
+    --nav-height: 5.5rem; /* 88px desktop */
+    --brand-nav-gap: 3rem; /* 48px nav spacing */
   }
 
   .brand-logo-link {
@@ -402,13 +405,13 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-nav {
-    gap: 1.5rem;
+    gap: var(--brand-nav-gap);
   }
 }
 
 @media (min-width: 1280px) {
   .brand-header-nav {
-    gap: 2rem;
+    gap: var(--brand-nav-gap);
   }
 }
 

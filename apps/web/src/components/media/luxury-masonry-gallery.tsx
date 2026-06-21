@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { MediaAsset } from "@/lib/media/types";
 import {
@@ -19,10 +19,18 @@ type Props = {
   assets: MediaAsset[];
   className?: string;
   showFilters?: boolean;
+  batchSize?: number;
 };
 
+const DEFAULT_BATCH = 24;
+
 /** Luxury masonry — Aman Resorts editorial rhythm */
-export function LuxuryMasonryGallery({ assets, className, showFilters = true }: Props) {
+export function LuxuryMasonryGallery({
+  assets,
+  className,
+  showFilters = true,
+  batchSize = DEFAULT_BATCH,
+}: Props) {
   const [activeFilter, setActiveFilter] = useState<(typeof GALLERY_FILTER_LABELS)[number]>("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const reducedMotion = useReducedMotion();
@@ -34,6 +42,32 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
       ),
     [assets, activeFilter]
   );
+
+  const [visibleCount, setVisibleCount] = useState(batchSize);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setVisibleCount(batchSize);
+  }, [activeFilter, batchSize]);
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((c) => Math.min(c + batchSize, filtered.length));
+  }, [batchSize, filtered.length]);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || visibleCount >= filtered.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) loadMore();
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [loadMore, visibleCount, filtered.length]);
+
+  const visible = filtered.slice(0, visibleCount);
 
   if (!assets.length) return null;
 
@@ -72,7 +106,7 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
         whileInView={reducedMotion ? undefined : "visible"}
         viewport={{ once: true, amount: 0.02 }}
       >
-        {filtered.map((asset, i) => {
+        {visible.map((asset, i) => {
           const h = masonryHeightForAsset(asset, 380);
           return (
             <motion.button
@@ -112,6 +146,12 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
           );
         })}
       </motion.div>
+
+      {visibleCount < filtered.length && (
+        <div ref={sentinelRef} className="mt-8 flex justify-center py-4" aria-hidden="true">
+          <span className="text-xs uppercase tracking-widest text-muted">Loading more…</span>
+        </div>
+      )}
 
       <BrandLightbox
         images={filtered.map((a) => ({ src: a.src, alt: a.alt }))}
