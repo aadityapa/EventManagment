@@ -230,3 +230,15 @@ export const BLOG_ARTICLE_CONTENT: Record<string, BlogArticleContent> = {
 export function getBlogArticleContent(slug: string): BlogArticleContent | undefined {
   return BLOG_ARTICLE_CONTENT[slug];
 }
+
+/** GEO-friendly key takeaways — explicit or derived from article body. */
+export function getBlogKeyTakeaways(slug: string, excerpt: string): string[] {
+  const content = BLOG_ARTICLE_CONTENT[slug];
+  if (!content?.paragraphs?.length) return [excerpt];
+
+  return content.paragraphs.slice(0, 4).map((p) => {
+    const sentence = p.match(/^[^.!?]+[.!?]/)?.[0]?.trim();
+    if (sentence && sentence.length <= 160) return sentence;
+    return p.length > 140 ? `${p.slice(0, 137)}…` : p;
+  });
+}
