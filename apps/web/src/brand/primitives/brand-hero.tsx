@@ -4,6 +4,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
 import dynamic from "next/dynamic";
 import { BrandImage } from "./brand-image";
+import { ComingSoonOverlay } from "@/components/media/coming-soon-overlay";
+import { isComingSoonImage } from "@/lib/media/placeholders";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 
 const HeroThreeCanvas = dynamic(
@@ -49,6 +51,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
   }, [title]);
 
   const words = title.split(" ");
+  const comingSoon = isComingSoonImage(image);
 
   return (
     <section
@@ -64,6 +67,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
         ) : image ? (
           <BrandImage src={image} alt="" fill priority sizes="100vw" aria-hidden />
         ) : null}
+        {comingSoon ? <ComingSoonOverlay className="z-[1]" /> : null}
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />

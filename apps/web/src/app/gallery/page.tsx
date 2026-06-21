@@ -1,8 +1,6 @@
 import { generateSEO } from "@/lib/seo";
 import { GalleryView } from "@/brand";
 import { getGalleryMedia, getMediaVideos } from "@/lib/media/server";
-import { mergeWithStaticFallback } from "@/lib/media/fallback";
-import { BRAND_IMAGES } from "@/brand/data/imagery";
 
 export const metadata = generateSEO({
   title: "Visual Stories Gallery",
@@ -19,15 +17,14 @@ export default async function GalleryPage() {
     getMediaVideos(),
   ]);
 
-  const assets = mergeWithStaticFallback(galleryAssets, BRAND_IMAGES.gallery, "gallery");
-  const heroAsset = assets[0];
-  const videoSrc = videos[0]?.src ?? BRAND_IMAGES.hero.video;
-  const videoPoster = videos[0]?.poster ?? heroAsset?.src ?? BRAND_IMAGES.hero.poster;
+  const heroAsset = galleryAssets[0];
+  const videoSrc = videos[0]?.src ?? "";
+  const videoPoster = videos[0]?.poster ?? heroAsset?.src ?? "";
 
   return (
     <GalleryView
-      assets={assets}
-      heroSrc={heroAsset?.src ?? BRAND_IMAGES.gallery[0]}
+      assets={galleryAssets}
+      heroSrc={heroAsset?.src ?? ""}
       videoSrc={videoSrc}
       videoPoster={videoPoster}
     />

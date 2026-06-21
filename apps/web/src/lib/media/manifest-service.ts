@@ -70,23 +70,66 @@ async function processImageFile(
     return null;
   }
 
-  const baseName = path.basename(filename, ext);
+  const baseName = path.basename(filename, path.extname(filename));
   const dir = path.dirname(absolutePath);
+
+  /* Skip WebP when original raster exists (incl. photo.JPG) */
+  if (ext === ".webp") {
+    const candidates = [
+      baseName,
+      `${baseName}.jpg`,
+      `${baseName}.jpeg`,
+      `${baseName}.png`,
+      `${baseName}.JPG`,
+      `${baseName}.JPEG`,
+      `${baseName}.PNG`,
+    ];
+    for (const name of candidates) {
+      if (await fileExists(path.join(dir, name))) return null;
+    }
+  }
+
   const sidecar = await readSidecarMeta(absolutePath);
   const category = sidecar?.category ?? categoryFromFolder(folder);
   const title = sidecar?.title ?? humanizeFilename(baseName);
   const alt = sidecar?.alt ?? `${title} — Nexyyra Events`;
 
   const sourceBuffer = await fs.readFile(absolutePath);
-  const metadata = await sharp(sourceBuffer).metadata();
+  const metadata = await sharp(sourceBuffer, { failOn: "none" })
+    .rotate()
+    .metadata();
   const sourceWidth = metadata.width ?? 1920;
   const sourceHeight = metadata.height ?? 1280;
+  const sourceStat = await fs.stat(absolutePath);
+
+  const fastIndex = process.env.MEDIA_FAST_INDEX !== "0";
+
+  if (fastIndex) {
+    return {
+      id: `${folder}-${baseName}`,
+      type: "image",
+      folder,
+      category,
+      src: `${relativePublicPath}/${filename}`,
+      filename,
+      title,
+      alt,
+      width: sourceWidth,
+      height: sourceHeight,
+      aspectRatio: sourceWidth / sourceHeight,
+      blurDataURL: "",
+      variants: [],
+      featured: sidecar?.featured,
+      sortOrder: sidecar?.sortOrder,
+      createdAt: sourceStat.birthtime.toISOString(),
+      updatedAt: sourceStat.mtime.toISOString(),
+    };
+  }
 
   const masterName = masterWebpFilename(baseName);
   const masterPath = path.join(dir, masterName);
   const masterPublic = `${relativePublicPath}/${masterName}`;
 
-  const sourceStat = await fs.stat(absolutePath);
   let masterStat = sourceStat;
   if (!(await fileExists(masterPath)) || (await fs.stat(masterPath)).mtime < sourceStat.mtime) {
     await sharp(sourceBuffer)
@@ -241,7 +284,7 @@ export async function rebuildMediaManifest(): Promise<MediaManifest> {
 export async function getOrRebuildManifest(force = false): Promise<MediaManifest> {
   if (!force) {
     const existing = await readMediaManifest();
-    if (existing) return existing;
+    if (existing && existing.assets.length > 0) return existing;
   }
   return rebuildMediaManifest();
 }

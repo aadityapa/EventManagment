@@ -1,23 +1,22 @@
-import type { MediaAsset, MediaCategory } from "./types";
+import type { MediaAsset, MediaImageFolder } from "./types";
 import { categoryFromFolder, humanizeFilename } from "./categories";
-import type { MediaImageFolder } from "./types";
 import { BRAND_BLUR } from "@/brand/data/imagery";
 
-/** Fallback when local media folders are empty — keeps site functional */
+/** Minimal asset when a folder has no uploads yet */
 export function staticUrlToMediaAsset(
   src: string,
   folder: MediaImageFolder,
   index: number,
-  category?: MediaCategory
+  category?: MediaAsset["category"]
 ): MediaAsset {
-  const id = `static-${folder}-${index}`;
+  const id = `local-${folder}-${index}`;
   return {
     id,
     type: "image",
     folder,
     category: category ?? categoryFromFolder(folder),
     src,
-    filename: `static-${index}.jpg`,
+    filename: pathBasename(src),
     title: humanizeFilename(`${folder} ${index + 1}`),
     alt: `Nexyyra Events ${folder} showcase`,
     width: 1400,
@@ -30,11 +29,16 @@ export function staticUrlToMediaAsset(
   };
 }
 
+function pathBasename(src: string): string {
+  const parts = src.split("/");
+  return parts[parts.length - 1] ?? "image.jpg";
+}
+
+/** Use uploaded library only — no stock photo fallback */
 export function mergeWithStaticFallback(
   assets: MediaAsset[],
-  fallbackUrls: readonly string[],
-  folder: MediaImageFolder
+  _fallbackUrls: readonly string[],
+  _folder: MediaImageFolder
 ): MediaAsset[] {
-  if (assets.length > 0) return assets;
-  return fallbackUrls.map((src, i) => staticUrlToMediaAsset(src, folder, i));
+  return assets;
 }

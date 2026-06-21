@@ -280,23 +280,25 @@ export function HeroV4() {
                     </BrandButton>
                   </MagneticButton>
                 </div>
-                <div className="w-full sm:w-auto">
-                  <MagneticButton>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        analytics.ctaClick("watch_showreel", "hero");
-                        setShowreelOpen(true);
-                      }}
-                      className={cn(
-                        "inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)]/60 px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-md transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 hover:shadow-[var(--glitz-glow)] sm:w-auto sm:min-w-[200px]"
-                      )}
-                    >
-                      <Play className="h-4 w-4 text-[var(--adaptive-accent,var(--glitz-gold))]" aria-hidden />
-                      Watch Showreel
-                    </button>
-                  </MagneticButton>
-                </div>
+                {HERO_SHOWREEL_VIDEO ? (
+                  <div className="w-full sm:w-auto">
+                    <MagneticButton>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          analytics.ctaClick("watch_showreel", "hero");
+                          setShowreelOpen(true);
+                        }}
+                        className={cn(
+                          "inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)]/60 px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-md transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 hover:shadow-[var(--glitz-glow)] sm:w-auto sm:min-w-[200px]"
+                        )}
+                      >
+                        <Play className="h-4 w-4 text-[var(--adaptive-accent,var(--glitz-gold))]" aria-hidden />
+                        Watch Showreel
+                      </button>
+                    </MagneticButton>
+                  </div>
+                ) : null}
               </motion.div>
 
               <motion.div

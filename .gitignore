@@ -12,6 +12,11 @@ certs/
 Thumbs.db
 apps/web/public/images/*-raw.jpg
 apps/web/public/images/manifest.json
+apps/web/public/images/**/*-640w.webp
+apps/web/public/images/**/*-828w.webp
+apps/web/public/images/**/*-1200w.webp
+apps/web/public/images/**/*-1920w.webp
+apps/web/public/images/**/*.JPG.webp
 .turbo/
 coverage/
 *.tsbuildinfo

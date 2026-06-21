@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
+import { ComingSoonOverlay } from "@/components/media/coming-soon-overlay";
+import { isComingSoonImage } from "@/lib/media/placeholders";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { cn } from "@/lib/utils";
 import type { WorldPresetId } from "@/lib/adaptive-theme/world-presets";
@@ -29,6 +31,8 @@ export function PortalCard({
   onEnter,
   className,
 }: PortalCardProps) {
+  const comingSoon = isComingSoonImage(image);
+
   return (
     <Link
       href={href}
@@ -48,6 +52,7 @@ export function PortalCard({
           sizes="(max-width: 640px) 85vw, 25vw"
           className="object-cover transition-transform duration-[1.2s] ease-[var(--v4-ease-luxe)] group-hover:scale-110"
         />
+        {comingSoon ? <ComingSoonOverlay /> : null}
         <div
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           style={{

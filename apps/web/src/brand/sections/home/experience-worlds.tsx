@@ -11,7 +11,7 @@ const EXPERIENCE_WORLDS = [
   { id: "corporate", title: "Corporate World", subtitle: "Galas & launches", preset: "corporate" as WorldPresetId, href: "/services/corporate-events?world=corporate", image: BRAND_IMAGES.corporate[0] },
   { id: "concert", title: "Concert World", subtitle: "Stadium scale", preset: "celebration" as WorldPresetId, href: "/services/concert-management?world=celebration", image: BRAND_IMAGES.gallery?.[3] ?? BRAND_IMAGES.corporate[1] },
   { id: "celebrity", title: "Celebrity World", subtitle: "VIP & red carpet", preset: "culture" as WorldPresetId, href: "/services/celebrity-management?world=culture", image: BRAND_IMAGES.hero.palace },
-  { id: "exhibition", title: "Exhibition World", subtitle: "Trade & brand", preset: "corporate" as WorldPresetId, href: "/services/exhibitions?world=corporate", image: BRAND_IMAGES.gallery?.[12] ?? BRAND_IMAGES.corporate[2] },
+  { id: "exhibition", title: "Exhibition World", subtitle: "Trade & brand", preset: "corporate" as WorldPresetId, href: "/services/exhibitions?world=corporate", image: BRAND_IMAGES.gallery?.[11] ?? BRAND_IMAGES.corporate[2] },
   { id: "fashion", title: "Fashion World", subtitle: "Runway & front row", preset: "culture" as WorldPresetId, href: "/services/fashion-shows?world=culture", image: BRAND_IMAGES.gallery?.[7] ?? BRAND_IMAGES.weddings[2] },
 ] as const;
 import { analytics } from "@/lib/analytics";

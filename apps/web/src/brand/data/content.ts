@@ -19,7 +19,7 @@ export const BRAND_SERVICES = [
   { slug: "destination-weddings", title: "Destination Weddings", narrative: "From Udaipur palaces to Goa sunsets — we transport your dream across continents with seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0] },
   { slug: "concert-management", title: "Concerts & Festivals", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management that sets industry benchmarks.", image: BRAND_IMAGES.gallery[3] },
   { slug: "product-launches", title: "Product Launches", narrative: "Immersive brand experiences with holographic displays, influencer seeding, and media strategies that create viral moments.", image: BRAND_IMAGES.corporate[1] },
-  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates through sensory-rich, memorable touchpoints.", image: BRAND_IMAGES.gallery[12] },
+  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates through sensory-rich, memorable touchpoints.", image: BRAND_IMAGES.gallery[11] },
   { slug: "celebrity-management", title: "Celebrity Management", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences curated for India's most discerning hosts.", image: BRAND_IMAGES.hero.palace },
   { slug: "birthday-events", title: "Luxury Celebrations", narrative: "Milestone moments designed with the same artistry we bring to royal weddings — intimate, personal, unforgettable.", image: BRAND_IMAGES.weddings[3] },
 ];
@@ -133,8 +133,8 @@ export const BRAND_SERVICE_CATEGORIES = [
   { slug: "award-functions", title: "Award Ceremonies", narrative: "Red-carpet galas with broadcast-quality production and celebrity coordination.", image: BRAND_IMAGES.awards, caseStudy: "Industry awards night — 600 VIP guests, live broadcast." },
   { slug: "fashion-shows", title: "Fashion Shows", narrative: "Runway productions with lighting design, styling, and front-row experiences.", image: BRAND_IMAGES.gallery[7], caseStudy: "Fashion Week finale — 500 front-row guests, global press." },
   { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Music Fest 2025 — 10,000 attendees, 50+ artists, zero incidents." },
-  { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[12], caseStudy: "Auto expo pavilion — 40% lead capture increase." },
-  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[12], caseStudy: "Product activation — 3x footfall vs. previous year." },
+  { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[11], caseStudy: "Auto expo pavilion — 40% lead capture increase." },
+  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[11], caseStudy: "Product activation — 3x footfall vs. previous year." },
 ] as const;
 
 export const BRAND_AWARDS = [

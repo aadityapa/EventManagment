@@ -10,6 +10,8 @@ import {
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
+import { ComingSoonOverlay } from "@/components/media/coming-soon-overlay";
+import { isComingSoonImage } from "@/lib/media/placeholders";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { applyWorldPreset, type WorldPresetId } from "@/lib/adaptive-theme/world-presets";
 import { usePremiere } from "@/components/providers/premiere-context";
@@ -56,7 +58,7 @@ const HERO_WORLDS = [
     subtitle: "Runway & front row",
     preset: "culture" as WorldPresetId,
     href: "/services/fashion-shows?world=culture",
-    image: BRAND_IMAGES.gallery[12],
+    image: BRAND_IMAGES.gallery[11],
   },
   {
     id: "brand",
@@ -145,6 +147,7 @@ function WorldCard({
 }) {
   const floatOffset = index % 2 === 0 ? -5 : 5;
   const staggerY = index === 1 || index === 4 ? "lg:translate-y-5" : index === 2 || index === 5 ? "lg:-translate-y-1" : "";
+  const comingSoon = isComingSoonImage(world.image);
 
   return (
     <motion.div
@@ -191,6 +194,7 @@ function WorldCard({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/32 to-black/12" />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_42%)] opacity-60" />
+              {comingSoon ? <ComingSoonOverlay /> : null}
             </div>
             <div className="relative flex min-h-[inherit] flex-col justify-end p-4">
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent,var(--glitz-gold))]">
