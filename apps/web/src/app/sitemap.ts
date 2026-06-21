@@ -37,6 +37,26 @@ function absUrl(path: string) {
   return `${SITE_CONFIG.url}${path}`;
 }
 
+/** Sitemap image:loc must be valid XML — no raw `&` in query strings. */
+function sitemapImage(src: string): string {
+  if (src.startsWith("/")) return absUrl(src);
+  if (src.startsWith("http") && !src.includes("&")) return src;
+  return absUrl(BRAND_IMAGES.hero.poster);
+}
+
+function sitemapImages(sources: string[]): string[] {
+  return sources.map(sitemapImage);
+}
+
+function brandImageAt(index: number): string {
+  const pool = [
+    ...BRAND_IMAGES.weddings,
+    ...BRAND_IMAGES.gallery,
+    ...BRAND_IMAGES.venues,
+  ];
+  return absUrl(pool[index % pool.length] ?? BRAND_IMAGES.hero.poster);
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
     const entry: MetadataRoute.Sitemap[number] = {
@@ -46,10 +66,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: path === "" ? 1 : ["/privacy", "/terms", "/refund"].includes(path) ? 0.3 : 0.8,
     };
     if (path === "/gallery") {
-      entry.images = BRAND_IMAGES.gallery.slice(0, 12);
+      entry.images = sitemapImages(BRAND_IMAGES.gallery.slice(0, 12));
     }
     if (path === "/portfolio") {
-      entry.images = BRAND_CASE_STUDIES.slice(0, 8).map((cs) => cs.image);
+      entry.images = sitemapImages(BRAND_CASE_STUDIES.slice(0, 8).map((cs) => cs.image));
     }
     return entry;
   });
@@ -62,20 +82,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${SITE_CONFIG.url}/brand/logo-primary.png`],
   }));
 
-  const servicePages = services.map((s) => ({
+  const servicePages = services.map((s, index) => ({
     url: absUrl(`/services/${s.slug}`),
     lastModified: servicePageLastMod(s.slug),
     changeFrequency: "monthly" as const,
     priority: 0.7,
-    images: [s.image.startsWith("http") ? s.image : absUrl(s.image)],
+    images: [s.image.startsWith("/") ? sitemapImage(s.image) : brandImageAt(index)],
   }));
 
-  const blogPages = blogPosts.map((p) => ({
+  const blogPages = blogPosts.map((p, index) => ({
     url: absUrl(`/blog/${p.slug}`),
     lastModified: blogPostLastMod(p.publishedAt),
     changeFrequency: "monthly" as const,
     priority: 0.6,
-    images: [p.image],
+    images: [p.image.startsWith("/") ? sitemapImage(p.image) : brandImageAt(index)],
   }));
 
   const portfolioCases = BRAND_CASE_STUDIES.map((cs) => ({
@@ -83,7 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: portfolioCaseLastMod(cs.id),
     changeFrequency: "monthly" as const,
     priority: 0.65,
-    images: [cs.image],
+    images: sitemapImages([cs.image]),
   }));
 
   return [...staticPages, ...localPages, ...servicePages, ...portfolioCases, ...blogPages];
