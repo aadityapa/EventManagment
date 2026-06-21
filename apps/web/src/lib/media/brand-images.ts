@@ -1,11 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { MediaAsset, MediaImageFolder } from "./types";
-import {
-  COMING_SOON_IMAGES,
-  pickOneOrPlaceholder,
-  pickOrPlaceholder,
-} from "./placeholders";
+import { COMING_SOON_IMAGES, isComingSoonImage } from "./placeholders";
 
 export type BrandImageMap = {
   hero: {
@@ -59,7 +55,45 @@ function pickMany(assets: MediaAsset[] | undefined, limit = 6): string[] {
   return assets.slice(0, limit).map((a) => a.src);
 }
 
-/** Build site-wide image map — hero backgrounds use venues only; empty folders get AI placeholders */
+function uniqueRealSources(...groups: Array<Array<string | undefined>>): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+
+  for (const group of groups) {
+    for (const src of group) {
+      if (!src || isComingSoonImage(src) || seen.has(src)) continue;
+      seen.add(src);
+      result.push(src);
+    }
+  }
+
+  return result;
+}
+
+function fillWithRealImages(
+  preferred: string[],
+  fallbackPool: string[],
+  count: number,
+  absoluteFallback: string = COMING_SOON_IMAGES.generic
+): string[] {
+  const filled = uniqueRealSources(preferred, fallbackPool);
+  if (!filled.length) return Array.from({ length: count }, () => absoluteFallback);
+
+  const result = [...filled];
+  let cursor = 0;
+  while (result.length < count) {
+    result.push(filled[cursor % filled.length]);
+    cursor += 1;
+  }
+  return result.slice(0, count);
+}
+
+function pickRealImage(preferred: string[], fallbackPool: string[], index = 0): string {
+  const pool = uniqueRealSources(preferred, fallbackPool);
+  return pool[index % pool.length] ?? COMING_SOON_IMAGES.generic;
+}
+
+/** Build site-wide image map — empty folders borrow real uploaded imagery before placeholders. */
 export function buildBrandImageMap(assets: MediaAsset[]): BrandImageMap {
   const folders = byFolder(assets);
   const weddings = folders.weddings ?? [];
@@ -74,40 +108,38 @@ export function buildBrandImageMap(assets: MediaAsset[]): BrandImageMap {
   const gallerySrcs = gallery.map((a) => a.src);
   const corporateSrcs = pickMany(corporate, 6);
   const destinationSrcs = pickMany(destination, 6);
+  const realFallbackPool = uniqueRealSources(
+    venueSrcs,
+    gallerySrcs,
+    weddingSrcs,
+    corporateSrcs,
+    destinationSrcs,
+    pickMany(celebrity, 6)
+  );
 
-  const heroPoster = pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic);
+  const heroPoster = pickRealImage(venueSrcs, realFallbackPool);
 
   return {
     hero: {
       video: "",
       poster: heroPoster,
-      wedding: pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 1),
-      corporate: pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.corporate, 2),
-      palace: pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 3),
+      wedding: pickRealImage(weddingSrcs, realFallbackPool, 1),
+      corporate: pickRealImage(corporateSrcs, realFallbackPool, 2),
+      palace: pickRealImage(venueSrcs, realFallbackPool, 3),
     },
-    weddings: pickOrPlaceholder(
-      weddingSrcs,
-      COMING_SOON_IMAGES.wedding,
-      6
-    ),
-    corporate: pickOrPlaceholder(corporateSrcs, COMING_SOON_IMAGES.corporate, 4),
-    destinations: pickOrPlaceholder(destinationSrcs, COMING_SOON_IMAGES.destination, 4),
-    venues: pickOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 8),
-    vendors: pickOrPlaceholder(pickMany(gallery, 5), COMING_SOON_IMAGES.generic, 4),
-    gallery: gallerySrcs.length
-      ? gallerySrcs
-      : pickOrPlaceholder([], COMING_SOON_IMAGES.portfolio, 4),
-    blog: pickOrPlaceholder(pickMany(gallery, 3), COMING_SOON_IMAGES.generic, 3),
-    contact: pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 1),
-    about: pickOneOrPlaceholder(weddingSrcs, COMING_SOON_IMAGES.wedding, 1),
-    catering: pickOneOrPlaceholder(gallerySrcs, COMING_SOON_IMAGES.generic, 2),
-    decor: pickOneOrPlaceholder(weddingSrcs, COMING_SOON_IMAGES.wedding, 2),
-    awards: pickOneOrPlaceholder(gallerySrcs, COMING_SOON_IMAGES.corporate, 3),
-    testimonials: pickOrPlaceholder(
-      weddingSrcs.slice(0, 3),
-      COMING_SOON_IMAGES.generic,
-      3
-    ),
+    weddings: fillWithRealImages(weddingSrcs, realFallbackPool, 6, COMING_SOON_IMAGES.wedding),
+    corporate: fillWithRealImages(corporateSrcs, realFallbackPool, 4, COMING_SOON_IMAGES.corporate),
+    destinations: fillWithRealImages(destinationSrcs, realFallbackPool, 4, COMING_SOON_IMAGES.destination),
+    venues: fillWithRealImages(venueSrcs, realFallbackPool, 8),
+    vendors: fillWithRealImages(pickMany(gallery, 5), realFallbackPool, 4),
+    gallery: fillWithRealImages(gallerySrcs, realFallbackPool, 12, COMING_SOON_IMAGES.portfolio),
+    blog: fillWithRealImages(pickMany(gallery, 3), realFallbackPool, 3),
+    contact: pickRealImage(venueSrcs, realFallbackPool, 1),
+    about: pickRealImage(weddingSrcs, realFallbackPool, 1),
+    catering: pickRealImage(gallerySrcs, realFallbackPool, 2),
+    decor: pickRealImage(weddingSrcs, realFallbackPool, 2),
+    awards: pickRealImage(gallerySrcs, realFallbackPool, 3),
+    testimonials: fillWithRealImages(weddingSrcs.slice(0, 3), realFallbackPool, 3),
   };
 }
 
@@ -116,7 +148,13 @@ export function buildHeroSlidesFromMedia(
   assets: MediaAsset[],
   limit = 6
 ): Array<{ category: string; video: string; poster: string; alt: string }> {
-  const venues = byFolder(assets).venues ?? [];
+  const folders = byFolder(assets);
+  const venues = folders.venues ?? [];
+  const gallery = folders.gallery ?? [];
+  const weddings = folders.weddings ?? [];
+  const fallbackPool = [...venues, ...gallery, ...weddings].filter(
+    (asset) => !isComingSoonImage(asset.src)
+  );
   const slides = venues.slice(0, limit).map((asset, i) => ({
     category: VENUE_HERO_CATEGORIES[i % VENUE_HERO_CATEGORIES.length],
     video: "",
@@ -126,12 +164,21 @@ export function buildHeroSlidesFromMedia(
 
   if (slides.length > 0) return slides;
 
+  const fallbackSlides = fallbackPool.slice(0, limit).map((asset, i) => ({
+    category: VENUE_HERO_CATEGORIES[i % VENUE_HERO_CATEGORIES.length],
+    video: "",
+    poster: asset.src,
+    alt: asset.alt,
+  }));
+
+  if (fallbackSlides.length > 0) return fallbackSlides;
+
   return [
     {
       category: "Luxury Venue",
       video: "",
       poster: COMING_SOON_IMAGES.generic,
-      alt: "Nexyyra Events venue showcase — coming soon",
+      alt: "Nexyyra Events venue showcase",
     },
   ];
 }
@@ -148,7 +195,7 @@ export function buildWorldCardImages(map: BrandImageMap) {
 }
 
 export function buildVenueStripImages(map: BrandImageMap, count = 5): string[] {
-  return pickOrPlaceholder(map.venues, COMING_SOON_IMAGES.generic, count);
+  return fillWithRealImages(map.venues, [...map.gallery, ...map.weddings], count);
 }
 
 const GENERATED_PATH = path.join(process.cwd(), "src/brand/data/brand-images.generated.ts");

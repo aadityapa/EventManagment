@@ -168,15 +168,15 @@ export function BlogView() {
         </div>
       </section>
 
-      {/* Editorial pipeline */}
+      {/* Editorial desk */}
       <section className="v4-section-lg v4-dune-glow border-t border-[var(--glitz-border)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal" className="text-center">
-            <span className="v4-kicker mb-4">Coming Soon</span>
+            <span className="v4-kicker mb-4">Editorial Desk</span>
             <h2 className="v4-title">Editorial Pipeline</h2>
             <p className="v4-body mx-auto mt-3 max-w-xl text-muted">
               {blogPosts.length} published articles across {BLOG_CATEGORIES.length} categories —
-              curated for luxury event hosts.
+              with upcoming briefs shaped by real client planning questions.
             </p>
           </ScrollReveal>
           <motion.div
@@ -192,7 +192,7 @@ export function BlogView() {
                   <span className="text-xs font-semibold text-[var(--glitz-gold)]">{topic.category}</span>
                   <h3 className="mt-2 text-sm font-semibold leading-snug">{topic.title}</h3>
                   <p className="mt-2 text-xs text-muted line-clamp-2">{topic.excerpt}</p>
-                  <p className="mt-3 text-xs text-muted">Coming soon · {topic.readTime}</p>
+                  <p className="mt-3 text-xs text-muted">Editorial brief · {topic.readTime}</p>
                 </GlassPanel>
               </motion.div>
             ))}

@@ -211,28 +211,13 @@ a[role="button"] {
 }
 
 /* Light theme — dark gold logo for contrast on cream nav */
-html.light .brand-logo__theme-light {
-  display: block;
+html.light .brand-logo__img--theme-aware {
   filter: brightness(0.28) contrast(1.15) sepia(0.35) saturate(1.25);
 }
 
-html.light .brand-logo__theme-dark {
-  display: none;
-}
-
-html.dark .brand-logo__theme-dark,
-:root:not(.light) .brand-logo__theme-dark {
-  display: block;
-}
-
-html.dark .brand-logo__theme-light,
-:root:not(.light) .brand-logo__theme-light {
-  display: none;
-}
-
-.brand-logo__theme-light,
-.brand-logo__theme-dark {
-  display: none;
+html.dark .brand-logo__img--theme-aware,
+:root:not(.light) .brand-logo__img--theme-aware {
+  filter: none;
 }
 
 .brand-logo__full--menu {
@@ -300,8 +285,8 @@ html:not(.light) .brand-logo::after {
 /* Tablet 768+ — 56px */
 @media (min-width: 768px) {
   :root {
-    --brand-logo-height: 3.25rem; /* 52px tablet */
-    --nav-height: 5rem; /* 80px tablet */
+    --brand-logo-height: 3rem; /* 48px tablet */
+    --nav-height: 4.75rem; /* 76px tablet */
   }
 
   .brand-logo-link {
@@ -312,8 +297,8 @@ html:not(.light) .brand-logo::after {
 /* Laptop 1024+ */
 @media (min-width: 1024px) {
   :root {
-    --brand-logo-height: 3.75rem; /* 60px desktop */
-    --nav-height: 5.5rem; /* 88px desktop */
+    --brand-logo-height: 3.4rem; /* 54px laptop */
+    --nav-height: 5.125rem; /* 82px laptop */
   }
 
   .brand-logo-link {
@@ -344,7 +329,7 @@ html.premiere-active .brand-root {
   width: 100%;
   max-width: 90rem; /* 1440px */
   margin-inline: auto;
-  padding-inline: 2rem; /* 32px */
+  padding-inline: clamp(1rem, 3vw, 2rem);
   box-sizing: border-box;
 }
 
@@ -357,9 +342,9 @@ html.premiere-active .brand-root {
   height: 100%;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1120px) {
   .brand-header-grid {
-    grid-template-columns: 240px 1fr 280px;
+    grid-template-columns: 220px minmax(0, 1fr) 300px;
   }
 }
 
@@ -395,7 +380,7 @@ html.premiere-active .brand-root {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1120px) {
   .brand-header-nav {
     position: absolute;
     left: 50%;
@@ -405,7 +390,7 @@ html.premiere-active .brand-root {
     height: 100%;
     align-items: center;
     justify-content: center;
-    gap: 1.75rem; /* 28px tablet */
+    gap: 1.25rem;
     transform: translateX(-50%);
     pointer-events: none;
   }
@@ -417,13 +402,13 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-nav {
-    gap: 2.25rem; /* 36px laptop */
+    gap: 1.5rem;
   }
 }
 
 @media (min-width: 1280px) {
   .brand-header-nav {
-    gap: 2.5rem; /* 40px desktop */
+    gap: 2rem;
   }
 }
 
@@ -439,7 +424,7 @@ html.premiere-active .brand-root {
   background: transparent;
   padding: 0;
   font-family: var(--font-manrope, var(--font-inter)), system-ui, sans-serif;
-  font-size: 1rem;
+  font-size: 0.925rem;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -488,13 +473,13 @@ html.premiere-active .brand-root {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1120px) {
   .brand-header-actions {
     grid-column: 3;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1rem; /* 16px */
+    gap: 0.75rem;
   }
 }
 
@@ -510,6 +495,13 @@ html.premiere-active .brand-root {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+@media (max-width: 1279px) {
+  .brand-header-phone {
+    font-size: 0;
+    gap: 0;
+  }
+}
+
 .brand-header-phone:hover {
   opacity: 0.88;
   transform: translateY(-2px);
@@ -517,10 +509,10 @@ html.premiere-active .brand-root {
 
 .brand-header-theme {
   display: inline-flex;
-  height: 3rem !important;
-  width: 3rem !important;
-  min-height: 3rem !important;
-  min-width: 3rem !important;
+  height: 2.75rem !important;
+  width: 2.75rem !important;
+  min-height: 2.75rem !important;
+  min-width: 2.75rem !important;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
@@ -528,12 +520,12 @@ html.premiere-active .brand-root {
 
 .brand-header-cta {
   display: inline-flex;
-  height: 3rem;
+  height: 2.875rem;
   align-items: center;
   justify-content: center;
   border-radius: 0.875rem; /* 14px */
-  padding-inline: 1.75rem; /* 28px */
-  font-size: 0.9375rem; /* 15px */
+  padding-inline: 1.35rem;
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -547,7 +539,7 @@ html.premiere-active .brand-root {
   gap: 0.5rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1120px) {
   .brand-header-mobile {
     display: none;
   }

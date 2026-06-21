@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
+import { IMAGES } from "@/lib/images";
 
-const HERO_VIDEO =
-  "https://assets.mixkit.co/videos/preview/mixkit-people-dancing-at-a-party-4240-large.mp4";
+const HERO_VIDEO = "";
 
 const HEADLINE = "Creating Extraordinary Experiences That Last Forever";
 
@@ -59,11 +59,11 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          poster="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&q=80"
+          poster={IMAGES.hero.main}
           className="h-full w-full object-cover"
           aria-hidden
         >
-          <source src={HERO_VIDEO} type="video/mp4" />
+          {HERO_VIDEO ? <source src={HERO_VIDEO} type="video/mp4" /> : null}
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-[#0A0A0A]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)]" />

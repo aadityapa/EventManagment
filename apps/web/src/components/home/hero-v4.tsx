@@ -131,7 +131,6 @@ export function HeroV4() {
 
   const [slides] = useState<HeroVideoSlide[]>(HERO_VIDEO_SLIDES);
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [broken, setBroken] = useState<Record<number, true>>({});
   const [showreelOpen, setShowreelOpen] = useState(false);
 
@@ -158,10 +157,10 @@ export function HeroV4() {
   );
 
   useEffect(() => {
-    if (reducedMotion || paused) return;
+    if (reducedMotion) return;
     const id = window.setInterval(() => goTo(activeRef.current + 1), HERO_VIDEO_INTERVAL_MS);
     return () => window.clearInterval(id);
-  }, [reducedMotion, paused, goTo, slides.length]);
+  }, [reducedMotion, goTo, slides.length]);
 
   const onMouseMove = (e: MouseEvent<HTMLElement>) => {
     if (reducedMotion) return;
@@ -192,9 +191,7 @@ export function HeroV4() {
         data-adaptive-backdrop=""
         className="relative flex min-h-[100dvh] flex-col overflow-x-clip border-b border-[var(--glitz-border)] bg-black v5-dune-glow hero-cinematic-copy"
         onMouseMove={onMouseMove}
-        onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => {
-          setPaused(false);
           mouseX.set(0);
           mouseY.set(0);
         }}

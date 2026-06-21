@@ -18,12 +18,12 @@ export const companyProfile = {
 };
 
 export const teamMembers = [
-  { id: "1", name: "Priya Sharma", role: "Founder & CEO", bio: "15+ years transforming events into legendary experiences.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80", specialty: "Luxury Weddings" },
-  { id: "2", name: "Raj Mehta", role: "Creative Director", bio: "Award-winning designer with a passion for immersive experiences.", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80", specialty: "Brand Events" },
-  { id: "3", name: "Ananya Kapoor", role: "Head of Operations", bio: "Ensures flawless execution across every event detail.", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80", specialty: "Corporate Events" },
-  { id: "4", name: "Vikram Singh", role: "Technical Director", bio: "Master of stage design, lighting, and production technology.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80", specialty: "Concerts & Festivals" },
-  { id: "5", name: "Sneha Reddy", role: "Wedding Specialist", bio: "Curates dream destination weddings across the globe.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80", specialty: "Destination Weddings" },
-  { id: "6", name: "Arjun Patel", role: "Client Relations", bio: "Your dedicated partner from first call to final applause.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80", specialty: "Client Experience" },
+  { id: "1", name: "Priya Sharma", role: "Founder & CEO", bio: "15+ years transforming events into legendary experiences.", image: EVENT_IMAGES.wedding, specialty: "Luxury Weddings" },
+  { id: "2", name: "Raj Mehta", role: "Creative Director", bio: "Award-winning designer with a passion for immersive experiences.", image: EVENT_IMAGES.corporate, specialty: "Brand Events" },
+  { id: "3", name: "Ananya Kapoor", role: "Head of Operations", bio: "Ensures flawless execution across every event detail.", image: EVENT_IMAGES.venue1, specialty: "Corporate Events" },
+  { id: "4", name: "Vikram Singh", role: "Technical Director", bio: "Master of stage design, lighting, and production technology.", image: EVENT_IMAGES.concert, specialty: "Concerts & Festivals" },
+  { id: "5", name: "Sneha Reddy", role: "Wedding Specialist", bio: "Curates dream destination weddings across the globe.", image: EVENT_IMAGES.destinationWedding, specialty: "Destination Weddings" },
+  { id: "6", name: "Arjun Patel", role: "Client Relations", bio: "Your dedicated partner from first call to final applause.", image: EVENT_IMAGES.gallery[0], specialty: "Client Experience" },
 ];
 
 export const services = [
@@ -42,11 +42,11 @@ export const services = [
 ];
 
 export const testimonials = [
-  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Nexyyra Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80", eventType: "WEDDING" },
-  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Nexyyra's team handled everything with military precision.", rating: 5, image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", eventType: "CORPORATE" },
-  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Nexyyra understands how to create buzz.", rating: 5, image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80", eventType: "PRODUCT_LAUNCH" },
-  { id: "4", name: "The Kapoor Family", role: "Birthday Celebration", content: "Our daughter's 18th birthday was the talk of the town. The theme, entertainment, and food were all extraordinary.", rating: 5, image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80", eventType: "BIRTHDAY" },
-  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Nexyyra Events is simply the best in the business.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", eventType: "CONFERENCE" },
+  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Nexyyra Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: EVENT_IMAGES.wedding, eventType: "WEDDING" },
+  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Nexyyra's team handled everything with military precision.", rating: 5, image: EVENT_IMAGES.corporate, eventType: "CORPORATE" },
+  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Nexyyra understands how to create buzz.", rating: 5, image: EVENT_IMAGES.productLaunch, eventType: "PRODUCT_LAUNCH" },
+  { id: "4", name: "The Kapoor Family", role: "Birthday Celebration", content: "Our daughter's 18th birthday was the talk of the town. The theme, entertainment, and food were all extraordinary.", rating: 5, image: EVENT_IMAGES.gallery[1], eventType: "BIRTHDAY" },
+  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Nexyyra Events is simply the best in the business.", rating: 5, image: EVENT_IMAGES.conference, eventType: "CONFERENCE" },
 ];
 
 export const awards = [
@@ -70,12 +70,12 @@ export const venues = [
 ];
 
 export const vendors = [
-  { id: "1", businessName: "Lens & Light Studio", slug: "lens-light-studio", category: "Photographers", city: "Mumbai", rating: 4.9, priceRange: "₹1-3 Lakhs", verified: true, images: ["https://images.unsplash.com/photo-1554048612-b6a482b17f66?w=400&q=80"] },
-  { id: "2", businessName: "Bloom & Blossom Decor", slug: "bloom-blossom", category: "Decorators", city: "Delhi", rating: 4.8, priceRange: "₹2-8 Lakhs", verified: true, images: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80"] },
-  { id: "3", businessName: "Gourmet Affairs", slug: "gourmet-affairs", category: "Caterers", city: "Mumbai", rating: 4.9, priceRange: "₹800-1500/person", verified: true, images: ["https://images.unsplash.com/photo-1555244162-803834f70033?w=400&q=80"] },
-  { id: "4", businessName: "Beat Masters DJ", slug: "beat-masters", category: "DJs", city: "Bangalore", rating: 4.7, priceRange: "₹30K-1 Lakh", verified: true, images: ["https://images.unsplash.com/photo-1571266028243-e68f8570c9e2?w=400&q=80"] },
-  { id: "5", businessName: "Harmony Live Band", slug: "harmony-band", category: "Bands", city: "Mumbai", rating: 4.8, priceRange: "₹1-5 Lakhs", verified: true, images: ["https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&q=80"] },
-  { id: "6", businessName: "Glam Studio", slug: "glam-studio", category: "Makeup Artists", city: "Delhi", rating: 4.9, priceRange: "₹25K-1 Lakh", verified: true, images: ["https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80"] },
+  { id: "1", businessName: "Lens & Light Studio", slug: "lens-light-studio", category: "Photographers", city: "Mumbai", rating: 4.9, priceRange: "₹1-3 Lakhs", verified: true, images: [EVENT_IMAGES.gallery[0]] },
+  { id: "2", businessName: "Bloom & Blossom Decor", slug: "bloom-blossom", category: "Decorators", city: "Delhi", rating: 4.8, priceRange: "₹2-8 Lakhs", verified: true, images: [EVENT_IMAGES.decor] },
+  { id: "3", businessName: "Gourmet Affairs", slug: "gourmet-affairs", category: "Caterers", city: "Mumbai", rating: 4.9, priceRange: "₹800-1500/person", verified: true, images: [EVENT_IMAGES.catering] },
+  { id: "4", businessName: "Beat Masters DJ", slug: "beat-masters", category: "DJs", city: "Bangalore", rating: 4.7, priceRange: "₹30K-1 Lakh", verified: true, images: [EVENT_IMAGES.concert] },
+  { id: "5", businessName: "Harmony Live Band", slug: "harmony-band", category: "Bands", city: "Mumbai", rating: 4.8, priceRange: "₹1-5 Lakhs", verified: true, images: [EVENT_IMAGES.heroVideo] },
+  { id: "6", businessName: "Glam Studio", slug: "glam-studio", category: "Makeup Artists", city: "Delhi", rating: 4.9, priceRange: "₹25K-1 Lakh", verified: true, images: [EVENT_IMAGES.wedding] },
 ];
 
 export const portfolioItems = [

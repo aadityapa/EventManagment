@@ -33,32 +33,20 @@ type BrandLogoImageProps = {
   sizes?: string;
 };
 
-/** Dual-theme logo — gold on dark, filtered dark-gold on light */
+/** Theme-aware logo — one optimized image, CSS handles contrast per theme. */
 export function BrandLogoImage({ className, priority = true, sizes = "(max-width: 768px) 140px, 220px" }: BrandLogoImageProps) {
-  const imgProps = {
-    alt: SITE_CONFIG.name,
-    width: 440,
-    height: 160,
-    priority,
-    fetchPriority: "high" as const,
-    sizes,
-    quality: 100,
-  };
-
   return (
-    <>
-      <Image
-        {...imgProps}
-        src={BRAND_LOGO_ASSETS.gold}
-        className={cn("brand-logo__img brand-logo__theme-dark", className)}
-      />
-      <Image
-        {...imgProps}
-        src={BRAND_LOGO_ASSETS.dark}
-        aria-hidden
-        className={cn("brand-logo__img brand-logo__theme-light", className)}
-      />
-    </>
+    <Image
+      src={BRAND_LOGO_ASSETS.gold}
+      alt={SITE_CONFIG.name}
+      width={440}
+      height={160}
+      priority={priority}
+      fetchPriority="high"
+      sizes={sizes}
+      quality={100}
+      className={cn("brand-logo__img brand-logo__img--theme-aware", className)}
+    />
   );
 }
 

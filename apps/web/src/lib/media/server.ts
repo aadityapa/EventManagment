@@ -74,7 +74,8 @@ export async function getGalleryMedia(): Promise<MediaAsset[]> {
 export async function getPortfolioMedia(): Promise<MediaAsset[]> {
   const portfolio = await getMediaAssets(JSON.stringify({ folder: "portfolio" }));
   if (portfolio.length) return portfolio;
-  return getMediaAssets(JSON.stringify({ folder: ["weddings", "corporate", "destination"] as MediaImageFolder[], limit: 12 }));
+  const realFallback = await getGalleryMedia();
+  return realFallback.slice(0, 12);
 }
 
 export async function getVenueMedia(): Promise<MediaAsset[]> {
@@ -102,9 +103,11 @@ const SERVICE_FOLDER_MAP: Record<string, MediaImageFolder> = {
 /** Service pages — auto-load images from mapped folder */
 export async function getServiceMedia(serviceSlug: string, limit = 8): Promise<MediaAsset[]> {
   const folder = SERVICE_FOLDER_MAP[serviceSlug];
-  if (!folder) return getMediaAssets(JSON.stringify({ limit }));
+  if (!folder) return (await getGalleryMedia()).slice(0, limit);
   const assets = await getMediaAssets(JSON.stringify({ folder, limit }));
-  return assets;
+  const real = assets.filter((asset) => !isComingSoonImage(asset.src));
+  if (real.length) return real;
+  return (await getGalleryMedia()).slice(0, limit);
 }
 
 export async function getCategoryMedia(category: MediaQuery["category"]): Promise<MediaAsset[]> {

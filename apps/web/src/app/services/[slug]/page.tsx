@@ -4,6 +4,7 @@ import { services } from "@/data/cms";
 import { getServiceFaqs } from "@/data/service-faqs";
 import { generateSEO, breadcrumbSchema, serviceSchema, faqSchema } from "@/lib/seo";
 import { getServiceContextualLinks, getServicePageIntro, getServiceSeo } from "@/lib/wedding-internal-links";
+import { getServiceMedia } from "@/lib/media/server";
 import { ServiceChapter } from "@/brand/templates/service-chapter";
 
 interface ServiceDetailPageProps {
@@ -38,6 +39,7 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
   const serviceFaqs = getServiceFaqs(slug);
   const contextualLinks = getServiceContextualLinks(slug);
   const pageIntro = getServicePageIntro(slug);
+  const galleryAssets = await getServiceMedia(slug, 6);
   const related = services.filter((s) => s.slug !== slug).slice(0, 3);
   const schema = breadcrumbSchema([
     { name: "Home", url: "/" },
@@ -65,6 +67,7 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
           related={related}
           contextualLinks={contextualLinks}
           pageIntro={pageIntro}
+          galleryAssets={galleryAssets}
           world={world ?? null}
         />
       </Suspense>

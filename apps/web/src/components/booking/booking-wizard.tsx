@@ -685,20 +685,17 @@ export function BookingWizard({ variant = "default" }: { variant?: "default" | "
               )}
 
               {step === 8 && (
-                <div className="grid gap-4 sm:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { id: "razorpay", label: "Razorpay", desc: "UPI, Cards, Net Banking", enabled: true },
-                    { id: "stripe", label: "Stripe", desc: "Coming soon", enabled: false },
-                    { id: "paypal", label: "PayPal", desc: "Coming soon", enabled: false },
+                    { id: "razorpay", label: "Razorpay", desc: "UPI, Cards, Net Banking" },
                   ].map((method) => (
                     <button
                       key={method.id}
                       type="button"
-                      onClick={() => method.enabled && setState((s) => ({ ...s, paymentMethod: method.id }))}
-                      disabled={!method.enabled}
+                      onClick={() => setState((s) => ({ ...s, paymentMethod: method.id }))}
                       className={cn(
                         stepCardClass,
-                        "p-6 text-center disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none",
+                        "p-6 text-center",
                         state.paymentMethod === method.id && stepCardActive
                       )}
                     >

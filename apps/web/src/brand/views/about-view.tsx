@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { Award, ArrowRight, Eye, Target, Gem, Play } from "lucide-react";
+import { Award, ArrowRight, Eye, Target, Gem } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
@@ -241,35 +241,33 @@ export function AboutView() {
         </div>
       </section>
 
-      {/* Video storytelling placeholder */}
+      {/* Behind-the-scenes storytelling */}
       <section className="v4-section bg-[var(--glitz-bg)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal">
             <span className="v4-kicker mb-4">Behind the Scenes</span>
             <h2 className="v4-display">Our story in motion</h2>
             <p className="v4-standfirst mt-4 max-w-xl">
-              A glimpse into the artistry behind every Nexyyra celebration — embed-ready for YouTube or
-              Vimeo.
+              A glimpse into the artistry behind every Nexyyra celebration — from first sketches to
+              final guest arrival.
             </p>
           </ScrollReveal>
           <ScrollReveal preset="fade" delay={0.1} className="mt-10">
             <div className="relative mx-auto aspect-video max-w-4xl overflow-hidden rounded-[var(--v4-radius-xl)] border border-[var(--glitz-border)]">
               <BrandImage
                 src={BRAND_IMAGES.hero.corporate}
-                alt="Nexyyra Events brand film placeholder"
+                alt="Nexyyra Events behind the scenes production"
                 fill
                 sizes="80vw"
                 className="opacity-85"
               />
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 backdrop-blur-[1px]">
-                <button
-                  type="button"
-                  className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/15 transition-transform hover:scale-105"
-                  aria-label="Play brand film — coming soon"
-                >
-                  <Play className="h-7 w-7 text-[var(--glitz-gold)]" aria-hidden="true" />
-                </button>
-                <p className="mt-4 text-sm font-semibold text-white">Brand Film — Coming Soon</p>
+              <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/25 to-transparent p-6 sm:p-10">
+                <div className="max-w-xl">
+                  <span className="v4-kicker mb-3 text-[var(--glitz-gold)]">Nexyyra Atelier</span>
+                  <p className="font-[family-name:var(--font-playfair)] text-2xl font-semibold text-white sm:text-4xl">
+                    Every celebration is rehearsed, refined, and delivered with quiet precision.
+                  </p>
+                </div>
               </div>
             </div>
           </ScrollReveal>

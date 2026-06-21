@@ -11,10 +11,10 @@ import { EASE } from "@/lib/motion";
 export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
-/** Total cinematic intro — 4.5s luxury brand reveal */
-export const LOADER_DURATION_MS = 4500;
-export const LOADER_HANDOFF_MS = 3800;
-export const LOADER_ZOOM_MS = 700;
+/** First-visit cinematic intro — premium without delaying conversion. */
+export const LOADER_DURATION_MS = 2800;
+export const LOADER_HANDOFF_MS = 2200;
+export const LOADER_ZOOM_MS = 520;
 
 const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -34,7 +34,7 @@ type Props = {
   onSkip?: () => void;
 };
 
-const PARTICLE_COUNT = 48;
+const PARTICLE_COUNT = 28;
 
 function GoldDust({ dissolving }: { dissolving: boolean }) {
   const particles = useMemo(
@@ -47,6 +47,7 @@ function GoldDust({ dissolving }: { dissolving: boolean }) {
         duration: 14 + Math.random() * 10,
         delay: Math.random() * 0.8,
         drift: (Math.random() - 0.5) * 20,
+        alpha: 0.25 + Math.random() * 0.35,
       })),
     []
   );
@@ -71,7 +72,7 @@ function GoldDust({ dissolving }: { dissolving: boolean }) {
             top: `${p.y}%`,
             width: p.size,
             height: p.size,
-            background: `radial-gradient(circle, rgba(212,175,55,${0.25 + Math.random() * 0.35}), transparent 70%)`,
+            background: `radial-gradient(circle, rgba(212,175,55,${p.alpha}), transparent 70%)`,
           }}
           animate={{
             opacity: dissolving ? 0 : [0.3, 0.7, 0.45, 0.65],
@@ -180,7 +181,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
       return;
     }
 
-    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 2000);
+    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 1200);
 
     const handoffTimer = window.setTimeout(() => {
       onHandoff();
@@ -274,7 +275,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
               className="mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: CINEMATIC, delay: 3 }}
+              transition={{ duration: 0.45, ease: CINEMATIC, delay: 1.85 }}
             >
               {BRAND_NAME}
             </motion.p>

@@ -15,6 +15,7 @@ import { formatCurrency } from "@/lib/utils";
 import type { ServiceFaq } from "@/data/service-faqs";
 import type { ContextualLink } from "@/lib/wedding-internal-links";
 import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
+import type { MediaAsset } from "@/lib/media/types";
 
 export type ServiceChapterProps = {
   service: {
@@ -30,12 +31,22 @@ export type ServiceChapterProps = {
   related: Array<{ slug: string; title: string; icon: string }>;
   contextualLinks?: ContextualLink[];
   pageIntro?: string;
+  galleryAssets?: MediaAsset[];
   world?: string | null;
 };
 
 /** V5 cinematic service chapter template. */
-export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, world }: ServiceChapterProps) {
+export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, galleryAssets = [], world }: ServiceChapterProps) {
   const bookHref = world ? `/book-event?world=${world}&service=${service.slug}` : `/book-event?service=${service.slug}`;
+  const galleryMoments = galleryAssets.length
+    ? galleryAssets.slice(0, 3).map((asset) => ({
+        src: asset.src,
+        alt: asset.alt,
+      }))
+    : Array.from({ length: 3 }, (_, i) => ({
+        src: service.image,
+        alt: `${service.title} gallery image ${i + 1}`,
+      }));
 
   return (
     <>
@@ -120,11 +131,11 @@ export function ServiceChapter({ service, faqs, related, contextualLinks = [], p
             <h2 className="v4-display mb-8">Gallery <span className="v4-gold-text">Moments</span></h2>
           </ScrollReveal>
           <div className="grid gap-4 sm:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-[var(--v4-radius-lg)]">
+            {galleryMoments.map((moment, i) => (
+              <div key={`${moment.src}-${i}`} className="relative aspect-[4/3] overflow-hidden rounded-[var(--v4-radius-lg)]">
                 <BrandImage
-                  src={service.image}
-                  alt={`${service.title} gallery image ${i + 1}`}
+                  src={moment.src}
+                  alt={moment.alt}
                   fill
                   sizes="33vw"
                   loading="lazy"

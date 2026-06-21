@@ -47,8 +47,6 @@ function KenBurnsPoster({
         placeholder="blur"
         blurDataURL={BLUR_DATA_URL}
         className="object-cover object-center brightness-[1.02] contrast-[1.04] saturate-[1.06]"
-        unoptimized
-        referrerPolicy="no-referrer"
       />
     </div>
   );
