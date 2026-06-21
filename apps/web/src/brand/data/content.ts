@@ -105,6 +105,7 @@ export const BRAND_TIMELINE = [
   { year: "2015", event: "First major corporate gala — 800 guests, zero delays." },
   { year: "2018", event: "Destination wedding division launched across Rajasthan and Goa." },
   { year: "2020", event: "Hybrid and virtual event production studio — broadcast-quality live streams." },
+  { year: "2023", event: "Expanded to 35 cities — celebrity partnerships and broadcast division." },
   { year: "2025", event: "1,800+ events delivered across 35 cities — India's premier luxury event house." },
 ];
 

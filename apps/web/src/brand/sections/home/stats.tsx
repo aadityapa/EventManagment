@@ -1,3 +1,4 @@
+/** @deprecated legacy — not mounted on V4 home (consolidated into glitz-difference.tsx) */
 "use client";
 
 import { useRef } from "react";

@@ -23,7 +23,7 @@ import {
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { cn, formatCurrency, getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -379,30 +379,62 @@ export function BookingWizard() {
     }));
   };
 
+  const stepCardClass =
+    "v4-glass rounded-[var(--v4-radius-lg)] p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[var(--v4-glow-gold-sm)]";
+  const stepCardActive = "ring-2 ring-[var(--glitz-gold)]/60 shadow-[var(--v4-glow-gold-sm)]";
+
   return (
     <div className="mx-auto max-w-4xl px-0 sm:px-2">
       <div className="mb-6 sm:mb-8">
-        <div className="mb-2 flex justify-between text-xs text-muted sm:text-sm">
+        <div className="mb-3 flex justify-between text-xs text-[var(--text-secondary)] sm:text-sm">
           <span className="truncate pr-2">
-            Step {step}/{STEPS.length}: {STEPS[step - 1]}
+            Step {step}/{STEPS.length}: <span className="text-[var(--glitz-gold)]">{STEPS[step - 1]}</span>
           </span>
-          <span className="shrink-0">{Math.round(progress)}%</span>
+          <span className="shrink-0 font-semibold text-[var(--glitz-gold)]">{Math.round(progress)}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-border">
+        <div className="h-1.5 overflow-hidden rounded-full bg-[var(--glitz-border)]">
           <motion.div
-            className="h-full gradient-gold"
+            className="h-full bg-gradient-to-r from-[var(--glitz-gold-dark)] via-[var(--glitz-gold)] to-[var(--glitz-gold-light)]"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           />
         </div>
+
+        {/* Desktop step rail */}
+        <ol className="mt-5 hidden gap-1 md:grid md:grid-cols-9" aria-label="Booking progress">
+          {STEPS.map((label, i) => {
+            const stepNum = i + 1;
+            const done = step > stepNum;
+            const current = step === stepNum;
+            return (
+              <li
+                key={label}
+                className={cn(
+                  "rounded-lg border px-1 py-2 text-center text-[10px] font-medium leading-tight transition-colors",
+                  current
+                    ? "border-[var(--glitz-gold)]/50 bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]"
+                    : done
+                      ? "border-[var(--glitz-gold)]/25 text-[var(--glitz-gold)]/70"
+                      : "border-[var(--glitz-border)] text-[var(--text-secondary)]"
+                )}
+              >
+                <span className="block font-[family-name:var(--font-cinzel)] text-xs">{stepNum}</span>
+                {label}
+              </li>
+            );
+          })}
+        </ol>
+
         <div className="scroll-nav mt-3 gap-2 pb-1 md:hidden">
           {STEPS.map((label, i) => (
             <span
               key={label}
               className={cn(
                 "rounded-full px-2.5 py-1 text-[10px] font-medium",
-                i + 1 === step ? "gradient-gold text-black" : "bg-border text-muted"
+                i + 1 === step
+                  ? "bg-[var(--glitz-gold)]/15 text-[var(--glitz-gold)] ring-1 ring-[var(--glitz-gold)]/40"
+                  : "bg-[var(--glitz-border)] text-muted"
               )}
             >
               {i + 1}. {label}
@@ -411,9 +443,9 @@ export function BookingWizard() {
         </div>
       </div>
 
-      <Card className="overflow-hidden">
-        <CardHeader className="px-4 sm:px-6">
-          <CardTitle className="flex items-center gap-2">
+      <GlassPanel glow className="overflow-hidden">
+        <div className="border-b border-[var(--glitz-border)] px-4 py-5 sm:px-8">
+          <h2 className="flex items-center gap-2 font-[family-name:var(--font-playfair)] text-xl font-semibold">
             {step === 1 && <PartyPopper className="h-5 w-5 text-primary" />}
             {step === 2 && <Calendar className="h-5 w-5 text-primary" />}
             {step === 3 && <MapPin className="h-5 w-5 text-primary" />}
@@ -424,9 +456,9 @@ export function BookingWizard() {
             {step === 8 && <CreditCard className="h-5 w-5 text-primary" />}
             {step === 9 && <PartyPopper className="h-5 w-5 text-primary" />}
             {STEPS[step - 1]}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="px-4 sm:px-6">
+          </h2>
+        </div>
+        <div className="px-4 py-6 sm:px-8 sm:py-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -443,8 +475,9 @@ export function BookingWizard() {
                       type="button"
                       onClick={() => setState((s) => ({ ...s, eventType: type.id }))}
                       className={cn(
-                        "glass-card flex flex-col items-center gap-2 p-4 text-center transition-all hover:shadow-glow",
-                        state.eventType === type.id && "ring-2 ring-primary shadow-glow"
+                        stepCardClass,
+                        "flex flex-col items-center gap-2 text-center",
+                        state.eventType === type.id && stepCardActive
                       )}
                     >
                       <DynamicIcon name={type.icon} className="h-8 w-8 text-primary" />
@@ -477,10 +510,7 @@ export function BookingWizard() {
                       key={venue.id}
                       type="button"
                       onClick={() => setState((s) => ({ ...s, venueId: venue.id }))}
-                      className={cn(
-                        "glass-card p-4 text-left transition-all hover:shadow-glow",
-                        state.venueId === venue.id && "ring-2 ring-primary shadow-glow"
-                      )}
+                      className={cn(stepCardClass, state.venueId === venue.id && stepCardActive)}
                     >
                       <h4 className="font-semibold">{venue.name}</h4>
                       <p className="text-sm text-muted">{venue.city} · {venue.capacity} guests</p>
@@ -537,10 +567,7 @@ export function BookingWizard() {
                       key={range.id}
                       type="button"
                       onClick={() => setState((s) => ({ ...s, budgetId: range.id }))}
-                      className={cn(
-                        "glass-card p-4 text-left transition-all hover:shadow-glow",
-                        state.budgetId === range.id && "ring-2 ring-primary shadow-glow"
-                      )}
+                      className={cn(stepCardClass, state.budgetId === range.id && stepCardActive)}
                     >
                       <span className="font-medium">{range.label}</span>
                     </button>
@@ -554,8 +581,9 @@ export function BookingWizard() {
                     <label
                       key={service.id}
                       className={cn(
-                        "glass-card flex cursor-pointer items-center gap-3 p-4 transition-all",
-                        state.services.includes(service.id) && "ring-2 ring-primary"
+                        stepCardClass,
+                        "flex cursor-pointer items-center gap-3",
+                        state.services.includes(service.id) && stepCardActive
                       )}
                     >
                       <input
@@ -579,7 +607,7 @@ export function BookingWizard() {
 
               {step === 7 && (
                 <div className="space-y-4">
-                  <div className="glass-card divide-y divide-border">
+                  <div className="v4-glass divide-y divide-[var(--glitz-border)] rounded-[var(--v4-radius-lg)]">
                     <SummaryRow label="Event Type" value={selectedEvent?.label ?? "—"} />
                     <SummaryRow label="Date" value={state.date || "—"} />
                     <SummaryRow label="Venue" value={selectedVenue?.name ?? "—"} />
@@ -599,7 +627,7 @@ export function BookingWizard() {
                       }
                     />
                   </div>
-                  <div className="glass-card p-4">
+                  <GlassPanel liquid={false} className="p-4">
                     <div className="flex justify-between text-sm">
                       <span>Venue</span>
                       <span>{formatCurrency(venueCost)}</span>
@@ -620,7 +648,7 @@ export function BookingWizard() {
                       <span>Total</span>
                       <span className="text-primary">{formatCurrency(total)}</span>
                     </div>
-                  </div>
+                  </GlassPanel>
                 </div>
               )}
 
@@ -637,8 +665,9 @@ export function BookingWizard() {
                       onClick={() => method.enabled && setState((s) => ({ ...s, paymentMethod: method.id }))}
                       disabled={!method.enabled}
                       className={cn(
-                        "glass-card p-6 text-center transition-all hover:shadow-glow disabled:opacity-40 disabled:hover:shadow-none",
-                        state.paymentMethod === method.id && "ring-2 ring-primary shadow-glow"
+                        stepCardClass,
+                        "p-6 text-center disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none",
+                        state.paymentMethod === method.id && stepCardActive
                       )}
                     >
                       <CreditCard className="mx-auto h-8 w-8 text-primary" />
@@ -654,10 +683,10 @@ export function BookingWizard() {
 
               {step === 9 && (
                 <div className="py-8 text-center">
-                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full gradient-gold">
-                    <Check className="h-10 w-10 text-black" />
+                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/15">
+                    <Check className="h-10 w-10 text-[var(--glitz-gold)]" />
                   </div>
-                  <h3 className="font-display text-2xl font-bold">Booking Confirmed!</h3>
+                  <h3 className="v4-display text-2xl">We&apos;re on it.</h3>
                   <p className="mt-2 text-muted">
                     Your booking number is{" "}
                     <span className="font-mono font-semibold text-primary">
@@ -675,18 +704,27 @@ export function BookingWizard() {
 
           {step < 9 && (
             <div className="mt-6 flex flex-col-reverse gap-3 sm:mt-8 sm:flex-row sm:justify-between">
-              <Button variant="outline" onClick={back} disabled={step === 1} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={back}
+                disabled={step === 1}
+                className="w-full border-[var(--glitz-border)] sm:w-auto"
+              >
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <Button onClick={() => void next()} disabled={!canProceed()} className="w-full sm:w-auto">
+              <Button
+                onClick={() => void next()}
+                disabled={!canProceed()}
+                className="w-full btn-gold-metallic sm:w-auto"
+              >
                 {step === 8 ? (isPaying ? "Processing..." : "Confirm & Pay") : "Continue"}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </GlassPanel>
     </div>
   );
 }

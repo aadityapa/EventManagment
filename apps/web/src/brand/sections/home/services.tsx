@@ -1,3 +1,4 @@
+/** @deprecated legacy — not mounted on V4 home (replaced by signature-experiences.tsx) */
 "use client";
 
 import Link from "next/link";

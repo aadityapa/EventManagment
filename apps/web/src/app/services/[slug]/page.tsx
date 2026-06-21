@@ -79,15 +79,18 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-        <div className="container relative mx-auto max-w-7xl px-4 pb-12 pt-32 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 text-primary">
-            <DynamicIcon name={service.icon} className="h-8 w-8" />
-            <span className="text-sm font-medium uppercase tracking-wider">Service</span>
+        <div className="brand-container relative mx-auto w-full max-w-7xl px-4 pb-12 pt-32 sm:px-6 lg:px-8">
+          <div className="v4-glass-liquid max-w-2xl px-8 py-8">
+            <div className="flex items-center gap-3 text-[var(--glitz-gold)]">
+              <DynamicIcon name={service.icon} className="h-7 w-7" />
+              <span className="v4-kicker mb-0">Service</span>
+            </div>
+            <h1 className="v4-display mt-3 text-white">{service.title}</h1>
+            <p className="v4-standfirst mt-4 text-white/80">{service.description}</p>
+            <p className="mt-4 text-sm text-[var(--glitz-gold)]">
+              From {formatCurrency(service.basePrice)}
+            </p>
           </div>
-          <h1 className="mt-2 font-display text-4xl font-bold text-white md:text-5xl">
-            {service.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-white/80">{service.description}</p>
         </div>
       </section>
 

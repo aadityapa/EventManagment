@@ -73,18 +73,27 @@ export const VENDOR_CATEGORIES = [
   "Anchors", "Makeup Artists", "Security Teams", "Transportation",
 ];
 
+/** Primary nav — ≤7 items per V4 sitemap; secondary routes live in mega-menu + footer. */
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/venues", label: "Venues" },
+  { href: "/blog", label: "Stories" },
+  { href: "/contact", label: "Contact" },
+] as const;
+
+/** Secondary routes surfaced in Services mega-menu + footer (not primary nav). */
+export const MEGA_EXPLORE_LINKS = [
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/venues", label: "Venues" },
   { href: "/vendors", label: "Vendors" },
   { href: "/gallery", label: "Gallery" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
-];
+  { href: "/testimonials", label: "Testimonials" },
+  { href: "/faqs", label: "FAQs" },
+] as const;
 
 export const FOOTER_LEGAL = [
   { href: "/privacy", label: "Privacy Policy" },
