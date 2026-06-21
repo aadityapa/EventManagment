@@ -91,12 +91,12 @@ export function BrandHeader() {
       )}
       role="banner"
     >
-      <div className="brand-container brand-nav-bar flex items-center justify-between gap-3 sm:gap-4 lg:gap-10 xl:gap-12">
-        <div className="flex min-w-0 shrink-0 items-center">
+      <div className="brand-header-shell brand-nav-bar flex items-center justify-between gap-3 sm:gap-4 lg:grid lg:grid-cols-[220px_1fr_auto] lg:items-center lg:gap-8">
+        <div className="brand-header-logo flex min-w-0 shrink-0 items-center">
           <Logo priority />
         </div>
 
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0 lg:flex xl:gap-0.5" aria-label="Main navigation">
+        <nav className="hidden min-w-0 items-center justify-center gap-0 lg:flex xl:gap-0.5" aria-label="Main navigation">
           {NAV_LINKS.map((l) => {
             if (l.href === "/services") {
               return (
@@ -238,11 +238,11 @@ export function BrandHeader() {
           })}
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-2.5 lg:flex xl:gap-3">
+        <div className="brand-header-actions hidden shrink-0 items-center justify-end gap-2.5 lg:flex xl:gap-3">
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
             className={cn(
-              "hidden items-center gap-1.5 text-sm transition-colors hover:brightness-110 lg:flex",
+              "hidden items-center gap-1.5 text-sm transition-colors hover:brightness-110 xl:flex",
               chromeAccent
             )}
             aria-label={`Call ${SITE_CONFIG.phone}`}
@@ -251,6 +251,13 @@ export function BrandHeader() {
             {SITE_CONFIG.phone}
           </a>
           <ThemeToggle className="border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
+          <Link
+            href="/contact"
+            className="hidden items-center gap-1 text-sm font-medium transition-colors hover:text-[var(--glitz-gold)] xl:inline-flex"
+          >
+            Contact
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Link>
           <Link
             href="/book-event"
             className="btn-gold-metallic btn-premium-hover rounded-lg px-4 py-2.5 text-sm font-semibold tap-target"

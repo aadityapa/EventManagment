@@ -113,20 +113,19 @@ export function HeroVideoBackground({ slides, active, broken, onBroken, videoRef
         </motion.div>
       </AnimatePresence>
 
-      {/* Cinematic readability overlay — always-on on hero media */}
+      {/* Luxury readability — lighter scrim keeps venue imagery visible */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         aria-hidden
         style={{
-          background:
-            "linear-gradient(105deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 38%, rgba(0,0,0,0.28) 62%, rgba(0,0,0,0.18) 100%)",
+          background: "linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15))",
         }}
       />
       <div
-        className="pointer-events-none absolute inset-0 z-[1] opacity-95"
+        className="pointer-events-none absolute inset-0 z-[1]"
         aria-hidden
         style={{
-          background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 42%, transparent 68%)",
+          background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
         }}
       />
       {/* Adaptive scrim — layered with static cinematic base */}

@@ -11,6 +11,10 @@ import { EASE } from "@/lib/motion";
 export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
+/** Total premiere duration — particles → logo → tagline → zoom-out → handoff */
+export const LOADER_DURATION_MS = 2500;
+const ZOOM_OUT_AT_MS = 2000;
+
 export function hasSeenPremiere() {
   if (typeof window === "undefined") return false;
   return (
@@ -25,6 +29,7 @@ type Props = {
 };
 
 const PARTICLE_COUNT = 36;
+const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
 
 function GoldParticles() {
   const reducedMotion = useReducedMotion();
@@ -81,10 +86,13 @@ export function useLoaderSound() {
   };
 }
 
-/** Cinematic intro — particles 0s, logo 0.5s, tagline 1.0s, dissolve 1.5s */
+/**
+ * Luxury premiere loader — 2.5s Framer Motion sequence.
+ * 0.0s particles · 0.5s logo · 1.5s tagline · 2.0s zoom-out · 2.5s handoff
+ */
 export function UniverseLoader({ onComplete, onSkip }: Props) {
   const reducedMotion = useReducedMotion();
-  const [dissolving, setDissolving] = useState(false);
+  const [exiting, setExiting] = useState(false);
 
   const finish = useCallback(() => {
     sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
@@ -96,8 +104,9 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
   const skip = useCallback(() => {
     trackEvent("premiere_skip");
     onSkip?.();
-    setDissolving(true);
-  }, [onSkip]);
+    setExiting(true);
+    window.setTimeout(finish, 400);
+  }, [onSkip, finish]);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -105,25 +114,25 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
       onComplete();
       return;
     }
-    const dissolveTimer = window.setTimeout(() => setDissolving(true), 1500);
-    return () => window.clearTimeout(dissolveTimer);
-  }, [reducedMotion, onComplete]);
+
+    const zoomTimer = window.setTimeout(() => setExiting(true), ZOOM_OUT_AT_MS);
+    const completeTimer = window.setTimeout(finish, LOADER_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(zoomTimer);
+      window.clearTimeout(completeTimer);
+    };
+  }, [reducedMotion, onComplete, finish]);
 
   if (reducedMotion) return null;
 
   return (
-    <motion.div
+    <div
       role="dialog"
       aria-label="Welcome to Nexyyra Events"
       aria-live="polite"
-      aria-busy={!dissolving}
+      aria-busy={!exiting}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: dissolving ? 0 : 1 }}
-      transition={{ duration: 0.55, ease: EASE.silk }}
-      onAnimationComplete={() => {
-        if (dissolving) finish();
-      }}
     >
       <p className="sr-only">Welcome to {SITE_CONFIG.name}</p>
 
@@ -137,12 +146,17 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
 
       <GoldParticles />
 
-      <div className="relative z-[2] flex max-w-[min(92vw,420px)] flex-col items-center px-6 text-center">
+      <motion.div
+        className="relative z-[2] flex max-w-[min(92vw,420px)] flex-col items-center px-6 text-center"
+        initial={{ scale: 1, opacity: 1 }}
+        animate={exiting ? { scale: 0.75, opacity: 0 } : { scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, ease: EASE.silk }}
+      >
         <motion.div
-          initial={{ opacity: 0, scale: 0.88, filter: "blur(12px)" }}
+          initial={{ opacity: 0, scale: 1.4, filter: "blur(20px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 0.75, ease: EASE.luxe, delay: 0.5 }}
-          className="mb-6 w-full overflow-visible"
+          transition={{ duration: 0.75, ease: EASE.silk, delay: 0.5 }}
+          className="mb-8 w-full overflow-visible"
         >
           <Image
             src={BRAND_LOGO_ASSETS.gold}
@@ -156,25 +170,16 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
           />
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: EASE.silk, delay: 0.85 }}
-          className="mb-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
-        >
-          NEXYYRA EVENTS
-        </motion.p>
-
         <motion.h2
-          initial={{ opacity: 0, y: 20, letterSpacing: "0.14em" }}
-          animate={{ opacity: 1, y: 0, letterSpacing: "0.26em" }}
-          transition={{ duration: 0.6, ease: EASE.luxe, delay: 1.0 }}
-          className="font-[family-name:var(--font-playfair)] text-[clamp(0.75rem,2.8vw,1.125rem)] font-medium uppercase text-[#fff8eb]"
+          initial={{ opacity: 0, y: 16, letterSpacing: "0.18em" }}
+          animate={{ opacity: 1, y: 0, letterSpacing: "0.28em" }}
+          transition={{ duration: 0.65, ease: EASE.silk, delay: 1.5 }}
+          className="font-[family-name:var(--font-playfair)] text-[clamp(0.6875rem,2.4vw,1rem)] font-medium uppercase text-[#fff8eb]"
         >
-          The Next Era of Celebrations
+          {TAGLINE}
         </motion.h2>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 

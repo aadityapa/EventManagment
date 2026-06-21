@@ -10,7 +10,7 @@
   --nex-gap-grid: clamp(1rem, 2.5vw, 2rem);
 
   /* Typography — fluid scale (controlled luxury) */
-  --nex-text-hero: clamp(3rem, 7vw, 7rem);
+  --nex-text-hero: clamp(4rem, 6vw, 7rem);
   --nex-text-section: clamp(2rem, 5vw, 5rem);
   --nex-text-body: clamp(1rem, 0.95rem + 0.35vw, 1.2rem);
   --nex-text-small: clamp(0.875rem, 0.85rem + 0.2vw, 1rem);
@@ -28,9 +28,9 @@
 
 /* Fluid typography utilities */
 .nex-hero-text {
-  font-size: clamp(3rem, 7vw, 7rem);
-  max-width: 850px;
-  line-height: 0.9;
+  font-size: clamp(4rem, 6vw, 7rem);
+  max-width: 900px;
+  line-height: 0.88;
   letter-spacing: -0.04em;
   text-wrap: balance;
   overflow-wrap: break-word;
@@ -331,6 +331,31 @@ html:not(.light) .brand-logo::after {
   overflow: visible;
   min-height: var(--nav-height);
   height: var(--nav-height);
+}
+
+/* Header shell — Logo | Nav | Contact CTA */
+.brand-header-shell {
+  width: 100%;
+  max-width: 100rem; /* 1600px */
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem); /* 48px desktop */
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .brand-header-logo .brand-logo-link {
+    width: 13.75rem; /* 220px */
+    max-width: 13.75rem;
+  }
+
+  .brand-header-logo .brand-logo__full,
+  .brand-header-logo .brand-logo__img {
+    width: 13.75rem;
+    height: auto;
+    max-height: 3.5rem;
+    object-fit: contain;
+    object-position: left center;
+  }
 }
 
 /* Hero layout — 1.2fr narrative / 0.8fr cards on desktop */

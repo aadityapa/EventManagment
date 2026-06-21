@@ -21,11 +21,9 @@ import {
   type HeroVideoSlide,
 } from "@/components/home/hero-video-data";
 import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
-import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
-import { GSAP_EASE } from "@/lib/motion";
+import { EASE } from "@/lib/motion";
 import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
-import { HeroBrandReveal } from "@/components/branding/hero-brand-reveal";
 import { cn } from "@/lib/utils";
 
 const HeroCinematicFx = dynamic(
@@ -43,6 +41,24 @@ const TRUST_METRICS = [
   { value: "1000+", label: "Events" },
   { value: "500+", label: "Clients" },
 ] as const;
+
+const HERO_TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
+
+const heroRevealContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.05 },
+  },
+} as const;
+
+const heroRevealItem = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1, ease: EASE.silk },
+  },
+} as const;
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
   "Hello Nexyyra Events, I'd like to discuss an event."
@@ -133,23 +149,6 @@ export function HeroV4() {
     activeRef.current = active;
   }, [active]);
 
-  useEffect(() => {
-    if (reducedMotion) return;
-    registerGsap();
-    const root = contentRef.current;
-    if (!root) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: GSAP_EASE.luxe } });
-      tl.from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 1, }, 0.35)
-        .from(root.querySelector("[data-hero-subhead]"), { y: 20, opacity: 0, duration: 0.7 }, 0.58)
-        .from(root.querySelectorAll("[data-hero-cta]"), { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.78)
-        .from(root.querySelectorAll("[data-hero-metric]"), { y: 16, opacity: 0, duration: 0.5, stagger: 0.07 }, 0.92);
-    }, contentRef);
-
-    return () => ctx.revert();
-  }, [reducedMotion]);
-
   const goTo = useCallback(
     (index: number) => setActive(wrapIndex(index, slides.length)),
     [slides.length]
@@ -213,30 +212,60 @@ export function HeroV4() {
 
         <div className="brand-container relative z-20 flex flex-1 items-center py-24 pb-32 sm:py-20 md:py-24 lg:py-14 xl:py-16">
           <div className="hero-v4-grid">
-            <div ref={contentRef} className="hero-v4-copy order-1 lg:order-none">
-              <HeroBrandReveal className="mb-5" delay={0.1} />
+            <motion.div
+              ref={contentRef}
+              className="hero-v4-copy order-1 lg:order-none"
+              variants={heroRevealContainer}
+              initial={reducedMotion ? false : "hidden"}
+              animate="visible"
+            >
+              <motion.p
+                variants={heroRevealItem}
+                className="hero-brand-tagline mb-4 text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--hero-muted,var(--adaptive-muted))] sm:text-[11px]"
+              >
+                {HERO_TAGLINE}
+              </motion.p>
 
-              <h1
-                data-hero-headline
+              <motion.h1
+                variants={heroRevealItem}
                 className="nex-hero-text font-[family-name:var(--font-playfair)] font-bold"
               >
-                <span className="block">Crafting Extraordinary</span>
-                <span className="block">Experiences</span>
-                <span className="mt-0.5 block text-[var(--hero-accent,var(--glitz-gold))]">
+                {/* Desktop — 3 lines max */}
+                <span className="hidden lg:block">Crafting Extraordinary</span>
+                <span className="hidden lg:block">Experiences</span>
+                <span className="mt-0.5 hidden text-[var(--hero-accent,var(--glitz-gold))] lg:block">
                   For Extraordinary People
                 </span>
-              </h1>
+                {/* Tablet — 4 lines max */}
+                <span className="hidden md:block lg:hidden">Crafting</span>
+                <span className="hidden md:block lg:hidden">Extraordinary</span>
+                <span className="hidden md:block lg:hidden">Experiences</span>
+                <span className="mt-0.5 hidden text-[var(--hero-accent,var(--glitz-gold))] md:block lg:hidden">
+                  For Extraordinary People
+                </span>
+                {/* Mobile — 5 lines max */}
+                <span className="block md:hidden">Crafting</span>
+                <span className="block md:hidden">Extraordinary</span>
+                <span className="block md:hidden">Experiences</span>
+                <span className="mt-0.5 block text-[var(--hero-accent,var(--glitz-gold))] md:hidden">For</span>
+                <span className="block text-[var(--hero-accent,var(--glitz-gold))] md:hidden">
+                  Extraordinary People
+                </span>
+              </motion.h1>
 
-              <p
-                data-hero-subhead
+              <motion.p
+                variants={heroRevealItem}
                 className="v5-standfirst mt-5 max-w-[36rem] text-[clamp(0.9375rem,0.9rem+0.25vw,1.0625rem)] leading-relaxed text-[var(--adaptive-muted)]"
               >
                 Nexyyra Events designs luxury weddings, destination celebrations, corporate
                 experiences, celebrity events and unforgettable moments across India.
-              </p>
+              </motion.p>
 
-              <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <div data-hero-cta className="w-full sm:w-auto">
+              <motion.div
+                variants={heroRevealItem}
+                className="mt-7 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
+              >
+                <div className="w-full sm:w-auto">
                   <MagneticButton>
                     <BrandButton
                       href="/book-event"
@@ -248,7 +277,7 @@ export function HeroV4() {
                     </BrandButton>
                   </MagneticButton>
                 </div>
-                <div data-hero-cta className="w-full sm:w-auto">
+                <div className="w-full sm:w-auto">
                   <MagneticButton>
                     <button
                       type="button"
@@ -265,11 +294,14 @@ export function HeroV4() {
                     </button>
                   </MagneticButton>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-6">
+              <motion.div
+                variants={heroRevealItem}
+                className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-6"
+              >
                 {TRUST_METRICS.map((m) => (
-                  <div key={m.label} data-hero-metric className="flex flex-col">
+                  <div key={m.label} className="flex flex-col">
                     <span className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-[var(--adaptive-accent)] sm:text-2xl">
                       {m.value}
                     </span>
@@ -278,9 +310,12 @@ export function HeroV4() {
                     </span>
                   </div>
                 ))}
-              </div>
+              </motion.div>
 
-              <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-[var(--adaptive-muted)]">
+              <motion.div
+                variants={heroRevealItem}
+                className="mt-5 flex flex-wrap items-center gap-4 text-sm text-[var(--adaptive-muted)]"
+              >
                 <a
                   href={telHref}
                   onClick={() => analytics.ctaClick("call", "hero")}
@@ -299,8 +334,8 @@ export function HeroV4() {
                   <MessageCircle className="h-4 w-4 text-emerald-400" aria-hidden />
                   WhatsApp
                 </a>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             <HeroWorldCards mouseX={springX} mouseY={springY} className="hero-v4-cards order-2 lg:order-none" />
           </div>

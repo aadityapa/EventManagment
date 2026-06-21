@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { motion } from "framer-motion";
 import {
   UniverseLoader,
   LOADER_STORAGE_KEY,
@@ -8,6 +9,7 @@ import {
 } from "@/components/effects/universe-loader";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/lib/motion/page-transition";
+import { EASE } from "@/lib/motion";
 
 function subscribeLoaderSeen(cb: () => void) {
   window.addEventListener("storage", cb);
@@ -36,7 +38,13 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
   return (
     <SmoothScrollProvider enabled={done}>
       {!done && <UniverseLoader onComplete={onComplete} />}
-      <PageTransition>{children}</PageTransition>
+      <motion.div
+        initial={skipLoader ? false : { opacity: 0, scale: 1.05 }}
+        animate={done ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.5, ease: EASE.silk }}
+      >
+        <PageTransition>{children}</PageTransition>
+      </motion.div>
     </SmoothScrollProvider>
   );
 }
