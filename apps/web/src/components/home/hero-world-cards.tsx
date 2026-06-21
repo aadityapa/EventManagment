@@ -104,7 +104,7 @@ export function HeroWorldCards({ mouseX, mouseY, className }: Props) {
     <motion.div
       ref={gridRef}
       style={{ x: groupX, y: groupY }}
-      className={cn("relative w-full max-w-xl lg:max-w-none", className)}
+      className={cn("relative w-full min-w-0 max-w-xl lg:max-w-none", className)}
       aria-label="Experience worlds"
     >
       <div className="grid grid-cols-1 gap-4 min-[375px]:grid-cols-2 lg:hidden">
@@ -113,9 +113,9 @@ export function HeroWorldCards({ mouseX, mouseY, className }: Props) {
         ))}
       </div>
 
-      <div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 xl:gap-5">
+      <div className="hidden lg:grid lg:grid-cols-2 lg:gap-3 xl:gap-4">
         {HERO_WORLDS.map((world, i) => (
-          <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} />
+          <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} compact />
         ))}
       </div>
     </motion.div>
@@ -160,7 +160,7 @@ function WorldCard({
           className={cn(
             "relative overflow-hidden p-0 transition-all duration-500",
             "hover:-translate-y-1.5 hover:shadow-[var(--v4-glow-gold)]",
-            compact ? "min-h-[168px]" : "min-h-[142px]"
+            compact ? "min-h-[148px]" : "min-h-[128px] lg:min-h-[118px]"
           )}
         >
           <div className="absolute inset-0">
@@ -181,7 +181,7 @@ function WorldCard({
               {world.subtitle}
             </p>
             <div className="mt-1 flex items-end justify-between gap-2">
-              <p className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-white drop-shadow-md">
+              <p className="font-[family-name:var(--font-playfair)] text-base font-semibold text-white drop-shadow-md lg:text-[0.9375rem]">
                 {world.title}
               </p>
               <ArrowUpRight

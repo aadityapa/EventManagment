@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 440 160" role="img" aria-label="Nexyyra Events">
+  <defs>
+    <filter id="darkGold" color-interpolation-filters="sRGB">
+      <feColorMatrix
+        type="matrix"
+        values="0.22 0.22 0.08 0 0.02
+                0.18 0.18 0.06 0 0.02
+                0.08 0.08 0.04 0 0.01
+                0    0    0    1 0"
+      />
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.15" intercept="-0.04"/>
+        <feFuncG type="linear" slope="1.1" intercept="-0.04"/>
+        <feFuncB type="linear" slope="1.05" intercept="-0.02"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="lightGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feFlood flood-color="#8B6914" flood-opacity="0.18"/>
+      <feComposite in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <image
+    width="440"
+    height="160"
+    href="/brand/logo-primary.png"
+    preserveAspectRatio="xMidYMid meet"
+    filter="url(#darkGold) url(#lightGlow)"
+  />
+</svg>

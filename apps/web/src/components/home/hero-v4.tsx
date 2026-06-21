@@ -212,41 +212,42 @@ export function HeroV4() {
           <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
         </motion.div>
 
-        <div className="brand-container relative z-20 flex flex-1 items-center py-28 pb-36 sm:py-24 md:py-28 lg:py-16">
-          <div className="grid w-full grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
-            <div ref={contentRef} className="order-1 w-full min-w-0 max-w-xl lg:order-none">
+        <div className="brand-container relative z-20 flex flex-1 items-center py-24 pb-32 sm:py-20 md:py-24 lg:py-14 xl:py-16">
+          <div className="hero-v4-grid">
+            <div ref={contentRef} className="hero-v4-copy order-1 lg:order-none">
               <span
                 data-hero-label
-                className="brand-label mb-3 block text-[var(--adaptive-accent,var(--glitz-gold))]"
+                className="brand-label mb-2 block text-[var(--adaptive-accent,var(--glitz-gold))]"
               >
                 NEXYYRA EVENTS
               </span>
               <span
                 data-hero-tagline
-                className="mb-5 block text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--adaptive-muted)]"
+                className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--adaptive-muted)]"
               >
                 The Next Era of Celebrations
               </span>
 
               <h1
                 data-hero-headline
-                className="nex-hero-text overflow-visible font-[family-name:var(--font-playfair)] font-bold"
+                className="nex-hero-text font-[family-name:var(--font-playfair)] font-bold"
               >
-                <span className="block">Crafting Extraordinary Experiences</span>
-                <span className="mt-1 block text-[var(--hero-accent,var(--glitz-gold))]">
+                <span className="block">Crafting Extraordinary</span>
+                <span className="block">Experiences</span>
+                <span className="mt-0.5 block text-[var(--hero-accent,var(--glitz-gold))]">
                   For Extraordinary People
                 </span>
               </h1>
 
               <p
                 data-hero-subhead
-                className="v5-standfirst mt-6 max-w-lg text-base leading-relaxed text-[var(--adaptive-muted)] md:text-lg"
+                className="v5-standfirst mt-5 max-w-[36rem] text-[clamp(0.9375rem,0.9rem+0.25vw,1.0625rem)] leading-relaxed text-[var(--adaptive-muted)]"
               >
                 Nexyyra Events designs luxury weddings, destination celebrations, corporate
                 experiences, celebrity events and unforgettable moments across India.
               </p>
 
-              <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <div data-hero-cta className="w-full sm:w-auto">
                   <MagneticButton>
                     <BrandButton
@@ -278,10 +279,10 @@ export function HeroV4() {
                 </div>
               </div>
 
-              <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-7">
+              <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-6">
                 {TRUST_METRICS.map((m) => (
                   <div key={m.label} data-hero-metric className="flex flex-col">
-                    <span className="font-[family-name:var(--font-playfair)] text-2xl font-semibold text-[var(--adaptive-accent)]">
+                    <span className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-[var(--adaptive-accent)] sm:text-2xl">
                       {m.value}
                     </span>
                     <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--adaptive-muted)]">
@@ -291,7 +292,7 @@ export function HeroV4() {
                 ))}
               </div>
 
-              <div className="mt-7 flex flex-wrap items-center gap-5 text-sm text-[var(--adaptive-muted)]">
+              <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-[var(--adaptive-muted)]">
                 <a
                   href={telHref}
                   onClick={() => analytics.ctaClick("call", "hero")}
@@ -313,7 +314,7 @@ export function HeroV4() {
               </div>
             </div>
 
-            <HeroWorldCards mouseX={springX} mouseY={springY} className="order-2 w-full min-w-0 lg:order-none lg:justify-self-end" />
+            <HeroWorldCards mouseX={springX} mouseY={springY} className="hero-v4-cards order-2 lg:order-none" />
           </div>
         </div>
 

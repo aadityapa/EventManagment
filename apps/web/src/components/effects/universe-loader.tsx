@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { registerGsap } from "@/lib/gsap/use-gsap";
 import { GSAP_EASE } from "@/lib/motion";
@@ -144,15 +143,14 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
       <div ref={particlesRef} className="pointer-events-none absolute inset-0 z-[1]" />
 
       <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-6">
-        <div ref={logoRef} className="brand-logo-gold mb-8 w-[min(72vw,220px)] opacity-0">
-          <Image
-            src={BRAND_LOGO_ASSETS.primary}
+        <div ref={logoRef} className="brand-logo mb-8 opacity-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={BRAND_LOGO_ASSETS.gold.full}
             alt={SITE_CONFIG.name}
             width={440}
             height={160}
-            priority
-            quality={100}
-            className="brand-logo-gold__img h-auto w-full object-contain"
+            className="brand-logo__full mx-auto"
           />
         </div>
 

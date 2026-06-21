@@ -8,8 +8,10 @@ import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { MagneticButton } from "@/components/effects/magnetic-button";
+import { PortfolioGrid } from "@/components/media";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
+import type { MediaAsset } from "@/lib/media/types";
 import { ScrollReveal, Parallax, EASE, DUR } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
@@ -39,7 +41,7 @@ function matchesFilter(cs: (typeof BRAND_CASE_STUDIES)[number], filter: Filter) 
   return cs.category === filter;
 }
 
-export function PortfolioView() {
+export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
   const [active, setActive] = useState<Filter>("All");
   const [view, setView] = useState<"grid" | "story">("grid");
   const featuredRef = useRef<HTMLElement>(null);
@@ -303,6 +305,23 @@ export function PortfolioView() {
           </ScrollReveal>
         </div>
       </section>
+
+      {liveMedia && liveMedia.length > 0 && (
+        <section className="v4-section border-t border-[var(--glitz-border)]">
+          <div className="brand-container">
+            <ScrollReveal preset="reveal">
+              <span className="v4-kicker mb-4">Live Archive</span>
+              <h2 className="v4-title">Production Gallery</h2>
+              <p className="mt-3 max-w-xl text-muted">
+                Automatically updated from the media library — no manual code changes required.
+              </p>
+            </ScrollReveal>
+            <div className="mt-10">
+              <PortfolioGrid assets={liveMedia} columns={3} />
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

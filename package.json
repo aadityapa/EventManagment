@@ -16,6 +16,7 @@
     "db:push": "npx prisma db push --schema=prisma/schema.prisma",
     "db:seed": "npx ts-node prisma/seed.ts",
     "images:fetch": "npx ts-node scripts/fetch-images.ts",
+    "media:sync": "cd apps/web && npm run media:sync",
     "lint": "cd apps/web && npm run lint",
     "stitch:generate": "node scripts/stitch-generate.mjs",
     "stitch:fetch": "node scripts/stitch-fetch-code.mjs",
