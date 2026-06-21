@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMediaProvider } from "@/lib/media/providers";
+import { isMediaReadonly } from "@/lib/media/runtime";
 import type { MediaQuery } from "@/lib/media/types";
 import { MEDIA_IMAGE_FOLDERS, MEDIA_CATEGORIES } from "@/lib/media/types";
 
@@ -17,7 +18,15 @@ export async function GET(request: NextRequest) {
     const force = searchParams.get("force") === "1";
 
     const provider = getMediaProvider();
-    if (force) await provider.reindex();
+    if (force) {
+      if (isMediaReadonly()) {
+        return NextResponse.json(
+          { error: "Force reindex is disabled in production." },
+          { status: 503 }
+        );
+      }
+      await provider.reindex();
+    }
 
     const query: MediaQuery = {};
 

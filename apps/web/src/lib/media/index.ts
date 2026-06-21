@@ -1,6 +1,7 @@
 export * from "./types";
 export * from "./categories";
 export * from "./paths";
+export * from "./manifest-io";
 export * from "./manifest-service";
 export * from "./providers";
 export * from "./utils";

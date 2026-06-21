@@ -3,6 +3,7 @@ import { revalidateTag } from "next/cache";
 import { getMediaProvider } from "@/lib/media/providers";
 import { MEDIA_IMAGE_FOLDERS, type MediaCategory, type MediaImageFolder } from "@/lib/media/types";
 import { MEDIA_CACHE_TAG } from "@/lib/media/server";
+import { isMediaReadonly } from "@/lib/media/runtime";
 import { isDevAdminBypass, requireAdminSession } from "../_lib/auth";
 
 export const runtime = "nodejs";
@@ -19,6 +20,15 @@ export async function POST(request: NextRequest) {
   if (!isDevAdminBypass()) {
     const auth = await requireAdminSession();
     if (!auth.ok) return auth.response;
+  }
+
+  if (isMediaReadonly()) {
+    return NextResponse.json(
+      {
+        error: "Upload is disabled in production. Add images to public/images locally, run media:sync, commit, and redeploy.",
+      },
+      { status: 503 }
+    );
   }
 
   try {

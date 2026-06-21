@@ -6,11 +6,7 @@ import type {
   MediaUploadInput,
   MediaVideoAsset,
 } from "../types";
-import {
-  getOrRebuildManifest,
-  rebuildMediaManifest,
-  uploadMediaFile,
-} from "../manifest-service";
+import { getOrRebuildManifest, refreshMediaManifest } from "../manifest-io";
 
 function matchesQuery(asset: MediaAsset, query?: MediaQuery): boolean {
   if (!query) return true;
@@ -50,11 +46,12 @@ export class FilesystemMediaProvider implements MediaProvider {
   }
 
   async upload(file: Buffer, filename: string, input: MediaUploadInput): Promise<MediaAsset> {
+    const { uploadMediaFile } = await import("../manifest-service");
     return uploadMediaFile(file, filename, input);
   }
 
   async reindex(): Promise<MediaManifest> {
-    return rebuildMediaManifest();
+    return refreshMediaManifest();
   }
 }
 

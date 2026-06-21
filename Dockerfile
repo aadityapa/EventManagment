@@ -9,6 +9,7 @@ FROM base AS builder
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY apps/web ./apps/web
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DOCKER_BUILD=1
 RUN cd apps/web && npm run build
 
 FROM base AS runner

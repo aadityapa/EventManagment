@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { getMediaProvider } from "@/lib/media/providers";
 import { MEDIA_CACHE_TAG } from "@/lib/media/server";
+import { isMediaReadonly } from "@/lib/media/runtime";
 import { isDevAdminBypass, requireAdminSession } from "../_lib/auth";
 
 export const runtime = "nodejs";
@@ -11,6 +12,15 @@ export async function POST() {
   if (!isDevAdminBypass()) {
     const auth = await requireAdminSession();
     if (!auth.ok) return auth.response;
+  }
+
+  if (isMediaReadonly()) {
+    return NextResponse.json(
+      {
+        error: "Reindex is disabled in production. Run npm run media:sync locally, commit, and redeploy.",
+      },
+      { status: 503 }
+    );
   }
 
   try {

@@ -16,7 +16,6 @@ import { categoryFromFolder, humanizeFilename } from "./categories";
 import {
   getImagesRoot,
   getLogosRoot,
-  getManifestFilePath,
   getPublicRoot,
   getVideosRoot,
   isGeneratedVariant,
@@ -26,6 +25,8 @@ import {
   masterWebpFilename,
   variantFilename,
 } from "./paths";
+import { readMediaManifest, writeMediaManifest } from "./manifest-io";
+import { isMediaReadonly } from "./runtime";
 
 const MANIFEST_VERSION = 1;
 
@@ -93,13 +94,6 @@ async function processImageFile(
   const category = sidecar?.category ?? categoryFromFolder(folder);
   const title = sidecar?.title ?? humanizeFilename(baseName);
   const alt = sidecar?.alt ?? `${title} — Nexyyra Events`;
-
-  const sourceBuffer = await fs.readFile(absolutePath);
-  const metadata = await sharp(sourceBuffer, { failOn: "none" })
-    .rotate()
-    .metadata();
-  const sourceWidth = metadata.width ?? 1920;
-  const sourceHeight = metadata.height ?? 1280;
   const sourceStat = await fs.stat(absolutePath);
 
   const fastIndex = process.env.MEDIA_FAST_INDEX !== "0";
@@ -114,9 +108,9 @@ async function processImageFile(
       filename,
       title,
       alt,
-      width: sourceWidth,
-      height: sourceHeight,
-      aspectRatio: sourceWidth / sourceHeight,
+      width: 1920,
+      height: 1280,
+      aspectRatio: 1.5,
       blurDataURL: "",
       variants: [],
       featured: sidecar?.featured,
@@ -125,6 +119,13 @@ async function processImageFile(
       updatedAt: sourceStat.mtime.toISOString(),
     };
   }
+
+  const sourceBuffer = await fs.readFile(absolutePath);
+  const metadata = await sharp(sourceBuffer, { failOn: "none" })
+    .rotate()
+    .metadata();
+  const sourceWidth = metadata.width ?? 1920;
+  const sourceHeight = metadata.height ?? 1280;
 
   const masterName = masterWebpFilename(baseName);
   const masterPath = path.join(dir, masterName);
@@ -259,34 +260,15 @@ export async function scanMediaLibrary(): Promise<MediaManifest> {
   };
 }
 
-export async function writeMediaManifest(manifest: MediaManifest): Promise<void> {
-  const filePath = getManifestFilePath();
-  await fs.writeFile(filePath, JSON.stringify(manifest, null, 2), "utf8");
-}
-
-export async function readMediaManifest(): Promise<MediaManifest | null> {
-  const filePath = getManifestFilePath();
-  if (!(await fileExists(filePath))) return null;
-  try {
-    const raw = await fs.readFile(filePath, "utf8");
-    return JSON.parse(raw) as MediaManifest;
-  } catch {
-    return null;
-  }
-}
-
 export async function rebuildMediaManifest(): Promise<MediaManifest> {
+  if (isMediaReadonly()) {
+    const existing = await readMediaManifest();
+    if (existing) return existing;
+    throw new Error("Media reindex is disabled on Vercel — run media:sync locally and redeploy.");
+  }
   const manifest = await scanMediaLibrary();
   await writeMediaManifest(manifest);
   return manifest;
-}
-
-export async function getOrRebuildManifest(force = false): Promise<MediaManifest> {
-  if (!force) {
-    const existing = await readMediaManifest();
-    if (existing && existing.assets.length > 0) return existing;
-  }
-  return rebuildMediaManifest();
 }
 
 export async function uploadMediaFile(
@@ -294,6 +276,9 @@ export async function uploadMediaFile(
   originalFilename: string,
   input: MediaUploadInput
 ): Promise<MediaAsset> {
+  if (isMediaReadonly()) {
+    throw new Error("Media upload is disabled on Vercel — add images locally and redeploy.");
+  }
   const ext = path.extname(originalFilename).toLowerCase() || ".jpg";
   const safeBase = path
     .basename(originalFilename, ext)
