@@ -1,4 +1,5 @@
 import { SITE_CONFIG } from "./constants";
+import { UNIVERSAL_LOCAL_FAQS } from "./geo-content";
 
 export interface LocalSeoPage {
   slug: string;
@@ -258,6 +259,16 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
 
 export function getLocalSeoPage(slug: string): LocalSeoPage | undefined {
   return LOCAL_SEO_PAGES.find((p) => p.slug === slug);
+}
+
+/** Merge page-specific + universal FAQs for AEO/GEO depth */
+export function getExpandedLocalFaqs(page: LocalSeoPage) {
+  const seen = new Set<string>();
+  return [...page.faqs, ...UNIVERSAL_LOCAL_FAQS].filter((faq) => {
+    if (seen.has(faq.question)) return false;
+    seen.add(faq.question);
+    return true;
+  });
 }
 
 export function localBusinessSchemaForPage(page: LocalSeoPage) {

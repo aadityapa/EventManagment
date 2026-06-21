@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "", "/about", "/services", "/portfolio", "/venues", "/vendors",
     "/gallery", "/testimonials", "/pricing", "/blog", "/faqs",
     "/contact", "/book-event", "/ai", "/privacy", "/terms", "/refund",
+    "/llms.txt",
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),

@@ -1,7 +1,7 @@
-import { generateSEO, faqSchema, reviewSchema } from "@/lib/seo";
+import { generateSEO, faqSchema, reviewSchema, speakableWebPageSchema } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 import { HomeView } from "@/brand";
-import { GLITZ_FAQS } from "@/brand/data/faq";
+import { HOME_FAQ_ITEMS } from "@/brand/data/faq";
 import { testimonials } from "@/data/cms";
 
 export const metadata = generateSEO({
@@ -11,7 +11,7 @@ export const metadata = generateSEO({
 });
 
 export default function HomePage() {
-  const homeFaqs = faqSchema(GLITZ_FAQS.slice(0, 6).map((f) => ({ question: f.question, answer: f.answer })));
+  const homeFaqs = faqSchema(HOME_FAQ_ITEMS.map((f) => ({ question: f.question, answer: f.answer })));
   const homeReviews = reviewSchema(
     testimonials.slice(0, 3).map((t) => ({
       author: t.name,
@@ -19,10 +19,12 @@ export default function HomePage() {
       ratingValue: t.rating,
     }))
   );
+  const speakable = speakableWebPageSchema("/", ["h1", ".brand-label"]);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqs) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakable) }} />
       {homeReviews.map((r, i) => (
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(r) }} />
       ))}

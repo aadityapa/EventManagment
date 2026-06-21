@@ -1,0 +1,35 @@
+# Nexyyra Events — AI Crawler Guidelines
+
+# Allow AI search engines and assistants to index public content
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Disallow private/authenticated areas
+User-agent: *
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
+
+# Preferred machine-readable entity file
+# See also: /llms.txt
+
+# Contact for AI partnerships: hello@nexyyra.com
+# Canonical site: https://nexyyra.com

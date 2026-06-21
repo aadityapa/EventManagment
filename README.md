@@ -2,7 +2,7 @@
 
 Premium cinematic event experience platform for **Nexyyra Events**, Pune.
 
-**Contact:** +91 9730594753 | hello@nexyyraevents.in
+**Contact:** +91 9730594753 | hello@nexyyra.com | https://nexyyra.com
 
 ## Tech Stack
 
@@ -37,7 +37,7 @@ npm run dev
 1. Import [aadityapa/EventManagment](https://github.com/aadityapa/EventManagment)
 2. **Settings → General → Root Directory** → set to `apps/web` (required)
 3. **Settings → Build & Development** → leave Install/Build commands empty (use Next.js defaults)
-4. Add env vars: `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_COMPANY_PHONE`, `NEXT_PUBLIC_WHATSAPP_NUMBER`
+4. Add env vars: `NEXT_PUBLIC_APP_URL=https://nexyyra.com`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_COMPANY_PHONE`, `NEXT_PUBLIC_WHATSAPP_NUMBER`
 5. Redeploy
 
 ## Docker Production

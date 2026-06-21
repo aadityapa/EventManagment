@@ -13,7 +13,8 @@ import { SentryInit } from "@/components/monitoring/sentry-init";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { ExitIntentPopup } from "@/components/engagement/exit-intent-popup";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
-import { generateSEO, organizationSchema, websiteSchema, entityDefinitionSchema } from "@/lib/seo";
+import { generateSEO, globalGraphSchema } from "@/lib/seo";
+import { SITE_CONFIG } from "@/lib/constants";
 import { PortalTransition } from "@/lib/motion/portal-transition";
 import "./globals.css";
 
@@ -50,15 +51,12 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const orgSchema = organizationSchema();
-  const siteSchema = websiteSchema();
-  const entitySchema = entityDefinitionSchema();
+  const globalSchema = globalGraphSchema();
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entitySchema) }} />
+        <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>

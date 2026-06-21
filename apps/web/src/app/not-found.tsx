@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { BrandButton } from "@/brand/primitives/brand-button";
+import { generateSEO } from "@/lib/seo";
+
+export const metadata = generateSEO({
+  title: "Page Not Found",
+  description: "The page you are looking for could not be found.",
+  noIndex: true,
+});
 
 export default function NotFound() {
   return (

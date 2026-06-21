@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { SITE_CONFIG, SEO_KEYWORDS } from "./constants";
+import { SITE_CONFIG, SEO_KEYWORDS, ENTITY_FACTS } from "./constants";
 
 interface SEOProps {
   title?: string;
@@ -9,7 +9,14 @@ interface SEOProps {
   path?: string;
   type?: "website" | "article";
   noIndex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
+  tags?: string[];
 }
+
+const ORG_ID = `${SITE_CONFIG.url}/#organization`;
+const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
 
 export function generateSEO({
   title,
@@ -19,20 +26,27 @@ export function generateSEO({
   path = "",
   type = "website",
   noIndex = false,
+  publishedTime,
+  modifiedTime,
+  authors,
+  tags,
 }: SEOProps = {}): Metadata {
   const fullTitle = title
     ? `${title} | ${SITE_CONFIG.name}`
     : `${SITE_CONFIG.name} | ${SITE_CONFIG.tagline}`;
   const url = `${SITE_CONFIG.url}${path}`;
+  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+  const bingVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
 
   return {
     title: fullTitle,
     description,
     keywords: keywords.join(", "),
-    authors: [{ name: SITE_CONFIG.name }],
+    authors: authors?.map((name) => ({ name })) ?? [{ name: SITE_CONFIG.name }],
     creator: SITE_CONFIG.name,
+    publisher: SITE_CONFIG.name,
     metadataBase: new URL(SITE_CONFIG.url),
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: { "en-IN": url } },
     openGraph: {
       title: fullTitle,
       description,
@@ -41,6 +55,12 @@ export function generateSEO({
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
       locale: "en_IN",
       type,
+      ...(type === "article" && {
+        publishedTime,
+        modifiedTime: modifiedTime ?? publishedTime,
+        authors: authors ?? [SITE_CONFIG.name],
+        tags,
+      }),
     },
     twitter: {
       card: "summary_large_image",
@@ -50,7 +70,79 @@ export function generateSEO({
       creator: "@nexyyraevents",
       site: "@nexyyraevents",
     },
-    robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
+    robots: noIndex
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+        },
+    ...(googleVerification || bingVerification
+      ? {
+          verification: {
+            ...(googleVerification && { google: googleVerification }),
+            ...(bingVerification && { other: { "msvalidate.01": bingVerification } }),
+          },
+        }
+      : {}),
+  };
+}
+
+/** Consolidated global JSON-LD — single @graph for layout */
+export function globalGraphSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "EventPlanner", "Organization"],
+        "@id": ORG_ID,
+        name: SITE_CONFIG.legalName,
+        alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
+        description: SITE_CONFIG.description,
+        url: SITE_CONFIG.url,
+        telephone: SITE_CONFIG.phone,
+        email: SITE_CONFIG.email,
+        image: `${SITE_CONFIG.url}/brand/logo-primary.png`,
+        logo: `${SITE_CONFIG.url}/brand/logo-primary.png`,
+        slogan: SITE_CONFIG.tagline,
+        foundingDate: String(ENTITY_FACTS.foundingYear),
+        priceRange: "₹₹₹₹",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: SITE_CONFIG.city,
+          addressRegion: SITE_CONFIG.region,
+          addressCountry: "IN",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 18.5204,
+          longitude: 73.8567,
+        },
+        areaServed: ENTITY_FACTS.serviceAreas.map((name) => ({ "@type": "Place", name })),
+        sameAs: Object.values(SITE_CONFIG.social),
+        knowsAbout: ENTITY_FACTS.knowsAbout,
+        numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
+        award: ENTITY_FACTS.awards,
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Luxury Event Services",
+          itemListElement: ENTITY_FACTS.knowsAbout.map((name, i) => ({
+            "@type": "Offer",
+            position: i + 1,
+            itemOffered: { "@type": "Service", name, provider: { "@id": ORG_ID } },
+          })),
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": WEBSITE_ID,
+        name: SITE_CONFIG.name,
+        url: SITE_CONFIG.url,
+        description: SITE_CONFIG.description,
+        inLanguage: "en-IN",
+        publisher: { "@id": ORG_ID },
+      },
+    ],
   };
 }
 
@@ -58,16 +150,12 @@ export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${SITE_CONFIG.url}/#website`,
+    "@id": WEBSITE_ID,
     name: SITE_CONFIG.name,
     url: SITE_CONFIG.url,
     description: SITE_CONFIG.description,
-    publisher: { "@id": `${SITE_CONFIG.url}/#organization` },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_CONFIG.url}/services?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en-IN",
   };
 }
 
@@ -75,7 +163,7 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": `${SITE_CONFIG.url}/#organization`,
+    "@id": ORG_ID,
     name: SITE_CONFIG.legalName,
     alternateName: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
@@ -96,22 +184,31 @@ export function organizationSchema() {
       latitude: 18.5204,
       longitude: 73.8567,
     },
-    areaServed: {
-      "@type": "City",
-      name: "Pune",
-    },
+    areaServed: { "@type": "City", name: "Pune" },
     sameAs: Object.values(SITE_CONFIG.social),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "512",
-    },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       opens: "09:00",
       closes: "21:00",
     },
+  };
+}
+
+export function entityDefinitionSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": ORG_ID,
+    name: SITE_CONFIG.legalName,
+    alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    foundingDate: String(ENTITY_FACTS.foundingYear),
+    knowsAbout: ENTITY_FACTS.knowsAbout,
+    slogan: SITE_CONFIG.tagline,
+    numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
+    award: ENTITY_FACTS.awards,
   };
 }
 
@@ -140,6 +237,92 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
   };
 }
 
+export function qaPageSchema(qa: { question: string; answer: string; url: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "QAPage",
+    mainEntity: {
+      "@type": "Question",
+      name: qa.question,
+      text: qa.question,
+      answerCount: 1,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: qa.answer,
+        url: `${SITE_CONFIG.url}${qa.url}`,
+      },
+    },
+  };
+}
+
+export function howToSchema(howTo: {
+  name: string;
+  description: string;
+  slug: string;
+  steps: { name: string; text: string }[];
+  totalTime?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: howTo.name,
+    description: howTo.description,
+    url: `${SITE_CONFIG.url}/blog/${howTo.slug}`,
+    inLanguage: "en-IN",
+    step: howTo.steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+    ...(howTo.totalTime && { totalTime: howTo.totalTime }),
+    publisher: { "@id": ORG_ID },
+  };
+}
+
+export function speakableWebPageSchema(path: string, cssSelectors: string[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_CONFIG.url}${path}#webpage`,
+    url: `${SITE_CONFIG.url}${path}`,
+    name: SITE_CONFIG.name,
+    isPartOf: { "@id": WEBSITE_ID },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: cssSelectors,
+    },
+    inLanguage: "en-IN",
+  };
+}
+
+export function contactPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${SITE_CONFIG.url}/contact#webpage`,
+    url: `${SITE_CONFIG.url}/contact`,
+    name: `Contact ${SITE_CONFIG.name}`,
+    description: `Contact ${SITE_CONFIG.name} for luxury wedding and corporate event planning in Pune, Maharashtra.`,
+    mainEntity: { "@id": ORG_ID },
+    inLanguage: "en-IN",
+  };
+}
+
+export function collectionPageSchema(name: string, path: string, description: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_CONFIG.url}${path}#webpage`,
+    url: `${SITE_CONFIG.url}${path}`,
+    name,
+    description,
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en-IN",
+  };
+}
+
 export function eventSchema(event: {
   name: string;
   description: string;
@@ -153,9 +336,13 @@ export function eventSchema(event: {
     name: event.name,
     description: event.description,
     startDate: event.startDate,
-    location: { "@type": "Place", name: event.location, address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" } },
+    location: {
+      "@type": "Place",
+      name: event.location,
+      address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" },
+    },
     image: event.image,
-    organizer: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
+    organizer: { "@id": ORG_ID },
   };
 }
 
@@ -174,7 +361,7 @@ export function serviceSchema(service: {
     description: service.description,
     url: `${SITE_CONFIG.url}/services/${service.slug}`,
     image: service.image,
-    provider: { "@id": `${SITE_CONFIG.url}/#organization` },
+    provider: { "@id": ORG_ID },
     areaServed: { "@type": "AdministrativeArea", name: "Maharashtra, India" },
     ...(service.price && {
       offers: {
@@ -199,9 +386,18 @@ export function reviewSchema(reviews: {
     author: { "@type": "Person", name: r.author },
     reviewBody: r.reviewBody,
     reviewRating: { "@type": "Rating", ratingValue: r.ratingValue, bestRating: 5 },
-    itemReviewed: { "@id": `${SITE_CONFIG.url}/#organization` },
+    itemReviewed: { "@id": ORG_ID },
     ...(r.datePublished && { datePublished: r.datePublished }),
   }));
+}
+
+export function aggregateRatingSchema(ratingValue: number, reviewCount: number) {
+  return {
+    "@type": "AggregateRating",
+    ratingValue: String(ratingValue),
+    reviewCount: String(reviewCount),
+    bestRating: "5",
+  };
 }
 
 export function venueSchema(venue: {
@@ -229,7 +425,6 @@ export function venueSchema(venue: {
   };
 }
 
-/** AI-friendly entity block for GEO — clear definitions for LLM crawlers */
 export function articleSchema(article: {
   title: string;
   description: string;
@@ -237,6 +432,7 @@ export function articleSchema(article: {
   image: string;
   author: string;
   publishedAt: string;
+  modifiedAt?: string;
   tags?: string[];
   section?: string;
   wordCount?: number;
@@ -247,10 +443,15 @@ export function articleSchema(article: {
     headline: article.title,
     description: article.description,
     image: article.image,
-    author: { "@type": "Person", name: article.author },
-    publisher: { "@id": `${SITE_CONFIG.url}/#organization` },
+    author: {
+      "@type": "Person",
+      name: article.author,
+      url: `${SITE_CONFIG.url}/about`,
+      worksFor: { "@id": ORG_ID },
+    },
+    publisher: { "@id": ORG_ID },
     datePublished: article.publishedAt,
-    dateModified: article.publishedAt,
+    dateModified: article.modifiedAt ?? article.publishedAt,
     mainEntityOfPage: `${SITE_CONFIG.url}/blog/${article.slug}`,
     url: `${SITE_CONFIG.url}/blog/${article.slug}`,
     keywords: article.tags?.join(", "),
@@ -269,8 +470,53 @@ export function itemListSchema(items: { name: string; url: string; image?: strin
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      url: `${SITE_CONFIG.url}${item.url}`,
+      url: item.url.startsWith("http") ? item.url : `${SITE_CONFIG.url}${item.url}`,
       ...(item.image && { image: item.image }),
+    })),
+  };
+}
+
+export function creativeWorkSchema(work: {
+  name: string;
+  description: string;
+  slug: string;
+  image: string;
+  location?: string;
+  genre?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: work.name,
+    description: work.description,
+    url: `${SITE_CONFIG.url}/portfolio/${work.slug}`,
+    image: work.image,
+    creator: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en-IN",
+    ...(work.location && { contentLocation: { "@type": "Place", name: work.location } }),
+    ...(work.genre && { genre: work.genre }),
+  };
+}
+
+export function offerCatalogSchema(
+  offers: { name: string; description: string; price: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: `${SITE_CONFIG.name} Investment Collections`,
+    itemListElement: offers.map((o, i) => ({
+      "@type": "Offer",
+      position: i + 1,
+      name: o.name,
+      description: o.description,
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "INR",
+        description: o.price,
+      },
+      seller: { "@id": ORG_ID },
     })),
   };
 }
@@ -292,7 +538,7 @@ export function personSchema(person: {
     description: person.description,
     image: person.image,
     url: person.url ?? `${SITE_CONFIG.url}/about`,
-    worksFor: { "@id": `${SITE_CONFIG.url}/#organization` },
+    worksFor: { "@id": ORG_ID },
     ...(person.sameAs?.length && { sameAs: person.sameAs }),
   };
 }
@@ -306,7 +552,11 @@ export function aboutPageSchema(
     "@context": "https://schema.org",
     "@graph": [
       {
-        ...organizationSchema(),
+        "@type": "AboutPage",
+        "@id": `${SITE_CONFIG.url}/about#webpage`,
+        url: `${SITE_CONFIG.url}/about`,
+        name: `About ${SITE_CONFIG.name}`,
+        mainEntity: { "@id": ORG_ID },
         founder: { "@id": `${SITE_CONFIG.url}/about#${founder.name.replace(/\s+/g, "-").toLowerCase()}` },
       },
       personSchema({
@@ -329,31 +579,10 @@ export function aboutPageSchema(
   };
 }
 
-export function entityDefinitionSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${SITE_CONFIG.url}/#organization`,
-    name: SITE_CONFIG.legalName,
-    alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    foundingDate: "2012",
-    knowsAbout: [
-      "Luxury Wedding Planning",
-      "Corporate Experience Design",
-      "Destination Weddings",
-      "Concert Production",
-      "Exhibition Management",
-      "Celebrity Event Management",
-      "Brand Activations",
-      "Fashion Show Production",
-    ],
-    slogan: SITE_CONFIG.tagline,
-    numberOfEmployees: { "@type": "QuantitativeValue", minValue: 50 },
-    award: [
-      "Best Event Management Company — Event Industry Awards India 2025",
-      "Luxury Wedding Planner of the Year — Wedding Sutra 2024",
-    ],
-  };
+/** Inject multiple JSON-LD blocks as React-safe script elements */
+export function jsonLdScripts(...schemas: object[]) {
+  return schemas.map((schema, i) => ({
+    key: `jsonld-${i}`,
+    html: JSON.stringify(schema),
+  }));
 }

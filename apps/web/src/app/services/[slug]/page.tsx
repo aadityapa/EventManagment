@@ -47,15 +47,13 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
     image: service.image,
     price: service.basePrice,
   });
-  const faqLd = serviceFaqs.length > 0 ? faqSchema(serviceFaqs) : null;
+  const faqLd = faqSchema(serviceFaqs);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(svcSchema) }} />
-      {faqLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <Suspense fallback={null}>
         <ServiceChapter
           service={service}

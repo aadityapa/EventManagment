@@ -12,7 +12,7 @@ export default function PortfolioPage() {
   const schema = itemListSchema(
     BRAND_CASE_STUDIES.map((c) => ({
       name: c.title,
-      url: `/portfolio#${c.id}`,
+      url: `/portfolio/${c.id}`,
       image: c.image,
     }))
   );

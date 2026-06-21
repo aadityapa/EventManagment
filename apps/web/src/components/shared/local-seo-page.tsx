@@ -4,26 +4,29 @@ import { BrandButton } from "@/brand/primitives/brand-button";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import type { LocalSeoPage } from "@/lib/local-seo-pages";
 import { SITE_CONFIG } from "@/lib/constants";
-import { breadcrumbSchema, faqSchema } from "@/lib/seo";
-import { localBusinessSchemaForPage } from "@/lib/local-seo-pages";
+import { breadcrumbSchema, faqSchema, speakableWebPageSchema } from "@/lib/seo";
+import { getExpandedLocalFaqs, localBusinessSchemaForPage } from "@/lib/local-seo-pages";
 
 interface LocalSeoPageContentProps {
   page: LocalSeoPage;
 }
 
 export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
+  const expandedFaqs = getExpandedLocalFaqs(page);
   const breadcrumbs = breadcrumbSchema([
     { name: "Home", url: "/" },
     { name: page.title, url: `/${page.slug}` },
   ]);
-  const faqs = faqSchema(page.faqs);
+  const faqs = faqSchema(expandedFaqs);
   const localBiz = localBusinessSchemaForPage(page);
+  const speakable = speakableWebPageSchema(`/${page.slug}`, ["h1", ".brand-display + p"]);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqs) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBiz) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakable) }} />
 
       <section className="border-b border-[var(--glitz-border)] bg-[var(--glitz-surface)] py-16 md:py-24">
         <div className="brand-container">
@@ -73,7 +76,7 @@ export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
       <BrandSection alt>
         <BrandHeader label="FAQ" title="Frequently Asked Questions" center />
         <div className="mx-auto max-w-3xl space-y-6">
-          {page.faqs.map((faq) => (
+          {expandedFaqs.map((faq) => (
             <article key={faq.question} className="brand-surface p-6">
               <h2 className="brand-display text-lg font-semibold text-primary">{faq.question}</h2>
               <p className="mt-3 text-secondary leading-relaxed">{faq.answer}</p>

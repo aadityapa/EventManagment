@@ -17,8 +17,8 @@ Workflow: `.github/workflows/ci.yml`
 **Triggers:** push/PR to `master` or `main`
 
 **Build env (CI):**
-- `NEXT_PUBLIC_APP_URL=https://glitzevents.in`
-- `NEXT_PUBLIC_API_URL=https://api.glitzevents.in/api`
+- `NEXT_PUBLIC_APP_URL=https://nexyyra.com`
+- `NEXT_PUBLIC_API_URL=https://nexyyra.com/api`
 
 **Prisma generate:** Required before API typecheck. Uses placeholder `DATABASE_URL=postgresql://ci:ci@127.0.0.1:5432/ci` â€” no live DB needed for client generation.
 
@@ -40,7 +40,7 @@ Configure under **Project → Settings → General**:
 | **Install Command** | `npm ci` |
 | **Node.js Version** | 20.x |
 
-**Live production URL (known):** https://event-managment-mocha.vercel.app/
+**Live production URL:** https://nexyyra.com/
 
 With **Root Directory** = `apps/web`, `apps/web/vercel.json` applies (security + cache headers only — no SPA rewrites). App Router must not use a catch-all rewrite to `index.html`.
 

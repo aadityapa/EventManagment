@@ -9,7 +9,13 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/admin", "/dashboard", "/api/"],
       },
+      {
+        userAgent: ["GPTBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"],
+        allow: "/",
+        disallow: ["/admin", "/dashboard", "/api/"],
+      },
     ],
     sitemap: `${SITE_CONFIG.url}/sitemap.xml`,
+    host: SITE_CONFIG.url,
   };
 }

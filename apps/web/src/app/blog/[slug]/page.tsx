@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Lightbulb } from "lucide-react";
 import { blogPosts } from "@/data/cms";
 import { getBlogArticleContent, getBlogKeyTakeaways } from "@/data/blog-content";
-import { generateSEO, breadcrumbSchema, articleSchema } from "@/lib/seo";
+import { generateSEO, breadcrumbSchema, articleSchema, faqSchema, howToSchema } from "@/lib/seo";
+import { getBlogFaqs, getBlogHowTo } from "@/lib/geo-content";
 import { formatDate } from "@/lib/utils";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 
@@ -27,6 +28,9 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     path: `/blog/${slug}`,
     image: post.image,
     type: "article",
+    publishedTime: post.publishedAt,
+    authors: [post.author],
+    tags: post.tags,
   });
 }
 
@@ -62,11 +66,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     section: post.category,
     wordCount,
   });
+  const blogFaqs = getBlogFaqs(slug);
+  const faqLd = blogFaqs.length > 0 ? faqSchema(blogFaqs) : null;
+  const howToData = getBlogHowTo(slug);
+  const howToLd = howToData
+    ? howToSchema({
+        name: post.title,
+        description: post.excerpt,
+        slug,
+        steps: howToData.steps,
+        totalTime: howToData.totalTime,
+      })
+    : null;
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
+      {howToLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />}
 
       <article itemScope itemType="https://schema.org/Article" className="brand-root">
         {/* Hero image */}
