@@ -17,31 +17,41 @@ interface ParallaxProps {
    * Default 80.
    */
   distance?: number;
+  /** Shorthand depth layer — overrides distance when set. */
+  layer?: "bg" | "mid" | "fg";
   /** Parallax axis. Default `y`. */
   axis?: "x" | "y";
   className?: string;
 }
 
+const LAYER_DISTANCE: Record<NonNullable<ParallaxProps["layer"]>, number> = {
+  bg: 90,
+  mid: 40,
+  fg: -20,
+};
+
 /**
- * V4 scroll-linked parallax layer. Maps the element's scroll progress through
+ * V4/V5 scroll-linked parallax layer. Maps the element's scroll progress through
  * the viewport to a translate offset, smoothed with a spring. Honours
  * reduced-motion by rendering a static layer.
  */
 export function Parallax({
   children,
-  distance = 80,
+  distance,
+  layer,
   axis = "y",
   className,
 }: ParallaxProps) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  const travel = distance ?? (layer ? LAYER_DISTANCE[layer] : 80);
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  const raw = useTransform(scrollYProgress, [0, 1], [-distance, distance]);
+  const raw = useTransform(scrollYProgress, [0, 1], [-travel, travel]);
   const value = useSpring(raw, { stiffness: 80, damping: 24, mass: 0.4 });
 
   if (reduced) {

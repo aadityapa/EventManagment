@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "../lib/stitch/stitch-theme.css";
 @import "../brand/design-system/tokens.css";
+@import "../brand/design-system/v5-tokens.css";
 @import "../brand/design-system/v4-tokens.css";
 @import "../styles/design-system.css";
 @import "../styles/responsive.css";
@@ -77,6 +78,8 @@
   --color-bg-elevated: var(--surface);
   --color-bg-surface: var(--card);
   --color-gold-soft: #e0d8bf;
+  --color-sand: var(--v5-warm-sand);
+  --color-obsidian: var(--v5-obsidian);
   --color-primary-container: #c2b280;
   --color-on-primary-container: #1a1400;
   --color-glass-border: rgba(194, 178, 128, 0.22);

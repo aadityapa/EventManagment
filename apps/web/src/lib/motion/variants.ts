@@ -68,5 +68,22 @@ export const staggerItem: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: DUR.base, ease: EASE.luxe } },
 };
 
+/** Standfirst line mask reveal. */
+export const maskLine: Variants = {
+  hidden: { y: "100%", opacity: 0 },
+  visible: { y: "0%", opacity: 1, transition: { duration: DUR.slow, ease: EASE.luxe } },
+};
+
+/** Portal card hover mount. */
+export const portalCard: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: DUR.base, ease: EASE.portal },
+  },
+};
+
 /** Default viewport config for whileInView reveals. */
 export const viewportOnce = { once: true, amount: 0.25 } as const;

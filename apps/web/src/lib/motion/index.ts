@@ -17,3 +17,6 @@ export {
 } from "./variants";
 export { ScrollReveal, type RevealPreset, type RevealTag } from "./scroll-reveal";
 export { Parallax } from "./parallax";
+export { registerScene, enterScene, exitScene, revealChildren } from "./scene-director";
+export { useLenisScrollTrigger } from "./use-lenis-scroll-trigger";
+export { PageTransition } from "./page-transition";
