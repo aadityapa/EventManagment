@@ -121,7 +121,7 @@ export function HomeAiPlanner() {
   };
 
   return (
-    <BrandSection>
+    <BrandSection id="ai-planner">
       <BrandHeader label="AI Powered" title="Intelligent Event Planner" subtitle="Instant bespoke blueprint — timeline, budget, venues, and vendors." center />
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="brand-surface space-y-5 p-6 sm:p-8">
