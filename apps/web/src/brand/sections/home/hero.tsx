@@ -1,7 +1,7 @@
 "use client";
 
-import { HeroPremium } from "@/components/home/hero-premium";
+import { HeroV4 } from "@/components/home/hero-v4";
 
 export function HomeHero() {
-  return <HeroPremium />;
+  return <HeroV4 />;
 }

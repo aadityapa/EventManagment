@@ -1,0 +1,277 @@
+/* ============================================================================
+   GLITZ V4 — Token Layer
+   Cinematic luxury. Extends (does not replace) design-system/tokens.css.
+   Brand: Obsidian · Luxury Gold · Metallic Gold · Champagne · Ivory · Dune Glow.
+   Keeps dual theme + adaptive vars intact.
+   ============================================================================ */
+
+:root {
+  /* --- V4 brand scalars (immutable hues) --- */
+  --v4-obsidian: #050505;
+  --v4-dark-surface: #111111;
+  --v4-gold-luxury: #d4af37;
+  --v4-gold-metallic: #c9a227;
+  --v4-champagne: #e6c67a;
+  --v4-ivory: #fdfbf5;
+  --v4-warm-sand: #f7f3eb;
+  --v4-dune: #d8b26e;
+  --v4-dune-glow: #f5d76e;
+
+  /* --- Premium white-space scale (8pt base, editorial leaps) --- */
+  --v4-space-3xs: 0.25rem;
+  --v4-space-2xs: 0.5rem;
+  --v4-space-xs: 0.75rem;
+  --v4-space-sm: 1rem;
+  --v4-space-md: 1.5rem;
+  --v4-space-lg: 2.5rem;
+  --v4-space-xl: 4rem;
+  --v4-space-2xl: 6rem;
+  --v4-space-3xl: 9rem;
+  --v4-space-4xl: 14rem;
+  /* Section rhythm — more generous than V3 for "exclusive" pacing */
+  --v4-section: clamp(5rem, 12vw, 11rem);
+  --v4-section-lg: clamp(7rem, 16vw, 16rem);
+  --v4-measure: 62ch; /* readable body line length */
+
+  /* --- Editorial type scale (fluid, cinematic) --- */
+  --v4-text-kicker: 0.75rem;
+  --v4-text-body: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --v4-text-standfirst: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+  --v4-text-title: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
+  --v4-text-display: clamp(2.5rem, 1.2rem + 6vw, 5.5rem);
+  --v4-text-hero: clamp(3rem, 1rem + 9vw, 8rem);
+  --v4-leading-tight: 1.02;
+  --v4-leading-snug: 1.12;
+  --v4-leading-body: 1.6;
+  --v4-tracking-kicker: 0.32em;
+  --v4-tracking-display: -0.02em;
+
+  /* --- Motion tokens (mirrored in lib/motion/easing.ts) --- */
+  --v4-ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);   /* expo-out, signature */
+  --v4-ease-silk: cubic-bezier(0.16, 1, 0.3, 1);     /* soft settle */
+  --v4-ease-drama: cubic-bezier(0.85, 0, 0.15, 1);   /* in-out, scenes */
+  --v4-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --v4-dur-fast: 0.3s;
+  --v4-dur-base: 0.6s;
+  --v4-dur-slow: 0.9s;
+  --v4-dur-cinematic: 1.2s;
+
+  /* --- Radii & elevation --- */
+  --v4-radius-sm: 0.625rem;
+  --v4-radius: 1rem;
+  --v4-radius-lg: 1.5rem;
+  --v4-radius-xl: 2rem;
+}
+
+/* ----------------------------------------------------------------------------
+   Theme-aware atmosphere: glass, dune-glow, grain, shadows
+   ---------------------------------------------------------------------------- */
+:root,
+.light {
+  --v4-glass-bg: rgba(255, 255, 255, 0.55);
+  --v4-glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --v4-glass-border: rgba(184, 134, 11, 0.28);
+  --v4-glass-highlight: rgba(255, 255, 255, 0.65);
+  --v4-glass-shadow: 0 24px 70px -28px rgba(120, 92, 20, 0.45);
+
+  --v4-elev-1: 0 1px 2px rgba(80, 60, 12, 0.06), 0 8px 24px -12px rgba(120, 92, 20, 0.18);
+  --v4-elev-2: 0 2px 6px rgba(80, 60, 12, 0.08), 0 24px 60px -24px rgba(120, 92, 20, 0.3);
+  --v4-elev-3: 0 30px 90px -30px rgba(120, 92, 20, 0.42);
+
+  --v4-glow-gold: 0 0 0 1px rgba(212, 175, 55, 0.18), 0 0 48px -8px rgba(201, 162, 39, 0.35);
+
+  /* Dune-glow atmospheric gradients */
+  --v4-dune-glow-radial: radial-gradient(120% 120% at 18% 12%, rgba(245, 215, 110, 0.32) 0%, rgba(230, 198, 122, 0.12) 32%, transparent 64%);
+  --v4-dune-glow-soft: radial-gradient(90% 90% at 50% 0%, rgba(230, 198, 122, 0.22) 0%, transparent 60%);
+  --v4-gradient-champagne: linear-gradient(135deg, #fdfbf5 0%, #f7f3eb 45%, #efe4cf 100%);
+  --v4-gradient-gold-line: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.7), transparent);
+  --v4-grain-opacity: 0.04;
+}
+
+.dark {
+  --v4-glass-bg: rgba(17, 17, 17, 0.5);
+  --v4-glass-bg-strong: rgba(17, 17, 17, 0.7);
+  --v4-glass-border: rgba(212, 175, 55, 0.22);
+  --v4-glass-highlight: rgba(255, 255, 255, 0.08);
+  --v4-glass-shadow: 0 24px 80px -28px rgba(0, 0, 0, 0.85);
+
+  --v4-elev-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --v4-elev-2: 0 2px 6px rgba(0, 0, 0, 0.55), 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+  --v4-elev-3: 0 30px 90px -30px rgba(0, 0, 0, 0.9);
+
+  --v4-glow-gold: 0 0 0 1px rgba(212, 175, 55, 0.22), 0 0 56px -8px rgba(212, 175, 55, 0.4);
+
+  --v4-dune-glow-radial: radial-gradient(120% 120% at 18% 12%, rgba(212, 175, 55, 0.22) 0%, rgba(201, 162, 39, 0.08) 32%, transparent 64%);
+  --v4-dune-glow-soft: radial-gradient(90% 90% at 50% 0%, rgba(212, 175, 55, 0.16) 0%, transparent 60%);
+  --v4-gradient-champagne: linear-gradient(135deg, #050505 0%, #0c0c0c 45%, #141008 100%);
+  --v4-gradient-gold-line: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
+  --v4-grain-opacity: 0.06;
+}
+
+/* ----------------------------------------------------------------------------
+   Editorial typography utilities
+   ---------------------------------------------------------------------------- */
+.v4-kicker {
+  font-family: var(--font-cinzel), var(--font-playfair), Georgia, serif;
+  font-size: var(--v4-text-kicker);
+  font-weight: 600;
+  letter-spacing: var(--v4-tracking-kicker);
+  text-transform: uppercase;
+  color: var(--adaptive-accent, var(--glitz-gold));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.v4-kicker::before {
+  content: "";
+  width: clamp(1.5rem, 4vw, 3rem);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.v4-display {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: var(--v4-text-display);
+  font-weight: 600;
+  line-height: var(--v4-leading-tight);
+  letter-spacing: var(--v4-tracking-display);
+  color: var(--adaptive-text, var(--text-primary));
+}
+
+.v4-hero-display {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: var(--v4-text-hero);
+  font-weight: 700;
+  line-height: var(--v4-leading-tight);
+  letter-spacing: var(--v4-tracking-display);
+}
+
+.v4-title {
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
+  font-size: var(--v4-text-title);
+  font-weight: 600;
+  line-height: var(--v4-leading-snug);
+  color: var(--text-primary);
+}
+
+.v4-standfirst {
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
+  font-size: var(--v4-text-standfirst);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--adaptive-muted, var(--text-secondary));
+}
+
+.v4-body {
+  font-family: var(--font-manrope), var(--font-inter), system-ui, sans-serif;
+  font-size: var(--v4-text-body);
+  line-height: var(--v4-leading-body);
+  color: var(--text-secondary);
+  max-width: var(--v4-measure);
+}
+
+.v4-gold-text {
+  background: var(--glitz-gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ----------------------------------------------------------------------------
+   Liquid glass surfaces
+   ---------------------------------------------------------------------------- */
+.v4-glass {
+  background: var(--v4-glass-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--v4-glass-border);
+  border-radius: var(--v4-radius);
+  box-shadow: var(--v4-glass-shadow);
+}
+
+/* Liquid glass: layered top highlight + inner sheen + gold hairline */
+.v4-glass-liquid {
+  position: relative;
+  background: var(--v4-glass-bg-strong);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--v4-glass-border);
+  border-radius: var(--v4-radius-lg);
+  box-shadow: var(--v4-glass-shadow), inset 0 1px 0 var(--v4-glass-highlight);
+  overflow: hidden;
+}
+.v4-glass-liquid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, var(--v4-glass-highlight) 0%, transparent 38%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.v4-glass-liquid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--v4-gradient-gold-line);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------------------
+   Atmosphere helpers
+   ---------------------------------------------------------------------------- */
+.v4-dune-glow {
+  position: relative;
+  isolation: isolate;
+}
+.v4-dune-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--v4-dune-glow-radial);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.v4-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--v4-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.v4-hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--v4-gradient-gold-line);
+  border: 0;
+}
+
+/* Section rhythm */
+.v4-section {
+  padding-block: var(--v4-section);
+}
+.v4-section-lg {
+  padding-block: var(--v4-section-lg);
+}
+
+/* ----------------------------------------------------------------------------
+   Reduced motion: neutralise atmospheric animation; keep static beauty
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .v4-glass-liquid::before,
+  .v4-glass-liquid::after {
+    transition: none;
+  }
+}
