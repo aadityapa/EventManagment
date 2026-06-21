@@ -5,10 +5,10 @@ const isDockerBuild = process.env.DOCKER_BUILD === "1";
 
 /** Keep image/video binaries out of serverless traces (served as static assets). */
 const mediaTraceExcludes = [
-  "./public/images/**/*",
-  "./public/videos/**/*",
-  "./public/placeholders/**/*",
-  "./public/logos/**/*",
+  "**/public/images/**",
+  "**/public/videos/**",
+  "**/public/placeholders/**",
+  "**/public/logos/**",
 ];
 
 const mediaApiRoutes = [
@@ -17,21 +17,24 @@ const mediaApiRoutes = [
   "/api/admin/media/upload",
 ];
 
-const mediaPageRoutes = ["/gallery", "/portfolio"];
+const mediaPageRoutes = ["/gallery", "/portfolio", "/services/[slug]"];
 
 const tracedMediaRoutes = [...mediaApiRoutes, ...mediaPageRoutes];
 
+const appRoot = path.join(__dirname);
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.15", "localhost", "https://192.168.1.15:3000"],
+  outputFileTracingRoot: appRoot,
   turbopack: {
-    root: path.join(__dirname),
+    root: appRoot,
   },
   serverExternalPackages: ["sharp"],
   outputFileTracingExcludes: Object.fromEntries(
     tracedMediaRoutes.map((route) => [route, mediaTraceExcludes])
   ),
   outputFileTracingIncludes: Object.fromEntries(
-    tracedMediaRoutes.map((route) => [route, ["./public/media-manifest.json"]])
+    tracedMediaRoutes.map((route) => [route, ["**/public/media-manifest.json"]])
   ),
   images: {
     remotePatterns: [
