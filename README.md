@@ -1,8 +1,8 @@
-# Glitz Events & Promotions — Luxury Event Management Platform
+# Nexyyra Events — Luxury Experience Platform
 
-Premium black & gold event management website for **Glitz Events & Promotions**, Pune.
+Premium cinematic event experience platform for **Nexyyra Events**, Pune.
 
-**Contact:** +91 9730594753 | [glitzevents.in](https://glitzevents.in)
+**Contact:** +91 9730594753 | hello@nexyyraevents.in
 
 ## Tech Stack
 
@@ -54,4 +54,4 @@ docker compose up -d --build
 
 ## License
 
-Proprietary — Glitz Events & Promotions © 2026
+Proprietary — Nexyyra Events Private Limited © 2026

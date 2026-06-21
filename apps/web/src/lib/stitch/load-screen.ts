@@ -27,7 +27,7 @@ function sanitizeStitchHtml(html: string): string {
 
   out = out.replace(
     /(<img[^>]*alt="[^"]*logo[^"]*"[^>]*src=")[^"]*(")/gi,
-    '$1/logo.jpg$2'
+    '$1/brand/logo-primary.png$2'
   );
 
   out = out.replace(/<canvas[^>]*id="particleCanvas"[^>]*><\/canvas>/gi, "");

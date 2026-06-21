@@ -270,7 +270,7 @@ export function localBusinessSchemaForPage(page: LocalSeoPage) {
     url: `${SITE_CONFIG.url}/${page.slug}`,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/logo.jpg`,
+    image: `${SITE_CONFIG.url}/brand/logo-primary.png`,
     priceRange: "₹₹₹₹",
     address: {
       "@type": "PostalAddress",

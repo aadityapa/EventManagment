@@ -11,28 +11,28 @@ interface LogoProps {
 }
 
 const LOGO_PRIMARY = "/brand/logo-primary.png";
-const LOGO_SYMBOL = "/brand/logo-symbol.svg";
+const LOGO_SYMBOL = "/brand/logo-symbol.png";
 
 export function Logo({ className, iconOnly = false, href = "/", priority = false }: LogoProps) {
   const image = iconOnly ? (
     <Image
       src={LOGO_SYMBOL}
       alt={SITE_CONFIG.name}
-      width={48}
-      height={48}
+      width={56}
+      height={56}
       priority={priority}
-      className={cn("h-9 w-9 sm:h-10 sm:w-10", className)}
+      className={cn("h-10 w-10 object-contain sm:h-11 sm:w-11", className)}
     />
   ) : (
     <Image
       src={LOGO_PRIMARY}
       alt={SITE_CONFIG.name}
-      width={240}
-      height={96}
+      width={200}
+      height={120}
       priority={priority}
       className={cn(
         "h-auto w-auto object-contain",
-        "h-10 w-auto max-w-[160px] sm:h-12 sm:max-w-[200px] md:max-w-[220px]",
+        "h-12 w-auto max-w-[140px] sm:h-14 sm:max-w-[168px] md:max-w-[180px]",
         className
       )}
     />
@@ -51,6 +51,6 @@ export function Logo({ className, iconOnly = false, href = "/", priority = false
 export const BRAND_LOGO_ASSETS = {
   primary: LOGO_PRIMARY,
   symbol: LOGO_SYMBOL,
-  horizontal: "/brand/logo-horizontal.svg",
-  favicon: "/brand/favicon.svg",
+  horizontal: LOGO_PRIMARY,
+  favicon: LOGO_SYMBOL,
 } as const;

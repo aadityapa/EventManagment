@@ -56,7 +56,7 @@ export function CallbackRequestForm() {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm"
-          placeholder="+91 98765 43210"
+          placeholder="+91 9730594753"
         />
       </div>
       <button

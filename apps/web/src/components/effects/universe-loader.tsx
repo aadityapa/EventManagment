@@ -244,12 +244,12 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
         <div ref={ringRef} className="absolute h-72 w-72 rounded-full border border-[var(--v5-gold-metallic)]/30 opacity-0" />
         <div ref={logoRef} className="relative z-10 flex flex-col items-center gap-3 opacity-0">
           <Image
-            src="/logo.jpg"
+            src="/brand/logo-primary.png"
             alt="Nexyyra Events"
-            width={120}
-            height={120}
+            width={160}
+            height={96}
             priority
-            className="rounded-xl shadow-[var(--v5-glow-gold)]"
+            className="h-auto w-[140px] object-contain shadow-[var(--v5-glow-gold)] sm:w-[160px]"
           />
           <p className="v5-kicker text-[var(--v5-gold-luxury)]">Nexyyra Events</p>
         </div>

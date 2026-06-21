@@ -2,10 +2,7 @@
 
 | File | Use |
 |------|-----|
-| `logo-primary.png` | Header, OG default, email hero (circular gold logo) |
-| `logo-symbol.svg` | Icon-only nav, app shortcuts, favicon fallback |
-| `logo-horizontal.svg` | Email signatures, social banners, print |
-| `favicon.svg` | Browser tab icon |
+| `logo-primary.png` | Header, OG default, loader, email hero |
+| `logo-symbol.png` | Icon-only nav, favicon, app shortcuts |
 
-Social: use `logo-primary.png` on dark/ivory backgrounds.  
-Email: `logo-horizontal.svg` in header, `logo-symbol.svg` as footer mark.
+Social: use `logo-primary.png` on dark/ivory backgrounds.

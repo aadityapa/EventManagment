@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   ...generateSEO(),
   icons: {
     icon: [
-      { url: "/brand/favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/logo-symbol.png", type: "image/png" },
       { url: "/brand/logo-primary.png", type: "image/png" },
     ],
     apple: "/brand/logo-primary.png",

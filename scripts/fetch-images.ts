@@ -90,7 +90,7 @@ async function optimizeImage(inputPath: string, outputDir: string, basename: str
 }
 
 async function main() {
-  console.log("🖼  Glitz Events & Promotions — Image Fetch Pipeline\n");
+  console.log("🖼  Nexyyra Events — Image Fetch Pipeline\n");
 
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
