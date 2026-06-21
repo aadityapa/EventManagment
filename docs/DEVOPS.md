@@ -130,4 +130,19 @@ No `next.config` wrapper required. Install is scoped to `apps/web` only.
 
 ---
 
-*Glitz Events 20-Phase Transformation — Phase 19*
+## V5 Addendum (Phases 2–12)
+
+| Workflow | Purpose |
+|----------|---------|
+| `.github/workflows/ci.yml` | Lint, web `tsc`, build, API typecheck |
+| `.github/workflows/lighthouse.yml` | Lighthouse CI on Home, Portfolio, Book |
+
+**V5 routes:** `/ai`, `/portfolio/[slug]`
+
+**Lighthouse budgets:** `apps/web/lighthouse-budget.json` — Performance ≥85, A11y ≥95 (warn)
+
+**Monitoring:** Vercel deploy alerts · Sentry release tags · uptime on production URL
+
+---
+
+*Glitz Events V5 — Phases 2–12 DevOps*

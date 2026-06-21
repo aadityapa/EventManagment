@@ -315,6 +315,7 @@ function CaseGridCard({
   index: number;
 }) {
   return (
+    <Link href={`/portfolio/${cs.id}`} className="block">
     <motion.article
       id={cs.id}
       layout
@@ -356,6 +357,7 @@ function CaseGridCard({
         </p>
       </div>
     </motion.article>
+    </Link>
   );
 }
 

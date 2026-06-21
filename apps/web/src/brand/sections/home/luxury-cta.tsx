@@ -17,9 +17,9 @@ const telHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 export function HomeLuxuryCta() {
   return (
     <section
-      id="invitation"
+      id="commission"
       className="v4-section-lg v4-dune-glow relative overflow-hidden bg-[var(--glitz-surface)]"
-      aria-labelledby="invitation-heading"
+      aria-labelledby="commission-heading"
     >
       <div className="brand-container">
         {/* Compact FAQ bridge */}
@@ -47,24 +47,34 @@ export function HomeLuxuryCta() {
 
         <ScrollReveal preset="scale">
           <GlassPanel glow className="mx-auto max-w-4xl px-8 py-14 text-center sm:px-16 sm:py-20">
-            <span className="v4-kicker mb-6 justify-center">Your Invitation</span>
-            <h2 id="invitation-heading" className="v4-display">
-              Let&apos;s begin your <span className="v4-gold-text">event</span>.
+            <span className="v4-kicker mb-6 justify-center">The Commission</span>
+            <h2 id="commission-heading" className="v4-display">
+              Your extraordinary evening awaits an <span className="v4-gold-text">architect</span>.
             </h2>
             <p className="v4-standfirst mx-auto mt-6 max-w-lg">
-              Schedule a private consultation with our luxury specialists — response within 24 hours,
-              complimentary and without obligation.
+              Begin a guided journey — dream, atmosphere, destination, experience level, then meet your
+              Event Architect. Response within 24 hours, complimentary and without obligation.
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
               <MagneticButton>
                 <BrandButton
                   href="/book-event"
                   variant="gold"
                   className="min-w-[200px]"
-                  onClick={() => analytics.ctaClick("book_consultation", "home_invitation")}
+                  onClick={() => analytics.ctaClick("book_consultation", "home_commission")}
                 >
-                  Book Consultation
+                  Begin Your Journey
+                </BrandButton>
+              </MagneticButton>
+              <MagneticButton>
+                <BrandButton
+                  href="/ai"
+                  variant="outline"
+                  className="min-w-[200px] border-[var(--glitz-gold)]/40"
+                  onClick={() => analytics.ctaClick("meet_oracle", "home_commission")}
+                >
+                  Meet the Oracle (AI)
                 </BrandButton>
               </MagneticButton>
               <MagneticButton>
@@ -72,11 +82,11 @@ export function HomeLuxuryCta() {
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => analytics.ctaClick("whatsapp", "home_invitation")}
+                  onClick={() => analytics.ctaClick("whatsapp", "home_commission")}
                   className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-8 py-3 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:bg-[#25D366]/20"
                 >
                   <MessageCircle className="h-4 w-4 text-[#25D366]" aria-hidden="true" />
-                  WhatsApp
+                  Speak to Concierge
                 </a>
               </MagneticButton>
             </div>

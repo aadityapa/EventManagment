@@ -12,7 +12,7 @@ import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { Shield, Star, Lock } from "lucide-react";
 
 const BookingWizard = dynamic(
-  () => import("@/components/booking/booking-wizard").then((m) => m.BookingWizard),
+  () => import("@/components/booking/event-architect").then((m) => m.EventArchitect),
   { loading: () => <div className="min-h-[420px] animate-pulse rounded-[var(--v4-radius-xl)] v4-glass-liquid" /> }
 );
 
@@ -69,11 +69,8 @@ export function BookView() {
           </ScrollReveal>
           <p className="mt-8 text-center text-sm text-[var(--text-secondary)]">
             Prefer AI-assisted planning?{" "}
-            <Link
-              href="#ai-planner"
-              className="font-semibold text-[var(--glitz-gold)] underline-offset-4 hover:underline"
-            >
-              Try our AI Event Planner
+            <Link href="/ai" className="font-semibold text-[var(--glitz-gold)] underline-offset-4 hover:underline">
+              Visit the AI Experience Hub
             </Link>
             .
           </p>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, Manrope, Montserrat, Playfair_Display, Poppins } from "next/font/google";
+import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AdaptiveThemeProvider } from "@/components/adaptive/adaptive-theme-provider";
 import { CinematicProvider } from "@/components/providers/cinematic-provider";
@@ -13,6 +14,7 @@ import { CookieConsent } from "@/components/shared/cookie-consent";
 import { ExitIntentPopup } from "@/components/engagement/exit-intent-popup";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { generateSEO, organizationSchema, websiteSchema, entityDefinitionSchema } from "@/lib/seo";
+import { PortalTransition } from "@/lib/motion/portal-transition";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: true });
@@ -62,6 +64,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <AnalyticsProvider />
           <AdaptiveThemeProvider>
           <CinematicProvider>
+            <Suspense fallback={null}>
+              <PortalTransition />
+            </Suspense>
             <BrandHeader />
             <ErrorBoundary>
               <main id="main-content" className="app-main flex flex-1 flex-col pb-20 md:pb-0" tabIndex={-1}>

@@ -15,7 +15,7 @@ const TERTIARY = BRAND_SERVICE_CATEGORIES.slice(4);
 
 export function HomeSignatureExperiences() {
   return (
-    <section id="services" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]">
+    <section id="craft" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
           <span className="v4-kicker mb-6">What We Craft</span>

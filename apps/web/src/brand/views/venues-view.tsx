@@ -11,6 +11,8 @@ import { MagneticButton } from "@/components/effects/magnetic-button";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { venues } from "@/data/cms";
 import { ScrollReveal, staggerParent, staggerItem } from "@/lib/motion";
+import { VenueMapCanvas } from "@/components/three/venue-map-canvas";
+import { GeoFactsBlock } from "@/components/seo/geo-facts-block";
 import { cn, formatCurrency, getApiUrl } from "@/lib/utils";
 
 const CITIES = ["All", "Pune", "Mumbai", "Delhi", "Bangalore", "Goa", "Jaipur", "Udaipur"];
@@ -223,6 +225,34 @@ export function VenuesView() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Interactive destination map */}
+      <section className="v4-section bg-[var(--glitz-bg)]">
+        <div className="brand-container grid items-start gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <ScrollReveal preset="reveal">
+              <span className="v4-kicker mb-4">Explore</span>
+              <h2 className="v4-display">Destination <span className="v4-gold-text">Map</span></h2>
+            </ScrollReveal>
+            <ScrollReveal preset="fade" delay={0.1} className="mt-8">
+              <VenueMapCanvas
+                activeCity={city === "All" ? undefined : city}
+                onSelect={(c) => setCity(c)}
+              />
+            </ScrollReveal>
+          </div>
+          <ScrollReveal preset="fade" delay={0.14} className="lg:col-span-4">
+            <GeoFactsBlock
+              facts={[
+                { label: "Cities", value: "35+ across India" },
+                { label: "Capacity range", value: "50 – 2,500 guests" },
+                { label: "360° tours", value: "Available on request" },
+                { label: "Concierge", value: "+91 9730594753" },
+              ]}
+            />
+          </ScrollReveal>
         </div>
       </section>
 

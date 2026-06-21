@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 import { services, blogPosts } from "@/data/cms";
 import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
+import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE_CONFIG.url;
@@ -16,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     "", "/about", "/services", "/portfolio", "/venues", "/vendors",
     "/gallery", "/testimonials", "/pricing", "/blog", "/faqs",
-    "/contact", "/book-event", "/privacy", "/terms", "/refund",
+    "/contact", "/book-event", "/ai", "/privacy", "/terms", "/refund",
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
@@ -38,5 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...localPages, ...servicePages, ...blogPages];
+  const portfolioCases = BRAND_CASE_STUDIES.map((cs) => ({
+    url: `${base}/portfolio/${cs.id}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.65,
+  }));
+
+  return [...staticPages, ...localPages, ...servicePages, ...portfolioCases, ...blogPages];
 }

@@ -20,3 +20,4 @@ export { Parallax } from "./parallax";
 export { registerScene, enterScene, exitScene, revealChildren } from "./scene-director";
 export { useLenisScrollTrigger } from "./use-lenis-scroll-trigger";
 export { PageTransition } from "./page-transition";
+export { PortalTransition } from "./portal-transition";

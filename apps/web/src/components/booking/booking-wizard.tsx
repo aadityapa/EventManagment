@@ -89,6 +89,26 @@ type RazorpayCtor = new (opts: {
   modal?: { ondismiss?: () => void };
 }) => RazorpayInstance;
 
+const ARCHITECT_LABELS: Record<number, string> = {
+  1: "Dream — Event Type",
+  2: "Dream — Date",
+  3: "Destination — Venue",
+  4: "Atmosphere — Guests",
+  5: "Atmosphere — Budget",
+  6: "Experience Level — Services",
+  7: "Meet Architect — Review",
+  8: "Meet Architect — Payment",
+  9: "Meet Architect — Confirmed",
+};
+
+function getArchitectPhase(step: number) {
+  if (step <= 2) return 1;
+  if (step === 3) return 2;
+  if (step <= 5) return 3;
+  if (step === 6) return 4;
+  return 5;
+}
+
 const initialState: BookingState = {
   eventType: "",
   date: "",
@@ -100,7 +120,7 @@ const initialState: BookingState = {
   bookingNumber: "",
 };
 
-export function BookingWizard() {
+export function BookingWizard({ variant = "default" }: { variant?: "default" | "architect" }) {
   const [step, setStep] = useState(1);
   const [state, setState] = useState<BookingState>(initialState);
   const [venueOptions, setVenueOptions] = useState<VenueOption[]>(
@@ -388,7 +408,17 @@ export function BookingWizard() {
       <div className="mb-6 sm:mb-8">
         <div className="mb-3 flex justify-between text-xs text-[var(--text-secondary)] sm:text-sm">
           <span className="truncate pr-2">
-            Step {step}/{STEPS.length}: <span className="text-[var(--glitz-gold)]">{STEPS[step - 1]}</span>
+            {variant === "architect" ? (
+              <>
+                Chapter {getArchitectPhase(step)}/5:{" "}
+                <span className="text-[var(--glitz-gold)]">{ARCHITECT_LABELS[step]}</span>
+              </>
+            ) : (
+              <>
+                Step {step}/{STEPS.length}:{" "}
+                <span className="text-[var(--glitz-gold)]">{STEPS[step - 1]}</span>
+              </>
+            )}
           </span>
           <span className="shrink-0 font-semibold text-[var(--glitz-gold)]">{Math.round(progress)}%</span>
         </div>
@@ -402,6 +432,7 @@ export function BookingWizard() {
         </div>
 
         {/* Desktop step rail */}
+        {variant !== "architect" && (
         <ol className="mt-5 hidden gap-1 md:grid md:grid-cols-9" aria-label="Booking progress">
           {STEPS.map((label, i) => {
             const stepNum = i + 1;
@@ -425,8 +456,9 @@ export function BookingWizard() {
             );
           })}
         </ol>
+        )}
 
-        <div className="scroll-nav mt-3 gap-2 pb-1 md:hidden">
+        <div className={cn("scroll-nav mt-3 gap-2 pb-1", variant === "architect" ? "flex flex-wrap" : "md:hidden")}>
           {STEPS.map((label, i) => (
             <span
               key={label}
@@ -455,7 +487,7 @@ export function BookingWizard() {
             {step === 7 && <Check className="h-5 w-5 text-primary" />}
             {step === 8 && <CreditCard className="h-5 w-5 text-primary" />}
             {step === 9 && <PartyPopper className="h-5 w-5 text-primary" />}
-            {STEPS[step - 1]}
+            {variant === "architect" ? ARCHITECT_LABELS[step] : STEPS[step - 1]}
           </h2>
         </div>
         <div className="px-4 py-6 sm:px-8 sm:py-8">

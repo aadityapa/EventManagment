@@ -78,3 +78,4 @@ export function clearWorldPreset() {
   root.style.removeProperty("--adaptive-atmosphere");
   root.style.removeProperty("--adaptive-surface");
 }
+

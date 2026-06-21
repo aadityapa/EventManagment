@@ -15,6 +15,14 @@ import { cn } from "@/lib/utils";
 
 const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
 const MEGA_SERVICES = services.slice(0, 8);
+const EXPERIENCE_WORLDS_NAV = [
+  { label: "Wedding World", href: "/services/wedding-planning?world=wedding" },
+  { label: "Corporate World", href: "/services/corporate-events?world=corporate" },
+  { label: "Concert World", href: "/services/concert-management?world=celebration" },
+  { label: "Celebrity World", href: "/services/celebrity-management?world=culture" },
+  { label: "Exhibition World", href: "/services/exhibitions?world=corporate" },
+  { label: "Fashion World", href: "/services/fashion-shows?world=culture" },
+];
 
 export function BrandHeader() {
   const pathname = usePathname();
@@ -185,8 +193,24 @@ export function BrandHeader() {
                           </Link>
                         </div>
 
-                        {/* Explore */}
+                        {/* Explore + Worlds */}
                         <div className="p-4">
+                          <p className="brand-label mb-3 px-1">Experience Worlds</p>
+                          <ul className="mb-4 grid grid-cols-2 gap-0.5">
+                            {EXPERIENCE_WORLDS_NAV.map((link) => (
+                              <li key={link.href}>
+                                <Link
+                                  href={link.href}
+                                  role="menuitem"
+                                  onClick={() => setServicesOpen(false)}
+                                  className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-secondary transition-all hover:bg-[var(--glitz-gold)]/10 hover:text-[var(--glitz-gold)]"
+                                >
+                                  {link.label}
+                                  <ArrowUpRight className="h-3 w-3 opacity-40" aria-hidden="true" />
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
                           <p className="brand-label mb-3 px-1">Explore</p>
                           <ul className="space-y-1">
                             {MEGA_EXPLORE_LINKS.map((link) => (

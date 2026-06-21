@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
+import { ScrollReveal, Parallax, staggerParent, staggerItem, registerScene, revealChildren } from "@/lib/motion";
 
 const DIFFERENTIATORS = [
   "Bespoke planning from concept to curtain call",
@@ -20,17 +21,26 @@ const DIFFERENTIATORS = [
  * stat card counter-floats — proving depth + the design system end to end.
  */
 export function HomeIntro() {
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    return registerScene("home-atelier", {
+      priority: 2,
+      onEnter: () => revealChildren(textRef.current, { preset: "revealLeft", stagger: "base" }),
+    });
+  }, []);
+
   return (
-    <section className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]">
+    <section id="atelier" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]" aria-labelledby="atelier-heading">
       <div className="brand-container grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Editorial text — 7 cols */}
-        <div className="lg:col-span-7">
+        <div ref={textRef} className="lg:col-span-7">
           <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-6">Who We Are</span>
+            <span className="v4-kicker mb-6">The Atelier</span>
           </ScrollReveal>
 
           <ScrollReveal preset="reveal" delay={0.08}>
-            <h2 className="v4-display">
+            <h2 id="atelier-heading" className="v4-display">
               Architects of <span className="v4-gold-text">Extraordinary</span> Celebrations
             </h2>
           </ScrollReveal>

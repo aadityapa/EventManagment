@@ -1,0 +1,41 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --prefix apps/web
+
+      - name: Build
+        run: npm run build --prefix apps/web
+        env:
+          NEXT_PUBLIC_APP_URL: https://glitzevents.in
+          NEXT_PUBLIC_API_URL: https://api.glitzevents.in/api
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: apps/web/lighthouse-budget.json
+          uploadArtifacts: true
+          startServerCommand: npm run start --prefix apps/web
+          startServerReadyPattern: "Ready"
+          runs: 1
+          urls: |
+            http://localhost:3000/
+            http://localhost:3000/portfolio
+            http://localhost:3000/book-event

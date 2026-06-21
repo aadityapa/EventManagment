@@ -18,14 +18,14 @@ const VENUES = [
 
 export function HomeVenueCollection() {
   return (
-    <section id="venues" className="v4-section relative overflow-hidden bg-[var(--glitz-surface)]">
+    <section id="destinations" className="v4-section relative overflow-hidden bg-[var(--glitz-surface)]" aria-labelledby="destinations-heading">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">Where It Happens</span>
+          <span className="v4-kicker mb-6">Destinations</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
-          <h2 className="v4-display max-w-2xl">
-            Venue <span className="v4-gold-text">Collection</span>
+          <h2 id="destinations-heading" className="v4-display max-w-2xl">
+            Venue <span className="v4-gold-text">Universe</span>
           </h2>
         </ScrollReveal>
         <ScrollReveal preset="fade" delay={0.14}>
@@ -89,7 +89,7 @@ export function HomeVenueCollection() {
             onClick={() => analytics.ctaClick("explore_venues", "home_venue_collection")}
             className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--glitz-gold)] transition-colors hover:text-[var(--glitz-gold-light)]"
           >
-            Explore All Venues →
+            Enter the Destinations →
           </Link>
         </ScrollReveal>
       </div>
