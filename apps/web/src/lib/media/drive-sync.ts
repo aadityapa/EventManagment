@@ -6,8 +6,9 @@ import {
   listAllDriveFilesInFolder,
   type DriveFile,
 } from "./drive-client";
+import { listPublicDriveFolderFiles } from "./drive-public-list";
 import { buildDriveVariants, driveImageUrl } from "./drive-urls";
-import { writeMediaManifest } from "./manifest-io";
+import { readMediaManifest, writeMediaManifest } from "./manifest-io";
 import { scanMediaLibrary } from "./manifest-service";
 
 const MANIFEST_VERSION = 1;
@@ -37,8 +38,8 @@ function normalizeFolderName(name: string): MediaImageFolder | null {
   return FOLDER_ALIASES[key] ?? (MEDIA_IMAGE_FOLDERS.includes(key as MediaImageFolder) ? (key as MediaImageFolder) : null);
 }
 
-function isImageFile(file: DriveFile): boolean {
-  if (file.mimeType.startsWith(IMAGE_MIME_PREFIX)) return true;
+function isImageFile(file: Pick<DriveFile, "mimeType" | "name">): boolean {
+  if (file.mimeType?.startsWith(IMAGE_MIME_PREFIX)) return true;
   return /\.(jpe?g|png|webp|gif|avif)$/i.test(file.name);
 }
 
@@ -46,18 +47,39 @@ function isFolder(file: DriveFile): boolean {
   return file.mimeType === "application/vnd.google-apps.folder";
 }
 
-function parseSidecarMeta(filename: string): MediaSidecarMeta | null {
-  const match = filename.match(/^(.+)\.meta\.json$/i);
-  if (!match) return null;
-  return null;
+function normalizeFilename(name: string): string {
+  return name.trim().toLowerCase();
 }
 
-function assetFromDriveFile(
+async function buildFilenameFolderMap(): Promise<Map<string, MediaImageFolder>> {
+  const map = new Map<string, MediaImageFolder>();
+  const existing = await readMediaManifest();
+  if (!existing) return map;
+
+  for (const asset of existing.assets) {
+    if (!asset.filename) continue;
+    if (!MEDIA_IMAGE_FOLDERS.includes(asset.folder as MediaImageFolder)) continue;
+    map.set(normalizeFilename(asset.filename), asset.folder as MediaImageFolder);
+  }
+  return map;
+}
+
+function resolveFolderForFilename(
+  filename: string,
+  folderByFilename: Map<string, MediaImageFolder>,
+  fallback: MediaImageFolder = "gallery"
+): MediaImageFolder {
+  return folderByFilename.get(normalizeFilename(filename)) ?? fallback;
+}
+
+function assetFromDriveEntry(
   folder: MediaImageFolder,
-  file: DriveFile,
+  file: { id: string; name: string; createdTime?: string; modifiedTime?: string; imageMediaMetadata?: DriveFile["imageMediaMetadata"] },
   sidecar?: MediaSidecarMeta | null
 ): MediaAsset | null {
-  if (!isImageFile(file)) return null;
+  if (!isImageFile({ mimeType: file.imageMediaMetadata ? "image/jpeg" : "", name: file.name })) {
+    if (!/\.(jpe?g|png|webp|gif|avif)$/i.test(file.name)) return null;
+  }
 
   const baseName = file.name.replace(/\.[^.]+$/, "");
   const category = sidecar?.category ?? categoryFromFolder(folder);
@@ -90,27 +112,32 @@ function assetFromDriveFile(
   };
 }
 
-async function indexDriveFolderTree(
-  rootFolderId: string
-): Promise<{ assets: MediaAsset[]; sidecars: Map<string, MediaSidecarMeta> }> {
+function hasDriveCredentials(): boolean {
+  return Boolean(
+    process.env.GOOGLE_DRIVE_API_KEY ??
+      process.env.GOOGLE_API_KEY ??
+      process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+  );
+}
+
+function sortAssets(assets: MediaAsset[]): MediaAsset[] {
+  return [...assets].sort((a, b) => {
+    const orderA = a.sortOrder ?? 9999;
+    const orderB = b.sortOrder ?? 9999;
+    if (orderA !== orderB) return orderA - orderB;
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+}
+
+async function indexDriveFolderTreeViaApi(
+  rootFolderId: string,
+  folderByFilename: Map<string, MediaImageFolder>
+): Promise<MediaAsset[]> {
   const rootFiles = await listAllDriveFilesInFolder(rootFolderId);
-  const sidecars = new Map<string, MediaSidecarMeta>();
   const assets: MediaAsset[] = [];
 
   const subfolders = rootFiles.filter(isFolder);
   const rootImages = rootFiles.filter((f) => !isFolder(f));
-
-  for (const file of rootFiles) {
-    if (file.name.endsWith(".meta.json")) {
-      try {
-        // Sidecar JSON files aren't directly readable via list API without download.
-        // Filename pattern: photo.jpg.meta.json → associate by base name when indexing images.
-        parseSidecarMeta(file.name);
-      } catch {
-        /* ignore */
-      }
-    }
-  }
 
   for (const subfolder of subfolders) {
     const folder = normalizeFolderName(subfolder.name);
@@ -122,35 +149,63 @@ async function indexDriveFolderTree(
     const files = await listAllDriveFilesInFolder(subfolder.id);
     for (const file of files) {
       if (isFolder(file)) continue;
-      const baseName = file.name.replace(/\.[^.]+$/, "");
-      const sidecar = sidecars.get(`${folder}/${baseName}`);
-      const asset = assetFromDriveFile(folder, file, sidecar);
+      const asset = assetFromDriveEntry(folder, file);
       if (asset) assets.push(asset);
     }
   }
 
-  // Flat uploads at root — infer folder from filename prefix or default to gallery
   for (const file of rootImages) {
     if (file.name.endsWith(".meta.json")) continue;
-    const asset = assetFromDriveFile("gallery", file);
+    const folder = resolveFolderForFilename(file.name, folderByFilename);
+    const asset = assetFromDriveEntry(folder, file);
     if (asset) assets.push(asset);
   }
 
-  assets.sort((a, b) => {
-    const orderA = a.sortOrder ?? 9999;
-    const orderB = b.sortOrder ?? 9999;
-    if (orderA !== orderB) return orderA - orderB;
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  });
+  return sortAssets(assets);
+}
 
-  return { assets, sidecars };
+async function indexDriveFolderViaPublicEmbed(
+  rootFolderId: string,
+  folderByFilename: Map<string, MediaImageFolder>
+): Promise<MediaAsset[]> {
+  console.log("  ↳ Using public folder embed listing (no Drive API key)");
+  const files = await listPublicDriveFolderFiles(rootFolderId);
+  const assets: MediaAsset[] = [];
+
+  for (const file of files) {
+    const folder = resolveFolderForFilename(file.name, folderByFilename);
+    const asset = assetFromDriveEntry(folder, file);
+    if (asset) assets.push(asset);
+  }
+
+  return sortAssets(assets);
+}
+
+async function indexDriveFolder(
+  rootFolderId: string,
+  folderByFilename: Map<string, MediaImageFolder>
+): Promise<MediaAsset[]> {
+  if (hasDriveCredentials()) {
+    try {
+      const assets = await indexDriveFolderTreeViaApi(rootFolderId, folderByFilename);
+      if (assets.length > 0) return assets;
+    } catch (err) {
+      console.warn(
+        "  ⚠ Drive API listing failed:",
+        err instanceof Error ? err.message : err
+      );
+    }
+  }
+
+  return indexDriveFolderViaPublicEmbed(rootFolderId, folderByFilename);
 }
 
 export async function syncMediaFromGoogleDrive(): Promise<MediaManifest> {
   const folderId = getDriveFolderId();
   console.log(`☁️  Syncing media from Google Drive folder ${folderId}…`);
 
-  const { assets } = await indexDriveFolderTree(folderId);
+  const folderByFilename = await buildFilenameFolderMap();
+  const assets = await indexDriveFolder(folderId, folderByFilename);
 
   const manifest: MediaManifest = {
     version: MANIFEST_VERSION,

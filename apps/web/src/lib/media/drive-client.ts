@@ -168,5 +168,7 @@ export function shouldUseGoogleDrive(): boolean {
   if (process.env.GOOGLE_DRIVE_FOLDER_ID) return true;
   if (process.env.NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID) return true;
   if (process.env.MEDIA_SOURCE === "google-drive") return true;
+  // Default production folder — public embed sync works without an API key
+  if (getDriveFolderId() === "1UZR_UhiZfVvcLUNvDJi3Rvw8udkfKgYM") return true;
   return false;
 }

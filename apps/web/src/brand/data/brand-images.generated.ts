@@ -3,75 +3,75 @@
 export const GENERATED_BRAND_IMAGES = {
   "hero": {
     "video": "",
-    "poster": "/images/venues/SMB_6785.JPG",
-    "wedding": "/images/weddings/0T5A9523.JPG",
-    "corporate": "/images/venues/0T5A9825.JPG",
-    "palace": "/images/venues/0T5A8668.JPG"
+    "poster": "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
+    "wedding": "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
+    "corporate": "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "palace": "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
   },
   "weddings": [
-    "/images/weddings/0T5A9528.JPG",
-    "/images/weddings/0T5A9523.JPG",
-    "/images/weddings/0T5A9454.JPG",
-    "/images/weddings/0T5A9297.JPG",
-    "/images/weddings/0T5A9268.JPG",
-    "/images/weddings/0T5A9248.JPG"
+    "https://lh3.googleusercontent.com/d/13TF35eWflnClnh1Z_aNV-fkkMFMYt1YU=w1920",
+    "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
+    "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920",
+    "https://lh3.googleusercontent.com/d/1i0f-0uwvJ9MmhqDhZ1_N60DznRunbMFk=w1920",
+    "https://lh3.googleusercontent.com/d/1YpB0RlKWFSPUiie47muoTcB_93UpUwk1=w1920",
+    "https://lh3.googleusercontent.com/d/1o1IWmyv-yYZ0Z4QsHo61hWbK9TKYEULs=w1920"
   ],
   "corporate": [
-    "/images/venues/SMB_6785.JPG",
-    "/images/venues/4F1A7866.JPG",
-    "/images/venues/0T5A9825.JPG",
-    "/images/venues/0T5A8668.JPG"
+    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
+    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
   ],
   "destinations": [
-    "/images/venues/SMB_6785.JPG",
-    "/images/venues/4F1A7866.JPG",
-    "/images/venues/0T5A9825.JPG",
-    "/images/venues/0T5A8668.JPG"
+    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
+    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
   ],
   "venues": [
-    "/images/venues/SMB_6785.JPG",
-    "/images/venues/4F1A7866.JPG",
-    "/images/venues/0T5A9825.JPG",
-    "/images/venues/0T5A8668.JPG",
-    "/images/venues/0T5A8667.JPG",
-    "/images/venues/0T5A8660.JPG",
-    "/images/venues/0T5A8658.JPG",
-    "/images/venues/0T5A8656.JPG"
+    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
+    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
+    "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920",
+    "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "https://lh3.googleusercontent.com/d/19U-aj1LF3a0WFAyfavaGmVx8kAg45-X-=w1920",
+    "https://lh3.googleusercontent.com/d/1lJbfeSwmJtcckYFyav_XCLban-GILGHX=w1920"
   ],
   "vendors": [
-    "/images/gallery/0T5A9804.JPG",
-    "/images/gallery/0T5A9799.JPG",
-    "/images/gallery/0T5A9792.JPG",
-    "/images/gallery/0T5A9775.JPG"
+    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
+    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
+    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
+    "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920"
   ],
   "gallery": [
-    "/images/gallery/0T5A9804.JPG",
-    "/images/gallery/0T5A9799.JPG",
-    "/images/gallery/0T5A9792.JPG",
-    "/images/gallery/0T5A9775.JPG",
-    "/images/gallery/0T5A9765.JPG",
-    "/images/gallery/0T5A9762.JPG",
-    "/images/gallery/0T5A8805.JPG",
-    "/images/gallery/0T5A8798.JPG",
-    "/images/gallery/SMB_6916.JPG",
-    "/images/gallery/SMB_6908.JPG",
-    "/images/gallery/SMB_6880.JPG",
-    "/images/gallery/4F1A8316.JPG"
+    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
+    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
+    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
+    "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920",
+    "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920",
+    "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
+    "https://lh3.googleusercontent.com/d/1lVUcnKgYd5oy6NbI8G-1hZeEHSIm4VAU=w1920",
+    "https://lh3.googleusercontent.com/d/19crBMzcuGs1rlilGEUVSz33OFlMFKVW6=w1920",
+    "https://lh3.googleusercontent.com/d/1Puxtl0TgR_Ckj4cooCOzbxJ_-Wij8ZZR=w1920",
+    "https://lh3.googleusercontent.com/d/11nnAr-0ypHWl-33dsaH0moueOGnyelT9=w1920",
+    "https://lh3.googleusercontent.com/d/13k2vfjcw1gkE3_Oy-VzalisSoHi63pxi=w1920",
+    "https://lh3.googleusercontent.com/d/1Z4EC3l425F-Bm6-uZTQ7EcIyMNv8HElK=w1920"
   ],
   "blog": [
-    "/images/gallery/0T5A9804.JPG",
-    "/images/gallery/0T5A9799.JPG",
-    "/images/gallery/0T5A9792.JPG"
+    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
+    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
+    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920"
   ],
-  "contact": "/images/venues/4F1A7866.JPG",
-  "about": "/images/weddings/0T5A9523.JPG",
-  "catering": "/images/gallery/0T5A9792.JPG",
-  "decor": "/images/weddings/0T5A9454.JPG",
-  "awards": "/images/gallery/0T5A9775.JPG",
+  "contact": "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+  "about": "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
+  "catering": "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
+  "decor": "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920",
+  "awards": "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920",
   "testimonials": [
-    "/images/weddings/0T5A9528.JPG",
-    "/images/weddings/0T5A9523.JPG",
-    "/images/weddings/0T5A9454.JPG"
+    "https://lh3.googleusercontent.com/d/13TF35eWflnClnh1Z_aNV-fkkMFMYt1YU=w1920",
+    "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
+    "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920"
   ]
 } as const;
 
@@ -79,37 +79,37 @@ export const GENERATED_HERO_SLIDES = [
   {
     "category": "Grand Ballroom",
     "video": "",
-    "poster": "/images/venues/SMB_6785.JPG",
-    "alt": "SMB 6785 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
+    "alt": "0T5A8656 — Nexyyra Events"
   },
   {
     "category": "Palace Estate",
     "video": "",
-    "poster": "/images/venues/4F1A7866.JPG",
-    "alt": "4F1A7866 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+    "alt": "0T5A8658 — Nexyyra Events"
   },
   {
     "category": "Luxury Venue",
     "video": "",
-    "poster": "/images/venues/0T5A9825.JPG",
-    "alt": "0T5A9825 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "alt": "0T5A8660 — Nexyyra Events"
   },
   {
     "category": "Heritage Hall",
     "video": "",
-    "poster": "/images/venues/0T5A8668.JPG",
-    "alt": "0T5A8668 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
+    "alt": "0T5A8667 — Nexyyra Events"
   },
   {
     "category": "Garden Pavilion",
     "video": "",
-    "poster": "/images/venues/0T5A8667.JPG",
-    "alt": "0T5A8667 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920",
+    "alt": "0T5A8668 — Nexyyra Events"
   },
   {
     "category": "Convention Suite",
     "video": "",
-    "poster": "/images/venues/0T5A8660.JPG",
-    "alt": "0T5A8660 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "alt": "0T5A9825 — Nexyyra Events"
   }
 ] as const;
