@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
@@ -13,61 +14,49 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
+/** Official Nexyyra raster logos — always preloaded, never lazy */
 export const BRAND_LOGO_ASSETS = {
-  gold: {
-    full: "/brand/logo-gold.svg",
-    mark: "/brand/logo-mark-gold.svg",
-    raster: "/brand/logo-primary.png",
-  },
-  light: {
-    full: "/brand/logo-light.svg",
-    mark: "/brand/logo-mark-light.svg",
-    raster: "/brand/logo-primary.png",
-  },
+  gold: "/logo.png",
+  dark: "/logo.png",
+  jpg: "/logo.jpg",
   symbol: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",
-  /** @deprecated use gold.full */
-  primary: "/brand/logo-primary.png",
-  horizontal: "/brand/logo-primary.png",
+  /** @deprecated use gold */
+  primary: "/logo.png",
+  horizontal: "/logo.png",
+  full: "/logo.png",
 } as const;
 
-function DualThemeLogo({
-  variant,
-  className,
-  alt = "",
-  priority,
-}: {
-  variant: "full" | "mark";
+type BrandLogoImageProps = {
   className?: string;
-  alt?: string;
   priority?: boolean;
-}) {
-  const gold = variant === "mark" ? BRAND_LOGO_ASSETS.gold.mark : BRAND_LOGO_ASSETS.gold.full;
-  const light = variant === "mark" ? BRAND_LOGO_ASSETS.light.mark : BRAND_LOGO_ASSETS.light.full;
-  const width = variant === "mark" ? 96 : 440;
-  const height = variant === "mark" ? 96 : 160;
+  sizes?: string;
+};
+
+/** Dual-theme logo — gold on dark, filtered dark-gold on light */
+export function BrandLogoImage({ className, priority = true, sizes = "(max-width: 768px) 140px, 220px" }: BrandLogoImageProps) {
+  const imgProps = {
+    alt: SITE_CONFIG.name,
+    width: 440,
+    height: 160,
+    priority,
+    fetchPriority: "high" as const,
+    sizes,
+    quality: 100,
+  };
 
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={gold}
-        alt={alt}
-        width={width}
-        height={height}
-        decoding="async"
-        fetchPriority={priority ? "high" : undefined}
-        className={cn("brand-logo__theme-dark", className)}
+      <Image
+        {...imgProps}
+        src={BRAND_LOGO_ASSETS.gold}
+        className={cn("brand-logo__img brand-logo__theme-dark", className)}
       />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={light}
-        alt={alt}
-        width={width}
-        height={height}
-        decoding="async"
-        fetchPriority={priority ? "high" : undefined}
-        className={cn("brand-logo__theme-light", className)}
+      <Image
+        {...imgProps}
+        src={BRAND_LOGO_ASSETS.dark}
+        aria-hidden
+        className={cn("brand-logo__img brand-logo__theme-light", className)}
       />
     </>
   );
@@ -77,7 +66,7 @@ export function Logo({
   className,
   iconOnly = false,
   href = "/",
-  priority = false,
+  priority = true,
   variant,
   showTagline = false,
 }: LogoProps) {
@@ -87,42 +76,38 @@ export function Logo({
 
   if (resolvedVariant === "symbol") {
     content = (
-      <DualThemeLogo variant="mark" priority={priority} className={cn("brand-logo__mark", className)} />
+      <Image
+        src={BRAND_LOGO_ASSETS.symbol}
+        alt=""
+        width={96}
+        height={96}
+        priority={priority}
+        fetchPriority="high"
+        aria-hidden
+        className={cn("brand-logo__mark", className)}
+      />
     );
   } else if (resolvedVariant === "image") {
     content = (
       <span className={cn("brand-logo inline-block", className)}>
-        <DualThemeLogo variant="full" alt={SITE_CONFIG.name} priority={priority} className="brand-logo__full" />
+        <BrandLogoImage priority={priority} className="brand-logo__full" />
       </span>
     );
   } else if (resolvedVariant === "menu") {
     content = (
-      <span className={cn("brand-logo brand-logo--menu inline-flex items-center gap-3", className)}>
-        <DualThemeLogo variant="mark" priority={priority} className="brand-logo__mark" />
-        <span className="flex min-w-0 flex-col">
-          <DualThemeLogo
-            variant="full"
-            alt={SITE_CONFIG.name}
-            priority={priority}
-            className="brand-logo__full brand-logo__full--menu"
-          />
-          {showTagline && (
-            <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
-              {SITE_CONFIG.tagline}
-            </span>
-          )}
-        </span>
+      <span className={cn("brand-logo brand-logo--menu inline-flex min-w-0 items-center gap-3", className)}>
+        <BrandLogoImage priority={priority} className="brand-logo__full brand-logo__full--menu" />
+        {showTagline && (
+          <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
+            {SITE_CONFIG.tagline}
+          </span>
+        )}
       </span>
     );
   } else {
     content = (
       <span className={cn("brand-logo brand-logo--header inline-flex min-w-0 items-center", className)}>
-        <DualThemeLogo
-          variant="full"
-          alt={SITE_CONFIG.name}
-          priority={priority}
-          className="brand-logo__full"
-        />
+        <BrandLogoImage priority={priority} className="brand-logo__full" />
       </span>
     );
   }
@@ -133,7 +118,7 @@ export function Logo({
     <Link
       href={href}
       aria-label={`${SITE_CONFIG.name} — Home`}
-      className="brand-logo-link tap-target inline-flex max-w-full shrink-0 items-center transition-opacity hover:opacity-95 focus-visible:opacity-95"
+      className="brand-logo-link tap-target inline-flex max-w-full shrink-0 items-center overflow-visible transition-opacity hover:opacity-95 focus-visible:opacity-95"
     >
       {content}
     </Link>

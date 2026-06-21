@@ -162,55 +162,75 @@ a[role="button"] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Responsive brand logo — dual-theme SVG, height-based                       */
+/* Responsive brand logo — official raster, dual-theme, height-based           */
 /* -------------------------------------------------------------------------- */
 :root {
   --brand-logo-height: 2.625rem; /* 42px mobile */
-  --nav-height: clamp(4rem, 5vw, 5.5rem);
+  --nav-height: clamp(4.25rem, 5vw, 5.75rem);
 }
 
 .brand-logo-link {
-  max-width: min(100%, 16rem);
+  max-width: min(100%, 18rem);
+  overflow: visible;
+  min-height: var(--brand-logo-height);
 }
 
 .brand-logo {
   position: relative;
   isolation: isolate;
+  overflow: visible;
+  line-height: 0;
 }
 
 .brand-logo__full,
-.brand-logo__mark {
+.brand-logo__mark,
+.brand-logo__img {
   display: block;
   height: var(--brand-logo-height);
   width: auto;
   max-width: 100%;
   object-fit: contain;
+  object-position: left center;
   image-rendering: -webkit-optimize-contrast;
   transform: translateZ(0);
+  overflow: visible;
 }
 
-/* Dual-theme logo swap — no JS flash */
-.brand-logo__theme-light {
-  display: none;
+.hero-brand-logo {
+  height: clamp(3.5rem, 12vw, 5.5rem);
+  width: auto;
+  max-width: min(100%, 17.5rem);
+  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.28));
 }
 
-.brand-logo__theme-dark {
-  display: block;
+.hero-brand-tagline {
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+  max-width: 28rem;
+  overflow-wrap: break-word;
 }
 
+/* Light theme — dark gold logo for contrast on cream nav */
 html.light .brand-logo__theme-light {
   display: block;
+  filter: brightness(0.28) contrast(1.15) sepia(0.35) saturate(1.25);
 }
 
 html.light .brand-logo__theme-dark {
   display: none;
 }
 
-html.dark .brand-logo__theme-dark {
+html.dark .brand-logo__theme-dark,
+:root:not(.light) .brand-logo__theme-dark {
   display: block;
 }
 
-html.dark .brand-logo__theme-light {
+html.dark .brand-logo__theme-light,
+:root:not(.light) .brand-logo__theme-light {
+  display: none;
+}
+
+.brand-logo__theme-light,
+.brand-logo__theme-dark {
   display: none;
 }
 
@@ -220,23 +240,23 @@ html.dark .brand-logo__theme-light {
 
 /* Subtle luxury glow — theme-aware */
 .dark .brand-logo::after,
-:root:not(.light) .brand-logo::after {
+html:not(.light) .brand-logo::after {
   content: "";
   position: absolute;
-  inset: -12% -6%;
+  inset: -14% -8%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.22) 0%, transparent 68%);
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.24) 0%, transparent 68%);
   opacity: 0.85;
 }
 
 .light .brand-logo::after {
   content: "";
   position: absolute;
-  inset: -10% -5%;
+  inset: -12% -6%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(139, 105, 20, 0.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(80, 60, 20, 0.1) 0%, transparent 70%);
   opacity: 0.9;
 }
 
@@ -276,25 +296,41 @@ html.dark .brand-logo__theme-light {
   }
 }
 
+/* Tablet 768+ — 56px */
 @media (min-width: 768px) {
   :root {
-    --brand-logo-height: 3.5rem; /* 56px tablet */
+    --brand-logo-height: 3.5rem;
   }
 
   .brand-logo-link {
-    max-width: min(100%, 14rem);
+    max-width: min(100%, 16rem);
   }
 }
 
+/* Laptop 1024+ — 64px */
 @media (min-width: 1024px) {
   :root {
-    --brand-logo-height: 4.25rem; /* 68px desktop */
+    --brand-logo-height: 4rem;
     --nav-height: 5.5rem;
   }
 
   .brand-logo-link {
-    max-width: min(100%, 17.5rem);
+    max-width: min(100%, 18rem);
   }
+}
+
+/* Desktop 1440+ — 72px */
+@media (min-width: 1440px) {
+  :root {
+    --brand-logo-height: 4.5rem;
+    --nav-height: 5.75rem;
+  }
+}
+
+.brand-nav-bar {
+  overflow: visible;
+  min-height: var(--nav-height);
+  height: var(--nav-height);
 }
 
 /* Hero layout — 1.2fr narrative / 0.8fr cards on desktop */
@@ -351,7 +387,8 @@ html.dark .brand-logo__theme-light {
 }
 
 .hero-cinematic-copy [data-hero-label],
-.hero-cinematic-copy [data-hero-tagline] {
+.hero-cinematic-copy [data-hero-tagline],
+.hero-cinematic-copy .hero-brand-tagline {
   color: var(--hero-muted) !important;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
 }
@@ -363,11 +400,6 @@ html.dark .brand-logo__theme-light {
 
 .hero-cinematic-copy [data-hero-metric] span:last-child {
   color: var(--hero-muted) !important;
-}
-
-.brand-nav-bar {
-  min-height: var(--nav-height);
-  height: var(--nav-height);
 }
 
 /* -------------------------------------------------------------------------- */

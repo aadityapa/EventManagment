@@ -25,6 +25,7 @@ import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { GSAP_EASE } from "@/lib/motion";
 import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
+import { HeroBrandReveal } from "@/components/branding/hero-brand-reveal";
 import { cn } from "@/lib/utils";
 
 const HeroCinematicFx = dynamic(
@@ -140,9 +141,7 @@ export function HeroV4() {
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: GSAP_EASE.luxe } });
-      tl.from(root.querySelector("[data-hero-label]"), { y: 16, opacity: 0, duration: 0.55 }, 0.15)
-        .from(root.querySelector("[data-hero-tagline]"), { y: 12, opacity: 0, duration: 0.5 }, 0.28)
-        .from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 1, }, 0.38)
+      tl.from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 1, }, 0.35)
         .from(root.querySelector("[data-hero-subhead]"), { y: 20, opacity: 0, duration: 0.7 }, 0.58)
         .from(root.querySelectorAll("[data-hero-cta]"), { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.78)
         .from(root.querySelectorAll("[data-hero-metric]"), { y: 16, opacity: 0, duration: 0.5, stagger: 0.07 }, 0.92);
@@ -215,18 +214,7 @@ export function HeroV4() {
         <div className="brand-container relative z-20 flex flex-1 items-center py-24 pb-32 sm:py-20 md:py-24 lg:py-14 xl:py-16">
           <div className="hero-v4-grid">
             <div ref={contentRef} className="hero-v4-copy order-1 lg:order-none">
-              <span
-                data-hero-label
-                className="brand-label mb-2 block text-[var(--adaptive-accent,var(--glitz-gold))]"
-              >
-                NEXYYRA EVENTS
-              </span>
-              <span
-                data-hero-tagline
-                className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--adaptive-muted)]"
-              >
-                The Next Era of Celebrations
-              </span>
+              <HeroBrandReveal className="mb-5" delay={0.1} />
 
               <h1
                 data-hero-headline

@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { registerGsap } from "@/lib/gsap/use-gsap";
-import { GSAP_EASE } from "@/lib/motion";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
 import { trackEvent } from "@/lib/analytics";
 import { SITE_CONFIG } from "@/lib/constants";
-import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
+import { EASE } from "@/lib/motion";
 
-export const LOADER_STORAGE_KEY = "glitz-v5-premiere-seen";
+export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
 export function hasSeenPremiere() {
@@ -19,46 +19,72 @@ export function hasSeenPremiere() {
   );
 }
 
-export function useLoaderSound() {
-  return useCallback(() => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("glitz:loader-sound-ready"));
-    }
-  }, []);
-}
-
-const PARTICLE_COUNT = 28;
-
-function createParticles(container: HTMLElement) {
-  const fragments: HTMLDivElement[] = [];
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const p = document.createElement("div");
-    const size = 2 + Math.random() * 4;
-    p.className = "pointer-events-none absolute rounded-full";
-    p.style.width = `${size}px`;
-    p.style.height = `${size}px`;
-    p.style.background = `radial-gradient(circle, rgba(212,175,55,${0.4 + Math.random() * 0.5}), transparent)`;
-    p.style.left = `${Math.random() * 100}%`;
-    p.style.top = `${Math.random() * 100}%`;
-    container.appendChild(p);
-    fragments.push(p);
-  }
-  return fragments;
-}
-
 type Props = {
   onComplete: () => void;
   onSkip?: () => void;
 };
 
-/** Golden premiere — logo, tagline, hero reveal in ≤2.5s */
+const PARTICLE_COUNT = 36;
+
+function GoldParticles() {
+  const reducedMotion = useReducedMotion();
+  const particles = useMemo(
+    () =>
+      Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 2 + Math.random() * 3,
+        duration: 10 + Math.random() * 8,
+        delay: Math.random() * 1.5,
+      })),
+    []
+  );
+
+  if (reducedMotion) return null;
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {particles.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+            background: `radial-gradient(circle, rgba(212,175,55,${0.35 + Math.random() * 0.4}), transparent)`,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: [0, 0.65, 0.45, 0.65],
+            y: [0, -18, 0],
+            x: [0, (Math.random() - 0.5) * 14, 0],
+          }}
+          transition={{
+            opacity: { duration: 0.8, delay: 0 },
+            y: { duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: p.delay },
+            x: { duration: p.duration * 1.2, repeat: Infinity, ease: "easeInOut", delay: p.delay },
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function useLoaderSound() {
+  return () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("glitz:loader-sound-ready"));
+    }
+  };
+}
+
+/** Cinematic intro — particles 0s, logo 0.5s, tagline 1.0s, dissolve 1.5s */
 export function UniverseLoader({ onComplete, onSkip }: Props) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const taglineRef = useRef<HTMLDivElement>(null);
-  const particlesRef = useRef<HTMLDivElement>(null);
-  const playLoaderSound = useLoaderSound();
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const reducedMotion = useReducedMotion();
+  const [dissolving, setDissolving] = useState(false);
 
   const finish = useCallback(() => {
     sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
@@ -67,109 +93,88 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
     onComplete();
   }, [onComplete]);
 
-  const skipToEnd = useCallback(() => {
+  const skip = useCallback(() => {
     trackEvent("premiere_skip");
     onSkip?.();
-    tlRef.current?.progress(0.92, false);
-    tlRef.current?.play();
+    setDissolving(true);
   }, [onSkip]);
 
   useEffect(() => {
-    registerGsap();
-    const root = rootRef.current;
-    const logo = logoRef.current;
-    const tagline = taglineRef.current;
-    const particlesEl = particlesRef.current;
-    if (!root || !logo || !tagline || !particlesEl) return;
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
+    if (reducedMotion) {
       sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
       onComplete();
       return;
     }
+    const dissolveTimer = window.setTimeout(() => setDissolving(true), 1500);
+    return () => window.clearTimeout(dissolveTimer);
+  }, [reducedMotion, onComplete]);
 
-    const particles = createParticles(particlesEl);
-    const words = tagline.querySelectorAll("[data-word]");
-
-    gsap.set(root, { opacity: 1 });
-    gsap.set([logo, tagline], { opacity: 0 });
-    gsap.set(logo, { scale: 0.92, y: 12 });
-    gsap.set(particles, { opacity: 0, scale: 0.6 });
-
-    const tl = gsap.timeline({ onComplete: finish });
-    tlRef.current = tl;
-
-    // Golden particles
-    tl.to(particles, { opacity: 0.7, scale: 1, duration: 0.45, stagger: 0.015, ease: GSAP_EASE.silk }, 0)
-      .call(() => playLoaderSound(), undefined, 0.15);
-
-    // Logo reveal
-    tl.to(logo, { opacity: 1, scale: 1, y: 0, duration: 0.65, ease: GSAP_EASE.luxe }, 0.35);
-
-    // Tagline reveal
-    tl.to(tagline, { opacity: 1, duration: 0.4, ease: GSAP_EASE.silk }, 1.05)
-      .from(words, { yPercent: 100, opacity: 0, duration: 0.55, stagger: 0.08, ease: GSAP_EASE.luxe }, 1.15);
-
-    // Fade to hero (content visible beneath)
-    tl.to([logo, tagline, particlesEl], { opacity: 0, duration: 0.55, ease: GSAP_EASE.silk }, 1.85)
-      .to(root, { opacity: 0, duration: 0.45, ease: GSAP_EASE.silk }, 2.05);
-
-    return () => {
-      tl.kill();
-      particles.forEach((p) => p.remove());
-    };
-  }, [finish, onComplete, playLoaderSound]);
+  if (reducedMotion) return null;
 
   return (
-    <div
-      ref={rootRef}
+    <motion.div
       role="dialog"
-      aria-label="Welcome"
+      aria-label="Welcome to Nexyyra Events"
       aria-live="polite"
-      aria-busy="true"
-      className="fixed inset-0 z-[100] bg-[radial-gradient(ellipse_at_center,#1a1510_0%,#050505_72%)]"
+      aria-busy={!dissolving}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: dissolving ? 0 : 1 }}
+      transition={{ duration: 0.55, ease: EASE.silk }}
+      onAnimationComplete={() => {
+        if (dissolving) finish();
+      }}
     >
       <p className="sr-only">Welcome to {SITE_CONFIG.name}</p>
 
       <button
         type="button"
-        onClick={skipToEnd}
+        onClick={skip}
         className="absolute right-4 top-4 z-[110] min-h-[44px] rounded-full border border-[var(--gold)]/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--gold)] transition-colors hover:border-[var(--gold)] hover:text-[#fff8eb] sm:right-6 sm:top-6"
       >
         Skip
       </button>
 
-      <div ref={particlesRef} className="pointer-events-none absolute inset-0 z-[1]" />
+      <GoldParticles />
 
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-6">
-        <div ref={logoRef} className="brand-logo mb-8 opacity-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={BRAND_LOGO_ASSETS.gold.full}
+      <div className="relative z-[2] flex max-w-[min(92vw,420px)] flex-col items-center px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88, filter: "blur(12px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 0.75, ease: EASE.luxe, delay: 0.5 }}
+          className="mb-6 w-full overflow-visible"
+        >
+          <Image
+            src={BRAND_LOGO_ASSETS.gold}
             alt={SITE_CONFIG.name}
             width={440}
             height={160}
-            className="brand-logo__full mx-auto"
+            priority
+            fetchPriority="high"
+            quality={100}
+            className="mx-auto max-h-[clamp(120px,28vw,200px)] w-auto max-w-full object-contain"
           />
-        </div>
+        </motion.div>
 
-        <div ref={taglineRef} className="text-center opacity-0">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]">
-            {SITE_CONFIG.name}
-          </p>
-          <h2 className="font-[family-name:var(--font-playfair)] text-[clamp(1.25rem,4vw,2rem)] font-semibold text-[#fff8eb]">
-            {["The Next Era of", "Celebrations"].map((line) => (
-              <span key={line} className="block overflow-hidden py-0.5">
-                <span data-word className="inline-block">
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h2>
-        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: EASE.silk, delay: 0.85 }}
+          className="mb-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
+        >
+          NEXYYRA EVENTS
+        </motion.p>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 20, letterSpacing: "0.14em" }}
+          animate={{ opacity: 1, y: 0, letterSpacing: "0.26em" }}
+          transition={{ duration: 0.6, ease: EASE.luxe, delay: 1.0 }}
+          className="font-[family-name:var(--font-playfair)] text-[clamp(0.75rem,2.8vw,1.125rem)] font-medium uppercase text-[#fff8eb]"
+        >
+          The Next Era of Celebrations
+        </motion.h2>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

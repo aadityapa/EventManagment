@@ -2,7 +2,7 @@ import { unstable_cache } from "next/cache";
 import type { MediaAsset, MediaImageFolder, MediaQuery, MediaVideoAsset } from "./types";
 import { getMediaProvider } from "./providers";
 
-const CACHE_TAG = "media-manifest";
+const CACHE_TAG = "media-manifest-v2";
 
 async function fetchAssetsUncached(query?: MediaQuery): Promise<MediaAsset[]> {
   const provider = getMediaProvider();
