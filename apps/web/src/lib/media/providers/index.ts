@@ -132,12 +132,47 @@ export class PayloadMediaProvider implements MediaProvider {
   }
 }
 
+/** Reads build-time manifest synced from Google Drive (no runtime Drive API calls). */
+export class GoogleDriveMediaProvider implements MediaProvider {
+  readonly name = "google-drive";
+
+  async getManifest(): Promise<MediaManifest> {
+    return getOrRebuildManifest();
+  }
+
+  async query(query?: MediaQuery): Promise<MediaAsset[]> {
+    const manifest = await this.getManifest();
+    let results = manifest.assets.filter((a) => matchesQuery(a, query));
+    if (query?.limit) results = results.slice(0, query.limit);
+    return results;
+  }
+
+  async getVideos(): Promise<MediaVideoAsset[]> {
+    const manifest = await this.getManifest();
+    return manifest.videos;
+  }
+
+  async upload(): Promise<MediaAsset> {
+    throw new Error(
+      "GoogleDriveMediaProvider: upload photos to the shared Drive folder, then run npm run media:sync"
+    );
+  }
+
+  async reindex(): Promise<MediaManifest> {
+    return refreshMediaManifest();
+  }
+}
+
 let cachedProvider: MediaProvider | null = null;
 
 export function getMediaProvider(): MediaProvider {
   if (cachedProvider) return cachedProvider;
 
-  const provider = process.env.MEDIA_PROVIDER ?? "filesystem";
+  const provider =
+    process.env.MEDIA_PROVIDER ??
+    (process.env.GOOGLE_DRIVE_FOLDER_ID || process.env.NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID
+      ? "google-drive"
+      : "filesystem");
 
   switch (provider) {
     case "sanity":
@@ -151,6 +186,9 @@ export function getMediaProvider(): MediaProvider {
       break;
     case "payload":
       cachedProvider = new PayloadMediaProvider();
+      break;
+    case "google-drive":
+      cachedProvider = new GoogleDriveMediaProvider();
       break;
     default:
       cachedProvider = new FilesystemMediaProvider();

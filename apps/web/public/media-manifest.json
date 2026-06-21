@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-21T14:42:39.631Z",
+  "generatedAt": "2026-06-21T15:17:40.973Z",
   "provider": "filesystem",
   "assets": [
     {
@@ -667,23 +667,6 @@
       "updatedAt": "2026-05-06T01:02:18.000Z"
     },
     {
-      "id": "gallery-0T5A8892",
-      "type": "image",
-      "folder": "gallery",
-      "category": "wedding",
-      "src": "/images/gallery/0T5A8892.JPG",
-      "filename": "0T5A8892.JPG",
-      "title": "0T5A8892",
-      "alt": "0T5A8892 — Nexyyra Events",
-      "width": 1920,
-      "height": 1280,
-      "aspectRatio": 1.5,
-      "blurDataURL": "",
-      "variants": [],
-      "createdAt": "2026-06-21T13:27:24.860Z",
-      "updatedAt": "2026-05-05T19:41:57.000Z"
-    },
-    {
       "id": "weddings-SMB_7072",
       "type": "image",
       "folder": "weddings",
@@ -699,23 +682,6 @@
       "variants": [],
       "createdAt": "2026-06-21T13:26:22.195Z",
       "updatedAt": "2026-05-05T19:31:02.000Z"
-    },
-    {
-      "id": "gallery-0T5A8811",
-      "type": "image",
-      "folder": "gallery",
-      "category": "wedding",
-      "src": "/images/gallery/0T5A8811.JPG",
-      "filename": "0T5A8811.JPG",
-      "title": "0T5A8811",
-      "alt": "0T5A8811 — Nexyyra Events",
-      "width": 1920,
-      "height": 1280,
-      "aspectRatio": 1.5,
-      "blurDataURL": "",
-      "variants": [],
-      "createdAt": "2026-06-21T13:27:24.848Z",
-      "updatedAt": "2026-05-05T19:06:36.000Z"
     },
     {
       "id": "gallery-0T5A8805",
@@ -869,23 +835,6 @@
       "variants": [],
       "createdAt": "2026-06-21T13:27:25.014Z",
       "updatedAt": "2026-05-05T17:41:44.000Z"
-    },
-    {
-      "id": "gallery-0T5A8648",
-      "type": "image",
-      "folder": "gallery",
-      "category": "wedding",
-      "src": "/images/gallery/0T5A8648.JPG",
-      "filename": "0T5A8648.JPG",
-      "title": "0T5A8648",
-      "alt": "0T5A8648 — Nexyyra Events",
-      "width": 1920,
-      "height": 1280,
-      "aspectRatio": 1.5,
-      "blurDataURL": "",
-      "variants": [],
-      "createdAt": "2026-06-21T13:27:24.781Z",
-      "updatedAt": "2026-05-05T17:36:29.000Z"
     },
     {
       "id": "gallery-SMB_6880",

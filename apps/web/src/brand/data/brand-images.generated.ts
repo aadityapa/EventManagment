@@ -51,12 +51,12 @@ export const GENERATED_BRAND_IMAGES = {
     "/images/gallery/0T5A9775.JPG",
     "/images/gallery/0T5A9765.JPG",
     "/images/gallery/0T5A9762.JPG",
-    "/images/gallery/0T5A8892.JPG",
-    "/images/gallery/0T5A8811.JPG",
     "/images/gallery/0T5A8805.JPG",
     "/images/gallery/0T5A8798.JPG",
     "/images/gallery/SMB_6916.JPG",
-    "/images/gallery/SMB_6908.JPG"
+    "/images/gallery/SMB_6908.JPG",
+    "/images/gallery/SMB_6880.JPG",
+    "/images/gallery/4F1A8316.JPG"
   ],
   "blog": [
     "/images/gallery/0T5A9804.JPG",

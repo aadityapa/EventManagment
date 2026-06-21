@@ -6,6 +6,7 @@
     "dev": "next dev",
     "cache:clean": "node -e \"const fs=require('fs');const paths=['.next','node_modules/.cache'];for(const p of paths){try{fs.rmSync(p,{recursive:true,force:true});console.log('removed',p)}catch(e){}}\"",
     "media:sync": "npx tsx scripts/sync-media.ts",
+    "media:drive-checklist": "npx tsx scripts/list-local-images-for-drive.ts",
     "prebuild": "npm run cache:clean && npm run media:sync",
     "build": "next build",
     "start": "next start",

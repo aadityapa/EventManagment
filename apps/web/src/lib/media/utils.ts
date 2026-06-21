@@ -1,7 +1,14 @@
 import type { MediaAsset } from "./types";
+import { driveImageUrl, isGoogleDriveSrc } from "./drive-urls";
 
 export function pickBestVariantSrc(asset: MediaAsset, targetWidth: number): string {
-  if (!asset.variants.length) return asset.src;
+  if (!asset.variants.length) {
+    if (isGoogleDriveSrc(asset.src)) {
+      const fileIdMatch = asset.src.match(/\/d\/([^=/?]+)/);
+      if (fileIdMatch) return driveImageUrl(fileIdMatch[1], targetWidth);
+    }
+    return asset.src;
+  }
   const sorted = [...asset.variants].sort((a, b) => a.width - b.width);
   const match = sorted.find((v) => v.width >= targetWidth);
   return match?.src ?? sorted[sorted.length - 1]?.src ?? asset.src;

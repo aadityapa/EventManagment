@@ -17,6 +17,16 @@ apps/web/public/images/**/*-828w.webp
 apps/web/public/images/**/*-1200w.webp
 apps/web/public/images/**/*-1920w.webp
 apps/web/public/images/**/*.JPG.webp
+# Uploaded photos — hosted on Google Drive (sync via npm run media:sync)
+apps/web/public/images/**/*.JPG
+apps/web/public/images/**/*.jpg
+apps/web/public/images/**/*.jpeg
+apps/web/public/images/**/*.JPEG
+apps/web/public/images/**/*.png
+apps/web/public/images/**/*.PNG
+apps/web/public/images/**/*.webp
+!apps/web/public/images/placeholders/**
+!apps/web/public/images/**/.gitkeep
 .turbo/
 coverage/
 *.tsbuildinfo
