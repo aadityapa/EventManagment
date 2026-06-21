@@ -1,19 +1,19 @@
 "use client";
 
-import { useRef, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Users, Clock, LayoutGrid, List, ArrowUpRight, Play } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { MagneticButton } from "@/components/effects/magnetic-button";
-import { PortfolioGrid } from "@/components/media";
+import { LuxuryMasonryGallery } from "@/components/media";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import type { MediaAsset } from "@/lib/media/types";
+import { MEDIA_CATEGORY_LABELS } from "@/lib/media/categories";
 import { ScrollReveal, Parallax, EASE, DUR } from "@/lib/motion";
-import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -41,48 +41,44 @@ function matchesFilter(cs: (typeof BRAND_CASE_STUDIES)[number], filter: Filter) 
   return cs.category === filter;
 }
 
+function matchesMediaFilter(asset: MediaAsset, filter: Filter): boolean {
+  if (filter === "All") return true;
+  if (filter === "Luxury") return asset.featured === true;
+  const label = MEDIA_CATEGORY_LABELS[asset.category];
+  if (filter === "Wedding") return label === "Wedding";
+  if (filter === "Corporate") return label === "Corporate";
+  if (filter === "Destination") return label === "Destination";
+  if (filter === "Fashion") return label === "Fashion Show";
+  if (filter === "Awards") return label === "Award Ceremony";
+  if (filter === "Concert") {
+    return (
+      asset.folder === "gallery" ||
+      label === "Celebrity" ||
+      label === "Brand Activation"
+    );
+  }
+  return false;
+}
+
 export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
   const [active, setActive] = useState<Filter>("All");
   const [view, setView] = useState<"grid" | "story">("grid");
-  const featuredRef = useRef<HTMLElement>(null);
-  const reducedMotion = useReducedMotion();
 
   const filtered = useMemo(
     () => BRAND_CASE_STUDIES.filter((c) => matchesFilter(c, active)),
     [active]
   );
+  const filteredMedia = useMemo(
+    () => (liveMedia ?? []).filter((asset) => matchesMediaFilter(asset, active)),
+    [liveMedia, active]
+  );
   const featured = filtered[0] ?? BRAND_CASE_STUDIES[0];
   const gridItems = filtered.filter((c) => c.id !== featured.id);
 
-  useGsapContext(featuredRef, () => {
-    if (reducedMotion) return;
-    const section = featuredRef.current;
-    if (!section) return;
-    const caption = section.querySelector("[data-featured-caption]");
-    if (!caption) return;
-
-    gsap.fromTo(
-      caption,
-      { y: 40, opacity: 0.6 },
-      {
-        y: 0,
-        opacity: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=60%",
-          pin: true,
-          scrub: 1,
-        },
-      }
-    );
-  }, [reducedMotion, featured.id]);
-
   return (
     <div className="brand-root">
-      {/* ACT 1 — Hero */}
-      <section className="relative flex min-h-[72svh] items-end overflow-hidden">
+      {/* Hero */}
+      <section className="relative flex min-h-[68svh] items-end overflow-hidden">
         <BrandImage
           src={BRAND_IMAGES.hero.corporate}
           alt="Corporate gala production — Nexyyra Events portfolio"
@@ -92,7 +88,7 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/25" />
-        <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
+        <div className="brand-container relative w-full pb-14 pt-[calc(var(--nav-height)+2rem)] sm:pb-16">
           <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Our Films</span>
             <h1 className="v4-display text-white">
@@ -106,8 +102,11 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
         </div>
       </section>
 
-      {/* ACT 2 — Filters + view toggle */}
-      <section className="sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl">
+      {/* Sticky filters — sits below fixed site header, never over gallery photos */}
+      <section
+        className="sticky top-[var(--nav-height)] z-40 border-b border-[var(--glitz-border)] bg-[var(--glitz-bg)]/98 backdrop-blur-xl"
+        aria-label="Portfolio filters"
+      >
         <div className="brand-container flex flex-wrap items-center justify-between gap-4 py-4">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter portfolio">
             {FILTERS.map((f) => (
@@ -157,28 +156,64 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
         </div>
       </section>
 
-      {/* ACT 3 — Featured case film (sticky pin) */}
+      {/* Production gallery — primary photo grid, directly below filters */}
+      {liveMedia && liveMedia.length > 0 && (
+        <section
+          id="production-gallery"
+          className="v4-section scroll-mt-[calc(var(--nav-height)+5rem)] bg-[var(--glitz-bg)]"
+        >
+          <div className="brand-container">
+            <ScrollReveal preset="reveal">
+              <span className="v4-kicker mb-4">Live Archive</span>
+              <h2 className="v4-title">
+                {active === "All" ? "Production Gallery" : `${active} Gallery`}
+              </h2>
+              <p className="mt-3 max-w-xl text-muted">
+                {filteredMedia.length > 0
+                  ? `${filteredMedia.length} photos from our media library — tap any image to view full size.`
+                  : "No photos in this category yet — try another filter or view all work."}
+              </p>
+            </ScrollReveal>
+            <div className="mt-10">
+              {filteredMedia.length > 0 ? (
+                <LuxuryMasonryGallery assets={filteredMedia} showFilters={false} />
+              ) : (
+                <GlassPanel className="px-6 py-10 text-center">
+                  <p className="text-muted">
+                    No gallery images match this filter.{" "}
+                    <button
+                      type="button"
+                      onClick={() => setActive("All")}
+                      className="font-semibold text-[var(--glitz-gold)] hover:underline"
+                    >
+                      View all photos
+                    </button>
+                  </p>
+                </GlassPanel>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Featured case — compact spotlight, no scroll pin */}
       <section
-        ref={featuredRef}
         id={featured.id}
-        className="relative min-h-[100svh] bg-[var(--glitz-bg)]"
+        className="relative border-t border-[var(--glitz-border)] bg-[var(--glitz-bg)]"
         aria-labelledby="featured-case-heading"
       >
-        <div className="relative h-[100svh] overflow-hidden">
-          <Parallax distance={50} className="absolute inset-0">
+        <div className="relative min-h-[56svh] overflow-hidden lg:min-h-[62svh]">
+          <Parallax distance={36} className="absolute inset-0">
             <BrandImage
               src={featured.image}
               alt={featured.title}
               fill
               sizes="100vw"
-              className="scale-105 object-cover"
+              className="object-cover"
             />
           </Parallax>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
-          <div
-            data-featured-caption
-            className="absolute inset-x-0 bottom-0 brand-container pb-16 pt-24 sm:pb-20"
-          >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/20" />
+          <div className="absolute inset-x-0 bottom-0 brand-container pb-12 pt-20 sm:pb-14">
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--glitz-gold)]">
               Featured · {featured.category}
             </span>
@@ -214,7 +249,7 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
         </div>
       </section>
 
-      {/* ACT 4 — Grid or story */}
+      {/* Case studies */}
       <section className="v4-section bg-[var(--glitz-surface)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal">
@@ -273,7 +308,7 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
         </div>
       </section>
 
-      {/* ACT 5 — CTA */}
+      {/* CTA */}
       <section className="v4-section-lg v4-dune-glow bg-[var(--glitz-bg)]">
         <div className="brand-container">
           <ScrollReveal preset="scale">
@@ -305,23 +340,6 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
           </ScrollReveal>
         </div>
       </section>
-
-      {liveMedia && liveMedia.length > 0 && (
-        <section className="v4-section border-t border-[var(--glitz-border)]">
-          <div className="brand-container">
-            <ScrollReveal preset="reveal">
-              <span className="v4-kicker mb-4">Live Archive</span>
-              <h2 className="v4-title">Production Gallery</h2>
-              <p className="mt-3 max-w-xl text-muted">
-                Automatically updated from the media library — no manual code changes required.
-              </p>
-            </ScrollReveal>
-            <div className="mt-10">
-              <PortfolioGrid assets={liveMedia} columns={3} />
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 }
@@ -335,48 +353,48 @@ function CaseGridCard({
 }) {
   return (
     <Link href={`/portfolio/${cs.id}`} className="block">
-    <motion.article
-      id={cs.id}
-      layout
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ delay: index * 0.05, duration: DUR.base, ease: EASE.luxe }}
-      whileHover={{ y: -6 }}
-      className="group v4-glass overflow-hidden rounded-[var(--v4-radius-lg)]"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <BrandImage
-          src={cs.image}
-          alt={`${cs.title} — ${cs.venue}`}
-          fill
-          sizes="33vw"
-          loading="lazy"
-          className="object-cover transition-transform duration-[1.2s] ease-[var(--v4-ease-luxe)] group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/50 bg-black/40 backdrop-blur-sm">
-            <Play className="h-5 w-5 text-[var(--glitz-gold)]" aria-hidden="true" />
+      <motion.article
+        id={cs.id}
+        layout
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ delay: index * 0.05, duration: DUR.base, ease: EASE.luxe }}
+        whileHover={{ y: -6 }}
+        className="group v4-glass overflow-hidden rounded-[var(--v4-radius-lg)]"
+      >
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <BrandImage
+            src={cs.image}
+            alt={`${cs.title} — ${cs.venue}`}
+            fill
+            sizes="33vw"
+            loading="lazy"
+            className="object-cover transition-transform duration-[1.2s] ease-[var(--v4-ease-luxe)] group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/50 bg-black/40 backdrop-blur-sm">
+              <Play className="h-5 w-5 text-[var(--glitz-gold)]" aria-hidden="true" />
+            </span>
+          </div>
+          <span className="absolute left-4 top-4 rounded-full border border-[var(--glitz-gold)]/40 bg-black/45 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--glitz-gold)]">
+            {cs.category}
           </span>
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <h3 className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
+              {cs.title}
+            </h3>
+            <p className="mt-1 text-xs text-white/70">{cs.venue}</p>
+          </div>
         </div>
-        <span className="absolute left-4 top-4 rounded-full border border-[var(--glitz-gold)]/40 bg-black/45 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--glitz-gold)]">
-          {cs.category}
-        </span>
-        <div className="absolute inset-x-0 bottom-0 p-5">
-          <h3 className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
-            {cs.title}
-          </h3>
-          <p className="mt-1 text-xs text-white/70">{cs.venue}</p>
+        <div className="p-5">
+          <p className="line-clamp-2 text-sm text-[var(--text-secondary)]">{cs.story}</p>
+          <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
+            {cs.budget}
+          </p>
         </div>
-      </div>
-      <div className="p-5">
-        <p className="line-clamp-2 text-sm text-[var(--text-secondary)]">{cs.story}</p>
-        <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
-          {cs.budget}
-        </p>
-      </div>
-    </motion.article>
+      </motion.article>
     </Link>
   );
 }

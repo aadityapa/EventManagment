@@ -167,6 +167,7 @@ a[role="button"] {
 :root {
   --brand-logo-height: 2.75rem; /* 44px mobile */
   --nav-height: 5rem; /* 80px mobile */
+  --header-height: var(--nav-height);
   --brand-nav-active: #c9a227;
   --brand-nav-gap: 2rem; /* 32px mobile */
 }
