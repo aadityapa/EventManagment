@@ -71,7 +71,7 @@ export function buildBrandImageMap(assets: MediaAsset[]): BrandImageMap {
 
   const venueSrcs = pickMany(venues, 12);
   const weddingSrcs = pickMany(weddings, 8);
-  const gallerySrcs = pickMany(gallery, 16);
+  const gallerySrcs = gallery.map((a) => a.src);
   const corporateSrcs = pickMany(corporate, 6);
   const destinationSrcs = pickMany(destination, 6);
 
@@ -94,7 +94,9 @@ export function buildBrandImageMap(assets: MediaAsset[]): BrandImageMap {
     destinations: pickOrPlaceholder(destinationSrcs, COMING_SOON_IMAGES.destination, 4),
     venues: pickOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 8),
     vendors: pickOrPlaceholder(pickMany(gallery, 5), COMING_SOON_IMAGES.generic, 4),
-    gallery: pickOrPlaceholder(gallerySrcs, COMING_SOON_IMAGES.portfolio, 12),
+    gallery: gallerySrcs.length
+      ? gallerySrcs
+      : pickOrPlaceholder([], COMING_SOON_IMAGES.portfolio, 4),
     blog: pickOrPlaceholder(pickMany(gallery, 3), COMING_SOON_IMAGES.generic, 3),
     contact: pickOneOrPlaceholder(venueSrcs, COMING_SOON_IMAGES.generic, 1),
     about: pickOneOrPlaceholder(weddingSrcs, COMING_SOON_IMAGES.wedding, 1),

@@ -1,8 +1,39 @@
 import { unstable_cache } from "next/cache";
 import type { MediaAsset, MediaImageFolder, MediaQuery, MediaVideoAsset } from "./types";
 import { getMediaProvider } from "./providers";
+import { isComingSoonImage } from "./placeholders";
 
 const CACHE_TAG = "media-manifest-v2";
+
+const GALLERY_FOLDER_ORDER: Record<string, number> = {
+  gallery: 0,
+  weddings: 1,
+  venues: 2,
+  hero: 3,
+  celebrity: 4,
+  corporate: 5,
+  destination: 6,
+  portfolio: 7,
+  stories: 8,
+};
+
+function dedupeAssets(assets: MediaAsset[]): MediaAsset[] {
+  const seen = new Set<string>();
+  return assets.filter((asset) => {
+    if (seen.has(asset.src)) return false;
+    seen.add(asset.src);
+    return true;
+  });
+}
+
+function sortGalleryAssets(assets: MediaAsset[]): MediaAsset[] {
+  return [...assets].sort((a, b) => {
+    const folderDelta =
+      (GALLERY_FOLDER_ORDER[a.folder] ?? 99) - (GALLERY_FOLDER_ORDER[b.folder] ?? 99);
+    if (folderDelta !== 0) return folderDelta;
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+}
 
 async function fetchAssetsUncached(query?: MediaQuery): Promise<MediaAsset[]> {
   const provider = getMediaProvider();
@@ -35,9 +66,9 @@ export async function getHeroMedia(limit = 8): Promise<MediaAsset[]> {
 }
 
 export async function getGalleryMedia(): Promise<MediaAsset[]> {
-  const gallery = await getMediaAssets(JSON.stringify({ folder: "gallery" }));
-  if (gallery.length) return gallery;
-  return getMediaAssets(JSON.stringify({ limit: 24 }));
+  const all = await getMediaAssets(JSON.stringify({ type: "image" }));
+  const real = all.filter((asset) => !isComingSoonImage(asset.src));
+  return sortGalleryAssets(dedupeAssets(real));
 }
 
 export async function getPortfolioMedia(): Promise<MediaAsset[]> {

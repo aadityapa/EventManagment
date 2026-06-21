@@ -56,7 +56,17 @@ export const GENERATED_BRAND_IMAGES = {
     "/images/gallery/0T5A8805.JPG",
     "/images/gallery/0T5A8798.JPG",
     "/images/gallery/SMB_6916.JPG",
-    "/images/gallery/SMB_6908.JPG"
+    "/images/gallery/SMB_6908.JPG",
+    "/images/gallery/0T5A8648.JPG",
+    "/images/gallery/SMB_6880.JPG",
+    "/images/gallery/4F1A8316.JPG",
+    "/images/gallery/4F1A8065.JPG",
+    "/images/gallery/4F1A8046.JPG",
+    "/images/gallery/4F1A8037.JPG",
+    "/images/gallery/4F1A8027.JPG",
+    "/images/gallery/4F1A7941.JPG",
+    "/images/gallery/4F1A7917.JPG",
+    "/images/gallery/4F1A7904.JPG"
   ],
   "blog": [
     "/images/gallery/0T5A9804.JPG",

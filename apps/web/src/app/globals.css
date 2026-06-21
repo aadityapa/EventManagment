@@ -333,3 +333,9 @@ html.lenis body {
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
+
+/* Gallery masonry — defer off-screen paint for smoother scroll */
+.gallery-masonry-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 380px 480px;
+}

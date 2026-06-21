@@ -9,7 +9,7 @@ export const metadata = generateSEO({
   path: "/gallery",
 });
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function GalleryPage() {
   const [galleryAssets, videos] = await Promise.all([

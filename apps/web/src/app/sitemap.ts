@@ -44,7 +44,7 @@ function sitemapImage(src: string): string {
   return absUrl(BRAND_IMAGES.hero.poster);
 }
 
-function sitemapImages(sources: string[]): string[] {
+function sitemapImages(sources: readonly string[]): string[] {
   return sources.map(sitemapImage);
 }
 
@@ -66,7 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: path === "" ? 1 : ["/privacy", "/terms", "/refund"].includes(path) ? 0.3 : 0.8,
     };
     if (path === "/gallery") {
-      entry.images = sitemapImages(BRAND_IMAGES.gallery.slice(0, 12));
+      entry.images = sitemapImages(BRAND_IMAGES.gallery);
     }
     if (path === "/portfolio") {
       entry.images = sitemapImages(BRAND_CASE_STUDIES.slice(0, 8).map((cs) => cs.image));

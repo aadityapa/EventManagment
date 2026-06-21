@@ -52,16 +52,27 @@ export function GalleryView({ assets, heroSrc, videoSrc, videoPoster }: Props) {
           <ScrollReveal preset="fade" delay={0.12} className="mt-8">
             <GlassPanel className="relative overflow-hidden p-0">
               <div className="relative aspect-[21/9] min-h-[240px] w-full overflow-hidden bg-black">
-                <video
-                  src={videoSrc}
-                  poster={videoPoster}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay={!reducedMotion}
-                  className="h-full w-full object-cover"
-                  aria-label="Nexyyra Events highlight reel"
-                />
+                {videoSrc ? (
+                  <video
+                    src={videoSrc}
+                    poster={videoPoster}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    autoPlay={!reducedMotion}
+                    className="h-full w-full object-cover"
+                    aria-label="Nexyyra Events highlight reel"
+                  />
+                ) : (
+                  <BrandImage
+                    src={videoPoster || heroSrc}
+                    alt="Nexyyra Events gallery highlight"
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
                 <div className="absolute bottom-6 left-6 flex items-center gap-2 text-sm text-white/90">
                   <Play className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />

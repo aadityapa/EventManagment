@@ -48,7 +48,7 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
               aria-pressed={activeFilter === label}
               onClick={() => setActiveFilter(label)}
               className={cn(
-                "rounded-full border px-4 py-2 text-xs font-semibold transition-all sm:px-5 sm:py-2.5 sm:text-sm",
+                "rounded-full border px-4 py-2 text-xs font-semibold transition-colors sm:px-5 sm:py-2.5 sm:text-sm",
                 activeFilter === label
                   ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)]"
                   : "border-[var(--glitz-border)] text-muted hover:border-[var(--glitz-gold)]/40"
@@ -60,12 +60,17 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
         </div>
       )}
 
+      <p className="mb-6 text-center text-sm text-muted">
+        {filtered.length} {filtered.length === 1 ? "photo" : "photos"}
+        {activeFilter !== "All" ? ` · ${activeFilter}` : ""}
+      </p>
+
       <motion.div
         className="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3"
-        variants={staggerParent}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.05 }}
+        variants={reducedMotion ? undefined : staggerParent}
+        initial={reducedMotion ? false : "hidden"}
+        whileInView={reducedMotion ? undefined : "visible"}
+        viewport={{ once: true, amount: 0.02 }}
       >
         {filtered.map((asset, i) => {
           const h = masonryHeightForAsset(asset, 380);
@@ -73,40 +78,35 @@ export function LuxuryMasonryGallery({ assets, className, showFilters = true }: 
             <motion.button
               key={asset.id}
               type="button"
-              variants={staggerItem}
+              variants={reducedMotion ? undefined : staggerItem}
               onClick={() => setLightboxIndex(i)}
-              className="group relative mb-4 w-full break-inside-avoid cursor-zoom-in overflow-hidden rounded-[var(--v4-radius-lg)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)] sm:mb-5"
+              className="gallery-masonry-item group relative mb-4 w-full break-inside-avoid cursor-zoom-in overflow-hidden rounded-[var(--v4-radius-lg)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)] sm:mb-5"
               aria-label={`View ${asset.title}`}
             >
               <GlassPanel
                 liquid={false}
-                className="overflow-hidden p-0 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:shadow-[var(--v4-glow-gold)]"
+                className="overflow-hidden p-0 transition-shadow duration-300 group-hover:shadow-[var(--v4-glow-gold)]"
               >
-                <motion.div
-                  initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: DUR.slow, ease: EASE.luxe, delay: (i % 6) * 0.05 }}
-                >
-                  <OptimizedMediaImage
-                    asset={asset}
-                    width={700}
-                    height={h}
-                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                    targetWidth={828}
-                    className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
-                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:p-5">
-                    <div>
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
-                        {MEDIA_CATEGORY_LABELS[asset.category]}
-                      </span>
-                      <p className="mt-1 font-[family-name:var(--font-playfair)] text-base text-white sm:text-lg">
-                        {asset.title}
-                      </p>
-                    </div>
+                <OptimizedMediaImage
+                  asset={asset}
+                  width={700}
+                  height={h}
+                  sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  targetWidth={640}
+                  quality={75}
+                  priority={i < 2}
+                  className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-5">
+                  <div>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
+                      {MEDIA_CATEGORY_LABELS[asset.category]}
+                    </span>
+                    <p className="mt-1 font-[family-name:var(--font-playfair)] text-base text-white sm:text-lg">
+                      {asset.title}
+                    </p>
                   </div>
-                </motion.div>
+                </div>
               </GlassPanel>
             </motion.button>
           );
