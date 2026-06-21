@@ -166,7 +166,8 @@ a[role="button"] {
 /* -------------------------------------------------------------------------- */
 :root {
   --brand-logo-height: 2.625rem; /* 42px mobile */
-  --nav-height: clamp(4.25rem, 5vw, 5.75rem);
+  --nav-height: 4.5rem; /* 72px mobile */
+  --brand-nav-active: #c9a227;
 }
 
 .brand-logo-link {
@@ -299,7 +300,8 @@ html:not(.light) .brand-logo::after {
 /* Tablet 768+ — 56px */
 @media (min-width: 768px) {
   :root {
-    --brand-logo-height: 3.5rem;
+    --brand-logo-height: 3.25rem; /* 52px tablet */
+    --nav-height: 5rem; /* 80px tablet */
   }
 
   .brand-logo-link {
@@ -307,23 +309,15 @@ html:not(.light) .brand-logo::after {
   }
 }
 
-/* Laptop 1024+ — 64px */
+/* Laptop 1024+ */
 @media (min-width: 1024px) {
   :root {
-    --brand-logo-height: 4rem;
-    --nav-height: 5.5rem;
+    --brand-logo-height: 3.75rem; /* 60px desktop */
+    --nav-height: 5.5rem; /* 88px desktop */
   }
 
   .brand-logo-link {
     max-width: min(100%, 18rem);
-  }
-}
-
-/* Desktop 1440+ — 72px */
-@media (min-width: 1440px) {
-  :root {
-    --brand-logo-height: 4.5rem;
-    --nav-height: 5.75rem;
   }
 }
 
@@ -345,29 +339,240 @@ html.premiere-active .brand-root {
   backface-visibility: hidden;
 }
 
-/* Header shell — Logo | Nav | Contact CTA */
+/* Header shell — luxury 3-column layout */
 .brand-header-shell {
   width: 100%;
-  max-width: 100rem; /* 1600px */
+  max-width: 90rem; /* 1440px */
   margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 3rem); /* 48px desktop */
+  padding-inline: 2rem; /* 32px */
   box-sizing: border-box;
 }
 
-@media (min-width: 1024px) {
-  .brand-header-logo .brand-logo-link {
-    width: 13.75rem; /* 220px */
-    max-width: 13.75rem;
+.brand-header-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .brand-header-grid {
+    grid-template-columns: 240px 1fr 280px;
+  }
+}
+
+/* Logo column */
+.brand-header-logo {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 240px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.brand-header-logo .brand-logo-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 240px;
+  min-height: 0;
+}
+
+.brand-header-logo .brand-logo__full,
+.brand-header-logo .brand-logo__img {
+  height: var(--brand-logo-height);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Navigation — viewport-centered on tablet+ */
+.brand-header-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .brand-header-nav {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem; /* 28px tablet */
+    transform: translateX(-50%);
+    pointer-events: none;
   }
 
-  .brand-header-logo .brand-logo__full,
-  .brand-header-logo .brand-logo__img {
-    width: 13.75rem;
-    height: auto;
-    max-height: 3.5rem;
-    object-fit: contain;
-    object-position: left center;
+  .brand-header-nav > * {
+    pointer-events: auto;
   }
+}
+
+@media (min-width: 1024px) {
+  .brand-header-nav {
+    gap: 2.25rem; /* 36px laptop */
+  }
+}
+
+@media (min-width: 1280px) {
+  .brand-header-nav {
+    gap: 2.5rem; /* 40px desktop */
+  }
+}
+
+/* Nav links — shared baseline, centered active indicator */
+.brand-nav-link {
+  position: relative;
+  display: inline-flex;
+  height: var(--nav-height);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-manrope, var(--font-inter)), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  transition: color 0.3s ease, transform 0.3s ease;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.brand-nav-link:hover {
+  color: var(--brand-nav-active);
+  transform: translateY(-2px);
+}
+
+.brand-nav-link.is-active {
+  color: var(--brand-nav-active);
+}
+
+.brand-nav-link.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 1.5rem; /* 24px from bottom on 88px header */
+  left: 50%;
+  width: 1.75rem; /* 28px */
+  height: 2px;
+  border-radius: 999px;
+  background: var(--brand-nav-active);
+  transform: translateX(-50%);
+}
+
+.brand-nav-link__chevron {
+  margin-left: 0.375rem; /* 6px */
+  height: 1rem;
+  width: 1rem;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.brand-nav-link__chevron.is-open {
+  transform: rotate(180deg);
+}
+
+/* Right actions — desktop / tablet */
+.brand-header-actions {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .brand-header-actions {
+    grid-column: 3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem; /* 16px */
+  }
+}
+
+.brand-header-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--brand-nav-active);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.brand-header-phone:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.brand-header-theme {
+  display: inline-flex;
+  height: 3rem !important;
+  width: 3rem !important;
+  min-height: 3rem !important;
+  min-width: 3rem !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.brand-header-cta {
+  display: inline-flex;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem; /* 14px */
+  padding-inline: 1.75rem; /* 28px */
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Mobile actions — CTA + hamburger */
+.brand-header-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .brand-header-mobile {
+    display: none;
+  }
+}
+
+.brand-header-cta--mobile {
+  height: 2.5rem;
+  padding-inline: 1rem;
+  font-size: 0.8125rem;
+}
+
+.brand-header-menu-btn {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  color: var(--brand-nav-active);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.brand-header-menu-btn:hover {
+  background: color-mix(in srgb, var(--brand-nav-active) 10%, transparent);
+  transform: translateY(-2px);
 }
 
 /* Hero layout — 1.2fr narrative / 0.8fr cards on desktop */

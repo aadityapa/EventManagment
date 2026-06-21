@@ -27,6 +27,34 @@ const EXPERIENCE_WORLDS_NAV = [
   { label: "Fashion World", href: "/services/fashion-shows?world=culture" },
 ];
 
+function isNavActive(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function HeaderNavLink({
+  href,
+  label,
+  isActive,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  isActive: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      aria-current={isActive ? "page" : undefined}
+      className={cn("brand-nav-link", isActive && "is-active")}
+    >
+      {label}
+    </Link>
+  );
+}
+
 export function BrandHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -74,15 +102,6 @@ export function BrandHeader() {
   if (hidden) return null;
 
   const glass = scrolled || !isHome;
-  const chromeLinkActive = "text-[var(--glitz-gold)]";
-  const chromeLinkIdle = "text-[var(--text-secondary)] hover:text-[var(--glitz-gold)]";
-  const chromeAccent = "text-[var(--glitz-gold)]";
-
-  const navLinkClass = (href: string, isActive: boolean) =>
-    cn(
-      "nav-link-luxury tap-target rounded-md px-2 py-2 text-xs font-medium transition-all duration-300 md:px-2.5 md:text-xs lg:px-3 lg:text-sm",
-      isActive ? chromeLinkActive : chromeLinkIdle
-    );
 
   return (
     <motion.header
@@ -98,44 +117,40 @@ export function BrandHeader() {
       )}
       role="banner"
     >
-      <div className="brand-header-shell brand-nav-bar flex items-center justify-between gap-3 sm:gap-4 lg:grid lg:grid-cols-[220px_1fr_auto] lg:items-center lg:gap-8">
-        <div className="brand-header-logo flex min-w-0 shrink-0 items-center">
-          <Logo priority />
-        </div>
+      <div className="brand-header-shell brand-nav-bar">
+        <div className="brand-header-grid">
+          <div className="brand-header-logo">
+            <Logo priority />
+          </div>
 
-        <nav className="hidden min-w-0 items-center justify-center gap-0 lg:flex xl:gap-0.5" aria-label="Main navigation">
-          {NAV_LINKS.map((l) => {
-            if (l.href === "/services") {
-              return (
-                <div key={l.href} ref={megaRef} className="relative">
-                  <button
-                    type="button"
-                    className={cn(
-                      navLinkClass(l.href, pathname.startsWith("/services")),
-                      "inline-flex items-center gap-1"
-                    )}
-                    aria-expanded={servicesOpen}
-                    aria-haspopup="true"
-                    aria-controls="services-mega-menu"
-                    onClick={() => setServicesOpen((v) => !v)}
-                    onMouseEnter={() => setServicesOpen(true)}
-                  >
-                    {l.label}
-                    <ChevronDown
-                      className={cn(
-                        "h-3.5 w-3.5 transition-transform duration-300",
-                        servicesOpen && "rotate-180"
-                      )}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  {servicesOpen && (
-                    <div
-                      id="services-mega-menu"
-                      role="menu"
-                      className="absolute left-1/2 top-full z-50 mt-2 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
-                      onMouseLeave={() => setServicesOpen(false)}
+          <nav className="brand-header-nav" aria-label="Main navigation">
+            {NAV_LINKS.map((l) => {
+              if (l.href === "/services") {
+                const servicesActive = pathname.startsWith("/services");
+                return (
+                  <div key={l.href} ref={megaRef} className="relative flex h-full items-center">
+                    <button
+                      type="button"
+                      className={cn("brand-nav-link", servicesActive && "is-active")}
+                      aria-expanded={servicesOpen}
+                      aria-haspopup="true"
+                      aria-controls="services-mega-menu"
+                      onClick={() => setServicesOpen((v) => !v)}
+                      onMouseEnter={() => setServicesOpen(true)}
                     >
+                      {l.label}
+                      <ChevronDown
+                        className={cn("brand-nav-link__chevron", servicesOpen && "is-open")}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    {servicesOpen && (
+                      <div
+                        id="services-mega-menu"
+                        role="menu"
+                        className="absolute left-1/2 top-full z-50 mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
+                        onMouseLeave={() => setServicesOpen(false)}
+                      >
                       <div className="grid lg:grid-cols-3">
                         {/* Signature featured */}
                         <Link
@@ -233,58 +248,52 @@ export function BrandHeader() {
               );
             }
             return (
-              <Link
+              <HeaderNavLink
                 key={l.href}
                 href={l.href}
-                aria-current={pathname === l.href ? "page" : undefined}
-                className={navLinkClass(l.href, pathname === l.href || pathname.startsWith(`${l.href}/`))}
-              >
-                {l.label}
-              </Link>
+                label={l.label}
+                isActive={isNavActive(pathname, l.href)}
+              />
             );
           })}
-        </nav>
+          </nav>
 
-        <div className="brand-header-actions hidden shrink-0 items-center justify-end gap-2.5 lg:flex xl:gap-3">
-          <a
-            href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-            className={cn(
-              "hidden items-center gap-1.5 text-sm transition-colors hover:brightness-110 xl:flex",
-              chromeAccent
-            )}
-            aria-label={`Call ${SITE_CONFIG.phone}`}
-          >
-            <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-            {SITE_CONFIG.phone}
-          </a>
-          <ThemeToggle className="border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
-          <Link
-            href="/contact"
-            className="hidden items-center gap-1 text-sm font-medium transition-colors hover:text-[var(--glitz-gold)] xl:inline-flex"
-          >
-            Contact
-            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-          </Link>
-          <Link
-            href="/book-event"
-            className="btn-gold-metallic btn-premium-hover rounded-lg px-4 py-2.5 text-sm font-semibold tap-target"
-          >
-            Book Consultation
-          </Link>
-        </div>
+          <div className="brand-header-actions">
+            <a
+              href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+              className="brand-header-phone tap-target"
+              aria-label={`Call ${SITE_CONFIG.phone}`}
+            >
+              <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {SITE_CONFIG.phone}
+            </a>
+            <ThemeToggle className="brand-header-theme border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
+            <Link
+              href="/book-event"
+              className="brand-header-cta btn-gold-metallic btn-premium-hover tap-target"
+            >
+              Book Consultation
+            </Link>
+          </div>
 
-        <div className="flex shrink-0 items-center gap-2 lg:hidden">
-          <ThemeToggle className="border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
-          <button
-            type="button"
-            className={cn("tap-target rounded-lg p-2", chromeAccent)}
-            onClick={() => setOpen(!open)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-          >
-            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
-          </button>
+          <div className="brand-header-mobile">
+            <Link
+              href="/book-event"
+              className="brand-header-cta brand-header-cta--mobile btn-gold-metallic btn-premium-hover tap-target"
+            >
+              Book
+            </Link>
+            <button
+              type="button"
+              className="brand-header-menu-btn tap-target"
+              onClick={() => setOpen(!open)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+            >
+              {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -294,7 +303,7 @@ export function BrandHeader() {
             <motion.button
               type="button"
               aria-label="Close menu"
-              className="fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl lg:hidden"
+              className="fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -306,7 +315,7 @@ export function BrandHeader() {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
-              className="fixed inset-0 z-[9999] flex flex-col overflow-hidden lg:hidden safe-top safe-bottom"
+              className="fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
               initial={{ opacity: 0, scale: 1.04 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
@@ -423,6 +432,10 @@ export function BrandHeader() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.45, duration: 0.5 }}
                 >
+                  <div className="flex items-center gap-3">
+                    <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
+                    <span className="text-sm text-white/60">Theme</span>
+                  </div>
                   <a
                     href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
                     className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"

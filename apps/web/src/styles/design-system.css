@@ -181,26 +181,9 @@ html {
   color: var(--text-primary);
 }
 
-/* Luxury nav link underline animation */
+/* Luxury nav link underline — superseded by .brand-nav-link in header */
 .nav-link-luxury {
   position: relative;
-}
-
-.nav-link-luxury::after {
-  content: "";
-  position: absolute;
-  bottom: 0.25rem;
-  left: 50%;
-  width: 0;
-  height: 1px;
-  background: var(--glitz-gradient-gold);
-  transition: width 0.35s ease, left 0.35s ease;
-}
-
-.nav-link-luxury:hover::after,
-.nav-link-luxury[aria-current="page"]::after {
-  width: 60%;
-  left: 20%;
 }
 
 @media (prefers-reduced-motion: reduce) {
