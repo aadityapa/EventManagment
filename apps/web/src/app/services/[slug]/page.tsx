@@ -9,7 +9,6 @@ import { ServiceChapter } from "@/brand/templates/service-chapter";
 
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ world?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -30,9 +29,8 @@ export async function generateMetadata({ params }: ServiceDetailPageProps) {
   });
 }
 
-export default async function ServiceDetailPage({ params, searchParams }: ServiceDetailPageProps) {
+export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
   const { slug } = await params;
-  const { world } = await searchParams;
   const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
 
@@ -68,7 +66,6 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
           contextualLinks={contextualLinks}
           pageIntro={pageIntro}
           galleryAssets={galleryAssets}
-          world={world ?? null}
         />
       </Suspense>
     </>

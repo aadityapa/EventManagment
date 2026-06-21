@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
@@ -32,11 +33,11 @@ export type ServiceChapterProps = {
   contextualLinks?: ContextualLink[];
   pageIntro?: string;
   galleryAssets?: MediaAsset[];
-  world?: string | null;
 };
 
 /** V5 cinematic service chapter template. */
-export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, galleryAssets = [], world }: ServiceChapterProps) {
+export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, galleryAssets = [] }: ServiceChapterProps) {
+  const world = useSearchParams().get("world");
   const bookHref = world ? `/book-event?world=${world}&service=${service.slug}` : `/book-event?service=${service.slug}`;
   const galleryMoments = galleryAssets.length
     ? galleryAssets.slice(0, 3).map((asset) => ({

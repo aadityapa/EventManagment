@@ -17,24 +17,21 @@ const mediaApiRoutes = [
   "/api/admin/media/upload",
 ];
 
-const mediaPageRoutes = ["/gallery", "/portfolio", "/services/[slug]"];
+const mediaPageRoutes = ["/gallery", "/portfolio", "/services/*"];
 
-const tracedMediaRoutes = [...mediaApiRoutes, ...mediaPageRoutes];
-
-const appRoot = path.join(__dirname);
+const routesNeedingManifest = [...mediaApiRoutes, ...mediaPageRoutes];
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.15", "localhost", "https://192.168.1.15:3000"],
-  outputFileTracingRoot: appRoot,
   turbopack: {
-    root: appRoot,
+    root: path.join(__dirname),
   },
   serverExternalPackages: ["sharp"],
-  outputFileTracingExcludes: Object.fromEntries(
-    tracedMediaRoutes.map((route) => [route, mediaTraceExcludes])
-  ),
+  outputFileTracingExcludes: {
+    "/*": mediaTraceExcludes,
+  },
   outputFileTracingIncludes: Object.fromEntries(
-    tracedMediaRoutes.map((route) => [route, ["**/public/media-manifest.json"]])
+    routesNeedingManifest.map((route) => [route, ["**/public/media-manifest.json"]])
   ),
   images: {
     remotePatterns: [
