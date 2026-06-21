@@ -140,9 +140,10 @@ export function HeroV4() {
 
   return (
     <section
+      id="welcome"
       ref={setAdaptiveRef}
       data-adaptive-backdrop=""
-      className="relative flex h-[100svh] min-h-[100dvh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--glitz-bg)]"
+      className="relative flex h-[100svh] min-h-[100dvh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--v5-obsidian,var(--glitz-bg))] v5-dune-glow"
       onMouseMove={onMouseMove}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => {
@@ -166,18 +167,18 @@ export function HeroV4() {
         <motion.div
           ref={panelRef}
           style={{ x: panelX, y: panelY }}
-          className="v4-glass-liquid max-w-3xl p-7 sm:p-10 md:p-12"
+          className="v5-glass-liquid v4-glass-liquid max-w-3xl p-7 sm:p-10 md:p-12"
         >
-          <span data-reveal className="v4-kicker mb-5">
-            India&apos;s Premier Luxury Event House
+          <span data-reveal className="v5-kicker v4-kicker mb-5">
+            Architects of Extraordinary Experiences
           </span>
 
           <h1
             ref={headlineRef}
-            className="v4-hero-display text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
+            className="v5-hero-display v4-hero-display text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
           >
             {HEADLINE.map((word, i) => (
-              <span key={word} className={cn("block overflow-hidden", i === 1 && "v4-gold-text")}>
+              <span key={word} className={cn("block overflow-hidden", i === 1 && "v5-gold-text v4-gold-text")}>
                 <span data-word className="inline-block will-change-transform">
                   {word}
                 </span>
@@ -185,9 +186,9 @@ export function HeroV4() {
             ))}
           </h1>
 
-          <p data-reveal className="v4-standfirst mt-6 max-w-xl text-[var(--adaptive-muted)]">
-            Cinematic weddings, corporate galas, and destination celebrations — designed,
-            produced, and delivered with obsessive precision since 2012.
+          <p data-reveal className="v5-standfirst v4-standfirst mt-6 max-w-xl text-[var(--adaptive-muted)]">
+            Welcome to a universe of cinematic weddings, corporate galas, and destination
+            celebrations — designed with obsessive precision since 2012.
           </p>
 
           <div data-reveal className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -198,7 +199,7 @@ export function HeroV4() {
                 className="min-w-[180px]"
                 onClick={() => analytics.ctaClick("book_event", "hero")}
               >
-                Begin Your Event
+                Begin Your Commission
               </BrandButton>
             </MagneticButton>
             <MagneticButton>
@@ -208,7 +209,7 @@ export function HeroV4() {
                 className="min-w-[160px]"
                 onClick={() => analytics.ctaClick("view_portfolio", "hero")}
               >
-                View Our Work
+                Enter the Archive
               </BrandButton>
             </MagneticButton>
           </div>

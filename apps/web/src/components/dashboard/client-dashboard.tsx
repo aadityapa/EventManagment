@@ -12,6 +12,7 @@ import {
   MessageSquare,
   CreditCard,
 } from "lucide-react";
+import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 
 const navItems = [
@@ -78,77 +79,96 @@ export function ClientDashboard() {
   }, [bookings]);
 
   return (
-    <div className="flex min-h-[calc(100dvh-4rem)] flex-col lg:flex-row">
-      <aside className="border-b border-border bg-secondary/5 lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r">
-        <div className="container-page py-4 lg:px-4">
-          <h2 className="mb-3 font-display text-lg font-bold lg:mb-4">Client Portal</h2>
-          <nav className="scroll-nav gap-2 lg:flex-col lg:overflow-visible">
+    <div className="dashboard-shell v5-grain flex min-h-[100dvh] flex-col lg:flex-row">
+      <aside className="border-b border-[var(--v5-glass-border)] lg:w-72 lg:shrink-0 lg:border-b-0 lg:border-r">
+        <GlassPanel variant="commission" className="m-4 p-5 lg:m-5" glow>
+          <p className="v5-kicker mb-2">Client Portal</p>
+          <h2 className="v5-title font-[family-name:var(--font-playfair)]">Your Commission</h2>
+          <nav className="mt-6 flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "touch-target flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-primary/10 lg:w-full",
-                  pathname === "/dashboard" && item.href === "/dashboard" && "bg-primary/10 text-primary"
+                  "touch-target flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--v5-gold-luxury)]/10 lg:w-full",
+                  pathname === "/dashboard" && item.href === "/dashboard" &&
+                    "bg-[var(--v5-gold-luxury)]/12 text-[var(--v5-copper)]"
                 )}
               >
-                <item.icon className="h-4 w-4 shrink-0" />
+                <item.icon className="h-4 w-4 shrink-0 text-[var(--v5-gold-metallic)]" />
                 {item.label}
               </Link>
             ))}
           </nav>
-        </div>
+        </GlassPanel>
       </aside>
 
-      <main className="container-page flex-1 py-6 lg:py-8">
-        <h1 className="font-display text-2xl font-bold md:text-3xl">Dashboard Overview</h1>
-        <p className="mt-1 text-muted">Welcome back! Here&apos;s your event status.</p>
+      <main className="flex-1 px-4 py-6 lg:px-8 lg:py-10">
+        <header className="mb-8">
+          <p className="v5-kicker mb-2">Overview</p>
+          <h1 className="v5-title font-[family-name:var(--font-playfair)] text-[var(--text-primary)]">
+            Dashboard
+          </h1>
+          <p className="v5-body mt-2 text-[var(--text-muted)]">
+            Welcome back — here is the status of your extraordinary events.
+          </p>
+        </header>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { label: "Active Bookings", value: loading ? "—" : String(stats.active) },
             { label: "Upcoming Events", value: loading ? "—" : String(stats.upcoming) },
             { label: "Paid Bookings", value: loading ? "—" : String(stats.paid) },
             { label: "Total Value", value: loading ? "—" : formatCurrency(stats.total) },
           ].map((stat) => (
-            <div key={stat.label} className="glass-card p-5">
-              <p className="text-sm text-muted">{stat.label}</p>
-              <p className="mt-1 font-display text-2xl font-bold gradient-text">{stat.value}</p>
-            </div>
+            <GlassPanel key={stat.label} glow className="p-5">
+              <p className="text-sm text-[var(--text-muted)]">{stat.label}</p>
+              <p className="mt-2 font-[family-name:var(--font-playfair)] text-2xl font-semibold v5-gold-text">
+                {stat.value}
+              </p>
+            </GlassPanel>
           ))}
         </div>
 
-        <div className="mt-8 space-y-4">
-          <h2 className="font-display text-xl font-semibold">Your Bookings</h2>
+        <div className="mt-10 space-y-4">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="v5-title text-xl font-[family-name:var(--font-cormorant)]">Your Bookings</h2>
+            <div className="v5-hairline hidden max-w-[8rem] flex-1 sm:block" aria-hidden />
+          </div>
           {loading ? (
-            <div className="glass-card p-5 text-sm text-muted">Loading your bookings…</div>
+            <GlassPanel className="p-5 text-sm text-[var(--text-muted)]">Loading your bookings…</GlassPanel>
           ) : bookings.length ? (
             bookings.map((b) => (
-              <div key={b.id} className="glass-card p-5">
+              <GlassPanel key={b.id} variant="liquid" className="p-5">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div>
-                    <p className="font-semibold">{b.eventType}</p>
-                    <p className="text-sm text-muted">
+                    <p className="font-semibold text-[var(--text-primary)]">{b.eventType}</p>
+                    <p className="text-sm text-[var(--text-muted)]">
                       {b.bookingNumber} · {formatDate(b.eventDate)}
                     </p>
-                    <p className="mt-1 text-sm text-primary">{formatCurrency(b.totalAmount)}</p>
+                    <p className="mt-1 text-sm font-medium text-[var(--v5-gold-luxury)]">
+                      {formatCurrency(b.totalAmount)}
+                    </p>
                   </div>
                   <div className="flex flex-col items-start gap-2 sm:items-end">
-                    <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                    <span className="inline-flex w-fit rounded-full border border-[var(--v5-glass-border)] bg-[var(--v5-gold-luxury)]/10 px-3 py-1 text-xs font-medium text-[var(--v5-copper)]">
                       {b.status}
                     </span>
-                    <span className="text-xs text-muted">Payment: {b.paymentStatus}</span>
+                    <span className="text-xs text-[var(--text-muted)]">Payment: {b.paymentStatus}</span>
                   </div>
                 </div>
-              </div>
+              </GlassPanel>
             ))
           ) : (
-            <div className="glass-card p-5">
-              <p className="text-sm text-muted">No bookings yet.</p>
-              <Link href="/book-event" className="mt-3 inline-block text-sm font-semibold text-primary">
+            <GlassPanel variant="commission" glow className="p-6">
+              <p className="text-sm text-[var(--text-muted)]">No bookings yet.</p>
+              <Link
+                href="/book-event"
+                className="mt-3 inline-block text-sm font-semibold text-[var(--v5-gold-luxury)] hover:text-[var(--v5-copper)]"
+              >
                 Book your first event →
               </Link>
-            </div>
+            </GlassPanel>
           )}
         </div>
       </main>

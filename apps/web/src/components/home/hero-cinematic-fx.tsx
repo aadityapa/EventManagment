@@ -1,8 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import { useReducedMotion } from "framer-motion";
 import { motion, type MotionValue, useTransform } from "framer-motion";
 import { useTheme } from "next-themes";
-import { GoldParticles } from "@/components/effects/gold-particles";
+
+const GoldParticles = dynamic(
+  () => import("@/components/effects/gold-particles").then((m) => m.GoldParticles),
+  { ssr: false }
+);
 
 type Props = {
   active: number;
@@ -12,6 +18,7 @@ type Props = {
 
 export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
   const { resolvedTheme } = useTheme();
+  const reducedMotion = useReducedMotion();
   const isDark = resolvedTheme === "dark";
 
   const spotlightX = useTransform(mouseX, (v) => `${50 + v * 18}%`);
@@ -39,7 +46,7 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
             ? "linear-gradient(108deg, transparent 0%, rgba(212,175,55,0.14) 40%, rgba(255,215,0,0.06) 58%, transparent 80%)"
             : "linear-gradient(108deg, transparent 0%, rgba(230,198,122,0.22) 38%, rgba(201,162,39,0.1) 55%, transparent 78%)",
         }}
-        animate={{ opacity: [0.35, 0.55, 0.35] }}
+        animate={reducedMotion ? undefined : { opacity: [0.35, 0.55, 0.35] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
 
@@ -51,7 +58,7 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
             ? "radial-gradient(circle, rgba(255,215,0,0.18) 0%, transparent 70%)"
             : "radial-gradient(circle, rgba(230,198,122,0.28) 0%, transparent 70%)",
         }}
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.08, 1] }}
+        animate={reducedMotion ? undefined : { opacity: [0.3, 0.6, 0.3], scale: [1, 1.08, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
 
@@ -63,7 +70,7 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
             ? "linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent)"
             : "linear-gradient(90deg, transparent, rgba(201,162,39,0.45), transparent)",
         }}
-        animate={{ x: ["-20%", "20%"] }}
+        animate={reducedMotion ? undefined : { x: ["-20%", "20%"] }}
         transition={{ duration: 8, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
       />
 
@@ -76,14 +83,16 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
             ? "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.12), transparent)"
             : "conic-gradient(from 0deg, transparent, rgba(201,162,39,0.15), transparent)",
         }}
-        animate={{ rotate: 360 }}
+        animate={reducedMotion ? undefined : { rotate: 360 }}
         transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Particles */}
-      <div className={isDark ? "absolute inset-0 opacity-35" : "absolute inset-0 opacity-20"}>
-        <GoldParticles className="h-full w-full" />
-      </div>
+      {/* Particles — lazy-loaded canvas, skipped when reduced motion */}
+      {!reducedMotion && (
+        <div className={isDark ? "absolute inset-0 opacity-35" : "absolute inset-0 opacity-20"}>
+          <GoldParticles className="h-full w-full" />
+        </div>
+      )}
     </div>
   );
 }

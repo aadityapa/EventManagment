@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Mail, Phone, MapPin, MessageCircle, Share2, Globe, ExternalLink, Shield, Award } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS, FOOTER_LEGAL, MEGA_EXPLORE_LINKS } from "@/lib/constants";
@@ -31,6 +34,9 @@ const SOCIAL = [
 ];
 
 export function BrandFooter() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) return null;
+
   return (
     <footer className="border-t border-[var(--glitz-border)] bg-[var(--glitz-surface)]" role="contentinfo">
       <div className="brand-divider" aria-hidden="true" />
