@@ -27,7 +27,7 @@ function generatePlan(eventType: string, budget: string, guests: string): PlanRe
       `Month 1–2: Discovery & concept design for your ${eventType.toLowerCase()}`,
       `Month 3–4: Venue selection, vendor curation & budget allocation`,
       `Month 5–6: Design finalization, rehearsals & guest logistics`,
-      `Event Week: On-ground execution with dedicated Glitz coordinators`,
+      `Event Week: On-ground execution with dedicated Nexyyra coordinators`,
     ],
     estimate: budget,
     vendors: isLuxury

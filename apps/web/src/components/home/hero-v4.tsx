@@ -39,11 +39,19 @@ const HeroWorldCards = dynamic(
 
 const SERVICE_TAGS = [
   "Luxury Weddings",
-  "Corporate Events",
-  "Celebrity Events",
   "Destination Weddings",
-  "Brand Promotions",
+  "Corporate Experiences",
+  "Celebrity Events",
+  "Brand Activations",
 ] as const;
+
+const HERO_HEADLINES = [
+  "Crafting Extraordinary Experiences For Extraordinary People",
+  "Experience Architects For India's Finest Celebrations",
+  "Designing Memories That Last A Lifetime",
+] as const;
+
+const HEADLINE_INTERVAL_MS = 6000;
 
 const TRUST_METRICS = [
   { value: "12+", label: "Years Experience" },
@@ -52,7 +60,7 @@ const TRUST_METRICS = [
 ] as const;
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-  "Hello Glitz Events, I'd like to discuss an event."
+  "Hello Nexyyra Events, I'd like to discuss an event."
 )}`;
 const telHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 
@@ -81,7 +89,7 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label="Glitz Events showreel"
+      aria-label="Nexyyra Events showreel"
       onClick={onClose}
     >
       <div
@@ -122,6 +130,7 @@ export function HeroV4() {
   const [paused, setPaused] = useState(false);
   const [broken, setBroken] = useState<Record<number, true>>({});
   const [showreelOpen, setShowreelOpen] = useState(false);
+  const [headlineIndex, setHeadlineIndex] = useState(0);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -163,6 +172,15 @@ export function HeroV4() {
     (index: number) => setActive(wrapIndex(index, slides.length)),
     [slides.length]
   );
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const id = window.setInterval(
+      () => setHeadlineIndex((i) => (i + 1) % HERO_HEADLINES.length),
+      HEADLINE_INTERVAL_MS
+    );
+    return () => window.clearInterval(id);
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (reducedMotion || paused) return;
@@ -226,24 +244,36 @@ export function HeroV4() {
             <div ref={contentRef} className="max-w-xl">
               <span
                 data-hero-label
-                className="brand-label mb-4 block text-[var(--adaptive-accent,var(--glitz-gold))]"
+                className="brand-label mb-2 block text-[var(--adaptive-accent,var(--glitz-gold))]"
               >
-                Glitz Events &amp; Promotions
+                NEXYYRA EVENTS
+              </span>
+              <span className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--adaptive-muted)]">
+                The Next Era of Celebrations
               </span>
 
               <h1
                 data-hero-headline
                 className="overflow-hidden font-[family-name:var(--font-playfair)] text-[clamp(2.25rem,5.8vw,3.75rem)] font-bold leading-[1.06] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
               >
-                Architecting Extraordinary Experiences
+                <motion.span
+                  key={headlineIndex}
+                  initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="block"
+                >
+                  {HERO_HEADLINES[headlineIndex]}
+                </motion.span>
               </h1>
 
               <p
                 data-hero-subhead
                 className="v5-standfirst v4-standfirst mt-5 max-w-lg text-[var(--adaptive-muted)]"
               >
-                India&apos;s premier luxury event management company creating unforgettable weddings,
-                corporate experiences, celebrity events and destination celebrations.
+                Experience architects, celebration designers, and memory creators — we craft
+                extraordinary weddings, corporate experiences, celebrity events, and destination
+                celebrations for India&apos;s most discerning hosts.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
@@ -268,6 +298,18 @@ export function HeroV4() {
                       onClick={() => analytics.ctaClick("book_consultation", "hero")}
                     >
                       Book Consultation
+                    </BrandButton>
+                  </MagneticButton>
+                </div>
+                <div data-hero-cta>
+                  <MagneticButton>
+                    <BrandButton
+                      href="/services"
+                      variant="outline"
+                      className="min-w-[190px] border-[var(--adaptive-border,var(--glitz-border))]/60 text-[var(--adaptive-text)]"
+                      onClick={() => analytics.ctaClick("explore_experiences", "hero")}
+                    >
+                      Explore Experiences
                     </BrandButton>
                   </MagneticButton>
                 </div>

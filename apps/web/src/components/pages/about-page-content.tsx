@@ -11,7 +11,7 @@ import { IMAGES } from "@/lib/images";
 import { Button } from "@/components/ui/button";
 
 const TIMELINE = [
-  { year: "2012", title: "Founded in Pune", description: "Glitz Events begins as a boutique wedding studio with a single dream celebration." },
+  { year: "2012", title: "Founded in Pune", description: "Nexyyra Events begins as a boutique wedding studio with a single dream celebration." },
   { year: "2015", title: "Corporate Expansion", description: "First major corporate gala for 800 guests — establishing our reputation for precision." },
   { year: "2018", title: "Destination Weddings", description: "Launched destination wedding division across Udaipur, Goa, and Jaipur." },
   { year: "2021", title: "National Recognition", description: "Awarded Best Event Management Company at Event Industry Awards India." },

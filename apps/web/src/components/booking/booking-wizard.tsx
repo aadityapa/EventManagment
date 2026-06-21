@@ -327,7 +327,7 @@ export function BookingWizard({ variant = "default" }: { variant?: "default" | "
         key: order.key,
         amount: Math.round(Number(order.amount) * 100),
         currency: order.currency || "INR",
-        name: "Glitz Events & Promotions",
+        name: "Nexyyra Events",
         description: `Advance for booking ${order.bookingNumber || booking.bookingNumber}`,
         order_id: order.orderId,
         prefill: {

@@ -48,8 +48,8 @@ const REASONS = [
 export function WhyChooseSection() {
   return (
     <LuxurySection
-      label="The Glitz Difference"
-      title="Why Choose Glitz"
+      label="The Nexyyra Difference"
+      title="Why Choose Nexyyra"
       subtitle="We don't just plan events — we architect experiences that become legends."
       className="bg-secondary/30"
     >

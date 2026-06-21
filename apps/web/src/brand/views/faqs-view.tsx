@@ -13,7 +13,7 @@ export function FaqsView() {
   return (
     <div className="brand-root">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <BrandPageHero label="Support" title="Frequently Asked Questions" subtitle="Everything about planning with Glitz Events." image={BRAND_IMAGES.corporate[1]} />
+      <BrandPageHero label="Support" title="Frequently Asked Questions" subtitle="Everything about planning with Nexyyra Events." image={BRAND_IMAGES.corporate[1]} />
       <BrandSection>
         <div className="mx-auto max-w-3xl">
           {categories.map((cat) => (

@@ -28,8 +28,8 @@ export function HomeWhyChoose() {
   return (
     <BrandSection alt>
       <BrandHeader
-        label="The Glitz Difference"
-        title="Why Choose Glitz"
+        label="The Nexyyra Difference"
+        title="Why Choose Nexyyra"
         subtitle="A luxury timeline — from first conversation to unforgettable finale."
         center
       />

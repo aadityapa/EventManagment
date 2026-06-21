@@ -47,7 +47,7 @@ export function HomeIntro() {
 
           <ScrollReveal preset="reveal" delay={0.16}>
             <p className="v4-standfirst mt-6 max-w-2xl">
-              Glitz Events &amp; Promotions crafts cinematic experiences for India&apos;s most
+              Nexyyra Events crafts cinematic experiences for India&apos;s most
               discerning hosts — where storytelling, precision, and luxury converge.
             </p>
           </ScrollReveal>
@@ -96,7 +96,7 @@ export function HomeIntro() {
             <Parallax distance={60} className="relative aspect-[4/5] overflow-hidden rounded-[var(--v4-radius-lg)]">
               <BrandImage
                 src={BRAND_IMAGES.about}
-                alt="A Glitz Events celebration in production"
+                alt="A Nexyyra Events celebration in production"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="scale-[1.08] object-cover"

@@ -76,7 +76,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-primary"
         >
-          Glitz Events &amp; Promotions
+          Nexyyra Events
         </motion.span>
 
         <h1

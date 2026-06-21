@@ -1,49 +1,51 @@
 export const SITE_CONFIG = {
-  name: "Glitz Events & Promotions",
-  shortName: "Glitz Events",
-  tagline: "Creating Extraordinary Experiences",
+  name: "Nexyyra Events",
+  legalName: "Nexyyra Events Private Limited",
+  shortName: "Nexyyra Events",
+  tagline: "The Next Era of Celebrations",
   description:
-    "Premier luxury event management company in Pune specializing in weddings, corporate events, celebrity management, concerts, exhibitions, product launches, and destination celebrations.",
+    "Experience architects, celebration designers, and memory creators — crafting extraordinary weddings, corporate experiences, celebrity events, and destination celebrations across India.",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://event-managment-mocha.vercel.app",
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
-  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@glitzevents.in",
+  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@nexyyraevents.in",
   address: "Pune, Maharashtra, India",
   city: "Pune",
   region: "Maharashtra",
   social: {
-    instagram: "https://instagram.com/glitzevents",
-    facebook: "https://facebook.com/glitzevents",
-    youtube: "https://youtube.com/glitzevents",
-    linkedin: "https://linkedin.com/company/glitzevents",
+    instagram: "https://instagram.com/nexyyraevents",
+    facebook: "https://facebook.com/nexyyraevents",
+    youtube: "https://youtube.com/nexyyraevents",
+    linkedin: "https://linkedin.com/company/nexyyraevents",
   },
 };
 
 export const SEO_KEYWORDS = [
-  "Event Management Company Pune",
+  "Luxury Event Planner Pune",
   "Wedding Planner Pune",
-  "Corporate Event Planner Pune",
+  "Corporate Experience Designer Pune",
   "Destination Wedding Planner India",
   "Luxury Wedding Planner India",
-  "Corporate Event Organizer",
-  "Luxury Event Planner",
   "Celebrity Event Management Pune",
-  "Concert Management Pune",
-  "Product Launch Events Pune",
-  "Award Function Organizer",
+  "Concert Production Pune",
+  "Award Ceremony Organizer",
+  "Fashion Show Production",
+  "Brand Activation Agency",
+  "Experience Architects India",
+  "Celebration Designers Pune",
 ];
 
 export const EVENT_TYPES = [
-  { id: "WEDDING", label: "Wedding Planning", icon: "Heart" },
+  { id: "WEDDING", label: "Luxury Weddings", icon: "Heart" },
   { id: "DESTINATION_WEDDING", label: "Destination Weddings", icon: "Plane" },
-  { id: "CORPORATE", label: "Corporate Events", icon: "Building2" },
-  { id: "CELEBRITY", label: "Celebrity Management", icon: "Star" },
-  { id: "AWARD_FUNCTION", label: "Award Functions", icon: "Trophy" },
+  { id: "CORPORATE", label: "Corporate Experiences", icon: "Building2" },
+  { id: "CELEBRITY", label: "Celebrity Events", icon: "Star" },
+  { id: "AWARD_FUNCTION", label: "Award Ceremonies", icon: "Trophy" },
   { id: "BIRTHDAY", label: "Birthday Celebrations", icon: "Cake" },
   { id: "PRODUCT_LAUNCH", label: "Product Launches", icon: "Rocket" },
   { id: "EXHIBITION", label: "Exhibitions", icon: "LayoutGrid" },
-  { id: "BRAND_PROMOTION", label: "Brand Promotions", icon: "Megaphone" },
-  { id: "CONCERT", label: "Concert Management", icon: "Music" },
+  { id: "BRAND_PROMOTION", label: "Brand Activations", icon: "Megaphone" },
+  { id: "CONCERT", label: "Concerts", icon: "Music" },
   { id: "FASHION_SHOW", label: "Fashion Shows", icon: "Shirt" },
   { id: "OTHER", label: "Event Production", icon: "Clapperboard" },
 ] as const;
@@ -77,14 +79,14 @@ export const VENDOR_CATEGORIES = [
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
+  { href: "/services", label: "Experiences" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/venues", label: "Venues" },
   { href: "/blog", label: "Stories" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-/** Secondary routes surfaced in Services mega-menu + footer (not primary nav). */
+/** Secondary routes surfaced in Experiences mega-menu + footer (not primary nav). */
 export const MEGA_EXPLORE_LINKS = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/venues", label: "Venues" },

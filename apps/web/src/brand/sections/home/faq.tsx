@@ -13,7 +13,7 @@ export function HomeFaq() {
       <BrandHeader
         label="Questions Answered"
         title="Frequently Asked Questions"
-        subtitle="Everything you need to know before booking your wedding, corporate gala, or destination celebration with Glitz."
+        subtitle="Everything you need to know before booking your wedding, corporate gala, or destination celebration with Nexyyra."
         center
       />
 

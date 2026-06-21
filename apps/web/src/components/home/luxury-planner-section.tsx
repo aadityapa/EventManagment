@@ -89,7 +89,7 @@ export function LuxuryPlannerSection() {
       if (!res.ok) throw new Error("Failed");
       toast.success("Your consultation request has been received!");
       const msg = encodeURIComponent(
-        `Hi Glitz Events! I'd like to plan a ${data.eventType} event.\nBudget: ${data.budget}\nGuests: ${data.guests}\nDate: ${data.date}\nLocation: ${data.location}\nName: ${data.name}`
+        `Hi Nexyyra Events! I'd like to plan a ${data.eventType} event.\nBudget: ${data.budget}\nGuests: ${data.guests}\nDate: ${data.date}\nLocation: ${data.location}\nName: ${data.name}`
       );
       window.open(`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${msg}`, "_blank");
       setStep(6);

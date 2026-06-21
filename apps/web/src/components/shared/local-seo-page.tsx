@@ -56,9 +56,9 @@ export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
 
       <BrandSection>
         <BrandHeader
-          label="Why Glitz"
+          label="Why Nexyyra"
           title={`${page.title} — What Sets Us Apart`}
-          subtitle="Entity definition: Glitz Events & Promotions is a luxury event management company based in Pune, Maharashtra, serving clients across India since 2012."
+          subtitle="Entity definition: Nexyyra Events is a luxury event management company based in Pune, Maharashtra, serving clients across India since 2012."
         />
         <ul className="grid gap-4 sm:grid-cols-2">
           {page.highlights.map((item) => (

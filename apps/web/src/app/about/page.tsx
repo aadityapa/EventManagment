@@ -4,7 +4,7 @@ import { teamMembers } from "@/data/cms";
 
 export const metadata = generateSEO({
   title: "About — Luxury Event Management",
-  description: "Discover Glitz Events — 12+ years, 1800+ events, India's premier luxury event house.",
+  description: "Discover Nexyyra Events — 12+ years, 1800+ events, India's premier luxury event house.",
   path: "/about",
 });
 

@@ -79,7 +79,7 @@ export function GalleryView() {
                   playsInline
                   autoPlay={!reducedMotion}
                   className="h-full w-full object-cover"
-                  aria-label="Glitz Events highlight reel"
+                  aria-label="Nexyyra Events highlight reel"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
                 <div className="absolute bottom-6 left-6 flex items-center gap-2 text-sm text-white/90">

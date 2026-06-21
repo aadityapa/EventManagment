@@ -22,7 +22,7 @@ export default function TermsPage() {
               {
                 title: "2. Services",
                 content:
-                  "Glitz Events & Promotions provides event planning, management, and coordination services. Service scope, deliverables, and pricing are defined in individual booking agreements and proposals.",
+                  `${SITE_CONFIG.legalName} provides event planning, management, and coordination services. Service scope, deliverables, and pricing are defined in individual booking agreements and proposals.`,
               },
               {
                 title: "3. Booking & Payments",
@@ -42,12 +42,12 @@ export default function TermsPage() {
               {
                 title: "6. Limitation of Liability",
                 content:
-                  "Glitz Events & Promotions' liability is limited to the total fees paid for the specific event. We are not liable for indirect, incidental, or consequential damages arising from event execution.",
+                  `${SITE_CONFIG.legalName}'s liability is limited to the total fees paid for the specific event. We are not liable for indirect, incidental, or consequential damages arising from event execution.`,
               },
               {
                 title: "7. Intellectual Property",
                 content:
-                  "All website content, designs, and marketing materials are owned by Glitz Events & Promotions. Event photography and videography usage rights are defined in individual service agreements.",
+                  `All website content, designs, and marketing materials are owned by ${SITE_CONFIG.legalName}. Event photography and videography usage rights are defined in individual service agreements.`,
               },
               {
                 title: "8. Governing Law",

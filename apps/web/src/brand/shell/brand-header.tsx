@@ -169,7 +169,7 @@ export function BrandHeader() {
 
                         {/* All services */}
                         <div className="border-b border-[var(--glitz-border)] p-4 lg:border-b-0 lg:border-r">
-                          <p className="brand-label mb-3 px-1">All Services</p>
+                          <p className="brand-label mb-3 px-1">All Experiences</p>
                           <div className="grid grid-cols-2 gap-0.5">
                             {MEGA_SERVICES.map((s) => (
                               <Link
@@ -188,7 +188,7 @@ export function BrandHeader() {
                             onClick={() => setServicesOpen(false)}
                             className="mt-3 flex items-center justify-center gap-1 border-t border-[var(--glitz-border)] pt-3 text-sm font-semibold text-[var(--glitz-gold)] hover:underline"
                           >
-                            View all services
+                            View all experiences
                             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                           </Link>
                         </div>
@@ -333,7 +333,7 @@ export function BrandHeader() {
                             onClick={() => setOpen(false)}
                             className="block rounded-lg px-3 py-2 text-sm text-[var(--glitz-gold)]"
                           >
-                            All Services
+                            All Experiences
                           </Link>
                           {MEGA_SERVICES.slice(0, 6).map((s) => (
                             <Link

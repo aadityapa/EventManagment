@@ -160,7 +160,7 @@ function slugify(text: string): string {
 }
 
 function buildExcerpt(category: BlogCategory, topic: string): string {
-  return `Expert insights on ${topic} — practical guidance from Glitz Events for luxury ${category.toLowerCase()} in Pune and across India.`;
+  return `Expert insights on ${topic} — practical guidance from Nexyyra Events for luxury ${category.toLowerCase()} in Pune and across India.`;
 }
 
 /** 108+ editorial topic templates for blog expansion and category UX */

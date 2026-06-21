@@ -198,7 +198,7 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
       aria-busy="true"
       className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--v5-obsidian,#050505)]"
     >
-      <p className="sr-only">Welcome to Glitz Events</p>
+      <p className="sr-only">Welcome to Nexyyra Events</p>
 
       <button
         type="button"
@@ -245,13 +245,13 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
         <div ref={logoRef} className="relative z-10 flex flex-col items-center gap-3 opacity-0">
           <Image
             src="/logo.jpg"
-            alt="Glitz Events & Promotions"
+            alt="Nexyyra Events"
             width={120}
             height={120}
             priority
             className="rounded-xl shadow-[var(--v5-glow-gold)]"
           />
-          <p className="v5-kicker text-[var(--v5-gold-luxury)]">Glitz Events</p>
+          <p className="v5-kicker text-[var(--v5-gold-luxury)]">Nexyyra Events</p>
         </div>
       </div>
 
@@ -272,7 +272,7 @@ export function UniverseLoader({ onComplete, onSkip }: Props) {
         ref={taglineRef}
         className="absolute inset-x-0 bottom-[22%] px-6 text-center opacity-0"
       >
-        <p className="v5-kicker mb-4 text-[var(--v5-gold-champagne)]">Glitz Events</p>
+        <p className="v5-kicker mb-4 text-[var(--v5-gold-champagne)]">Nexyyra Events</p>
         <h2 className="v5-display text-[var(--v5-champagne,#F7F3EB)]">
           {["Architects of", "Extraordinary Experiences"].map((line) => (
             <span key={line} className="block overflow-hidden py-1">

@@ -41,7 +41,7 @@ export function EventJourneySection() {
   return (
     <LuxurySection
       label="Your Journey"
-      title="The Glitz Event Experience"
+      title="The Nexyyra Experience"
       subtitle="Five meticulously crafted stages from vision to celebration."
     >
       <div ref={timelineRef} className="container-page relative">

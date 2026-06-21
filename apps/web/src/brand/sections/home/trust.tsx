@@ -3,7 +3,7 @@ import { Award, Shield, Star, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 
-const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query=Glitz+Events+Pune+reviews";
+const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query=Nexyyra+Events+Pune+reviews";
 
 export function HomeTrust() {
   const items = [...BRAND_TRUST, ...BRAND_TRUST];

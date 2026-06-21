@@ -36,7 +36,7 @@ export function LiveChat({ open: controlledOpen, onOpenChange }: LiveChatProps =
       id: "welcome",
       role: "assistant",
       content:
-        "Hello! I'm Glitz's AI assistant. How can I help you plan your perfect event today?",
+        "Hello! I'm Nexyyra's AI assistant. How can I help you plan your perfect event today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -131,7 +131,7 @@ export function LiveChat({ open: controlledOpen, onOpenChange }: LiveChatProps =
                   <Bot className="h-4 w-4 text-black" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">Glitz Assistant</p>
+                  <p className="text-sm font-semibold">Nexyyra Assistant</p>
                   <p className="text-xs text-muted">Typically replies instantly</p>
                 </div>
               </div>

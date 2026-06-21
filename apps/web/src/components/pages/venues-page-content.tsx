@@ -102,7 +102,7 @@ export function VenuesPageContent() {
         <SectionHeader title="Find Us in Pune" subtitle="Our headquarters — serving events across India." align="center" />
         <div className="overflow-hidden rounded-2xl border border-border/40">
           <iframe
-            title="Glitz Events location on Google Maps"
+            title="Nexyyra Events location on Google Maps"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242015.69828320738!2d73.69814815!3d18.5204303!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9f9df543!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
             className="h-[400px] w-full"
             loading="lazy"

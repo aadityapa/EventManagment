@@ -59,11 +59,11 @@ export function HomeGlitzDifference() {
     <section id="why-glitz" className="v4-section v4-dune-glow relative bg-[var(--glitz-bg)]">
       <div className="brand-container">
         <ScrollReveal preset="reveal">
-          <span className="v4-kicker mb-6">Why Glitz</span>
+          <span className="v4-kicker mb-6">Why Nexyyra</span>
         </ScrollReveal>
         <ScrollReveal preset="reveal" delay={0.08}>
           <h2 className="v4-display max-w-3xl">
-            The Glitz <span className="v4-gold-text">Difference</span>
+            The Nexyyra <span className="v4-gold-text">Difference</span>
           </h2>
         </ScrollReveal>
         <ScrollReveal preset="fade" delay={0.14}>

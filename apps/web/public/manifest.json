@@ -1,13 +1,13 @@
 {
-  "name": "Glitz Events & Promotions",
-  "short_name": "Glitz Events",
-  "description": "India's premier luxury event management company",
+  "name": "Nexyyra Events",
+  "short_name": "Nexyyra",
+  "description": "The Next Era of Celebrations — experience architects and celebration designers",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FDFBF5",
   "theme_color": "#C9A227",
   "icons": [
-    { "src": "/logo.jpg", "sizes": "512x512", "type": "image/jpeg" },
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/brand/logo-primary.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

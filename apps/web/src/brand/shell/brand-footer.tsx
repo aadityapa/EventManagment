@@ -84,7 +84,7 @@ export function BrandFooter() {
           <div className="space-y-4 lg:col-span-2">
             <Logo />
             <p className="text-sm leading-relaxed text-muted">
-              India&apos;s premier luxury event management house — weddings, corporate galas, and
+              {SITE_CONFIG.tagline} — experience architects crafting weddings, corporate galas, and
               destination celebrations.
             </p>
             <div className="flex gap-3">
@@ -94,7 +94,7 @@ export function BrandFooter() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Follow Glitz Events on ${label}`}
+                  aria-label={`Follow Nexyyra Events on ${label}`}
                   className="tap-target flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-muted transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
@@ -120,7 +120,7 @@ export function BrandFooter() {
           </div>
 
           <div>
-            <h4 className="brand-label mb-4">Services</h4>
+            <h4 className="brand-label mb-4">Experiences</h4>
             <ul className="space-y-2">
               {BRAND_SERVICES.slice(0, 7).map((s) => (
                 <li key={s.slug}>
@@ -236,7 +236,7 @@ export function BrandFooter() {
         <div className="brand-divider my-8" aria-hidden="true" />
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted sm:flex-row">
           <p>
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.
           </p>
           <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-4 sm:gap-6">
             {FOOTER_LEGAL.map((l) => (

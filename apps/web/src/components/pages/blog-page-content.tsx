@@ -19,7 +19,7 @@ export function BlogPageContent() {
   return (
     <>
       <CinematicHero
-        label="The Glitz Journal"
+        label="The Nexyyra Journal"
         title="Event Insights & Inspiration"
         subtitle="Editorial perspectives on luxury celebrations, corporate excellence, and industry trends."
         image={IMAGES.blog[0]}

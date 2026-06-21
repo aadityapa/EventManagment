@@ -51,7 +51,7 @@ export function PricingView() {
           <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Investment</span>
             <h1 className="v4-display text-white">
-              The Glitz <span className="v4-gold-text">Collection</span>
+              The Nexyyra <span className="v4-gold-text">Collection</span>
             </h1>
             <p className="v4-standfirst mt-4 text-white/80">
               Luxury is invested in experiences, not purchased in packages — each tier reflects a
@@ -216,7 +216,7 @@ export function PricingView() {
             <span className="v4-kicker mb-4">Questions Answered</span>
             <h2 className="v4-title">Investment & Booking FAQs</h2>
             <p className="v4-body mx-auto mt-3 max-w-2xl text-muted">
-              Clear answers on packages, payments, and what to expect when you partner with Glitz.
+              Clear answers on packages, payments, and what to expect when you partner with Nexyyra.
             </p>
           </ScrollReveal>
           <div className="mx-auto mt-10 max-w-3xl">

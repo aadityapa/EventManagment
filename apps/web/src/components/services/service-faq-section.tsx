@@ -19,7 +19,7 @@ export function ServiceFaqSection({ faqs, serviceTitle, slug }: ServiceFaqSectio
     <div className="mt-20">
       <h2 className="font-display text-2xl font-bold">Frequently Asked Questions</h2>
       <p className="mt-2 max-w-2xl text-muted">
-        Common questions about our {serviceTitle.toLowerCase()} service — answered by the Glitz planning team.
+        Common questions about our {serviceTitle.toLowerCase()} service — answered by the Nexyyra planning team.
       </p>
       <div className="mt-8 max-w-3xl">
         <BrandFaqAccordion items={items} location={`service_${slug}`} />

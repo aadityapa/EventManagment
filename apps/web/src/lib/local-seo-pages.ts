@@ -19,7 +19,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     title: "Event Management Company Pune",
     h1: "Premier Event Management Company in Pune",
     description:
-      "Glitz Events & Promotions is Pune's leading luxury event management company — weddings, corporate galas, concerts, exhibitions, and destination celebrations with 12+ years of excellence.",
+      "Nexyyra Events is Pune's leading luxury event management company — weddings, corporate galas, concerts, exhibitions, and destination celebrations with 12+ years of excellence.",
     keywords: [
       "Event Management Company Pune",
       "Best Event Planner Pune",
@@ -28,7 +28,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "EventManagementService",
     intro:
-      "Glitz Events & Promotions is a full-service event management company headquartered in Pune, Maharashtra. We design and deliver luxury weddings, corporate conferences, product launches, concerts, and brand activations for clients across India and abroad.",
+      "Nexyyra Events is a full-service event management company headquartered in Pune, Maharashtra. We design and deliver luxury weddings, corporate conferences, product launches, concerts, and brand activations for clients across India and abroad.",
     highlights: [
       "1,000+ events delivered across 35+ cities",
       "Dedicated Pune-based planning team with on-ground execution crews",
@@ -37,12 +37,12 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     faqs: [
       {
-        question: "Why choose Glitz as your event management company in Pune?",
+        question: "Why choose Nexyyra as your experience architects in Pune?",
         answer:
-          "Glitz Events combines luxury design sensibility with military-precision operations. Our Pune team offers local venue knowledge, vetted vendor networks, and a 4.9-star client rating across 500+ reviews.",
+          "Nexyyra Events combines luxury design sensibility with military-precision operations. Our Pune team offers local venue knowledge, vetted vendor networks, and a 4.9-star client rating across 500+ reviews.",
       },
       {
-        question: "What types of events does Glitz manage in Pune?",
+        question: "What types of events does Nexyyra manage in Pune?",
         answer:
           "We manage weddings, corporate events, product launches, exhibitions, concerts, award functions, birthday celebrations, fashion shows, and destination events throughout Pune and Maharashtra.",
       },
@@ -68,7 +68,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "WeddingPlanningService",
     intro:
-      "As Pune's trusted luxury wedding planner, Glitz Events crafts bespoke celebrations that reflect your love story. From intimate ceremonies to palace-scale destination weddings, every floral detail, guest experience, and cultural ritual is orchestrated with obsessive precision.",
+      "As Pune's trusted luxury wedding planner, Nexyyra Events crafts bespoke celebrations that reflect your love story. From intimate ceremonies to palace-scale destination weddings, every floral detail, guest experience, and cultural ritual is orchestrated with obsessive precision.",
     highlights: [
       "Full-service wedding planning and day-of coordination",
       "Destination wedding expertise — Udaipur, Goa, Lonavala, and international venues",
@@ -79,7 +79,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
       {
         question: "How much does a wedding planner cost in Pune?",
         answer:
-          "Glitz wedding planning packages start from ₹8 lakhs for full-service planning. Custom packages are available based on guest count, venue, and design scope. Book a free consultation for a tailored quote.",
+          "Nexyyra wedding planning packages start from ₹8 lakhs for full-service planning. Custom packages are available based on guest count, venue, and design scope. Book a free consultation for a tailored quote.",
       },
       {
         question: "Do you plan destination weddings from Pune?",
@@ -108,7 +108,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "CorporateEventService",
     intro:
-      "Glitz Events & Promotions delivers corporate event management in Pune for India's leading brands. From 50-person leadership retreats to 5,000-delegate conferences, we combine strategic event design with flawless AV production and guest experience management.",
+      "Nexyyra Events delivers corporate event management in Pune for India's leading brands. From 50-person leadership retreats to 5,000-delegate conferences, we combine strategic event design with flawless AV production and guest experience management.",
     highlights: [
       "Conference and summit management up to 5,000 attendees",
       "Product launch and brand activation expertise",
@@ -117,12 +117,12 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     faqs: [
       {
-        question: "What corporate events does Glitz manage in Pune?",
+        question: "What corporate events does Nexyyra manage in Pune?",
         answer:
           "We manage conferences, annual general meetings, product launches, team-building events, award functions, dealer meets, and executive galas for corporate clients across Pune and Maharashtra.",
       },
       {
-        question: "Can Glitz handle hybrid and virtual corporate events?",
+        question: "Can Nexyyra handle hybrid and virtual corporate events?",
         answer:
           "Yes. We provide live streaming, virtual platform integration, and hybrid event production with redundant AV systems and dedicated technical directors.",
       },
@@ -148,7 +148,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "WeddingPlanningService",
     intro:
-      "Glitz Events & Promotions is Maharashtra's choice for luxury wedding planning. We serve discerning families across Mumbai, Pune, Nashik, and beyond — delivering palace-scale celebrations, celebrity entertainment, and bespoke design that sets new standards in Indian wedding excellence.",
+      "Nexyyra Events is Maharashtra's choice for luxury wedding planning. We serve discerning families across Mumbai, Pune, Nashik, and beyond — delivering palace-scale celebrations, celebrity entertainment, and bespoke design that sets new standards in Indian wedding excellence.",
     highlights: [
       "Luxury Wedding Planner of the Year — Wedding Sutra 2024",
       "Heritage palace and five-star venue partnerships across Maharashtra",
@@ -157,12 +157,12 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     faqs: [
       {
-        question: "Which cities in Maharashtra does Glitz serve for weddings?",
+        question: "Which cities in Maharashtra does Nexyyra serve for weddings?",
         answer:
           "We plan luxury weddings across Pune, Mumbai, Nashik, Lonavala, Mahabaleshwar, and destination venues throughout Maharashtra including coastal Goa and heritage Rajasthan.",
       },
       {
-        question: "What makes Glitz a luxury wedding planner?",
+        question: "What makes Nexyyra a luxury wedding planner?",
         answer:
           "Our luxury approach combines bespoke design, white-glove guest hospitality, celebrity vendor networks, and a dedicated planning team with a minimum 1:50 planner-to-guest ratio for premium events.",
       },
@@ -188,7 +188,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "ExhibitionEventService",
     intro:
-      "Glitz Events delivers end-to-end exhibition management in Pune for trade shows, brand expos, and industry conferences. From stunning booth design to lead capture systems and seamless setup, we help brands stand out on the exhibition floor.",
+      "Nexyyra Events delivers end-to-end exhibition management in Pune for trade shows, brand expos, and industry conferences. From stunning booth design to lead capture systems and seamless setup, we help brands stand out on the exhibition floor.",
     highlights: [
       "Custom booth and pavilion design",
       "Floor planning and traffic flow optimisation",
@@ -197,7 +197,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     faqs: [
       {
-        question: "What exhibition services does Glitz provide in Pune?",
+        question: "What exhibition services does Nexyyra provide in Pune?",
         answer:
           "We provide booth design, fabrication, floor planning, staffing, lead capture, AV integration, setup/teardown, and post-event reporting for exhibitions and trade shows in Pune and across India.",
       },
@@ -228,7 +228,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "WeddingPlanningService",
     intro:
-      "Based in Pune, Glitz Events & Promotions specialises in destination wedding planning across India and internationally. We handle venue sourcing, guest travel logistics, multi-day itinerary design, and on-ground execution so you can focus on celebrating.",
+      "Based in Pune, Nexyyra Events specialises in destination wedding planning across India and internationally. We handle venue sourcing, guest travel logistics, multi-day itinerary design, and on-ground execution so you can focus on celebrating.",
     highlights: [
       "Udaipur, Goa, Kerala, Rajasthan, and international destinations",
       "Guest travel, accommodation, and RSVP management",
@@ -237,12 +237,12 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     faqs: [
       {
-        question: "What destination wedding locations does Glitz recommend?",
+        question: "What destination wedding locations does Nexyyra recommend?",
         answer:
           "Popular destinations include Udaipur heritage palaces, Goa beachfront resorts, Lonavala hill stations, Kerala backwaters, and international venues in Dubai, Bali, and Thailand.",
       },
       {
-        question: "How does Glitz manage guest logistics for destination weddings?",
+        question: "How does Nexyyra manage guest logistics for destination weddings?",
         answer:
           "We provide dedicated guest concierge, group travel coordination, welcome kits, RSVP tracking, and on-site hospitality teams to ensure every guest enjoys a seamless experience.",
       },

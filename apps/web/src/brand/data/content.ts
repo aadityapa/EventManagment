@@ -38,7 +38,7 @@ export const BRAND_CASE_STUDIES = [
     solution: "Dedicated cultural liaison, multi-venue command center, and 120-person on-ground team.",
     result: "Featured in Vogue India. Generated 3 destination wedding referrals.",
     image: BRAND_IMAGES.destinations[1],
-    testimonial: "Glitz made our palace wedding absolutely magical. Every detail was perfect.",
+    testimonial: "Nexyyra made our palace wedding absolutely magical. Every detail was perfect.",
     client: "Aisha & Rahul",
   },
   {
@@ -54,7 +54,7 @@ export const BRAND_CASE_STUDIES = [
     solution: "Military-precision timeline, 200-person service team, and redundant AV systems.",
     result: "98% guest satisfaction. Featured in 12 media outlets.",
     image: BRAND_IMAGES.corporate[0],
-    testimonial: "Flawlessly executed. Glitz's team handled everything with military precision.",
+    testimonial: "Flawlessly executed. Nexyyra's team handled everything with military precision.",
     client: "Vikram Malhotra, CEO",
   },
   {
@@ -126,15 +126,15 @@ export const BRAND_SERVICE_STATS = [
 
 /** Nine core service categories for the services page */
 export const BRAND_SERVICE_CATEGORIES = [
-  { slug: "wedding-planning", title: "Wedding", narrative: "Bespoke ceremonies where every floral arrangement and candlelit moment is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0], caseStudy: "Royal Udaipur Wedding — 800 guests, 5 days, Vogue India feature." },
-  { slug: "corporate-events", title: "Corporate", narrative: "Black-tie excellence for brands that demand flawless C-suite galas and product launches.", image: BRAND_IMAGES.corporate[0], caseStudy: "TechCorp Annual Gala — 1,500 executives, broadcast-quality production." },
-  { slug: "destination-weddings", title: "Destination", narrative: "From Udaipur palaces to Goa sunsets — seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0], caseStudy: "Sunset Beach Wedding — 8M social impressions, perfect golden hour." },
-  { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Music Fest 2025 — 10,000 attendees, 50+ artists, zero incidents." },
-  { slug: "celebrity-management", title: "Celebrity", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences.", image: BRAND_IMAGES.hero.palace, caseStudy: "Brand ambassador launch — 12 media outlets, 50M impressions." },
-  { slug: "award-functions", title: "Awards", narrative: "Red-carpet galas with broadcast-quality production and celebrity coordination.", image: BRAND_IMAGES.awards, caseStudy: "Industry awards night — 600 VIP guests, live broadcast." },
-  { slug: "brand-promotions", title: "Brand Promotions", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[12], caseStudy: "Product activation — 3x footfall vs. previous year." },
+  { slug: "wedding-planning", title: "Luxury Weddings", narrative: "Bespoke ceremonies where every floral arrangement and candlelit moment is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0], caseStudy: "Royal Udaipur Wedding — 800 guests, 5 days, Vogue India feature." },
+  { slug: "destination-weddings", title: "Destination Weddings", narrative: "From Udaipur palaces to Goa sunsets — seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0], caseStudy: "Sunset Beach Wedding — 8M social impressions, perfect golden hour." },
+  { slug: "corporate-events", title: "Corporate Experiences", narrative: "Black-tie excellence for brands that demand flawless C-suite galas and product launches.", image: BRAND_IMAGES.corporate[0], caseStudy: "TechCorp Annual Gala — 1,500 executives, broadcast-quality production." },
+  { slug: "celebrity-management", title: "Celebrity Events", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences.", image: BRAND_IMAGES.hero.palace, caseStudy: "Brand ambassador launch — 12 media outlets, 50M impressions." },
+  { slug: "award-functions", title: "Award Ceremonies", narrative: "Red-carpet galas with broadcast-quality production and celebrity coordination.", image: BRAND_IMAGES.awards, caseStudy: "Industry awards night — 600 VIP guests, live broadcast." },
   { slug: "fashion-shows", title: "Fashion Shows", narrative: "Runway productions with lighting design, styling, and front-row experiences.", image: BRAND_IMAGES.gallery[7], caseStudy: "Fashion Week finale — 500 front-row guests, global press." },
+  { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Music Fest 2025 — 10,000 attendees, 50+ artists, zero incidents." },
   { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[12], caseStudy: "Auto expo pavilion — 40% lead capture increase." },
+  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[12], caseStudy: "Product activation — 3x footfall vs. previous year." },
 ] as const;
 
 export const BRAND_AWARDS = [

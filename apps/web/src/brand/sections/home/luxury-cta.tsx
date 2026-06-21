@@ -10,7 +10,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-  "Hello Glitz Events, I'd like to begin planning my event."
+  "Hello Nexyyra Events, I'd like to begin planning my event."
 )}`;
 const telHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 

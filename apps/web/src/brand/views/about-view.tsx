@@ -91,11 +91,11 @@ export function AboutView() {
           <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Our Story</span>
             <h1 className="v4-display text-white">
-              We are <span className="v4-gold-text">Glitz</span>
+              The Next Era of <span className="v4-gold-text">Celebrations</span>
             </h1>
             <p className="v4-standfirst mt-4 text-white/80">
-              India&apos;s premier luxury event house — architecting experiences, not events, since
-              2012.
+              Experience architects, celebration designers, and memory creators — crafting
+              extraordinary moments since 2012.
             </p>
           </GlassPanel>
         </div>
@@ -129,7 +129,7 @@ export function AboutView() {
             </ScrollReveal>
             <ScrollReveal preset="reveal" delay={0.14}>
               <p className="v4-body mt-5">
-                Founded by Priya Sharma in Pune in 2012, Glitz began as an intimate wedding studio
+                Founded by Priya Sharma in Pune in 2012, Nexyyra began as an intimate wedding studio
                 with a singular belief: every celebration carries the weight of memory. What started
                 with one family&apos;s dream wedding in Koregaon Park has grown into a luxury event
                 house trusted by 1,400+ clients across 35 cities.
@@ -248,7 +248,7 @@ export function AboutView() {
             <span className="v4-kicker mb-4">Behind the Scenes</span>
             <h2 className="v4-display">Our story in motion</h2>
             <p className="v4-standfirst mt-4 max-w-xl">
-              A glimpse into the artistry behind every Glitz celebration — embed-ready for YouTube or
+              A glimpse into the artistry behind every Nexyyra celebration — embed-ready for YouTube or
               Vimeo.
             </p>
           </ScrollReveal>
@@ -256,7 +256,7 @@ export function AboutView() {
             <div className="relative mx-auto aspect-video max-w-4xl overflow-hidden rounded-[var(--v4-radius-xl)] border border-[var(--glitz-border)]">
               <BrandImage
                 src={BRAND_IMAGES.hero.corporate}
-                alt="Glitz Events brand film placeholder"
+                alt="Nexyyra Events brand film placeholder"
                 fill
                 sizes="80vw"
                 className="opacity-85"

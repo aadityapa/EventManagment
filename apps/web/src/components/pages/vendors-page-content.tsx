@@ -44,7 +44,7 @@ export function VendorsPageContent() {
         <SectionHeader
           label="Our Network"
           title="Premium Partners"
-          subtitle="Every vendor in our ecosystem is verified, vetted, and aligned with Glitz quality standards."
+          subtitle="Every vendor in our ecosystem is verified, vetted, and aligned with Nexyyra quality standards."
         />
         <div className="mb-10 flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => {

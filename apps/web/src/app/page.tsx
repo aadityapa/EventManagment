@@ -1,12 +1,12 @@
 import { generateSEO, faqSchema, reviewSchema } from "@/lib/seo";
+import { SITE_CONFIG } from "@/lib/constants";
 import { HomeView } from "@/brand";
 import { GLITZ_FAQS } from "@/brand/data/faq";
 import { testimonials } from "@/data/cms";
 
 export const metadata = generateSEO({
-  title: "Luxury Event Management Company Pune",
-  description: "Glitz Events & Promotions — India's premier luxury wedding planner, corporate event organizer, and destination celebration specialist.",
-  keywords: ["Wedding Planner Pune", "Corporate Event Planner Pune", "Destination Wedding Planner India", "Luxury Wedding Planner India", "Event Management Company Pune"],
+  title: "Luxury Experience Architects Pune",
+  description: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}. Experience architects crafting extraordinary weddings, corporate experiences, and destination celebrations.`,
   path: "/",
 });
 

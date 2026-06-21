@@ -13,19 +13,19 @@ export const STITCH_PAGES: Record<string, StitchPageConfig> = {
     screen: "home",
     title: "Luxury Event Management Pune",
     description:
-      "Glitz Events & Promotions — premier luxury event management in Pune. Weddings, corporate events, concerts & celebrity management.",
+      "Nexyyra Events — premier luxury event management in Pune. Weddings, corporate events, concerts & celebrity management.",
     path: "/",
   },
   about: {
     screen: "about",
     title: "About Us",
     description:
-      "Learn about Glitz Events & Promotions — 15+ years of luxury event management excellence in Pune.",
+      "Learn about Nexyyra Events — 15+ years of luxury event management excellence in Pune.",
     path: "/about",
   },
   services: {
     screen: "services",
-    title: "Services",
+    title: "Experiences",
     description:
       "Comprehensive luxury event management — weddings, corporate events, concerts, exhibitions, and more.",
     path: "/services",
@@ -33,13 +33,13 @@ export const STITCH_PAGES: Record<string, StitchPageConfig> = {
   contact: {
     screen: "contact",
     title: "Contact",
-    description: "Get in touch with Glitz Events & Promotions for a free consultation.",
+    description: "Get in touch with Nexyyra Events for a free consultation.",
     path: "/contact",
   },
   "book-event": {
     screen: "book-event",
     title: "Book Event",
-    description: "Book your extraordinary event with Glitz Events & Promotions.",
+    description: "Book your extraordinary event with Nexyyra Events.",
     path: "/book-event",
   },
   portfolio: {
@@ -57,7 +57,7 @@ export const STITCH_PAGES: Record<string, StitchPageConfig> = {
   testimonials: {
     screen: "testimonials",
     title: "Testimonials",
-    description: "What our clients say about Glitz Events & Promotions.",
+    description: "What our clients say about Nexyyra Events.",
     path: "/testimonials",
   },
   gallery: {
@@ -75,25 +75,25 @@ export const STITCH_PAGES: Record<string, StitchPageConfig> = {
   blog: {
     screen: "blog",
     title: "Blog",
-    description: "Event planning insights and inspiration from Glitz Events.",
+    description: "Event planning insights and inspiration from Nexyyra Events.",
     path: "/blog",
   },
   terms: {
     screen: "terms",
     title: "Terms of Service",
-    description: "Terms of service for Glitz Events & Promotions.",
+    description: "Terms of service for Nexyyra Events.",
     path: "/terms",
   },
   privacy: {
     screen: "privacy",
     title: "Privacy Policy",
-    description: "How Glitz Events & Promotions handles your data.",
+    description: "How Nexyyra Events handles your data.",
     path: "/privacy",
   },
   refund: {
     screen: "refund",
     title: "Refund Policy",
-    description: "Refund and cancellation policy for Glitz Events & Promotions.",
+    description: "Refund and cancellation policy for Nexyyra Events.",
     path: "/refund",
   },
   vendors: {

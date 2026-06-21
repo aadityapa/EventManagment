@@ -14,7 +14,7 @@ import { ScrollReveal } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const GOOGLE_REVIEWS_URL =
-  "https://www.google.com/maps/search/?api=1&query=Glitz+Events+Pune+reviews";
+  "https://www.google.com/maps/search/?api=1&query=Nexyyra+Events+Pune+reviews";
 
 export function HomeTrustWall() {
   const carouselId = useId();

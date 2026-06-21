@@ -15,16 +15,16 @@ const EVENT_IMAGES = {
 };
 
 async function main() {
-  console.log("🌱 Seeding Glitz Events & Promotions database...\n");
+  console.log("🌱 Seeding Nexyyra Events database...\n");
 
   const existing = await prisma.companyProfile.findFirst();
   if (!existing) {
     await prisma.companyProfile.create({
       data: {
-        introduction: "Glitz Events & Promotions is a premier international event management company.",
+        introduction: "Nexyyra Events is a premier international event management company.",
         vision: "To redefine luxury event experiences worldwide.",
         mission: "Creating unforgettable moments through exceptional planning and execution.",
-        story: "Founded in 2010, Glitz Events & Promotions has grown to become a trusted name in premium event management.",
+        story: "Founded in 2010, Nexyyra Events has grown to become a trusted name in premium event management.",
         eventsManaged: 2500,
         happyClients: 1800,
         yearsExperience: 15,

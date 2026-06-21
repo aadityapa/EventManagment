@@ -2,13 +2,13 @@ import { EVENT_IMAGES } from "@/lib/images";
 
 export const companyProfile = {
   introduction:
-    "Glitz Events & Promotions is Pune's premier luxury event management company, transforming visions into unforgettable black-tie experiences. With over 12 years of excellence, we've orchestrated 1,800+ events across India — from intimate destination weddings to grand corporate galas, celebrity appearances, and stadium concerts.",
+    "Nexyyra Events are experience architects, celebration designers, and memory creators — transforming visions into unforgettable black-tie experiences. With over 12 years of excellence, we've orchestrated 1,800+ events across India — from intimate destination weddings to grand corporate galas, celebrity appearances, and stadium concerts.",
   vision:
-    "To be India's most trusted luxury event management brand, setting new standards in creativity, precision, and guest experience.",
+    "To usher in the next era of celebrations — setting new standards in creativity, precision, and guest experience across India.",
   mission:
-    "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every event reflects our clients' unique story and exceeds every expectation.",
+    "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every celebration reflects our clients' unique story and exceeds every expectation.",
   story:
-    "Founded in Pune, Glitz Events & Promotions began as a boutique wedding and promotions studio. What started with a single dream celebration has evolved into a luxury event powerhouse, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
+    "Founded in Pune, Nexyyra Events began as a boutique wedding studio. What started with a single dream celebration has evolved into a luxury experience house, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
   stats: {
     eventsManaged: 1800,
     happyClients: 1400,
@@ -42,11 +42,11 @@ export const services = [
 ];
 
 export const testimonials = [
-  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Glitz Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80", eventType: "WEDDING" },
-  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Glitz's team handled everything with military precision.", rating: 5, image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", eventType: "CORPORATE" },
-  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Glitz understands how to create buzz.", rating: 5, image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80", eventType: "PRODUCT_LAUNCH" },
+  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Nexyyra Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80", eventType: "WEDDING" },
+  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Nexyyra's team handled everything with military precision.", rating: 5, image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", eventType: "CORPORATE" },
+  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Nexyyra understands how to create buzz.", rating: 5, image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80", eventType: "PRODUCT_LAUNCH" },
   { id: "4", name: "The Kapoor Family", role: "Birthday Celebration", content: "Our daughter's 18th birthday was the talk of the town. The theme, entertainment, and food were all extraordinary.", rating: 5, image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80", eventType: "BIRTHDAY" },
-  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Glitz Events is simply the best in the business.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", eventType: "CONFERENCE" },
+  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Nexyyra Events is simply the best in the business.", rating: 5, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", eventType: "CONFERENCE" },
 ];
 
 export const awards = [
@@ -108,7 +108,7 @@ export const blogPosts = [
   { slug: "goa-beach-wedding-guide", title: "Goa Beach Wedding Planning Guide", excerpt: "Permits, weather backup, and guest experiences for coastal destination celebrations in North and South Goa.", image: EVENT_IMAGES.destinationWedding, author: "Sneha Reddy", tags: ["Destination", "Goa", "Beach"], category: "Destination Weddings", publishedAt: "2025-11-08", readTime: "8 min" },
   { slug: "venue-site-visit-checklist", title: "Luxury Venue Site Visit Checklist", excerpt: "Infrastructure, acoustics, catering, and contingency evaluation criteria for wedding and corporate venue selection.", image: EVENT_IMAGES.venue2, author: "Ananya Kapoor", tags: ["Venues", "Checklist", "Planning"], category: "Venue Selection", publishedAt: "2025-10-25", readTime: "6 min" },
   { slug: "immersive-event-technology-2026", title: "Immersive Event Technology Trends for 2026", excerpt: "Projection mapping, AI personalisation, and sustainable tech choices reshaping luxury production in India.", image: EVENT_IMAGES.concert, author: "Vikram Singh", tags: ["Technology", "Trends", "Production"], category: "Event Trends", publishedAt: "2025-10-12", readTime: "7 min" },
-  { slug: "vendor-coordination-wedding-tips", title: "Wedding Vendor Coordination Tips from Glitz Planners", excerpt: "Master timelines, single-point communication, and quality checkpoints that prevent event-week chaos.", image: EVENT_IMAGES.wedding, author: "Priya Sharma", tags: ["Weddings", "Vendors", "Planning"], category: "Wedding Planning", publishedAt: "2025-09-30", readTime: "6 min" },
+  { slug: "vendor-coordination-wedding-tips", title: "Wedding Vendor Coordination Tips from Nexyyra Planners", excerpt: "Master timelines, single-point communication, and quality checkpoints that prevent event-week chaos.", image: EVENT_IMAGES.wedding, author: "Priya Sharma", tags: ["Weddings", "Vendors", "Planning"], category: "Wedding Planning", publishedAt: "2025-09-30", readTime: "6 min" },
   { slug: "corporate-gala-etiquette-guide", title: "Corporate Gala Etiquette & Hosting Standards", excerpt: "C-suite hosting protocols — registration, seating strategy, award presentations, and entertainment alignment.", image: EVENT_IMAGES.corporate, author: "Raj Mehta", tags: ["Corporate", "Gala", "Etiquette"], category: "Corporate Events", publishedAt: "2025-09-15", readTime: "5 min" },
 ];
 

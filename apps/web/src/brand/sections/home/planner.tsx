@@ -63,7 +63,7 @@ export function HomePlanner() {
       });
       if (!res.ok) throw new Error();
       toast.success("Consultation request received!");
-      const msg = encodeURIComponent(`Hi Glitz! ${data.eventType} in ${data.location}. Budget: ${data.budget}. Guests: ${data.guests}. Date: ${data.date}. ${data.name}`);
+      const msg = encodeURIComponent(`Hi Nexyyra! ${data.eventType} in ${data.location}. Budget: ${data.budget}. Guests: ${data.guests}. Date: ${data.date}. ${data.name}`);
       window.open(`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${msg}`, "_blank");
       setStep(6);
     } catch { toast.error("Please call us directly."); }

@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 const AUTO_MS = 5000;
 
-const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Glitz Events, I'd like to discuss an event.")}`;
+const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Nexyyra Events, I'd like to discuss an event.")}`;
 
 const SUB_POINTS = [
   "Luxury Event Planning",
@@ -174,7 +174,7 @@ export function HeroPremium() {
           </motion.div>
 
           <motion.span variants={itemReveal} className="brand-label">
-            Glitz Events & Promotions
+            Nexyyra Events
           </motion.span>
 
           <motion.h1

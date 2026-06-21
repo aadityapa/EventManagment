@@ -70,10 +70,10 @@ export function ServicesView() {
           <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">What We Craft</span>
             <h1 className="v4-display text-white">
-              Luxury Event <span className="v4-gold-text">Services</span>
+              Luxury <span className="v4-gold-text">Experiences</span>
             </h1>
             <p className="v4-standfirst mt-4 text-white/80">
-              Immersive storytelling, flawless execution, and conversion-focused experiences for
+              Immersive storytelling, flawless execution, and conversion-focused celebrations for
               India&apos;s most discerning hosts.
             </p>
           </GlassPanel>
@@ -107,7 +107,7 @@ export function ServicesView() {
             </div>
             <div className="absolute inset-0 flex flex-col justify-end p-8 sm:p-12 lg:p-16">
               <span className="v4-kicker mb-3 text-[var(--adaptive-accent,var(--glitz-gold))]">
-                Featured Service
+                Featured Experience
               </span>
               <h2 id="featured-service-heading" className="v4-display max-w-xl text-white">
                 {FEATURED.title}

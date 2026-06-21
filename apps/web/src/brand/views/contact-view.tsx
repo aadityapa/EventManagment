@@ -96,7 +96,7 @@ export function ContactView() {
 
               {/* GEO-friendly facts block */}
               <ScrollReveal preset="left" delay={0.1}>
-                <aside aria-label="Glitz Events contact facts">
+                <aside aria-label="Nexyyra Events contact facts">
                   <GlassPanel className="p-6">
                   <h3 className="v4-kicker mb-3">At a Glance</h3>
                   <dl className="space-y-3 text-sm">
@@ -152,7 +152,7 @@ export function ContactView() {
               <ScrollReveal preset="right">
                 <GlassPanel className="overflow-hidden p-0">
                   <iframe
-                    title="Glitz Events Pune office map"
+                    title="Nexyyra Events Pune office map"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242015!2d73.698!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9f9df543!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
                     className="h-[280px] w-full border-0 lg:min-h-[320px]"
                     loading="lazy"

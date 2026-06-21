@@ -28,8 +28,11 @@ const cormorant = Cormorant_Garamond({ variable: "--font-cormorant", weight: ["4
 export const metadata: Metadata = {
   ...generateSEO(),
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/logo.jpg" }],
-    apple: "/logo.jpg",
+    icon: [
+      { url: "/brand/favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/logo-primary.png", type: "image/png" },
+    ],
+    apple: "/brand/logo-primary.png",
   },
   manifest: "/manifest.json",
   category: "Event Management",

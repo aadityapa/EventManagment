@@ -17,13 +17,13 @@ const STEPS = [
     step: "02",
     icon: Layers,
     title: "We Design & Coordinate",
-    text: "Venues, vendors, décor, entertainment — every detail managed by your dedicated Glitz team from concept to rehearsal.",
+    text: "Venues, vendors, décor, entertainment — every detail managed by your dedicated Nexyyra team from concept to rehearsal.",
   },
   {
     step: "03",
     icon: Sparkles,
     title: "Celebrate Flawlessly",
-    text: "On the day, Glitz executes while you enjoy every moment. Post-event wrap-up and cherished memories delivered.",
+    text: "On the day, Nexyyra executes while you enjoy every moment. Post-event wrap-up and cherished memories delivered.",
   },
 ] as const;
 
@@ -65,7 +65,7 @@ export function HomeHowItWorks() {
 
         <div className="mt-12 text-center">
           <p className="mx-auto mb-6 max-w-lg text-sm text-muted">
-            Begin with a private consultation — no obligation, just clarity on how Glitz brings your celebration to life.
+            Begin with a private consultation — no obligation, just clarity on how Nexyyra brings your celebration to life.
           </p>
           <BrandButton
             href="/book-event"

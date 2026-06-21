@@ -4,7 +4,7 @@ import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 
 export const metadata = generateSEO({
   title: "Portfolio — Luxury Case Studies",
-  description: "Explore extraordinary events crafted by Glitz Events across India.",
+  description: "Explore extraordinary events crafted by Nexyyra Events across India.",
   path: "/portfolio",
 });
 

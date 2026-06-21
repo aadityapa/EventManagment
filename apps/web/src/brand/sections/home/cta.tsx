@@ -8,7 +8,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Glitz Events, I'd like to book a consultation.")}`;
+const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Nexyyra Events, I'd like to book a consultation.")}`;
 
 export function HomeCta() {
   const ref = useScrollReveal<HTMLElement>();

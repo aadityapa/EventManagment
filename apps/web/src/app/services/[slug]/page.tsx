@@ -37,7 +37,7 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
   const related = services.filter((s) => s.slug !== slug).slice(0, 3);
   const schema = breadcrumbSchema([
     { name: "Home", url: "/" },
-    { name: "Services", url: "/services" },
+    { name: "Experiences", url: "/services" },
     { name: service.title, url: `/services/${slug}` },
   ]);
   const svcSchema = serviceSchema({

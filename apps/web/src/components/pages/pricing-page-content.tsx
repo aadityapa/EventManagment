@@ -45,7 +45,7 @@ export function PricingPageContent() {
     <>
       <CinematicHero
         label="Investment"
-        title="The Glitz Collection"
+        title="The Nexyyra Collection"
         subtitle="Luxury is not purchased in packages — it is invested in experiences."
         image={IMAGES.hero.wedding}
         size="full"

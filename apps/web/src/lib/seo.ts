@@ -15,12 +15,14 @@ export function generateSEO({
   title,
   description = SITE_CONFIG.description,
   keywords = SEO_KEYWORDS,
-  image = "/logo.jpg",
+  image = "/brand/logo-primary.png",
   path = "",
   type = "website",
   noIndex = false,
 }: SEOProps = {}): Metadata {
-  const fullTitle = title ? `${title} | ${SITE_CONFIG.name}` : `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`;
+  const fullTitle = title
+    ? `${title} | ${SITE_CONFIG.name}`
+    : `${SITE_CONFIG.name} | ${SITE_CONFIG.tagline}`;
   const url = `${SITE_CONFIG.url}${path}`;
 
   return {
@@ -45,8 +47,8 @@ export function generateSEO({
       title: fullTitle,
       description,
       images: [image],
-      creator: "@glitzevents",
-      site: "@glitzevents",
+      creator: "@nexyyraevents",
+      site: "@nexyyraevents",
     },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
   };
@@ -74,12 +76,14 @@ export function organizationSchema() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `${SITE_CONFIG.url}/#organization`,
-    name: SITE_CONFIG.name,
+    name: SITE_CONFIG.legalName,
+    alternateName: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/logo.jpg`,
+    image: `${SITE_CONFIG.url}/brand/logo-primary.png`,
+    slogan: SITE_CONFIG.tagline,
     priceRange: "₹₹₹₹",
     address: {
       "@type": "PostalAddress",
@@ -330,19 +334,20 @@ export function entityDefinitionSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${SITE_CONFIG.url}/#organization`,
-    name: SITE_CONFIG.name,
-    alternateName: SITE_CONFIG.shortName,
+    name: SITE_CONFIG.legalName,
+    alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     foundingDate: "2012",
     knowsAbout: [
       "Luxury Wedding Planning",
-      "Corporate Event Management",
+      "Corporate Experience Design",
       "Destination Weddings",
-      "Concert Management",
+      "Concert Production",
       "Exhibition Management",
       "Celebrity Event Management",
-      "Product Launch Events",
+      "Brand Activations",
+      "Fashion Show Production",
     ],
     slogan: SITE_CONFIG.tagline,
     numberOfEmployees: { "@type": "QuantitativeValue", minValue: 50 },

@@ -85,12 +85,12 @@ router.post("/chat", async (req, res) => {
 
     const lowerMsg = message.toLowerCase();
     let reply =
-      "Thank you for reaching out to Glitz Events & Promotions! How can I help you plan your perfect event today?";
+      "Thank you for reaching out to Nexyyra Events! How can I help you plan your perfect event today?";
     let leadScore = session.leadScore;
 
     if (lowerMsg.includes("wedding")) {
       reply =
-        "Wonderful! Glitz Events & Promotions specializes in luxury weddings and destination weddings. Our packages start from ₹5 Lakhs. Would you like to schedule a free consultation?";
+        "Wonderful! Nexyyra Events specializes in luxury weddings and destination weddings. Our packages start from ₹5 Lakhs. Would you like to schedule a free consultation?";
       leadScore += 20;
     } else if (lowerMsg.includes("corporate")) {
       reply =
@@ -123,7 +123,7 @@ router.post("/chat", async (req, res) => {
       const system: StoredChatMessage = {
         role: "system",
         content:
-          "You are Glitz Events & Promotions' AI assistant for a luxury event management website in India. Be warm, confident, and concise. Ask 1-2 clarifying questions when needed (event type, city, date, guest count, budget). If the user is ready, guide them to book at /book-event or leave details for a consultation. Do not claim you performed actions you cannot actually do.",
+          "You are Nexyyra Events' AI assistant — experience architects and celebration designers for a luxury events website in India. Position Nexyyra as experience architects, celebration designers, and memory creators — NOT a generic event management company. Be warm, confident, and concise. Ask 1-2 clarifying questions when needed (event type, city, date, guest count, budget). If the user is ready, guide them to book at /book-event or leave details for a consultation. Do not claim you performed actions you cannot actually do.",
       };
 
       const aiReply = await tryOpenAIChatReply({
@@ -193,7 +193,7 @@ router.post("/plan", async (req, res) => {
       tips: [
         `For ${eventType || "your event"} with ${guestCount || 100} guests, book 6-8 months in advance`,
         "Consider off-season dates for 20-30% savings",
-        "Bundle services through Glitz for exclusive discounts",
+        "Bundle services through Nexyyra for exclusive discounts",
       ],
     };
 
@@ -212,7 +212,7 @@ router.post("/plan", async (req, res) => {
         "Return ONLY a valid JSON object matching this exact schema:",
         `{ "summary": string, "nextQuestions": string[], "moodboardKeywords": string[], "riskChecklist": string[] }`,
         "",
-        `Context: luxury event planning in India for Glitz Events & Promotions.`,
+        `Context: luxury event planning in India for Nexyyra Events.`,
         `Event: ${eventType || "Not specified"}`,
         `City: ${city || "Not specified"}`,
         `Guests: ${guestCount || 100}`,

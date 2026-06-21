@@ -434,7 +434,7 @@ export function VenuesView() {
           <ScrollReveal preset="fade" delay={0.15} className="mt-10">
             <GlassPanel className="overflow-hidden p-0">
               <iframe
-                title="Glitz Events Pune location map"
+                title="Nexyyra Events Pune location map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242015!2d73.698!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9f9df543!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
                 className="h-[420px] w-full border-0"
                 loading="lazy"
