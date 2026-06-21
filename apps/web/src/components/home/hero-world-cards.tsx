@@ -107,17 +107,15 @@ export function HeroWorldCards({ mouseX, mouseY, className }: Props) {
       className={cn("relative w-full max-w-xl lg:max-w-none", className)}
       aria-label="Experience worlds"
     >
-      <div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 xl:gap-5">
+      <div className="grid grid-cols-1 gap-4 min-[375px]:grid-cols-2 lg:hidden">
         {HERO_WORLDS.map((world, i) => (
-          <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} />
+          <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} compact />
         ))}
       </div>
 
-      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+      <div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 xl:gap-5">
         {HERO_WORLDS.map((world, i) => (
-          <div key={world.id} className="w-[72vw] max-w-[280px] shrink-0 snap-center first:pl-1 last:pr-1">
-            <WorldCard world={world} index={i} reducedMotion={!!reducedMotion} compact />
-          </div>
+          <WorldCard key={world.id} world={world} index={i} reducedMotion={!!reducedMotion} />
         ))}
       </div>
     </motion.div>

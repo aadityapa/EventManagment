@@ -57,9 +57,18 @@ function KenBurnsPoster({
 export function HeroVideoBackground({ slides, active, broken, onBroken, videoRef }: Props) {
   const reducedMotion = useReducedMotion();
   const [loaded, setLoaded] = useState<Record<number, true>>({});
+  const [allowVideo, setAllowVideo] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setAllowVideo(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const slide = slides[active];
-  const usePoster = reducedMotion || broken[active] || !slide?.video;
+  const usePoster = reducedMotion || broken[active] || !slide?.video || !allowVideo;
   const posterSrc = broken[active] ? HERO_VIDEO_FALLBACK : slide?.poster ?? HERO_VIDEO_FALLBACK;
 
   useEffect(() => {

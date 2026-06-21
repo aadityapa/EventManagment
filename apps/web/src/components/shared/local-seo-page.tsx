@@ -6,6 +6,8 @@ import type { LocalSeoPage } from "@/lib/local-seo-pages";
 import { SITE_CONFIG } from "@/lib/constants";
 import { breadcrumbSchema, faqSchema, speakableWebPageSchema } from "@/lib/seo";
 import { getExpandedLocalFaqs, localBusinessSchemaForPage } from "@/lib/local-seo-pages";
+import { getLocalPageContextualLinks } from "@/lib/wedding-internal-links";
+import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
 
 interface LocalSeoPageContentProps {
   page: LocalSeoPage;
@@ -13,6 +15,7 @@ interface LocalSeoPageContentProps {
 
 export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
   const expandedFaqs = getExpandedLocalFaqs(page);
+  const contextualLinks = getLocalPageContextualLinks(page.slug);
   const breadcrumbs = breadcrumbSchema([
     { name: "Home", url: "/" },
     { name: page.title, url: `/${page.slug}` },
@@ -86,18 +89,26 @@ export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
       </BrandSection>
 
       <BrandSection>
-        <BrandHeader label="Explore" title="Related Services & Pages" center />
-        <div className="flex flex-wrap justify-center gap-3">
-          {page.relatedLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-full border border-[var(--glitz-border)] px-5 py-2.5 text-sm font-medium text-secondary transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        {contextualLinks.length > 0 ? (
+          <div className="mx-auto max-w-3xl">
+            <ContextualLinksBlock title="Related Services & Pages" links={contextualLinks} />
+          </div>
+        ) : (
+          <>
+            <BrandHeader label="Explore" title="Related Services & Pages" center />
+            <div className="flex flex-wrap justify-center gap-3">
+              {page.relatedLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full border border-[var(--glitz-border)] px-5 py-2.5 text-sm font-medium text-secondary transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
         <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted">
           <MapPin className="mb-1 inline h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />{" "}
           Serving {SITE_CONFIG.city}, {SITE_CONFIG.region}, and destinations across India.{" "}

@@ -83,7 +83,7 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+          className="tap-target absolute right-3 top-3 z-10 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
           aria-label="Close showreel"
         >
           <X className="h-5 w-5" />
@@ -189,7 +189,7 @@ export function HeroV4() {
         id="welcome"
         ref={setAdaptiveRef}
         data-adaptive-backdrop=""
-        className="relative flex min-h-[100svh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-black v5-dune-glow"
+        className="relative flex min-h-[100dvh] flex-col overflow-x-clip border-b border-[var(--glitz-border)] bg-black v5-dune-glow"
         onMouseMove={onMouseMove}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => {
@@ -212,9 +212,9 @@ export function HeroV4() {
           <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
         </motion.div>
 
-        <div className="brand-container relative z-20 flex flex-1 items-center py-24 md:py-28 lg:py-16">
-          <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
-            <div ref={contentRef} className="max-w-xl">
+        <div className="brand-container relative z-20 flex flex-1 items-center py-28 pb-36 sm:py-24 md:py-28 lg:py-16">
+          <div className="grid w-full grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+            <div ref={contentRef} className="order-1 w-full min-w-0 max-w-xl lg:order-none">
               <span
                 data-hero-label
                 className="brand-label mb-3 block text-[var(--adaptive-accent,var(--glitz-gold))]"
@@ -230,7 +230,7 @@ export function HeroV4() {
 
               <h1
                 data-hero-headline
-                className="overflow-hidden font-[family-name:var(--font-playfair)] text-[clamp(2.35rem,5.5vw,3.85rem)] font-bold leading-[1.05] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
+                className="nex-hero-text overflow-visible font-[family-name:var(--font-playfair)] font-bold text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
               >
                 <span className="block">Crafting Extraordinary Experiences</span>
                 <span className="mt-1 block text-[var(--adaptive-accent,var(--glitz-gold))]">
@@ -246,20 +246,20 @@ export function HeroV4() {
                 experiences, celebrity events and unforgettable moments across India.
               </p>
 
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <div data-hero-cta>
+              <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <div data-hero-cta className="w-full sm:w-auto">
                   <MagneticButton>
                     <BrandButton
                       href="/book-event"
                       variant="gold"
-                      className="min-w-[200px]"
+                      className="w-full min-w-0 sm:min-w-[200px]"
                       onClick={() => analytics.ctaClick("book_consultation", "hero")}
                     >
                       Book Consultation
                     </BrandButton>
                   </MagneticButton>
                 </div>
-                <div data-hero-cta>
+                <div data-hero-cta className="w-full sm:w-auto">
                   <MagneticButton>
                     <button
                       type="button"
@@ -268,7 +268,7 @@ export function HeroV4() {
                         setShowreelOpen(true);
                       }}
                       className={cn(
-                        "inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)]/60 px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-md transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 hover:shadow-[var(--glitz-glow)]"
+                        "inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)]/60 px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-md transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 hover:shadow-[var(--glitz-glow)] sm:w-auto sm:min-w-[200px]"
                       )}
                     >
                       <Play className="h-4 w-4 text-[var(--adaptive-accent,var(--glitz-gold))]" aria-hidden />
@@ -313,7 +313,7 @@ export function HeroV4() {
               </div>
             </div>
 
-            <HeroWorldCards mouseX={springX} mouseY={springY} className="lg:justify-self-end" />
+            <HeroWorldCards mouseX={springX} mouseY={springY} className="order-2 w-full min-w-0 lg:order-none lg:justify-self-end" />
           </div>
         </div>
 

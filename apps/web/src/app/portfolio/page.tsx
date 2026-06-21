@@ -3,8 +3,9 @@ import { PortfolioView } from "@/brand";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 
 export const metadata = generateSEO({
-  title: "Portfolio — Luxury Case Studies",
-  description: "Explore extraordinary events crafted by Nexyyra Events across India.",
+  title: "Luxury Event Portfolio",
+  description:
+    "Explore Nexyyra case studies — palace weddings, corporate galas, concerts, and destination productions across Pune and India.",
   path: "/portfolio",
 });
 

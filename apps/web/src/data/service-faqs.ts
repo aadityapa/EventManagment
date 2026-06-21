@@ -332,7 +332,7 @@ const GENERIC_SERVICE_FAQS: ServiceFaq[] = [
   {
     question: "How do I book this service with Nexyyra Events?",
     answer:
-      "Book a complimentary consultation at https://nexyyra.com/book-event or call +91 9730594753. You receive a tailored proposal within 48 hours.",
+      "Book a complimentary consultation at https://www.nexyyra.com/book-event or call +91 9730594753. You receive a tailored proposal within 48 hours.",
   },
   {
     question: "What areas does Nexyyra serve for this service?",

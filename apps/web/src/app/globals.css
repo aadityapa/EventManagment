@@ -5,6 +5,7 @@
 @import "../brand/design-system/v4-tokens.css";
 @import "../styles/design-system.css";
 @import "../styles/responsive.css";
+@import "../styles/responsive-system.css";
 
 :root,
 .light {

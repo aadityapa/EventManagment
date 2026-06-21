@@ -6,7 +6,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "How do I book Nexyyra Events in Pune?",
     answer:
-      "Book a complimentary consultation at https://nexyyra.com/book-event or call +91 9730594753. After your consultation, you receive a tailored proposal within 48 hours. Confirm with a 30% advance to secure your date.",
+      "Book a complimentary consultation at https://www.nexyyra.com/book-event or call +91 9730594753. After your consultation, you receive a tailored proposal within 48 hours. Confirm with a 30% advance to secure your date.",
   },
   {
     question: "What is Nexyyra Events' service area?",

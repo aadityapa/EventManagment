@@ -13,6 +13,18 @@ interface SEOProps {
   modifiedTime?: string;
   authors?: string[];
   tags?: string[];
+  /** Blog posts use "Post Title | Nexyyra Blog"; default pages use "| Nexyyra" */
+  blogPost?: boolean;
+}
+
+const SEO_BRAND = "Nexyyra";
+const SEO_BLOG_BRAND = "Nexyyra Blog";
+
+function trimDescription(text: string, max = 160): string {
+  if (text.length <= max) return text;
+  const trimmed = text.slice(0, max - 1);
+  const lastSpace = trimmed.lastIndexOf(" ");
+  return `${(lastSpace > 120 ? trimmed.slice(0, lastSpace) : trimmed).trim()}…`;
 }
 
 const ORG_ID = `${SITE_CONFIG.url}/#organization`;
@@ -30,17 +42,20 @@ export function generateSEO({
   modifiedTime,
   authors,
   tags,
+  blogPost = false,
 }: SEOProps = {}): Metadata {
+  const brandSuffix = blogPost ? SEO_BLOG_BRAND : SEO_BRAND;
   const fullTitle = title
-    ? `${title} | ${SITE_CONFIG.name}`
-    : `${SITE_CONFIG.name} | ${SITE_CONFIG.tagline}`;
+    ? `${title} | ${brandSuffix}`
+    : `${SEO_BRAND} | ${SITE_CONFIG.tagline}`;
+  const metaDescription = trimDescription(description);
   const url = `${SITE_CONFIG.url}${path}`;
   const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
   const bingVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
 
   return {
     title: fullTitle,
-    description,
+    description: metaDescription,
     keywords: keywords.join(", "),
     authors: authors?.map((name) => ({ name })) ?? [{ name: SITE_CONFIG.name }],
     creator: SITE_CONFIG.name,
@@ -49,7 +64,7 @@ export function generateSEO({
     alternates: { canonical: url, languages: { "en-IN": url } },
     openGraph: {
       title: fullTitle,
-      description,
+      description: metaDescription,
       url,
       siteName: SITE_CONFIG.name,
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
@@ -65,7 +80,7 @@ export function generateSEO({
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
-      description,
+      description: metaDescription,
       images: [image],
       creator: "@nexyyraevents",
       site: "@nexyyraevents",
@@ -343,6 +358,31 @@ export function eventSchema(event: {
     },
     image: event.image,
     organizer: { "@id": ORG_ID },
+  };
+}
+
+/** Homepage primary service entity — AEO EventPlanningService */
+export function eventPlanningServiceSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EventPlanningService",
+    "@id": `${SITE_CONFIG.url}/#eventplanning`,
+    name: `${SITE_CONFIG.name} — Luxury Event Planning`,
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    telephone: SITE_CONFIG.phone,
+    email: SITE_CONFIG.email,
+    image: `${SITE_CONFIG.url}/brand/logo-primary.png`,
+    provider: { "@id": ORG_ID },
+    areaServed: ENTITY_FACTS.serviceAreas.map((name) => ({ "@type": "Place", name })),
+    priceRange: ENTITY_FACTS.priceRange,
+    knowsAbout: ENTITY_FACTS.knowsAbout,
+    serviceType: [
+      "Luxury Wedding Planning",
+      "Destination Weddings",
+      "Corporate Events",
+      "Concert Production",
+    ],
   };
 }
 

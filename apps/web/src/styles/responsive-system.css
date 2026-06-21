@@ -1,0 +1,160 @@
+/* ============================================================================
+   Nexyyra — Fluid Responsive Architecture
+   Mobile 320px → 4K 3840px+. No fixed pixel layouts.
+   ============================================================================ */
+
+:root {
+  --nex-container-max: 112.5rem; /* 1800px */
+  --nex-padding-inline: clamp(1rem, 2.5vw + 0.5rem, 7.5rem);
+  --nex-gap-section: clamp(3rem, 8vw, 9rem);
+  --nex-gap-grid: clamp(1rem, 2.5vw, 2rem);
+
+  /* Typography — fluid scale */
+  --nex-text-hero: clamp(3rem, 10vw, 9rem);
+  --nex-text-section: clamp(2rem, 5vw, 5rem);
+  --nex-text-body: clamp(1rem, 0.95rem + 0.35vw, 1.2rem);
+  --nex-text-small: clamp(0.875rem, 0.85rem + 0.2vw, 1rem);
+}
+
+/* Container — centered, max 1800px, fluid padding */
+.brand-container,
+.container-page {
+  width: 100%;
+  max-width: var(--nex-container-max);
+  margin-inline: auto;
+  padding-inline: var(--nex-padding-inline);
+  box-sizing: border-box;
+}
+
+/* Fluid typography utilities */
+.nex-hero-text {
+  font-size: var(--nex-text-hero);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.nex-section-text {
+  font-size: var(--nex-text-section);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.nex-body-text {
+  font-size: var(--nex-text-body);
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+.nex-small-text {
+  font-size: var(--nex-text-small);
+  line-height: 1.5;
+}
+
+/* Responsive grid — 1 / 2 / 4 columns */
+.nex-grid {
+  display: grid;
+  gap: var(--nex-gap-grid);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .nex-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .nex-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.nex-grid-auto {
+  display: grid;
+  gap: var(--nex-gap-grid);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
+}
+
+/* Prevent overflow & text clipping sitewide */
+html {
+  overflow-x: clip;
+}
+
+.brand-root {
+  overflow-x: clip;
+  min-width: 0;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* WCAG focus — visible on keyboard only */
+:focus-visible {
+  outline: 2px solid var(--glitz-gold, #d4af37);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* High contrast preference */
+@media (prefers-contrast: more) {
+  :root {
+    --glitz-border: rgba(184, 134, 11, 0.55);
+  }
+}
+
+/* Reduced motion — disable decorative motion */
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee,
+  .marquee-track {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Touch targets — minimum 44×44 */
+.tap-target,
+button,
+a[role="button"] {
+  touch-action: manipulation;
+}
+
+/* Safe areas — notched devices */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Container queries for card grids */
+@container (min-width: 40rem) {
+  .nex-cq-2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 64rem) {
+  .nex-cq-4col {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.nex-container-query {
+  container-type: inline-size;
+}

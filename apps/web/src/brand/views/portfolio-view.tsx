@@ -83,7 +83,7 @@ export function PortfolioView() {
       <section className="relative flex min-h-[72svh] items-end overflow-hidden">
         <BrandImage
           src={BRAND_IMAGES.hero.corporate}
-          alt=""
+          alt="Corporate gala production — Nexyyra Events portfolio"
           fill
           priority
           sizes="100vw"
@@ -248,7 +248,7 @@ export function PortfolioView() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: DUR.base, ease: EASE.luxe }}
-                className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+                className="nex-grid mt-12"
               >
                 {[featured, ...gridItems].map((cs, i) => (
                   <CaseGridCard key={cs.id} cs={cs} index={i} />
@@ -329,9 +329,10 @@ function CaseGridCard({
       <div className="relative aspect-[4/3] overflow-hidden">
         <BrandImage
           src={cs.image}
-          alt={cs.title}
+          alt={`${cs.title} — ${cs.venue}`}
           fill
           sizes="33vw"
+          loading="lazy"
           className="object-cover transition-transform duration-[1.2s] ease-[var(--v4-ease-luxe)] group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
@@ -381,7 +382,7 @@ function StoryCaseCard({
     >
       <div className={cn("grid lg:grid-cols-2", flip && "lg:[direction:rtl]")}>
         <div className={cn("relative min-h-[320px]", flip && "lg:[direction:ltr]")}>
-          <BrandImage src={cs.image} alt={cs.title} fill sizes="50vw" />
+          <BrandImage src={cs.image} alt={`${cs.title} at ${cs.venue}`} fill sizes="50vw" loading="lazy" />
           <div className="absolute inset-0 bg-black/20" />
         </div>
         <div className={cn("p-8 lg:p-12", flip && "lg:[direction:ltr]")}>

@@ -6,6 +6,8 @@ import { blogPosts } from "@/data/cms";
 import { getBlogArticleContent, getBlogKeyTakeaways } from "@/data/blog-content";
 import { generateSEO, breadcrumbSchema, articleSchema, faqSchema, howToSchema } from "@/lib/seo";
 import { getBlogFaqs, getBlogHowTo } from "@/lib/geo-content";
+import { getBlogContextualLinks } from "@/lib/wedding-internal-links";
+import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
 import { formatDate } from "@/lib/utils";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 
@@ -28,6 +30,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     path: `/blog/${slug}`,
     image: post.image,
     type: "article",
+    blogPost: true,
     publishedTime: post.publishedAt,
     authors: [post.author],
     tags: post.tags,
@@ -67,6 +70,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     wordCount,
   });
   const blogFaqs = getBlogFaqs(slug);
+  const contextualLinks = getBlogContextualLinks(slug);
   const faqLd = blogFaqs.length > 0 ? faqSchema(blogFaqs) : null;
   const howToData = getBlogHowTo(slug);
   const howToLd = howToData
@@ -187,6 +191,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </p>
             ))}
           </div>
+
+          {contextualLinks.length > 0 && (
+            <ContextualLinksBlock
+              title="Related Pages"
+              links={contextualLinks}
+              className="mt-16 border-t border-[var(--glitz-border)] pt-10"
+            />
+          )}
 
           {relatedPosts.length > 0 && (
             <aside className="mt-16 border-t border-[var(--glitz-border)] pt-10">

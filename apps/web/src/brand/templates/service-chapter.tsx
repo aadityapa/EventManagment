@@ -13,6 +13,8 @@ import { ScrollReveal, staggerParent, staggerItem } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { formatCurrency } from "@/lib/utils";
 import type { ServiceFaq } from "@/data/service-faqs";
+import type { ContextualLink } from "@/lib/wedding-internal-links";
+import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
 
 export type ServiceChapterProps = {
   service: {
@@ -26,17 +28,19 @@ export type ServiceChapterProps = {
   };
   faqs: ServiceFaq[];
   related: Array<{ slug: string; title: string; icon: string }>;
+  contextualLinks?: ContextualLink[];
+  pageIntro?: string;
   world?: string | null;
 };
 
 /** V5 cinematic service chapter template. */
-export function ServiceChapter({ service, faqs, related, world }: ServiceChapterProps) {
+export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, world }: ServiceChapterProps) {
   const bookHref = world ? `/book-event?world=${world}&service=${service.slug}` : `/book-event?service=${service.slug}`;
 
   return (
     <>
       <section className="relative flex min-h-[72svh] items-end overflow-hidden">
-        <BrandImage src={service.image} alt="" fill priority sizes="100vw" className="object-cover" />
+        <BrandImage src={service.image} alt={`${service.title} — Nexyyra Events`} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--v5-obsidian,#050505)]/90 via-black/45 to-black/25" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
           <GlassPanel variant="portal" glow className="max-w-2xl px-8 py-10 sm:px-10">
@@ -62,6 +66,9 @@ export function ServiceChapter({ service, faqs, related, world }: ServiceChapter
             <ScrollReveal preset="reveal">
               <span className="v4-kicker mb-4">Process Film</span>
               <h2 className="v4-display max-w-xl">How We <span className="v4-gold-text">Deliver</span></h2>
+              {pageIntro && (
+                <p className="v4-standfirst mt-6 max-w-2xl text-[var(--text-secondary)]">{pageIntro}</p>
+              )}
             </ScrollReveal>
             <motion.ol variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-10 space-y-6">
               {BRAND_PROCESS_STEPS.map((s) => (
@@ -115,7 +122,14 @@ export function ServiceChapter({ service, faqs, related, world }: ServiceChapter
           <div className="grid gap-4 sm:grid-cols-3">
             {[0, 1, 2].map((i) => (
               <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-[var(--v4-radius-lg)]">
-                <BrandImage src={service.image} alt="" fill sizes="33vw" className="object-cover" />
+                <BrandImage
+                  src={service.image}
+                  alt={`${service.title} gallery image ${i + 1}`}
+                  fill
+                  sizes="33vw"
+                  loading="lazy"
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>
@@ -127,6 +141,14 @@ export function ServiceChapter({ service, faqs, related, world }: ServiceChapter
           <ServiceFaqSection faqs={faqs} serviceTitle={service.title} slug={service.slug} />
         </div>
       </section>
+
+      {contextualLinks.length > 0 && (
+        <section className="v4-section bg-[var(--glitz-bg)]">
+          <div className="brand-container max-w-3xl">
+            <ContextualLinksBlock title="Related Pages" links={contextualLinks} />
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="v4-section bg-[var(--glitz-bg)]">

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { services } from "@/data/cms";
 import { getServiceFaqs } from "@/data/service-faqs";
 import { generateSEO, breadcrumbSchema, serviceSchema, faqSchema } from "@/lib/seo";
+import { getServiceContextualLinks, getServicePageIntro, getServiceSeo } from "@/lib/wedding-internal-links";
 import { ServiceChapter } from "@/brand/templates/service-chapter";
 
 interface ServiceDetailPageProps {
@@ -19,9 +20,10 @@ export async function generateMetadata({ params }: ServiceDetailPageProps) {
   const service = services.find((s) => s.slug === slug);
   if (!service) return generateSEO({ title: "Service Not Found", noIndex: true });
 
+  const seo = getServiceSeo(slug);
   return generateSEO({
-    title: service.title,
-    description: service.description,
+    title: seo?.title ?? service.title,
+    description: seo?.description ?? service.description,
     path: `/services/${slug}`,
     image: service.image,
   });
@@ -34,6 +36,8 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
   if (!service) notFound();
 
   const serviceFaqs = getServiceFaqs(slug);
+  const contextualLinks = getServiceContextualLinks(slug);
+  const pageIntro = getServicePageIntro(slug);
   const related = services.filter((s) => s.slug !== slug).slice(0, 3);
   const schema = breadcrumbSchema([
     { name: "Home", url: "/" },
@@ -59,6 +63,8 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
           service={service}
           faqs={serviceFaqs}
           related={related}
+          contextualLinks={contextualLinks}
+          pageIntro={pageIntro}
           world={world ?? null}
         />
       </Suspense>

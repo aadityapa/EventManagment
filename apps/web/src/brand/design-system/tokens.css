@@ -33,7 +33,7 @@
   --glitz-glow: 0 0 32px rgba(201, 162, 39, 0.22);
   --glitz-glow-strong: 0 0 48px rgba(212, 175, 55, 0.35);
   --glitz-radius: 12px;
-  --glitz-container: 90rem;
+  --glitz-container: 112.5rem;
   --glitz-section-mobile: 5rem;
   --glitz-section-tablet: 7.5rem;
   --glitz-section-desktop: 10rem;
@@ -151,7 +151,7 @@ html[data-adaptive-active="true"] body {
   width: 100%;
   max-width: var(--glitz-container);
   margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 2rem);
+  padding-inline: clamp(1rem, 2.5vw + 0.5rem, 7.5rem);
 }
 
 .brand-section {

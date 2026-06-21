@@ -57,10 +57,10 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
   },
   {
     slug: "wedding-planner-pune",
-    title: "Wedding Planner Pune",
+    title: "Luxury Wedding Planner Pune",
     h1: "Luxury Wedding Planner in Pune",
     description:
-      "Award-winning wedding planner in Pune specialising in luxury ceremonies, destination weddings, and bespoke celebrations. Full planning from mehendi to reception.",
+      "Award-winning luxury wedding planner in Pune — full-service planning, destination weddings, and bespoke celebrations from mehendi to reception by Nexyyra Events.",
     keywords: [
       "Wedding Planner Pune",
       "Luxury Wedding Planner Pune",
@@ -89,10 +89,10 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
       },
     ],
     relatedLinks: [
-      { href: "/destination-wedding-planner-pune", label: "Destination Weddings" },
-      { href: "/luxury-wedding-planner-maharashtra", label: "Luxury Weddings Maharashtra" },
-      { href: "/venues", label: "Wedding Venues" },
-      { href: "/book-event", label: "Book Consultation" },
+      { href: "/services/wedding-planning", label: "Wedding Planning Service" },
+      { href: "/blog/wedding-planner-pune-guide", label: "Wedding Planner Guide" },
+      { href: "/blog/pune-luxury-venues-guide", label: "Pune Luxury Venues" },
+      { href: "/contact", label: "Contact Us" },
     ],
   },
   {
@@ -220,7 +220,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     title: "Destination Wedding Planner Pune",
     h1: "Destination Wedding Planner from Pune",
     description:
-      "Plan your dream destination wedding from Pune — Udaipur palaces, Goa beaches, international venues. Full logistics, guest management, and luxury execution.",
+      "Plan your dream destination wedding from Pune — Udaipur palaces, Goa beaches, and international venues with full guest logistics and luxury execution by Nexyyra.",
     keywords: [
       "Destination Wedding Planner Pune",
       "Destination Wedding Planner India",
@@ -249,9 +249,9 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
       },
     ],
     relatedLinks: [
-      { href: "/wedding-planner-pune", label: "Wedding Planner Pune" },
-      { href: "/luxury-wedding-planner-maharashtra", label: "Luxury Weddings" },
       { href: "/services/destination-weddings", label: "Destination Wedding Service" },
+      { href: "/blog/udaipur-palace-wedding-guide", label: "Udaipur Palace Guide" },
+      { href: "/blog/goa-beach-wedding-guide", label: "Goa Beach Wedding Guide" },
       { href: "/book-event", label: "Plan Your Wedding" },
     ],
   },

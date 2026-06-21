@@ -5,7 +5,7 @@ export const SITE_CONFIG = {
   tagline: "The Next Era of Celebrations",
   description:
     "Experience architects, celebration designers, and memory creators — crafting extraordinary weddings, corporate experiences, celebrity events, and destination celebrations across India.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://nexyyra.com",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://www.nexyyra.com",
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@nexyyra.com",

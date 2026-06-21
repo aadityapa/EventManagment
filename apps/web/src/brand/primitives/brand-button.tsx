@@ -20,7 +20,7 @@ export function BrandButton({ href, children, variant = "gold", className, onCli
         href={href}
         onClick={onClick}
         className={cn(
-          "relative inline-flex min-h-[48px] min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 py-3 text-sm font-semibold tracking-wide",
+          "relative inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-3 text-sm font-semibold tracking-wide sm:min-w-[12.5rem] sm:px-8",
           variant === "gold"
             ? "btn-gold-metallic"
             : "border border-[var(--gold)]/45 bg-[var(--glitz-glass)] text-primary backdrop-blur-sm hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/8 hover:shadow-[var(--glitz-glow)]",

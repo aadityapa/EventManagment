@@ -41,7 +41,7 @@ export function GalleryView() {
       <section className="relative flex min-h-[68svh] items-end overflow-hidden">
         <BrandImage
           src={BRAND_IMAGES.gallery[0]}
-          alt=""
+          alt="Luxury wedding reception at Nexyyra Events gallery"
           fill
           priority
           sizes="100vw"

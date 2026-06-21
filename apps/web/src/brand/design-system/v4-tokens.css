@@ -38,8 +38,8 @@
   --v4-text-body: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
   --v4-text-standfirst: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
   --v4-text-title: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
-  --v4-text-display: clamp(2.5rem, 1.2rem + 6vw, 5.5rem);
-  --v4-text-hero: clamp(3rem, 1rem + 9vw, 8rem);
+  --v4-text-display: clamp(2rem, 5vw, 5rem);
+  --v4-text-hero: clamp(3rem, 10vw, 9rem);
   --v4-leading-tight: 1.02;
   --v4-leading-snug: 1.12;
   --v4-leading-body: 1.6;
