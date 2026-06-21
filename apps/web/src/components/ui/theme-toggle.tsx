@@ -21,7 +21,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn(
-        "flex h-9 w-9 items-center justify-center rounded-full border border-[var(--glitz-border)] bg-[var(--glitz-glass)] text-[var(--glitz-gold-metallic)] backdrop-blur-md transition-all hover:border-[var(--glitz-gold)]/50 hover:shadow-[var(--glitz-glow)]",
+        "tap-target flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--gold)] backdrop-blur-md transition-all hover:border-[var(--gold)]/50 hover:shadow-[var(--glitz-glow)]",
         className
       )}
     >

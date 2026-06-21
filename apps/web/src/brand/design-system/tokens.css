@@ -4,14 +4,15 @@
 :root,
 .light {
   /* Canonical theme tokens */
-  --background: #fdfbf5;
-  --surface: #f7f3eb;
+  --background: #f8f5ee;
+  --surface: #f0ebe3;
   --card: #ffffff;
   --text-primary: #111111;
   --text-secondary: #444444;
   --text-muted: #666666;
   --gold: #b8860b;
   --gold-light: #c9a227;
+  --border: rgba(184, 134, 11, 0.22);
 
   /* Glitz aliases — map legacy vars to canonical tokens */
   --glitz-bg: var(--background);
@@ -28,7 +29,7 @@
   --glitz-text: var(--text-primary);
   --glitz-text-secondary: var(--text-secondary);
   --glitz-muted: var(--text-muted);
-  --glitz-border: rgba(184, 134, 11, 0.22);
+  --glitz-border: var(--border);
   --glitz-glass: rgba(255, 255, 255, 0.72);
   --glitz-glow: 0 0 32px rgba(201, 162, 39, 0.22);
   --glitz-glow-strong: 0 0 48px rgba(212, 175, 55, 0.35);
@@ -48,12 +49,13 @@
 .dark {
   --background: #050505;
   --surface: #111111;
-  --card: #1a1a1a;
+  --card: #181818;
   --text-primary: #ffffff;
   --text-secondary: #d1d1d1;
   --text-muted: #a0a0a0;
   --gold: #d4af37;
   --gold-light: #e6c67a;
+  --border: rgba(212, 175, 55, 0.18);
 
   --glitz-bg: var(--background);
   --glitz-surface: var(--surface);
@@ -69,7 +71,7 @@
   --glitz-text: var(--text-primary);
   --glitz-text-secondary: var(--text-secondary);
   --glitz-muted: var(--text-muted);
-  --glitz-border: rgba(212, 175, 55, 0.18);
+  --glitz-border: var(--border);
   --glitz-glass: rgba(17, 17, 17, 0.65);
   --glitz-glow: 0 0 40px rgba(212, 175, 55, 0.25);
   --glitz-glow-strong: 0 0 56px rgba(255, 215, 0, 0.28);

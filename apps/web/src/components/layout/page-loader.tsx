@@ -26,7 +26,7 @@ export function PageLoader() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Logo href={undefined} priority className="!h-14 sm:!h-16" />
+            <Logo href={undefined} priority variant="image" className="!h-14 sm:!h-16" />
           </motion.div>
           <motion.div
             initial={{ scaleX: 0 }}

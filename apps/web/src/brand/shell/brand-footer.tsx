@@ -7,10 +7,9 @@ import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, Phone, Play, X } from "lucide-react";
 import { BrandButton } from "@/brand/primitives/brand-button";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { HERO_SHOWREEL_VIDEO, HERO_VIDEO_SLIDES } from "@/components/home/hero-video-data";
-import { ScrollReveal, Parallax } from "@/lib/motion";
+import { ScrollReveal } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
@@ -21,8 +20,6 @@ const GoldParticles = dynamic(
   () => import("@/components/effects/gold-particles").then((m) => m.GoldParticles),
   { ssr: false }
 );
-
-const FOOTER_BG_SLIDES = HERO_VIDEO_SLIDES.slice(0, 3);
 
 const EXPERIENCE_LINKS = [
   { href: "/services/wedding-planning", label: "Luxury Weddings" },
@@ -98,11 +95,7 @@ const SOCIAL_LINKS = [
   { href: "https://pinterest.com/nexyyraevents", label: "Pinterest", icon: PinterestIcon },
   { href: SITE_CONFIG.social.linkedin, label: "LinkedIn", icon: LinkedinIcon },
   { href: SITE_CONFIG.social.youtube, label: "YouTube", icon: YoutubeIcon },
-  {
-    href: `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`,
-    label: "WhatsApp",
-    icon: MessageCircle,
-  },
+  { href: `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`, label: "WhatsApp", icon: MessageCircle },
 ] as const;
 
 function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -123,31 +116,25 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-xl"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--background)]/90 p-4 backdrop-blur-xl"
       role="dialog"
       aria-modal="true"
       aria-label="Nexyyra Events showreel"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-[var(--glitz-gold)]/30 bg-black shadow-[0_0_80px_-20px_rgba(201,162,39,0.5)]"
+        className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-[var(--footer-glow)]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="tap-target absolute right-3 top-3 z-10 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-black/70 text-white transition-colors hover:bg-black/90"
+          className="tap-target absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--surface)] text-[var(--text-primary)] transition-colors hover:bg-[var(--card)]"
           aria-label="Close showreel"
         >
           <X className="h-5 w-5" />
         </button>
-        <video
-          autoPlay
-          controls
-          playsInline
-          className="aspect-video w-full object-cover"
-          poster={HERO_VIDEO_SLIDES[0]?.poster}
-        >
+        <video autoPlay controls playsInline className="aspect-video w-full object-cover" poster={HERO_VIDEO_SLIDES[0]?.poster}>
           <source src={HERO_SHOWREEL_VIDEO} type="video/mp4" />
         </video>
       </div>
@@ -155,54 +142,24 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
   );
 }
 
-function FooterCinematicBg({ reducedMotion }: { reducedMotion: boolean | null }) {
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % FOOTER_BG_SLIDES.length);
-    }, 6000);
-    return () => window.clearInterval(id);
-  }, [reducedMotion]);
-
+function FooterBg({ reducedMotion }: { reducedMotion: boolean | null }) {
+  const poster = HERO_VIDEO_SLIDES[0]?.poster;
   return (
-    <Parallax layer="bg" className="absolute inset-0 -z-10">
-      <div className="absolute inset-0 overflow-hidden">
-        {FOOTER_BG_SLIDES.map((slide, i) => (
-          <div
-            key={slide.category}
-            className={cn(
-              "absolute inset-0 transition-opacity duration-[2000ms] ease-[var(--v4-ease-silk)]",
-              i === active ? "opacity-100" : "opacity-0"
-            )}
-            aria-hidden
-          >
-            {!reducedMotion ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full scale-110 object-cover blur-md"
-                poster={slide.poster}
-              >
-                <source src={slide.video} type="video/mp4" />
-              </video>
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={slide.poster} alt="" className="h-full w-full scale-110 object-cover blur-md" />
-            )}
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/88 via-[#050505]/92 to-[#050505]/98" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(245,215,110,0.12),transparent_70%)]" />
-      </div>
-    </Parallax>
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+      {!reducedMotion ? (
+        <video autoPlay muted loop playsInline className="h-full w-full scale-105 object-cover opacity-35 blur-sm" poster={poster}>
+          <source src={HERO_VIDEO_SLIDES[0]?.video} type="video/mp4" />
+        </video>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={poster} alt="" className="h-full w-full scale-105 object-cover opacity-35 blur-sm" />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-b from-[var(--footer-bg)]/90 via-[var(--footer-bg)]/95 to-[var(--footer-bg)]" />
+    </div>
   );
 }
 
-function AnimatedCounters() {
+function StatGrid() {
   const ref = useRef<HTMLDivElement>(null);
 
   useGsapContext(ref, () => {
@@ -214,9 +171,9 @@ function AnimatedCounters() {
       const obj = { v: 0 };
       gsap.to(obj, {
         v: end,
-        duration: 2.4,
+        duration: 2,
         ease: "power2.out",
-        scrollTrigger: { trigger: node, start: "top 92%", once: true },
+        scrollTrigger: { trigger: ref.current, start: "top 92%", once: true },
         onUpdate: () => {
           const val = decimals ? obj.v.toFixed(decimals) : Math.round(obj.v).toLocaleString("en-IN");
           node.textContent = `${val}${suffix}`;
@@ -226,22 +183,20 @@ function AnimatedCounters() {
   }, []);
 
   return (
-    <div ref={ref} className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <div ref={ref} className="site-footer__stat-grid">
       {TRUST_METRICS.map((m) => (
-        <GlassPanel key={m.label} className="border-[var(--glitz-gold)]/15 bg-white/5 px-4 py-8 text-center backdrop-blur-md">
+        <div key={m.label} className="site-footer__stat-card">
           <p
             data-count
             data-end={m.end}
             data-suffix={m.suffix}
             data-decimals={m.decimals}
-            className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[var(--v4-dune-glow)] sm:text-4xl"
+            className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[var(--footer-accent)] sm:text-4xl"
           >
             0{m.suffix}
           </p>
-          <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-white/55">
-            {m.label}
-          </p>
-        </GlassPanel>
+          <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--footer-text-muted)]">{m.label}</p>
+        </div>
       ))}
     </div>
   );
@@ -250,22 +205,16 @@ function AnimatedCounters() {
 function ClientMarquee() {
   const items = [...FEATURED_CLIENTS, ...FEATURED_CLIENTS];
   return (
-    <div className="relative overflow-hidden py-2">
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#050505] to-transparent"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#050505] to-transparent"
-        aria-hidden
-      />
-      <div className="brand-marquee gap-16 px-8">
+    <div className="relative overflow-hidden py-1">
+      <div className="site-footer__marquee-fade pointer-events-none absolute inset-y-0 left-0 z-10 w-16" aria-hidden />
+      <div className="site-footer__marquee-fade site-footer__marquee-fade--right pointer-events-none absolute inset-y-0 right-0 z-10 w-16" aria-hidden />
+      <div className="brand-marquee gap-12 px-4">
         {items.map((name, i) => (
           <span
             key={`${name}-${i}`}
-            className="flex shrink-0 items-center gap-4 whitespace-nowrap font-[family-name:var(--font-playfair)] text-sm tracking-wide text-white/45 sm:text-base"
+            className="flex shrink-0 items-center gap-3 whitespace-nowrap font-[family-name:var(--font-playfair)] text-sm text-[var(--footer-text-muted)]"
           >
-            <span className="h-px w-6 bg-[var(--glitz-gold)]/50" aria-hidden />
+            <span className="h-px w-5 bg-[var(--footer-accent)]/40" aria-hidden />
             {name}
           </span>
         ))}
@@ -274,15 +223,7 @@ function ClientMarquee() {
   );
 }
 
-function SocialIconLink({
-  href,
-  label,
-  icon: Icon,
-}: {
-  href: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}) {
+function SocialIconLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) {
   const external = href.startsWith("http");
   return (
     <motion.a
@@ -290,14 +231,17 @@ function SocialIconLink({
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
       aria-label={`Follow Nexyyra on ${label}`}
-      className="group relative flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/25 bg-white/5 text-white/70 backdrop-blur-md transition-colors hover:border-[var(--glitz-gold)]/60 hover:text-[var(--v4-dune-glow)] sm:h-16 sm:w-16"
-      whileHover={{ scale: 1.08, y: -3 }}
+      className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-[var(--footer-border)] bg-[var(--footer-card)] text-[var(--footer-text-secondary)] backdrop-blur-md transition-colors hover:border-[var(--footer-accent)] hover:text-[var(--footer-accent)] sm:h-14 sm:w-14"
+      whileHover={{ scale: 1.06, y: -2 }}
       whileTap={{ scale: 0.96 }}
     >
-      <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_0%,rgba(245,215,110,0.25),transparent_70%)] opacity-0 transition-opacity group-hover:opacity-100" />
-      <Icon className="relative z-10 h-6 w-6 sm:h-7 sm:w-7" />
+      <Icon className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
     </motion.a>
   );
+}
+
+function FooterColumnHeading({ children }: { children: React.ReactNode }) {
+  return <h3 className="site-footer__heading mb-4">{children}</h3>;
 }
 
 export function BrandFooter() {
@@ -317,50 +261,26 @@ export function BrandFooter() {
 
   return (
     <>
-      <footer
-        className="relative mt-auto overflow-x-clip bg-[#050505] text-white"
-        role="contentinfo"
-      >
-        <FooterCinematicBg reducedMotion={reducedMotion} />
-        <div className="pointer-events-none absolute inset-0 -z-[5] opacity-40">
+      <footer className="site-footer relative mt-auto overflow-x-clip" role="contentinfo">
+        <FooterBg reducedMotion={reducedMotion} />
+        <div className="pointer-events-none absolute inset-0 -z-[5] opacity-25">
           <GoldParticles className="h-full w-full" />
         </div>
 
-        {/* Section 1 — Luxury CTA */}
-        <section
-          className="relative border-b border-white/10 py-[var(--v4-section-lg)]"
-          aria-labelledby="footer-cta-heading"
-        >
-          <div className="brand-container mx-auto max-w-5xl text-center">
-            <ScrollReveal preset="reveal">
-              <span className="v4-kicker mb-8 justify-center text-[var(--v4-champagne)]/80">
-                The Final Scene
-              </span>
-            </ScrollReveal>
-            <ScrollReveal preset="reveal" delay={0.06}>
-              <h2
-                id="footer-cta-heading"
-                className="nex-section-text mx-auto max-w-4xl font-[family-name:var(--font-playfair)] font-semibold text-white"
-              >
+        {/* CTA band */}
+        <section className="border-b border-[var(--footer-border)] py-10 md:py-12" aria-labelledby="footer-cta-heading">
+          <div className="brand-container max-w-3xl text-center">
+            <ScrollReveal preset="fade">
+              <span className="v4-kicker mb-4 justify-center text-[var(--footer-accent)]">The Final Scene</span>
+              <h2 id="footer-cta-heading" className="nex-section-text font-[family-name:var(--font-playfair)] font-semibold text-[var(--footer-text)]">
                 Ready To Create
                 <br />
                 <span className="v4-gold-text">The Next Era Of Celebrations?</span>
               </h2>
-            </ScrollReveal>
-            <ScrollReveal preset="fade" delay={0.12}>
-              <p className="mx-auto mt-6 max-w-md text-lg text-white/65">
-                Luxury experiences designed for visionaries.
-              </p>
-            </ScrollReveal>
-            <ScrollReveal preset="scale" delay={0.18}>
-              <div className="mt-12 flex w-full max-w-md flex-col items-stretch justify-center gap-4 sm:mx-auto sm:max-w-none sm:flex-row sm:items-center">
+              <p className="mx-auto mt-4 max-w-md text-[var(--footer-text-secondary)]">Luxury experiences designed for visionaries.</p>
+              <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
                 <MagneticButton>
-                  <BrandButton
-                    href="/book-event"
-                    variant="gold"
-                    className="w-full sm:min-w-[220px]"
-                    onClick={() => analytics.ctaClick("book_consultation", "footer")}
-                  >
+                  <BrandButton href="/book-event" variant="gold" className="w-full sm:min-w-[200px]" onClick={() => analytics.ctaClick("book_consultation", "footer")}>
                     Book Consultation
                   </BrandButton>
                 </MagneticButton>
@@ -368,9 +288,9 @@ export function BrandFooter() {
                   <button
                     type="button"
                     onClick={openShowreel}
-                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg border border-[var(--glitz-gold)]/45 bg-white/5 px-8 py-3 text-sm font-semibold tracking-wide text-white backdrop-blur-sm transition-all hover:border-[var(--glitz-gold)]/70 hover:bg-white/10 hover:shadow-[0_0_40px_-12px_rgba(201,162,39,0.45)] sm:w-auto sm:min-w-[220px]"
+                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg border border-[var(--footer-border)] bg-[var(--footer-card)] px-6 py-3 text-sm font-semibold text-[var(--footer-text)] backdrop-blur-sm transition-all hover:border-[var(--footer-accent)] hover:shadow-[var(--footer-glow)] sm:w-auto sm:min-w-[200px]"
                   >
-                    <Play className="h-4 w-4 fill-current text-[var(--v4-dune-glow)]" aria-hidden />
+                    <Play className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />
                     Watch Showreel
                   </button>
                 </MagneticButton>
@@ -379,75 +299,36 @@ export function BrandFooter() {
           </div>
         </section>
 
-        {/* Sections 3–9 — Content grid */}
-        <div className="brand-container relative py-[var(--v4-section)]">
-          <div className="v4-hairline mb-16 opacity-30" aria-hidden />
-
-          {/* Section 3 — Brand */}
-          <ScrollReveal preset="fade">
-            <div className="mb-20 max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[var(--v4-champagne)]">
-                NEXYYRA EVENTS
-              </p>
-              <p className="mt-3 font-[family-name:var(--font-playfair)] text-2xl text-white/90 sm:text-3xl">
-                {SITE_CONFIG.tagline}
-              </p>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/55">
-                Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          {/* Mobile — accordion */}
-          <div className="mb-12 md:hidden">
-            <Accordion type="single" collapsible className="w-full space-y-2">
-              <AccordionItem value="experiences" className="rounded-xl border border-white/10 bg-white/5 px-0">
-                <AccordionTrigger className="tap-target px-4 py-4 text-xs font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)] hover:no-underline">
-                  Experiences
-                </AccordionTrigger>
+        <div className="brand-container py-10 md:py-12">
+          {/* Mobile accordion */}
+          <div className="mb-8 lg:hidden">
+            <Accordion type="single" collapsible className="space-y-2">
+              <AccordionItem value="experiences" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
+                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Experiences</AccordionTrigger>
                 <AccordionContent className="px-4 pb-4">
-                  <ul className="space-y-3">
+                  <ul className="space-y-2">
                     {EXPERIENCE_LINKS.map((link) => (
                       <li key={link.label}>
-                        <Link href={link.href} className="tap-target block py-1 text-sm text-white/60 hover:text-[var(--v4-dune-glow)]">
-                          {link.label}
-                        </Link>
+                        <Link href={link.href} className="site-footer__link tap-target block py-1.5 text-sm">{link.label}</Link>
                       </li>
                     ))}
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="contact" className="rounded-xl border border-white/10 bg-white/5 px-0">
-                <AccordionTrigger className="tap-target px-4 py-4 text-xs font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)] hover:no-underline">
-                  Contact
-                </AccordionTrigger>
+              <AccordionItem value="contact" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
+                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Contact</AccordionTrigger>
                 <AccordionContent className="px-4 pb-4">
-                  <ul className="space-y-4 text-sm text-white/60">
-                    <li className="flex gap-3">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                      {SITE_CONFIG.address}
-                    </li>
-                    <li>
-                      <a href={telHref} className="tap-target flex gap-3 py-1 hover:text-[var(--v4-dune-glow)]">
-                        <Phone className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                        {SITE_CONFIG.phone}
-                      </a>
-                    </li>
-                    <li>
-                      <a href={mailHref} className="tap-target flex gap-3 py-1 hover:text-[var(--v4-dune-glow)]">
-                        <Mail className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                        {SITE_CONFIG.email}
-                      </a>
-                    </li>
+                  <ul className="space-y-3 text-sm text-[var(--footer-text-secondary)]">
+                    <li className="flex gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.address}</li>
+                    <li><a href={telHref} className="site-footer__link flex gap-3 py-1"><Phone className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.phone}</a></li>
+                    <li><a href={mailHref} className="site-footer__link flex gap-3 py-1"><Mail className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.email}</a></li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="connect" className="rounded-xl border border-white/10 bg-white/5 px-0">
-                <AccordionTrigger className="tap-target px-4 py-4 text-xs font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)] hover:no-underline">
-                  Connect
-                </AccordionTrigger>
+              <AccordionItem value="social" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
+                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Social</AccordionTrigger>
                 <AccordionContent className="px-4 pb-4">
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-3">
                     {SOCIAL_LINKS.map((s) => (
                       <SocialIconLink key={s.label} {...s} />
                     ))}
@@ -457,99 +338,67 @@ export function BrandFooter() {
             </Accordion>
           </div>
 
-          <div className="hidden gap-12 md:grid md:grid-cols-2 lg:grid-cols-12">
-            {/* Section 4 — Experience links */}
-            <ScrollReveal preset="left" className="lg:col-span-3">
-              <h3 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)]">
-                Experiences
-              </h3>
-              <ul className="space-y-3">
+          {/* 12-column desktop grid — 4 equal columns */}
+          <div className="hidden grid-cols-12 gap-8 lg:grid xl:gap-10">
+            <div className="col-span-3">
+              <FooterColumnHeading>Brand</FooterColumnHeading>
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--footer-accent)]">NEXYYRA EVENTS</p>
+              <p className="mt-2 font-[family-name:var(--font-playfair)] text-xl text-[var(--footer-text)]">{SITE_CONFIG.tagline}</p>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--footer-text-secondary)]">
+                Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
+              </p>
+            </div>
+            <div className="col-span-3">
+              <FooterColumnHeading>Experiences</FooterColumnHeading>
+              <ul className="space-y-2.5">
                 {EXPERIENCE_LINKS.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="group inline-flex items-center text-sm text-white/60 transition-colors hover:text-[var(--v4-dune-glow)]"
-                    >
-                      <span className="mr-0 h-px w-0 bg-[var(--glitz-gold)] transition-all duration-300 group-hover:mr-3 group-hover:w-4" />
+                    <Link href={link.href} className="site-footer__link group inline-flex items-center text-sm">
+                      <span className="mr-0 h-px w-0 bg-[var(--footer-accent)] transition-all group-hover:mr-2 group-hover:w-3" />
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </ScrollReveal>
-
-            {/* Section 8 — Contact */}
-            <ScrollReveal preset="fade" delay={0.06} className="lg:col-span-3">
-              <h3 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)]">
-                Contact
-              </h3>
-              <ul className="space-y-4 text-sm text-white/60">
-                <li className="flex gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                  {SITE_CONFIG.address}
-                </li>
-                <li>
-                  <a href={telHref} className="flex gap-3 transition-colors hover:text-[var(--v4-dune-glow)]">
-                    <Phone className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                    {SITE_CONFIG.phone}
-                  </a>
-                </li>
-                <li>
-                  <a href={mailHref} className="flex gap-3 transition-colors hover:text-[var(--v4-dune-glow)]">
-                    <Mail className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                    {SITE_CONFIG.email}
-                  </a>
-                </li>
+            </div>
+            <div className="col-span-3">
+              <FooterColumnHeading>Contact</FooterColumnHeading>
+              <ul className="space-y-3 text-sm text-[var(--footer-text-secondary)]">
+                <li className="flex gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.address}</li>
+                <li><a href={telHref} className="site-footer__link flex gap-3"><Phone className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.phone}</a></li>
+                <li><a href={mailHref} className="site-footer__link flex gap-3"><Mail className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.email}</a></li>
               </ul>
-            </ScrollReveal>
-
-            {/* Section 7 — Social */}
-            <ScrollReveal preset="right" delay={0.08} className="lg:col-span-6">
-              <h3 className="mb-6 text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-[var(--v4-dune-glow)]">
-                Connect
-              </h3>
-              <div className="flex flex-wrap gap-4">
+            </div>
+            <div className="col-span-3">
+              <FooterColumnHeading>Social</FooterColumnHeading>
+              <div className="flex flex-wrap gap-3">
                 {SOCIAL_LINKS.map((s) => (
                   <SocialIconLink key={s.label} {...s} />
                 ))}
               </div>
-            </ScrollReveal>
+            </div>
           </div>
 
-          {/* Section 5 — Trust metrics */}
-          <ScrollReveal preset="scale" className="mt-20">
-            <AnimatedCounters />
-          </ScrollReveal>
+          {/* Statistics */}
+          <div className="mt-10 border-y border-[var(--footer-border)] py-8 md:mt-12">
+            <StatGrid />
+          </div>
 
-          {/* Section 6 — Client marquee */}
-          <ScrollReveal preset="fade" delay={0.1} className="mt-20">
-            <p className="mb-8 text-center text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-white/40">
-              Trusted By Visionaries
-            </p>
+          {/* Trust marquee */}
+          <div className="py-8">
+            <p className="site-footer__heading mb-5 text-center">Trusted By Visionaries</p>
             <ClientMarquee />
-          </ScrollReveal>
+          </div>
 
-          <div className="v4-hairline my-16 opacity-20" aria-hidden />
-
-          {/* Section 9 — Legal + copyright */}
-          <div className="flex flex-col items-center justify-between gap-6 pb-10 text-sm text-white/40 sm:flex-row">
-            <p>
-              &copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.
-            </p>
-            <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          {/* Legal */}
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-[var(--footer-border)] pt-6 text-sm text-[var(--footer-text-muted)] sm:flex-row">
+            <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.</p>
+            <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
               {LEGAL_LINKS.map((l) =>
                 "external" in l && l.external ? (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    className="transition-colors hover:text-[var(--v4-dune-glow)]"
-                  >
-                    {l.label}
-                  </a>
+                  <a key={l.href} href={l.href} className="site-footer__link">{l.label}</a>
                 ) : (
-                  <Link key={l.href} href={l.href} className="transition-colors hover:text-[var(--v4-dune-glow)]">
-                    {l.label}
-                  </Link>
+                  <Link key={l.href} href={l.href} className="site-footer__link">{l.label}</Link>
                 )
               )}
             </nav>

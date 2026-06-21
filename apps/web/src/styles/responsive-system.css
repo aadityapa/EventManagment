@@ -158,3 +158,174 @@ a[role="button"] {
 .nex-container-query {
   container-type: inline-size;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Responsive brand logo — header / menu                                      */
+/* -------------------------------------------------------------------------- */
+.brand-logo-link {
+  max-width: var(--brand-logo-width, clamp(7.5rem, 22vw, 13.75rem));
+}
+
+.brand-logo--header {
+  max-width: 100%;
+}
+
+.brand-logo--header .brand-logo__name,
+.brand-logo--header .brand-logo__events {
+  font-size: clamp(0.6875rem, 0.55rem + 0.45vw, 0.8125rem);
+  line-height: 1.1;
+}
+
+.brand-logo--menu .brand-logo__name,
+.brand-logo--menu .brand-logo__events {
+  font-size: clamp(0.875rem, 0.75rem + 0.5vw, 1rem);
+  line-height: 1.15;
+}
+
+.brand-logo--menu .brand-logo__events {
+  display: inline !important;
+}
+
+/* Mobile default: icon + NEXYYRA, max ~375px content */
+:root {
+  --brand-logo-width: clamp(9rem, 42vw, 12rem);
+  --nav-height: clamp(4rem, 5vw, 5.5rem);
+}
+
+/* Tablet 768–1023: NEXYYRA only, 120px, no icon */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  :root {
+    --brand-logo-width: 7.5rem;
+  }
+
+  .brand-logo--header .brand-logo__name {
+    font-size: clamp(0.65rem, 0.6rem + 0.25vw, 0.75rem);
+    letter-spacing: 0.16em;
+  }
+}
+
+/* Laptop 1024–1439: NEXYYRA EVENTS, 140–180px */
+@media (min-width: 1024px) and (max-width: 1439.98px) {
+  :root {
+    --brand-logo-width: clamp(8.75rem, 9vw, 11.25rem);
+  }
+
+  .brand-logo--header .brand-logo__name,
+  .brand-logo--header .brand-logo__events {
+    font-size: clamp(0.75rem, 0.65rem + 0.25vw, 0.8125rem);
+  }
+}
+
+/* Desktop 1440+: NEXYYRA EVENTS, 180–220px, nav 88px */
+@media (min-width: 1440px) {
+  :root {
+    --brand-logo-width: clamp(11.25rem, 11vw, 13.75rem);
+    --nav-height: 5.5rem;
+  }
+
+  .brand-logo--header .brand-logo__name,
+  .brand-logo--header .brand-logo__events {
+    font-size: clamp(0.8125rem, 0.7rem + 0.2vw, 0.875rem);
+    letter-spacing: 0.2em;
+  }
+}
+
+@container (max-width: 8rem) {
+  .brand-logo__events {
+    display: none !important;
+  }
+}
+
+.brand-nav-bar {
+  min-height: var(--nav-height);
+  height: var(--nav-height);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Site footer — cinematic dark zone (theme-independent contrast)             */
+/* -------------------------------------------------------------------------- */
+.site-footer {
+  --footer-bg: #050505;
+  --footer-surface: rgba(255, 255, 255, 0.06);
+  --footer-card: rgba(255, 255, 255, 0.05);
+  --footer-text: #ffffff;
+  --footer-text-secondary: rgba(255, 255, 255, 0.72);
+  --footer-text-muted: rgba(255, 255, 255, 0.48);
+  --footer-border: rgba(255, 255, 255, 0.1);
+  --footer-accent: var(--gold, #d4af37);
+  --footer-glow: 0 0 40px rgba(201, 162, 39, 0.22);
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  isolation: isolate;
+}
+
+.light .site-footer,
+.dark .site-footer {
+  --footer-bg: #050505;
+  --footer-text: #ffffff;
+}
+
+.site-footer__heading {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--footer-accent);
+}
+
+.site-footer__link {
+  color: var(--footer-text-secondary);
+  transition: color 0.25s ease;
+}
+
+.site-footer__link:hover {
+  color: var(--footer-accent);
+}
+
+.site-footer__stat-grid {
+  display: grid;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
+}
+
+@media (min-width: 768px) {
+  .site-footer__stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-footer__stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.site-footer__stat-card {
+  display: flex;
+  min-height: 7.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--glitz-radius, 12px);
+  border: 1px solid var(--footer-border);
+  background: var(--footer-card);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.site-footer__stat-card:hover {
+  border-color: color-mix(in srgb, var(--footer-accent) 45%, transparent);
+  box-shadow: var(--footer-glow);
+  transform: translateY(-2px);
+}
+
+.site-footer__marquee-fade {
+  background: linear-gradient(to right, var(--footer-bg), transparent);
+}
+
+.site-footer__marquee-fade--right {
+  background: linear-gradient(to left, var(--footer-bg), transparent);
+}

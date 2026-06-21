@@ -108,11 +108,10 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
         }
 
         const palette = generatePalette(analysis, region);
-        applyAdaptiveVars(root, palette);
-        root.dataset.adaptiveActive = "true";
         if (section) {
           applyAdaptiveVarsToSection(section, palette);
         }
+        delete root.dataset.adaptiveActive;
       } finally {
         analyzingRef.current = false;
       }
@@ -215,8 +214,12 @@ export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
   }, [refreshActive]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+    clearAdaptiveState();
+    forcedSrcRef.current = null;
+    activeIdRef.current = null;
     void refreshActive();
-  }, [resolvedTheme, refreshActive]);
+  }, [resolvedTheme, clearAdaptiveState, refreshActive]);
 
   useEffect(() => {
     const id = window.setInterval(() => {

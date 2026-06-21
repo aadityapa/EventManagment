@@ -70,16 +70,9 @@ export function BrandHeader() {
   if (hidden) return null;
 
   const glass = scrolled || !isHome;
-  const adaptiveChrome = isHome && !scrolled;
-  const chromeLinkActive = adaptiveChrome
-    ? "text-[var(--adaptive-accent)]"
-    : "text-[var(--glitz-gold)]";
-  const chromeLinkIdle = adaptiveChrome
-    ? "text-[var(--adaptive-text)]/85 hover:text-[var(--adaptive-accent)]"
-    : "text-primary/80 hover:text-[var(--glitz-gold)]";
-  const chromeAccent = adaptiveChrome
-    ? "text-[var(--adaptive-accent)]"
-    : "text-[var(--glitz-gold)]";
+  const chromeLinkActive = "text-[var(--glitz-gold)]";
+  const chromeLinkIdle = "text-[var(--text-secondary)] hover:text-[var(--glitz-gold)]";
+  const chromeAccent = "text-[var(--glitz-gold)]";
 
   const navLinkClass = (href: string, isActive: boolean) =>
     cn(
@@ -91,22 +84,19 @@ export function BrandHeader() {
     <header
       className={cn(
         "fixed top-0 z-[var(--z-nav,9999)] w-full transition-all duration-500 safe-top",
-        glass
+        glass || (isHome && !scrolled)
           ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent",
         scrolled && "shadow-[var(--shadow-glow-gold-sm)]"
       )}
       role="banner"
     >
-      <div
-        className={cn(
-          "brand-container flex items-center justify-between transition-all duration-500",
-          scrolled ? "h-12 sm:h-[3.25rem]" : "h-14 sm:h-[3.75rem]"
-        )}
-      >
-        <Logo priority className={cn("transition-transform duration-500", scrolled && "scale-95")} />
+      <div className="brand-container brand-nav-bar flex items-center justify-between gap-3 sm:gap-4 lg:gap-10 xl:gap-12">
+        <div className="flex min-w-0 shrink-0 items-center">
+          <Logo priority />
+        </div>
 
-        <nav className="hidden items-center gap-0 md:flex lg:gap-0.5" aria-label="Main navigation">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0 lg:flex xl:gap-0.5" aria-label="Main navigation">
           {NAV_LINKS.map((l) => {
             if (l.href === "/services") {
               return (
@@ -248,7 +238,7 @@ export function BrandHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2.5 md:flex">
+        <div className="hidden shrink-0 items-center gap-2.5 lg:flex xl:gap-3">
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
             className={cn(
@@ -260,13 +250,7 @@ export function BrandHeader() {
             <Phone className="h-3.5 w-3.5" aria-hidden="true" />
             {SITE_CONFIG.phone}
           </a>
-          <ThemeToggle
-            className={
-              adaptiveChrome
-                ? "border-[var(--adaptive-accent)]/35 text-[var(--adaptive-accent)] hover:border-[var(--adaptive-accent)]/60"
-                : undefined
-            }
-          />
+          <ThemeToggle className="border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
           <Link
             href="/book-event"
             className="btn-gold-metallic btn-premium-hover rounded-lg px-4 py-2.5 text-sm font-semibold tap-target"
@@ -275,14 +259,8 @@ export function BrandHeader() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle
-            className={
-              adaptiveChrome
-                ? "border-[var(--adaptive-accent)]/35 text-[var(--adaptive-accent)] hover:border-[var(--adaptive-accent)]/60"
-                : undefined
-            }
-          />
+        <div className="flex shrink-0 items-center gap-2 lg:hidden">
+          <ThemeToggle className="border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
           <button
             type="button"
             className={cn("tap-target rounded-lg p-2", chromeAccent)}
@@ -302,7 +280,7 @@ export function BrandHeader() {
             <motion.button
               type="button"
               aria-label="Close menu"
-              className="fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
+              className="fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -314,14 +292,22 @@ export function BrandHeader() {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
-              className="fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
+              className="fixed inset-0 z-[9999] flex flex-col overflow-hidden lg:hidden safe-top safe-bottom"
               initial={{ opacity: 0, scale: 1.04 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(245,215,110,0.14),transparent_60%)]" />
-              <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-16">
+              <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-12 sm:py-16">
+                <motion.div
+                  className="mb-10 border-b border-white/10 pb-8"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Logo variant="menu" showTagline href={undefined} priority />
+                </motion.div>
                 <motion.nav
                   className="flex flex-col gap-1"
                   aria-label="Mobile navigation"
@@ -347,7 +333,7 @@ export function BrandHeader() {
                           <button
                             type="button"
                             onClick={() => setMobileServicesOpen((v) => !v)}
-                            className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--adaptive-text,var(--text-primary))]"
+                            className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--footer-text,#fff)]"
                             aria-expanded={mobileServicesOpen}
                           >
                             {l.label}
@@ -379,7 +365,7 @@ export function BrandHeader() {
                                     key={s.slug}
                                     href={`/services/${s.slug}`}
                                     onClick={() => setOpen(false)}
-                                    className="tap-target block rounded-xl px-4 py-3 text-base text-white/65"
+                                    className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--footer-text-secondary,rgba(255,255,255,0.65))]"
                                   >
                                     {s.title}
                                   </Link>
@@ -407,7 +393,7 @@ export function BrandHeader() {
                             "tap-target block rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl transition-colors",
                             pathname === l.href
                               ? "text-[var(--glitz-gold)]"
-                              : "text-[var(--adaptive-text,var(--text-primary))]"
+                              : "text-[var(--footer-text,#fff)]"
                           )}
                         >
                           {l.label}
