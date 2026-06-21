@@ -66,7 +66,7 @@
   --z-raised: 10;
   --z-overlay: 100;
   --z-modal: 1000;
-  --z-nav: 9999;
+  --z-nav: 100;
 
   /* Container */
   --container-xl: 1280px;

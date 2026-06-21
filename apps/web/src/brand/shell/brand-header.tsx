@@ -64,8 +64,7 @@ export function BrandHeader() {
   const megaRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
   const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
-  const { skipPremiere, handoffActive } = usePremiere();
-  const navVisible = skipPremiere || handoffActive;
+  const { skipPremiere, premiereComplete } = usePremiere();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -100,13 +99,14 @@ export function BrandHeader() {
   }, [servicesOpen]);
 
   if (hidden) return null;
+  if (!skipPremiere && !premiereComplete) return null;
 
   const glass = scrolled || !isHome;
 
   return (
     <motion.header
-      initial={skipPremiere ? false : { opacity: 0 }}
-      animate={{ opacity: navVisible ? 1 : 0 }}
+      initial={false}
+      animate={{ opacity: 1 }}
       transition={{ duration: 1, ease: EASE.silk }}
       className={cn(
         "fixed top-0 z-[var(--z-nav,9999)] w-full transform-gpu will-change-[opacity,transform] transition-[background-color,border-color,box-shadow] duration-500 safe-top",

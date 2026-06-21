@@ -359,8 +359,3 @@ html.lenis body {
   height: 100%;
 }
 
-/* Exit intent — always viewport-centered */
-.exit-intent-popup {
-  max-height: calc(100vh - 2rem);
-  overflow-y: auto;
-}

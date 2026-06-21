@@ -188,15 +188,31 @@ a[role="button"] {
 .brand-logo__full,
 .brand-logo__mark,
 .brand-logo__img {
+  position: relative;
+  z-index: 1;
   display: block;
   height: var(--brand-logo-height);
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  object-position: left center;
+  object-position: center center;
   image-rendering: -webkit-optimize-contrast;
   transform: translateZ(0);
   overflow: visible;
+}
+
+.brand-logo__full--header {
+  width: 11.25rem; /* ~180px retina slot */
+  max-width: 11.25rem;
+}
+
+html.light .brand-logo__img--light-theme {
+  filter: brightness(0.88) contrast(1.08) saturate(1.05);
+}
+
+.brand-logo__full--header {
+  width: 11.25rem;
+  max-width: 11.25rem;
 }
 
 .hero-brand-logo {
@@ -212,13 +228,16 @@ a[role="button"] {
   overflow-wrap: break-word;
 }
 
-/* Light theme — SVG logo switches via component; no raster filter needed */
-html.light .brand-logo__img--svg {
-  filter: none;
+/* Light theme — raster logo tuning for ivory backgrounds */
+html.light .brand-logo__img--svg,
+html.light .brand-logo__img--raster {
+  filter: brightness(0.88) contrast(1.08) saturate(1.05);
 }
 
 html.dark .brand-logo__img--svg,
-:root:not(.light) .brand-logo__img--svg {
+html.dark .brand-logo__img--raster,
+:root:not(.light) .brand-logo__img--svg,
+:root:not(.light) .brand-logo__img--raster {
   filter: none;
 }
 
@@ -324,6 +343,7 @@ html.premiere-active .brand-root {
 }
 
 .premiere-loader {
+  z-index: 99999;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
@@ -346,9 +366,9 @@ html.premiere-active .brand-root {
   height: 100%;
 }
 
-@media (min-width: 1120px) {
+@media (min-width: 1024px) {
   .brand-header-grid {
-    grid-template-columns: 220px minmax(0, 1fr) 300px;
+    grid-template-columns: 220px 1fr 320px;
   }
 }
 
@@ -356,8 +376,9 @@ html.premiere-active .brand-root {
 .brand-header-logo {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 240px;
+  max-width: 220px;
   min-width: 0;
   flex-shrink: 0;
 }
@@ -365,18 +386,19 @@ html.premiere-active .brand-root {
 .brand-header-logo .brand-logo-link {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 240px;
+  max-width: 11.25rem; /* 180px */
   min-height: 0;
 }
 
 .brand-header-logo .brand-logo__full,
 .brand-header-logo .brand-logo__img {
   height: var(--brand-logo-height);
-  width: auto;
-  max-width: 100%;
+  width: 11.25rem;
+  max-width: 11.25rem;
   object-fit: contain;
-  object-position: left center;
+  object-position: center center;
 }
 
 /* Navigation — viewport-centered on tablet+ */
@@ -384,7 +406,7 @@ html.premiere-active .brand-root {
   display: none;
 }
 
-@media (min-width: 1120px) {
+@media (min-width: 1024px) {
   .brand-header-nav {
     position: absolute;
     left: 50%;
@@ -477,13 +499,15 @@ html.premiere-active .brand-root {
   display: none;
 }
 
-@media (min-width: 1120px) {
+@media (min-width: 1024px) {
   .brand-header-actions {
     grid-column: 3;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 0.75rem;
+    max-width: 320px;
+    justify-self: end;
   }
 }
 

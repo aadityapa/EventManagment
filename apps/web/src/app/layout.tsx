@@ -12,7 +12,6 @@ import { BrandFab } from "@/brand/shell/brand-fab";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { SentryInit } from "@/components/monitoring/sentry-init";
 import { CookieConsent } from "@/components/shared/cookie-consent";
-import { ExitIntentPopup } from "@/components/engagement/exit-intent-popup";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { generateSEO, globalGraphSchema } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -81,7 +80,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <BrandFooter />
             <BrandFab />
             <CookieConsent />
-            <ExitIntentPopup />
             <ToastProvider />
           </CinematicProvider>
           </AdaptiveThemeProvider>

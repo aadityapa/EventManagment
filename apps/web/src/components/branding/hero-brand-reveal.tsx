@@ -22,7 +22,7 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
     return (
       <div className={className}>
         <Image
-          src={BRAND_LOGO_ASSETS.gold}
+          src={BRAND_LOGO_ASSETS.primary}
           alt={SITE_CONFIG.name}
           width={440}
           height={160}
@@ -47,7 +47,7 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
         className="overflow-visible"
       >
         <Image
-          src={BRAND_LOGO_ASSETS.gold}
+          src={BRAND_LOGO_ASSETS.primary}
           alt={SITE_CONFIG.name}
           width={440}
           height={160}

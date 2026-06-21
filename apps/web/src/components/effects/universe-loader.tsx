@@ -13,8 +13,8 @@ const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
 /** First-visit cinematic intro — 5s luxury brand reveal */
 export const LOADER_DURATION_MS = 5000;
-export const LOADER_HANDOFF_MS = 4500;
-export const LOADER_ZOOM_MS = 500;
+export const LOADER_HANDOFF_MS = 4000;
+export const LOADER_ZOOM_MS = 1000;
 
 const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -36,7 +36,7 @@ type Props = {
 
 const PARTICLE_COUNT = 28;
 
-function GoldDust({ dissolving }: { dissolving: boolean }) {
+function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boolean }) {
   const particles = useMemo(
     () =>
       Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
@@ -54,14 +54,16 @@ function GoldDust({ dissolving }: { dissolving: boolean }) {
 
   return (
     <motion.div
-      className="pointer-events-none absolute inset-0 overflow-hidden transform-gpu"
+      className="pointer-events-none absolute inset-0 z-[1] overflow-hidden transform-gpu"
       initial={{ opacity: 0, scale: 1.1 }}
       animate={
         dissolving
           ? { opacity: 0, scale: 1.05 }
-          : { opacity: 1, scale: 1 }
+          : visible
+            ? { opacity: 1, scale: 1 }
+            : { opacity: 0, scale: 1.1 }
       }
-      transition={{ duration: dissolving ? 0.7 : 1, ease: CINEMATIC }}
+      transition={{ duration: dissolving ? 0.7 : 0.8, ease: CINEMATIC, delay: visible && !dissolving ? 0.5 : 0 }}
     >
       {particles.map((p) => (
         <motion.span
@@ -145,14 +147,17 @@ export function useLoaderSound() {
 }
 
 /**
- * Cinematic Intro Loader V2 — 4.5s luxury brand reveal.
- * Phase 1 atmosphere · Phase 2 logo · Phase 3 tagline · Phase 4 lockup · Phase 5 zoom-out
+ * Cinematic intro loader — 5s sequence:
+ * 0s bg · 0.5s particles · 1.0s logo fade · 1.5s logo scale · 2.0s brand name
+ * · 2.5s tagline · 3.0s gold glow · 4.0s zoom out · 5.0s reveal
  */
 export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
   const reducedMotion = useReducedMotion();
   const [exiting, setExiting] = useState(false);
   const [mounted, setMounted] = useState(true);
+  const [particlesVisible, setParticlesVisible] = useState(false);
   const [taglineVisible, setTaglineVisible] = useState(false);
+  const [glowVisible, setGlowVisible] = useState(false);
 
   const persistSeen = useCallback(() => {
     sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
@@ -181,7 +186,9 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
       return;
     }
 
-    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 2000);
+    const particlesTimer = window.setTimeout(() => setParticlesVisible(true), 500);
+    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 2500);
+    const glowTimer = window.setTimeout(() => setGlowVisible(true), 3000);
 
     const handoffTimer = window.setTimeout(() => {
       onHandoff();
@@ -191,7 +198,9 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
     const completeTimer = window.setTimeout(finish, LOADER_DURATION_MS);
 
     return () => {
+      window.clearTimeout(particlesTimer);
       window.clearTimeout(taglineTimer);
+      window.clearTimeout(glowTimer);
       window.clearTimeout(handoffTimer);
       window.clearTimeout(completeTimer);
     };
@@ -208,7 +217,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
           aria-label="Welcome to Nexyyra Events"
           aria-live="polite"
           aria-busy={!exiting}
-          className="premiere-loader fixed inset-0 z-[90] flex items-center justify-center bg-black transform-gpu"
+          className="premiere-loader fixed inset-0 z-[99999] flex items-center justify-center bg-black transform-gpu"
           initial={{ opacity: 1 }}
           animate={{ opacity: exiting ? 0 : 1 }}
           transition={{ duration: 0.65, ease: CINEMATIC }}
@@ -218,15 +227,15 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
           <button
             type="button"
             onClick={skip}
-            className="absolute right-4 top-[calc(var(--nav-height,4.5rem)+0.5rem)] z-[2] min-h-[44px] rounded-full border border-[var(--gold)]/35 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--gold)]/90 transition-colors hover:border-[var(--gold)] hover:text-[#fff8eb] sm:right-6"
+            className="absolute right-4 top-4 z-[10] min-h-[44px] rounded-full border border-[var(--gold)]/35 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--gold)]/90 transition-colors hover:border-[var(--gold)] hover:text-[#fff8eb] sm:right-6"
           >
             Skip
           </button>
 
-          <GoldDust dissolving={exiting} />
+          <GoldDust dissolving={exiting} visible={particlesVisible} />
 
           <motion.div
-            className="relative z-[1] flex max-w-[min(92vw,480px)] flex-col items-center px-6 text-center transform-gpu will-change-transform"
+            className="relative z-[2] flex max-w-[min(92vw,480px)] flex-col items-center px-6 text-center transform-gpu will-change-transform"
             initial={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
             animate={
               exiting
@@ -235,53 +244,58 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
             }
             transition={{ duration: LOADER_ZOOM_MS / 1000, ease: CINEMATIC, delay: exiting ? 0 : 0 }}
           >
-            {/* Phase 2 — Logo reveal 1.0s → 2.0s */}
+            {/* 1.0s logo fade in · 1.5s scale settle */}
             <motion.div
-              className="relative mb-6 w-full overflow-visible transform-gpu"
-              initial={{ opacity: 0, scale: 1.8, rotate: 2, filter: "blur(30px)" }}
-              animate={{ opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease: CINEMATIC, delay: 1 }}
+              className="relative z-[3] mb-6 w-full overflow-visible transform-gpu"
+              initial={{ opacity: 0, scale: 1.35, filter: "blur(16px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 0.5, ease: CINEMATIC, delay: 1 }}
             >
               <motion.div
-                className="pointer-events-none absolute inset-[-20%] rounded-full transform-gpu"
+                className="pointer-events-none absolute inset-[-24%] z-[1] rounded-full transform-gpu"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center, rgba(212,175,55,0.22) 0%, transparent 68%)",
+                    "radial-gradient(ellipse at center, rgba(212,175,55,0.28) 0%, transparent 68%)",
                 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: [0, 0.85, 0.65, 0.75], scale: [0.8, 1.1, 1] }}
-                transition={{
-                  duration: 1.2,
-                  ease: CINEMATIC,
-                  delay: 1.05,
-                  times: [0, 0.45, 0.75, 1],
-                }}
+                initial={{ opacity: 0, scale: 0.75 }}
+                animate={
+                  glowVisible
+                    ? { opacity: [0, 1, 0.75], scale: [0.75, 1.15, 1.05] }
+                    : { opacity: 0, scale: 0.75 }
+                }
+                transition={{ duration: 1.1, ease: CINEMATIC, delay: glowVisible ? 0 : 0 }}
               />
-              <Image
-                src={BRAND_LOGO_ASSETS.loader}
-                alt={SITE_CONFIG.name}
-                width={880}
-                height={320}
-                priority
-                fetchPriority="high"
-                unoptimized
-                sizes="(max-width: 640px) 60vw, 420px"
-                className="relative mx-auto max-h-[clamp(100px,26vw,220px)] w-auto max-w-full object-contain transform-gpu"
-              />
+              <motion.div
+                initial={{ scale: 1.12 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.55, ease: CINEMATIC, delay: 1.5 }}
+              >
+                <Image
+                  src={BRAND_LOGO_ASSETS.loader}
+                  alt={SITE_CONFIG.name}
+                  width={880}
+                  height={320}
+                  priority
+                  fetchPriority="high"
+                  unoptimized
+                  sizes="(max-width: 640px) 60vw, 420px"
+                  className="relative z-[2] mx-auto max-h-[clamp(100px,26vw,220px)] w-auto max-w-full object-contain transform-gpu"
+                />
+              </motion.div>
             </motion.div>
 
-            {/* Phase 4 — Brand lockup label 3.0s → 3.8s */}
+            {/* 2.0s brand name */}
             <motion.p
-              className="mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.45, ease: CINEMATIC, delay: 1.85 }}
+              className="relative z-[3] mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: CINEMATIC, delay: 2 }}
             >
               {BRAND_NAME}
             </motion.p>
 
-            {/* Phase 3 — Tagline stagger 2.0s → 3.0s */}
-            <div className="min-h-[2.5rem]">
+            {/* 2.5s tagline */}
+            <div className="relative z-[3] min-h-[2.5rem]">
               <TaglineLetters visible={taglineVisible} />
             </div>
           </motion.div>
