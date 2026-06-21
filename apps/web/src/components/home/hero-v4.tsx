@@ -189,7 +189,7 @@ export function HeroV4() {
         id="welcome"
         ref={setAdaptiveRef}
         data-adaptive-backdrop=""
-        className="relative flex min-h-[100dvh] flex-col overflow-x-clip border-b border-[var(--glitz-border)] bg-black v5-dune-glow"
+        className="relative flex min-h-[100dvh] flex-col overflow-x-clip border-b border-[var(--glitz-border)] bg-black v5-dune-glow hero-cinematic-copy"
         onMouseMove={onMouseMove}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => {
@@ -230,10 +230,10 @@ export function HeroV4() {
 
               <h1
                 data-hero-headline
-                className="nex-hero-text overflow-visible font-[family-name:var(--font-playfair)] font-bold text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
+                className="nex-hero-text overflow-visible font-[family-name:var(--font-playfair)] font-bold"
               >
                 <span className="block">Crafting Extraordinary Experiences</span>
-                <span className="mt-1 block text-[var(--adaptive-accent,var(--glitz-gold))]">
+                <span className="mt-1 block text-[var(--hero-accent,var(--glitz-gold))]">
                   For Extraordinary People
                 </span>
               </h1>

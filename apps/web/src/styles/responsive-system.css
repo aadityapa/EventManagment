@@ -160,80 +160,138 @@ a[role="button"] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Responsive brand logo — header / menu                                      */
+/* Responsive brand logo — gold image system                                  */
 /* -------------------------------------------------------------------------- */
+:root {
+  --brand-logo-width: clamp(9rem, 40vw, 11rem);
+  --nav-height: clamp(4rem, 5vw, 5.5rem);
+}
+
 .brand-logo-link {
   max-width: var(--brand-logo-width, clamp(7.5rem, 22vw, 13.75rem));
 }
 
-.brand-logo--header {
-  max-width: 100%;
+/* Gold logo — glow, shine, retina */
+.brand-logo-gold {
+  position: relative;
+  isolation: isolate;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.35)) drop-shadow(0 0 22px rgba(212, 175, 55, 0.18));
 }
 
-.brand-logo--header .brand-logo__name,
-.brand-logo--header .brand-logo__events {
-  font-size: clamp(0.6875rem, 0.55rem + 0.45vw, 0.8125rem);
-  line-height: 1.1;
+.brand-logo-gold__img,
+.brand-logo-gold__mark {
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
 }
 
-.brand-logo--menu .brand-logo__name,
-.brand-logo--menu .brand-logo__events {
-  font-size: clamp(0.875rem, 0.75rem + 0.5vw, 1rem);
-  line-height: 1.15;
+.brand-logo-gold__desktop {
+  width: clamp(8.75rem, 10vw, 13.75rem);
+  max-width: 13.75rem;
 }
 
-.brand-logo--menu .brand-logo__events {
-  display: inline !important;
+.brand-logo-gold__word {
+  color: var(--glitz-gold, #d4af37);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
 }
 
-/* Mobile default: icon + NEXYYRA, max ~375px content */
-:root {
-  --brand-logo-width: clamp(9rem, 42vw, 12rem);
-  --nav-height: clamp(4rem, 5vw, 5.5rem);
+.brand-logo-gold::after {
+  content: "";
+  position: absolute;
+  inset: -8% -4%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(255, 248, 235, 0.45) 50%,
+    transparent 58%
+  );
+  opacity: 0;
+  animation: brand-logo-shine 4.5s ease-in-out infinite;
 }
 
-/* Tablet 768–1023: NEXYYRA only, 120px, no icon */
+@keyframes brand-logo-shine {
+  0%, 72%, 100% {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+  78% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo-gold::after {
+    animation: none;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1023.98px) {
   :root {
-    --brand-logo-width: 7.5rem;
+    --brand-logo-width: 8.75rem;
   }
 
-  .brand-logo--header .brand-logo__name {
-    font-size: clamp(0.65rem, 0.6rem + 0.25vw, 0.75rem);
-    letter-spacing: 0.16em;
+  .brand-logo-gold__desktop {
+    width: 8.75rem;
+    max-width: 8.75rem;
   }
 }
 
-/* Laptop 1024–1439: NEXYYRA EVENTS, 140–180px */
 @media (min-width: 1024px) and (max-width: 1439.98px) {
   :root {
     --brand-logo-width: clamp(8.75rem, 9vw, 11.25rem);
   }
 
-  .brand-logo--header .brand-logo__name,
-  .brand-logo--header .brand-logo__events {
-    font-size: clamp(0.75rem, 0.65rem + 0.25vw, 0.8125rem);
+  .brand-logo-gold__desktop {
+    width: clamp(8.75rem, 9vw, 11.25rem);
+    max-width: 11.25rem;
   }
 }
 
-/* Desktop 1440+: NEXYYRA EVENTS, 180–220px, nav 88px */
 @media (min-width: 1440px) {
   :root {
     --brand-logo-width: clamp(11.25rem, 11vw, 13.75rem);
     --nav-height: 5.5rem;
   }
-
-  .brand-logo--header .brand-logo__name,
-  .brand-logo--header .brand-logo__events {
-    font-size: clamp(0.8125rem, 0.7rem + 0.2vw, 0.875rem);
-    letter-spacing: 0.2em;
-  }
 }
 
-@container (max-width: 8rem) {
-  .brand-logo__events {
-    display: none !important;
-  }
+/* Hero cinematic copy — always readable on video */
+.hero-cinematic-copy {
+  --hero-title: #fff8eb;
+  --hero-subtitle: rgba(255, 255, 255, 0.85);
+  --hero-muted: rgba(255, 255, 255, 0.72);
+  --hero-accent: var(--gold, #d4af37);
+  --hero-shadow: 0 2px 20px rgba(0, 0, 0, 0.55), 0 4px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hero-cinematic-copy [data-hero-headline],
+.hero-cinematic-copy [data-hero-headline] span {
+  color: var(--hero-title) !important;
+  text-shadow: var(--hero-shadow);
+}
+
+.hero-cinematic-copy [data-hero-subhead] {
+  color: var(--hero-subtitle) !important;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.hero-cinematic-copy [data-hero-label],
+.hero-cinematic-copy [data-hero-tagline] {
+  color: var(--hero-muted) !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-cinematic-copy [data-hero-metric] span:first-child {
+  color: var(--hero-accent) !important;
+  text-shadow: var(--hero-shadow);
+}
+
+.hero-cinematic-copy [data-hero-metric] span:last-child {
+  color: var(--hero-muted) !important;
 }
 
 .brand-nav-bar {
@@ -271,6 +329,41 @@ a[role="button"] {
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--footer-accent);
+}
+
+.site-footer__brand-name {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  color: var(--footer-text);
+}
+
+.site-footer__tagline {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  line-height: 1.25;
+  color: var(--footer-accent);
+}
+
+.site-footer__description {
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  line-height: 1.65;
+  color: var(--footer-text-secondary);
+}
+
+.site-footer__brand-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 1024px) {
+  .site-footer__brand-block {
+    margin-bottom: 0;
+  }
 }
 
 .site-footer__link {

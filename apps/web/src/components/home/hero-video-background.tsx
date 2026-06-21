@@ -113,21 +113,30 @@ export function HeroVideoBackground({ slides, active, broken, onBroken, videoRef
         </motion.div>
       </AnimatePresence>
 
-      {/* Adaptive scrim — max ~35% dark, image stays visible */}
+      {/* Cinematic readability overlay — always-on on hero media */}
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--adaptive-scrim, var(--glitz-hero-scrim-static))" }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-90"
-        style={{ background: "var(--adaptive-scrim-bottom, var(--glitz-hero-bottom-static))" }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-[1]"
+        aria-hidden
         style={{
           background:
-            "linear-gradient(105deg, rgba(5,5,5,0.32) 0%, rgba(5,5,5,0.18) 38%, transparent 62%)",
+            "linear-gradient(105deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 38%, rgba(0,0,0,0.28) 62%, rgba(0,0,0,0.18) 100%)",
         }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] opacity-95"
+        aria-hidden
+        style={{
+          background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 42%, transparent 68%)",
+        }}
+      />
+      {/* Adaptive scrim — layered with static cinematic base */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{ background: "var(--adaptive-scrim, transparent)" }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] opacity-90"
+        style={{ background: "var(--adaptive-scrim-bottom, transparent)" }}
       />
     </div>
   );

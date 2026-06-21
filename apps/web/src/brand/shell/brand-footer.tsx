@@ -299,8 +299,15 @@ export function BrandFooter() {
           </div>
         </section>
 
-        <div className="brand-container py-10 md:py-12">
-          {/* Mobile accordion */}
+        <div className="brand-container py-12 md:py-16">
+          {/* Mobile brand + accordion */}
+          <div className="site-footer__brand-block lg:hidden">
+            <p className="site-footer__brand-name">Nexyyra Events</p>
+            <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
+            <p className="site-footer__description max-w-md">
+              Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
+            </p>
+          </div>
           <div className="mb-8 lg:hidden">
             <Accordion type="single" collapsible className="space-y-2">
               <AccordionItem value="experiences" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
@@ -340,11 +347,11 @@ export function BrandFooter() {
 
           {/* 12-column desktop grid — 4 equal columns */}
           <div className="hidden grid-cols-12 gap-8 lg:grid xl:gap-10">
-            <div className="col-span-3">
+            <div className="col-span-3 space-y-4">
               <FooterColumnHeading>Brand</FooterColumnHeading>
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--footer-accent)]">NEXYYRA EVENTS</p>
-              <p className="mt-2 font-[family-name:var(--font-playfair)] text-xl text-[var(--footer-text)]">{SITE_CONFIG.tagline}</p>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--footer-text-secondary)]">
+              <p className="site-footer__brand-name">Nexyyra Events</p>
+              <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
+              <p className="site-footer__description max-w-sm">
                 Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
               </p>
             </div>
