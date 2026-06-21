@@ -17,21 +17,19 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Theme-aware SVG logo paths — use native img (SVG embeds PNG; Next/Image breaks them). */
+/** Official Nexyyra logos — gold PNG for dark backgrounds, black PNG for light. */
 export const BRAND_LOGO_ASSETS = {
-  gold: "/logos/logo-gold.svg",
-  black: "/logos/logo-black.svg",
-  light: "/logos/logo-black.svg",
-  dark: "/logos/logo-gold.svg",
+  gold: "/logo.png",
+  black: "/logo-black.png",
+  light: "/logo-black.png",
+  dark: "/logo.png",
+  primary: "/logo.png",
+  horizontal: "/logo.png",
+  full: "/logo.png",
+  loader: "/logo.png",
   symbol: "/brand/logo-symbol.png",
   symbolLight: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",
-  loader: "/logos/logo-gold.svg",
-  primary: "/logos/logo-gold.svg",
-  horizontal: "/logos/logo-gold.svg",
-  full: "/logos/logo-gold.svg",
-  svgGold: "/logos/logo-gold.svg",
-  svgLight: "/logos/logo-black.svg",
   jpg: "/logo.jpg",
 } as const;
 
@@ -42,9 +40,10 @@ type BrandLogoImageProps = {
   forceGold?: boolean;
 };
 
-function ThemeLogoImg({
+function ThemeLogoImage({
   className,
   priority = true,
+  sizes = "(max-width: 768px) 140px, 180px",
   forceGold = false,
 }: BrandLogoImageProps) {
   const { resolvedTheme } = useTheme();
@@ -56,22 +55,23 @@ function ThemeLogoImg({
   const src = isLight ? BRAND_LOGO_ASSETS.black : BRAND_LOGO_ASSETS.gold;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={src}
       alt={SITE_CONFIG.name}
       width={440}
       height={160}
-      decoding="async"
-      fetchPriority={priority ? "high" : "auto"}
-      className={cn("brand-logo__img brand-logo__img--svg", className)}
+      priority={priority}
+      fetchPriority={priority ? "high" : undefined}
+      sizes={sizes}
+      unoptimized
+      className={cn("brand-logo__img brand-logo__img--raster", className)}
     />
   );
 }
 
 /** Theme-aware header/footer logo (~180px wide, retina-ready) */
 export function BrandLogoImage(props: BrandLogoImageProps) {
-  return <ThemeLogoImg {...props} />;
+  return <ThemeLogoImage {...props} />;
 }
 
 export function Logo({
@@ -102,33 +102,33 @@ export function Logo({
     );
   } else if (resolvedVariant === "loader") {
     content = (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={BRAND_LOGO_ASSETS.gold}
+      <Image
+        src={BRAND_LOGO_ASSETS.loader}
         alt={SITE_CONFIG.name}
-        width={220}
-        height={80}
-        decoding="async"
+        width={440}
+        height={160}
+        priority
         fetchPriority="high"
+        unoptimized
         className={cn("brand-logo__img brand-logo__img--loader", className)}
       />
     );
   } else if (resolvedVariant === "footer") {
     content = (
       <span className={cn("brand-logo brand-logo--footer inline-block", className)}>
-        <ThemeLogoImg priority={false} className="brand-logo__full brand-logo__full--footer" />
+        <ThemeLogoImage priority={false} sizes="180px" className="brand-logo__full brand-logo__full--footer" />
       </span>
     );
   } else if (resolvedVariant === "image") {
     content = (
       <span className={cn("brand-logo inline-block", className)}>
-        <ThemeLogoImg priority={priority} className="brand-logo__full" />
+        <ThemeLogoImage priority={priority} className="brand-logo__full" />
       </span>
     );
   } else if (resolvedVariant === "menu") {
     content = (
       <span className={cn("brand-logo brand-logo--menu inline-flex min-w-0 items-center gap-3", className)}>
-        <ThemeLogoImg priority={priority} className="brand-logo__full brand-logo__full--menu" />
+        <ThemeLogoImage priority={priority} className="brand-logo__full brand-logo__full--menu" />
         {showTagline && (
           <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
             {SITE_CONFIG.tagline}
@@ -139,7 +139,7 @@ export function Logo({
   } else {
     content = (
       <span className={cn("brand-logo brand-logo--header inline-flex min-w-0 items-center justify-center", className)}>
-        <ThemeLogoImg priority={priority} className="brand-logo__full brand-logo__full--header" />
+        <ThemeLogoImage priority={priority} className="brand-logo__full brand-logo__full--header" />
       </span>
     );
   }

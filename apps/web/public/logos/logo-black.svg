@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 440 160" role="img" aria-label="Nexyyra Events">
-  <defs>
-    <filter id="blackLogo" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="0 0 0 0 0.04  0 0 0 0 0.04  0 0 0 0 0.04  0 0 0 1 0" />
-    </filter>
-  </defs>
-  <image width="440" height="160" href="/brand/logo-primary.png" preserveAspectRatio="xMidYMid meet" filter="url(#blackLogo)" />
-</svg>
