@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import {
   UniverseLoader,
   LOADER_STORAGE_KEY,
   hasSeenPremiere,
 } from "@/components/effects/universe-loader";
+import { PremiereContext } from "@/components/providers/premiere-context";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/lib/motion/page-transition";
 import { EASE } from "@/lib/motion";
@@ -21,31 +22,62 @@ function getLoaderSeenSnapshot() {
 }
 
 export function CinematicProvider({ children }: { children: React.ReactNode }) {
-  const skipLoader = useSyncExternalStore(subscribeLoaderSeen, getLoaderSeenSnapshot, () => false);
-  const [done, setDone] = useState(skipLoader);
-  const onComplete = useCallback(() => setDone(true), []);
+  const skipPremiere = useSyncExternalStore(subscribeLoaderSeen, getLoaderSeenSnapshot, () => false);
+  const [premiereComplete, setPremiereComplete] = useState(skipPremiere);
+  const [handoffActive, setHandoffActive] = useState(skipPremiere);
+
+  const onHandoff = useCallback(() => setHandoffActive(true), []);
+  const onComplete = useCallback(() => setPremiereComplete(true), []);
+
+  const premiereActive = !skipPremiere && !premiereComplete;
 
   useEffect(() => {
-    if (!done) {
+    const root = document.documentElement;
+    if (premiereActive) {
+      root.classList.add("premiere-active");
       document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
+      document.body.style.backgroundColor = "#000000";
+    } else {
+      root.classList.remove("premiere-active");
+      document.body.style.overflow = "";
+      document.body.style.backgroundColor = "";
     }
-    document.body.style.overflow = "";
-  }, [done]);
+    return () => {
+      root.classList.remove("premiere-active");
+      document.body.style.overflow = "";
+      document.body.style.backgroundColor = "";
+    };
+  }, [premiereActive]);
+
+  const contextValue = useMemo(
+    () => ({
+      skipPremiere,
+      handoffActive,
+      premiereComplete,
+    }),
+    [skipPremiere, handoffActive, premiereComplete]
+  );
 
   return (
-    <SmoothScrollProvider enabled={done}>
-      {!done && <UniverseLoader onComplete={onComplete} />}
-      <motion.div
-        initial={skipLoader ? false : { opacity: 0, scale: 1.05 }}
-        animate={done ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
-        transition={{ duration: 0.5, ease: EASE.silk }}
-      >
-        <PageTransition>{children}</PageTransition>
-      </motion.div>
-    </SmoothScrollProvider>
+    <PremiereContext.Provider value={contextValue}>
+      <SmoothScrollProvider enabled={premiereComplete}>
+        {premiereActive && (
+          <UniverseLoader onHandoff={onHandoff} onComplete={onComplete} />
+        )}
+        <motion.div
+          className="transform-gpu will-change-transform"
+          initial={skipPremiere ? false : { opacity: 0, scale: 1.05 }}
+          animate={
+            handoffActive || skipPremiere
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 1.05 }
+          }
+          transition={{ duration: 1, ease: EASE.silk }}
+        >
+          <PageTransition>{children}</PageTransition>
+        </motion.div>
+      </SmoothScrollProvider>
+    </PremiereContext.Provider>
   );
 }
 

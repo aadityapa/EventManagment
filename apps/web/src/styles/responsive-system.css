@@ -333,6 +333,18 @@ html:not(.light) .brand-logo::after {
   height: var(--nav-height);
 }
 
+/* Cinematic intro — prevent white flash, keep layout stable */
+html.premiere-active,
+html.premiere-active body,
+html.premiere-active .brand-root {
+  background-color: #000000;
+}
+
+.premiere-loader {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* Header shell — Logo | Nav | Contact CTA */
 .brand-header-shell {
   width: 100%;

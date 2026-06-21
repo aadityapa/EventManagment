@@ -12,6 +12,8 @@ import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { Logo } from "@/components/branding/logo";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { usePremiere } from "@/components/providers/premiere-context";
+import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
@@ -34,6 +36,8 @@ export function BrandHeader() {
   const megaRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
   const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+  const { skipPremiere, handoffActive } = usePremiere();
+  const navVisible = skipPremiere || handoffActive;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -81,9 +85,12 @@ export function BrandHeader() {
     );
 
   return (
-    <header
+    <motion.header
+      initial={skipPremiere ? false : { opacity: 0 }}
+      animate={{ opacity: navVisible ? 1 : 0 }}
+      transition={{ duration: 1, ease: EASE.silk }}
       className={cn(
-        "fixed top-0 z-[var(--z-nav,9999)] w-full transition-all duration-500 safe-top",
+        "fixed top-0 z-[var(--z-nav,9999)] w-full transform-gpu will-change-[opacity,transform] transition-[background-color,border-color,box-shadow] duration-500 safe-top",
         glass || (isHome && !scrolled)
           ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent",
@@ -436,6 +443,6 @@ export function BrandHeader() {
           </>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

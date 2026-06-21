@@ -21,6 +21,7 @@ import {
   type HeroVideoSlide,
 } from "@/components/home/hero-video-data";
 import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
+import { usePremiere } from "@/components/providers/premiere-context";
 import { EASE } from "@/lib/motion";
 import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
@@ -125,6 +126,8 @@ function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }
  */
 export function HeroV4() {
   const reducedMotion = useReducedMotion();
+  const { skipPremiere, handoffActive } = usePremiere();
+  const shouldReveal = skipPremiere || handoffActive || reducedMotion;
 
   const [slides] = useState<HeroVideoSlide[]>(HERO_VIDEO_SLIDES);
   const [active, setActive] = useState(0);
@@ -216,8 +219,8 @@ export function HeroV4() {
               ref={contentRef}
               className="hero-v4-copy order-1 lg:order-none"
               variants={heroRevealContainer}
-              initial={reducedMotion ? false : "hidden"}
-              animate="visible"
+              initial={skipPremiere || reducedMotion ? false : "hidden"}
+              animate={shouldReveal ? "visible" : "hidden"}
             >
               <motion.p
                 variants={heroRevealItem}
