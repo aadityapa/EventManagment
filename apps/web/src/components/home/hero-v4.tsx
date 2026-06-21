@@ -1,7 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone, Play, X } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -12,9 +13,13 @@ import {
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { ScrollIndicator } from "@/components/effects/scroll-indicator";
-import { HeroCinematicBackground } from "@/components/home/hero-cinematic-background";
-import { HeroCinematicFx } from "@/components/home/hero-cinematic-fx";
-import { HERO_CATEGORIES, HERO_FALLBACK, type HeroSlide } from "@/components/home/hero-carousel-data";
+import { HeroVideoBackground } from "@/components/home/hero-video-background";
+import {
+  HERO_SHOWREEL_VIDEO,
+  HERO_VIDEO_INTERVAL_MS,
+  HERO_VIDEO_SLIDES,
+  type HeroVideoSlide,
+} from "@/components/home/hero-video-data";
 import { useAdaptiveBackdrop } from "@/components/adaptive/adaptive-theme-provider";
 import { gsap, registerGsap } from "@/lib/gsap/use-gsap";
 import { GSAP_EASE } from "@/lib/motion";
@@ -22,39 +27,104 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
-const AUTO_MS = 6000;
-const HEADLINE = ["Creating", "Extraordinary", "Experiences"];
+const HeroCinematicFx = dynamic(
+  () => import("@/components/home/hero-cinematic-fx").then((m) => m.HeroCinematicFx),
+  { ssr: false }
+);
+
+const HeroWorldCards = dynamic(
+  () => import("@/components/home/hero-world-cards").then((m) => m.HeroWorldCards),
+  { ssr: false }
+);
+
+const SERVICE_TAGS = [
+  "Luxury Weddings",
+  "Corporate Events",
+  "Celebrity Events",
+  "Destination Weddings",
+  "Brand Promotions",
+] as const;
+
+const TRUST_METRICS = [
+  { value: "12+", label: "Years Experience" },
+  { value: "1000+", label: "Events" },
+  { value: "500+", label: "Happy Clients" },
+] as const;
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
   "Hello Glitz Events, I'd like to discuss an event."
 )}`;
 const telHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 
-const PROOF = [
-  { value: "1,000+", label: "Events Delivered" },
-  { value: "4.9★", label: "Client Rating" },
-  { value: "35+", label: "Cities Served" },
-];
-
 function wrapIndex(i: number, len: number) {
   return ((i % len) + len) % len;
 }
 
+function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Glitz Events showreel"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-[var(--glitz-border)] bg-black shadow-[var(--v4-glow-gold)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+          aria-label="Close showreel"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <video
+          autoPlay
+          controls
+          playsInline
+          className="aspect-video w-full object-cover"
+          poster={HERO_VIDEO_SLIDES[0]?.poster}
+        >
+          <source src={HERO_SHOWREEL_VIDEO} type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  );
+}
+
 /**
- * V4 cinematic hero — the proof of the new design + motion system.
- * One headline, one primary CTA, liquid-glass content panel, gold particle FX,
- * mouse-driven parallax depth, GSAP word-mask reveal, adaptive AAA text.
+ * V4 cinematic hero — two-column layout with crossfading video backdrop,
+ * adaptive contrast, floating world cards, and GSAP entrance choreography.
  */
 export function HeroV4() {
   const reducedMotion = useReducedMotion();
 
-  const [slides, setSlides] = useState<HeroSlide[]>(HERO_CATEGORIES);
+  const [slides] = useState<HeroVideoSlide[]>(HERO_VIDEO_SLIDES);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [broken, setBroken] = useState<Record<number, true>>({});
+  const [showreelOpen, setShowreelOpen] = useState(false);
 
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const activeRef = useRef(0);
 
   const mouseX = useMotionValue(0);
@@ -63,48 +133,29 @@ export function HeroV4() {
   const springY = useSpring(mouseY, { stiffness: 50, damping: 24 });
   const bgX = useTransform(springX, (v) => v * 18);
   const bgY = useTransform(springY, (v) => v * 12);
-  const fxX = useTransform(springX, (v) => v * 28);
-  const fxY = useTransform(springY, (v) => v * 16);
-  const panelX = useTransform(springX, (v) => v * -8);
-  const panelY = useTransform(springY, (v) => v * -5);
+  const fxX = useTransform(springX, (v) => v * 24);
+  const fxY = useTransform(springY, (v) => v * 14);
 
   useEffect(() => {
     activeRef.current = active;
   }, [active]);
 
   useEffect(() => {
-    let ignore = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/hero-images");
-        const json = (await res.json()) as { slides?: HeroSlide[] };
-        if (!ignore && Array.isArray(json.slides) && json.slides.length >= 4) {
-          setSlides(json.slides);
-        }
-      } catch {
-        /* fallback to bundled categories */
-      }
-    })();
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  // GSAP cinematic reveal: words rise from mask, then panel meta fades up.
-  useEffect(() => {
     if (reducedMotion) return;
     registerGsap();
-    const words = headlineRef.current?.querySelectorAll("[data-word]");
-    const meta = panelRef.current?.querySelectorAll("[data-reveal]");
+    const root = contentRef.current;
+    if (!root) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: GSAP_EASE.luxe } });
-      if (words?.length) {
-        tl.from(words, { yPercent: 115, duration: 1, stagger: 0.09 }, 0.35);
-      }
-      if (meta?.length) {
-        tl.from(meta, { y: 24, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.7);
-      }
-    });
+      tl.from(root.querySelector("[data-hero-label]"), { y: 16, opacity: 0, duration: 0.55 }, 0.2)
+        .from(root.querySelector("[data-hero-headline]"), { yPercent: 110, duration: 0.95 }, 0.32)
+        .from(root.querySelector("[data-hero-subhead]"), { y: 20, opacity: 0, duration: 0.7 }, 0.52)
+        .from(root.querySelectorAll("[data-hero-tag]"), { y: 14, opacity: 0, duration: 0.45, stagger: 0.06 }, 0.68)
+        .from(root.querySelectorAll("[data-hero-cta]"), { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.82)
+        .from(root.querySelectorAll("[data-hero-metric]"), { y: 16, opacity: 0, duration: 0.5, stagger: 0.07 }, 0.95);
+    }, contentRef);
+
     return () => ctx.revert();
   }, [reducedMotion]);
 
@@ -115,7 +166,7 @@ export function HeroV4() {
 
   useEffect(() => {
     if (reducedMotion || paused) return;
-    const id = window.setInterval(() => goTo(activeRef.current + 1), AUTO_MS);
+    const id = window.setInterval(() => goTo(activeRef.current + 1), HERO_VIDEO_INTERVAL_MS);
     return () => window.clearInterval(id);
   }, [reducedMotion, paused, goTo, slides.length]);
 
@@ -131,154 +182,186 @@ export function HeroV4() {
   };
 
   const activeSlide = slides[active];
-  const activeSrc = broken[active] ? HERO_FALLBACK : activeSlide?.src ?? HERO_FALLBACK;
+  const activePoster = broken[active] ? slides[0]?.poster : activeSlide?.poster ?? slides[0]?.poster;
+
   const setAdaptiveRef = useAdaptiveBackdrop({
-    imageSrc: activeSrc,
+    imageSrc: activePoster,
+    videoRef,
     region: "left-third",
     priority: 100,
   });
 
   return (
-    <section
-      id="welcome"
-      ref={setAdaptiveRef}
-      data-adaptive-backdrop=""
-      className="relative flex h-[100svh] min-h-[100dvh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--v5-obsidian,var(--glitz-bg))] v5-dune-glow"
-      onMouseMove={onMouseMove}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => {
-        setPaused(false);
-        mouseX.set(0);
-        mouseY.set(0);
-      }}
-    >
-      {/* Full-bleed art-directed frame */}
-      <motion.div className="absolute inset-0 z-0" style={{ x: bgX, y: bgY }}>
-        <HeroCinematicBackground slides={slides} active={active} broken={broken} onBroken={onBroken} />
-      </motion.div>
-
-      {/* Gold rays, lens flare, particles */}
-      <motion.div className="absolute inset-0 z-[5]" style={{ x: fxX, y: fxY }}>
-        <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
-      </motion.div>
-
-      {/* Content */}
-      <div className="brand-container relative z-20 flex flex-1 flex-col justify-center pt-24 pb-20">
-        <motion.div
-          ref={panelRef}
-          style={{ x: panelX, y: panelY }}
-          className="v5-glass-liquid v4-glass-liquid max-w-3xl p-7 sm:p-10 md:p-12"
-        >
-          <span data-reveal className="v5-kicker v4-kicker mb-5">
-            Architects of Extraordinary Experiences
-          </span>
-
-          <h1
-            ref={headlineRef}
-            className="v5-hero-display v4-hero-display text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
-          >
-            {HEADLINE.map((word, i) => (
-              <span key={word} className={cn("block overflow-hidden", i === 1 && "v5-gold-text v4-gold-text")}>
-                <span data-word className="inline-block will-change-transform">
-                  {word}
-                </span>
-              </span>
-            ))}
-          </h1>
-
-          <p data-reveal className="v5-standfirst v4-standfirst mt-6 max-w-xl text-[var(--adaptive-muted)]">
-            Welcome to a universe of cinematic weddings, corporate galas, and destination
-            celebrations — designed with obsessive precision since 2012.
-          </p>
-
-          <div data-reveal className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <MagneticButton>
-              <BrandButton
-                href="/book-event"
-                variant="gold"
-                className="min-w-[180px]"
-                onClick={() => analytics.ctaClick("book_event", "hero")}
-              >
-                Begin Your Commission
-              </BrandButton>
-            </MagneticButton>
-            <MagneticButton>
-              <BrandButton
-                href="/portfolio"
-                variant="outline"
-                className="min-w-[160px]"
-                onClick={() => analytics.ctaClick("view_portfolio", "hero")}
-              >
-                Enter the Archive
-              </BrandButton>
-            </MagneticButton>
-          </div>
-
-          <div data-reveal className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
-            {PROOF.map((p) => (
-              <div key={p.label} className="flex items-baseline gap-2">
-                <span className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-[var(--adaptive-accent)]">
-                  {p.value}
-                </span>
-                <span className="text-xs uppercase tracking-[0.16em] text-[var(--adaptive-muted)]">
-                  {p.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div data-reveal className="mt-7 flex flex-wrap items-center gap-5 text-sm text-[var(--adaptive-muted)]">
-            <a
-              href={telHref}
-              onClick={() => analytics.ctaClick("call", "hero")}
-              className="inline-flex items-center gap-2 transition-colors hover:text-[var(--adaptive-accent)]"
-            >
-              <Phone className="h-4 w-4 text-[var(--adaptive-accent)]" aria-hidden="true" />
-              {SITE_CONFIG.phone}
-            </a>
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => analytics.ctaClick("whatsapp", "hero")}
-              className="inline-flex items-center gap-2 transition-colors hover:text-emerald-500"
-            >
-              <MessageCircle className="h-4 w-4 text-emerald-500" aria-hidden="true" />
-              WhatsApp
-            </a>
-          </div>
+    <>
+      <section
+        id="welcome"
+        ref={setAdaptiveRef}
+        data-adaptive-backdrop=""
+        className="relative flex min-h-[100svh] flex-col overflow-hidden border-b border-[var(--glitz-border)] bg-[var(--v5-obsidian,var(--glitz-bg))] v5-dune-glow"
+        onMouseMove={onMouseMove}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => {
+          setPaused(false);
+          mouseX.set(0);
+          mouseY.set(0);
+        }}
+      >
+        <motion.div className="absolute inset-0 z-0" style={{ x: bgX, y: bgY }}>
+          <HeroVideoBackground
+            slides={slides}
+            active={active}
+            broken={broken}
+            onBroken={onBroken}
+            videoRef={videoRef}
+          />
         </motion.div>
-      </div>
 
-      {/* Frame switcher — quiet, bottom-right */}
-      <div className="brand-container absolute inset-x-0 bottom-10 z-20 hidden md:block">
-        <div className="flex items-center justify-end gap-4">
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
-            {activeSlide?.category}
-          </span>
-          <div className="flex gap-1.5" role="tablist" aria-label="Hero image categories">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                aria-current={i === active ? "true" : undefined}
-                aria-label={`Show ${slides[i]?.category}`}
-                onClick={() => goTo(i)}
-                className={cn(
-                  "h-1 rounded-full transition-all duration-500",
-                  i === active
-                    ? "w-10 bg-[var(--adaptive-accent)] shadow-[var(--adaptive-shadow)]"
-                    : "w-1.5 bg-[var(--adaptive-text)]/25 hover:bg-[var(--adaptive-accent)]/60"
-                )}
-              />
-            ))}
+        <motion.div className="absolute inset-0 z-[5]" style={{ x: fxX, y: fxY }}>
+          <HeroCinematicFx active={active} mouseX={springX} mouseY={springY} />
+        </motion.div>
+
+        <div className="brand-container relative z-20 flex flex-1 items-center py-24 md:py-28 lg:py-20">
+          <div className="grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+            {/* Left — purpose & conversion */}
+            <div ref={contentRef} className="max-w-xl">
+              <span
+                data-hero-label
+                className="brand-label mb-4 block text-[var(--adaptive-accent,var(--glitz-gold))]"
+              >
+                Glitz Events &amp; Promotions
+              </span>
+
+              <h1
+                data-hero-headline
+                className="overflow-hidden font-[family-name:var(--font-playfair)] text-[clamp(2.25rem,5.8vw,3.75rem)] font-bold leading-[1.06] text-[var(--adaptive-text)] drop-shadow-[var(--adaptive-shadow)]"
+              >
+                Architecting Extraordinary Experiences
+              </h1>
+
+              <p
+                data-hero-subhead
+                className="v5-standfirst v4-standfirst mt-5 max-w-lg text-[var(--adaptive-muted)]"
+              >
+                India&apos;s premier luxury event management company creating unforgettable weddings,
+                corporate experiences, celebrity events and destination celebrations.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {SERVICE_TAGS.map((tag) => (
+                  <span
+                    key={tag}
+                    data-hero-tag
+                    className="rounded-full border border-[var(--adaptive-border,var(--glitz-border))]/50 bg-[var(--adaptive-surface,var(--glitz-glass))]/40 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--adaptive-muted)] backdrop-blur-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <div data-hero-cta>
+                  <MagneticButton>
+                    <BrandButton
+                      href="/book-event"
+                      variant="gold"
+                      className="min-w-[190px]"
+                      onClick={() => analytics.ctaClick("book_consultation", "hero")}
+                    >
+                      Book Consultation
+                    </BrandButton>
+                  </MagneticButton>
+                </div>
+                <div data-hero-cta>
+                  <MagneticButton>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        analytics.ctaClick("watch_showreel", "hero");
+                        setShowreelOpen(true);
+                      }}
+                      className={cn(
+                        "inline-flex min-h-[48px] min-w-[190px] items-center justify-center gap-2 rounded-lg border border-[var(--gold)]/45 bg-[var(--glitz-glass)] px-8 py-3 text-sm font-semibold tracking-wide text-[var(--adaptive-text)] backdrop-blur-sm transition-all hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/8 hover:shadow-[var(--glitz-glow)]"
+                      )}
+                    >
+                      <Play className="h-4 w-4 text-[var(--adaptive-accent,var(--glitz-gold))]" aria-hidden />
+                      Watch Showreel
+                    </button>
+                  </MagneticButton>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--adaptive-border,var(--glitz-border))]/30 pt-6">
+                {TRUST_METRICS.map((m) => (
+                  <div key={m.label} data-hero-metric className="flex items-baseline gap-2">
+                    <span className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-[var(--adaptive-accent)]">
+                      {m.value}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--adaptive-muted)]">
+                      {m.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-[var(--adaptive-muted)]">
+                <a
+                  href={telHref}
+                  onClick={() => analytics.ctaClick("call", "hero")}
+                  className="inline-flex items-center gap-2 transition-colors hover:text-[var(--adaptive-accent)]"
+                >
+                  <Phone className="h-4 w-4 text-[var(--adaptive-accent)]" aria-hidden />
+                  {SITE_CONFIG.phone}
+                </a>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => analytics.ctaClick("whatsapp", "hero")}
+                  className="inline-flex items-center gap-2 transition-colors hover:text-emerald-500"
+                >
+                  <MessageCircle className="h-4 w-4 text-emerald-500" aria-hidden />
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+
+            {/* Right — floating world cards */}
+            <HeroWorldCards mouseX={springX} mouseY={springY} className="lg:justify-self-end" />
           </div>
         </div>
-      </div>
 
-      <ScrollIndicator />
-    </section>
+        {/* Category indicator — quiet, bottom-right */}
+        <div className="brand-container absolute inset-x-0 bottom-10 z-20 hidden md:block">
+          <div className="flex items-center justify-end gap-4">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--adaptive-accent)]">
+              {activeSlide?.category}
+            </span>
+            <div className="flex gap-1.5" role="tablist" aria-label="Hero video categories">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-current={i === active ? "true" : undefined}
+                  aria-label={`Show ${slides[i]?.category}`}
+                  onClick={() => goTo(i)}
+                  className={cn(
+                    "h-1 rounded-full transition-all duration-500",
+                    i === active
+                      ? "w-10 bg-[var(--adaptive-accent)] shadow-[var(--adaptive-shadow)]"
+                      : "w-1.5 bg-[var(--adaptive-text)]/25 hover:bg-[var(--adaptive-accent)]/60"
+                  )}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <ScrollIndicator />
+      </section>
+
+      <ShowreelModal open={showreelOpen} onClose={() => setShowreelOpen(false)} />
+    </>
   );
 }
