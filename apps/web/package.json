@@ -10,7 +10,10 @@
     "prebuild": "npm run cache:clean && npm run media:sync",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "optimize-placeholders": "node scripts/optimize-placeholders.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

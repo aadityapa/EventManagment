@@ -1,21 +1,15 @@
-import { GENERATED_HERO_SLIDES } from "@/brand/data/brand-images.generated";
-import { HeroV4 } from "@/components/home/hero-v4";
+import { HeroStatic, HERO_LCP_SRC } from "@/brand/sections/home/hero-static";
 
-/** Smaller width for LCP preload — full res still loaded via next/image srcset. */
-export function heroLcpPosterUrl(url: string): string {
-  return url.replace(/=w\d+/, "=w1200");
+/** LCP preload target — local AVIF from optimize-images script. */
+export function heroLcpPosterUrl(): string {
+  return HERO_LCP_SRC;
 }
 
 export function HomeHero() {
-  const poster = GENERATED_HERO_SLIDES[0]?.poster;
-  const lcpHref = poster ? heroLcpPosterUrl(poster) : null;
-
   return (
     <>
-      {lcpHref ? (
-        <link rel="preload" as="image" href={lcpHref} fetchPriority="high" />
-      ) : null}
-      <HeroV4 />
+      <link rel="preload" as="image" href={HERO_LCP_SRC} fetchPriority="high" type="image/avif" />
+      <HeroStatic />
     </>
   );
 }

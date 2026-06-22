@@ -244,6 +244,18 @@ function FooterColumnHeading({ children }: { children: React.ReactNode }) {
   return <h3 className="site-footer__heading mb-4">{children}</h3>;
 }
 
+function FooterBrandCopy({ descriptionClassName }: { descriptionClassName?: string }) {
+  return (
+    <>
+      <p className="site-footer__brand-name">Nexyyra Events</p>
+      <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
+      <p className={cn("site-footer__description", descriptionClassName)}>
+        Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
+      </p>
+    </>
+  );
+}
+
 export function BrandFooter() {
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
@@ -300,13 +312,9 @@ export function BrandFooter() {
         </section>
 
         <div className="brand-container py-12 md:py-16">
-          {/* Mobile brand + accordion */}
-          <div className="site-footer__brand-block lg:hidden">
-            <p className="site-footer__brand-name">Nexyyra Events</p>
-            <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
-            <p className="site-footer__description max-w-md">
-              Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
-            </p>
+          {/* Mobile brand + accordion — avoid site-footer__brand-block here; its display:flex overrides lg:hidden */}
+          <div className="mb-6 flex flex-col gap-3 lg:hidden md:mb-8 md:gap-4">
+            <FooterBrandCopy descriptionClassName="max-w-md" />
           </div>
           <div className="mb-8 lg:hidden">
             <Accordion type="single" collapsible className="space-y-2">
@@ -349,11 +357,7 @@ export function BrandFooter() {
           <div className="hidden grid-cols-12 gap-8 lg:grid xl:gap-10">
             <div className="col-span-3 space-y-4">
               <FooterColumnHeading>Brand</FooterColumnHeading>
-              <p className="site-footer__brand-name">Nexyyra Events</p>
-              <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
-              <p className="site-footer__description max-w-sm">
-                Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
-              </p>
+              <FooterBrandCopy descriptionClassName="max-w-sm" />
             </div>
             <div className="col-span-3">
               <FooterColumnHeading>Experiences</FooterColumnHeading>

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, MEGA_EXPLORE_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { services } from "@/data/cms";
@@ -12,8 +11,6 @@ import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { Logo } from "@/components/branding/logo";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { usePremiere } from "@/components/providers/premiere-context";
-import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
@@ -64,7 +61,6 @@ export function BrandHeader() {
   const megaRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
   const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
-  const { skipPremiere, premiereComplete } = usePremiere();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -100,24 +96,12 @@ export function BrandHeader() {
 
   if (hidden) return null;
 
-  if (!skipPremiere && !premiereComplete) {
-    return (
-      <div
-        className="brand-header-placeholder brand-nav-bar safe-top"
-        aria-hidden="true"
-      />
-    );
-  }
-
   const glass = scrolled || !isHome;
 
   return (
-    <motion.header
-      initial={false}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1, ease: EASE.silk }}
+    <header
       className={cn(
-        "fixed top-0 z-[var(--z-nav,9999)] w-full transform-gpu will-change-[opacity,transform] transition-[background-color,border-color,box-shadow] duration-500 safe-top",
+        "brand-site-header fixed top-0 z-[var(--z-nav,9999)] w-full transform-gpu transition-[background-color,border-color,box-shadow,opacity] duration-300 safe-top",
         glass || (isHome && !scrolled)
           ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent",
@@ -152,16 +136,11 @@ export function BrandHeader() {
                         aria-hidden="true"
                       />
                     </button>
-                    <AnimatePresence>
                     {servicesOpen && (
-                      <motion.div
+                      <div
                         id="services-mega-menu"
                         role="menu"
-                        initial={{ opacity: 0, y: 8, scale: 0.98, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: 8, scale: 0.98, filter: "blur(4px)" }}
-                        transition={{ duration: 0.35, ease: EASE.silk }}
-                        className="absolute left-1/2 top-full z-50 mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
+                        className="brand-mega-menu absolute left-1/2 top-full z-50 mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
                         onMouseLeave={() => setServicesOpen(false)}
                       >
                       <div className="grid lg:grid-cols-3">
@@ -255,9 +234,8 @@ export function BrandHeader() {
                           </ul>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                     )}
-                    </AnimatePresence>
                 </div>
               );
             }
@@ -311,165 +289,113 @@ export function BrandHeader() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.button
-              type="button"
-              aria-label="Close menu"
-              className="fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              onClick={() => setOpen(false)}
-            />
-            <motion.div
-              id="mobile-nav"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation menu"
-              className="fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(245,215,110,0.14),transparent_60%)]" />
-              <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-12 sm:py-16">
-                <motion.div
-                  className="mb-10 border-b border-white/10 pb-8"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Logo variant="menu" showTagline href={undefined} priority />
-                </motion.div>
-                <motion.nav
-                  className="flex flex-col gap-1"
-                  aria-label="Mobile navigation"
-                  initial="closed"
-                  animate="open"
-                  exit="closed"
-                  variants={{
-                    open: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
-                    closed: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
-                  }}
-                >
-                  {NAV_LINKS.map((l) => {
-                    if (l.href === "/services") {
-                      return (
-                        <motion.div
-                          key={l.href}
-                          variants={{
-                            closed: { opacity: 0, y: 24, filter: "blur(6px)" },
-                            open: { opacity: 1, y: 0, filter: "blur(0px)" },
-                          }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => setMobileServicesOpen((v) => !v)}
-                            className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--footer-text,#fff)]"
-                            aria-expanded={mobileServicesOpen}
-                          >
-                            {l.label}
-                            <ChevronDown
-                              className={cn(
-                                "h-5 w-5 transition-transform duration-300",
-                                mobileServicesOpen && "rotate-180"
-                              )}
-                              aria-hidden="true"
-                            />
-                          </button>
-                          <AnimatePresence>
-                            {mobileServicesOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden pl-4"
-                              >
-                                <Link
-                                  href="/services"
-                                  onClick={() => setOpen(false)}
-                                  className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--glitz-gold)]"
-                                >
-                                  All Experiences
-                                </Link>
-                                {MEGA_SERVICES.slice(0, 6).map((s) => (
-                                  <Link
-                                    key={s.slug}
-                                    href={`/services/${s.slug}`}
-                                    onClick={() => setOpen(false)}
-                                    className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--footer-text-secondary,rgba(255,255,255,0.65))]"
-                                  >
-                                    {s.title}
-                                  </Link>
-                                ))}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      );
-                    }
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="brand-mobile-nav-backdrop fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            id="mobile-nav"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            className="brand-mobile-nav fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(245,215,110,0.14),transparent_60%)]" />
+            <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-12 sm:py-16">
+              <div className="mb-10 border-b border-white/10 pb-8">
+                <Logo variant="menu" showTagline href={undefined} priority />
+              </div>
+              <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+                {NAV_LINKS.map((l) => {
+                  if (l.href === "/services") {
                     return (
-                      <motion.div
-                        key={l.href}
-                        variants={{
-                          closed: { opacity: 0, y: 24, filter: "blur(6px)" },
-                          open: { opacity: 1, y: 0, filter: "blur(0px)" },
-                        }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <Link
-                          href={l.href}
-                          onClick={() => setOpen(false)}
-                          aria-current={pathname === l.href ? "page" : undefined}
-                          className={cn(
-                            "tap-target block rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl transition-colors",
-                            pathname === l.href
-                              ? "text-[var(--glitz-gold)]"
-                              : "text-[var(--footer-text,#fff)]"
-                          )}
+                      <div key={l.href}>
+                        <button
+                          type="button"
+                          onClick={() => setMobileServicesOpen((v) => !v)}
+                          className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--footer-text,#fff)]"
+                          aria-expanded={mobileServicesOpen}
                         >
                           {l.label}
-                        </Link>
-                      </motion.div>
+                          <ChevronDown
+                            className={cn(
+                              "h-5 w-5 transition-transform duration-300",
+                              mobileServicesOpen && "rotate-180"
+                            )}
+                            aria-hidden="true"
+                          />
+                        </button>
+                        {mobileServicesOpen && (
+                          <div className="overflow-hidden pl-4">
+                            <Link
+                              href="/services"
+                              onClick={() => setOpen(false)}
+                              className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--glitz-gold)]"
+                            >
+                              All Experiences
+                            </Link>
+                            {MEGA_SERVICES.slice(0, 6).map((s) => (
+                              <Link
+                                key={s.slug}
+                                href={`/services/${s.slug}`}
+                                onClick={() => setOpen(false)}
+                                className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--footer-text-secondary,rgba(255,255,255,0.65))]"
+                              >
+                                {s.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     );
-                  })}
-                </motion.nav>
+                  }
+                  return (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={pathname === l.href ? "page" : undefined}
+                      className={cn(
+                        "tap-target block rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl transition-colors",
+                        pathname === l.href
+                          ? "text-[var(--glitz-gold)]"
+                          : "text-[var(--footer-text,#fff)]"
+                      )}
+                    >
+                      {l.label}
+                    </Link>
+                  );
+                })}
+              </nav>
 
-                <motion.div
-                  className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45, duration: 0.5 }}
+              <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8">
+                <div className="flex items-center gap-3">
+                  <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
+                  <span className="text-sm text-white/60">Theme</span>
+                </div>
+                <a
+                  href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+                  className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"
                 >
-                  <div className="flex items-center gap-3">
-                    <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
-                    <span className="text-sm text-white/60">Theme</span>
-                  </div>
-                  <a
-                    href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-                    className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"
-                  >
-                    <Phone className="h-5 w-5" aria-hidden="true" />
-                    {SITE_CONFIG.phone}
-                  </a>
-                  <Link
-                    href="/book-event"
-                    onClick={() => setOpen(false)}
-                    className="btn-gold-metallic btn-premium-hover tap-target rounded-xl py-4 text-center text-base font-semibold"
-                  >
-                    Book Consultation
-                  </Link>
-                </motion.div>
+                  <Phone className="h-5 w-5" aria-hidden="true" />
+                  {SITE_CONFIG.phone}
+                </a>
+                <Link
+                  href="/book-event"
+                  onClick={() => setOpen(false)}
+                  className="btn-gold-metallic btn-premium-hover tap-target rounded-xl py-4 text-center text-base font-semibold"
+                >
+                  Book Consultation
+                </Link>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </motion.header>
+            </div>
+          </div>
+        </>
+      )}
+    </header>
   );
 }

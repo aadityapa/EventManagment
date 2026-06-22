@@ -166,7 +166,7 @@ a[role="button"] {
 /* -------------------------------------------------------------------------- */
 :root {
   --brand-logo-height: 2.75rem; /* 44px mobile */
-  --nav-height: 5rem; /* 80px mobile */
+  --nav-height: 5.625rem; /* 90px — fixed sitewide for CLS */
   --header-height: var(--nav-height);
   --brand-nav-active: #c9a227;
   --brand-nav-gap: 2rem; /* 32px mobile */
@@ -313,20 +313,40 @@ html:not(.light) .brand-logo::after {
   opacity: 0.9;
 }
 
-.brand-logo::before {
-  content: "";
-  position: absolute;
-  inset: -8% -4%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 42%,
-    rgba(255, 248, 235, 0.35) 50%,
-    transparent 58%
-  );
-  opacity: 0;
-  animation: brand-logo-shine 5s ease-in-out infinite;
+.brand-logo--header::before,
+.brand-logo--header::after {
+  content: none;
+  animation: none;
+}
+
+.brand-header-theme-slot {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
+
+.brand-mega-menu {
+  animation: brand-mega-in 0.2s ease-out both;
+}
+
+@keyframes brand-mega-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mega-menu {
+    animation: none;
+  }
 }
 
 @keyframes brand-logo-shine {
@@ -343,8 +363,24 @@ html:not(.light) .brand-logo::after {
   }
 }
 
+.brand-logo:not(.brand-logo--header)::before {
+  content: "";
+  position: absolute;
+  inset: -8% -4%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(255, 248, 235, 0.35) 50%,
+    transparent 58%
+  );
+  opacity: 0;
+  animation: brand-logo-shine 5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .brand-logo::before {
+  .brand-logo:not(.brand-logo--header)::before {
     animation: none;
   }
 }
@@ -353,7 +389,6 @@ html:not(.light) .brand-logo::after {
 @media (min-width: 768px) {
   :root {
     --brand-logo-height: 3.5rem; /* 56px tablet */
-    --nav-height: 5.25rem; /* 84px tablet */
     --brand-nav-gap: 2.5rem;
   }
 
@@ -362,11 +397,10 @@ html:not(.light) .brand-logo::after {
   }
 }
 
-/* Laptop 1024+ — spec: 88px header, 64px logo */
+/* Laptop 1024+ — fixed 90px header, 64px logo */
 @media (min-width: 1024px) {
   :root {
     --brand-logo-height: 4rem; /* 64px desktop */
-    --nav-height: 5.5rem; /* 88px desktop */
     --brand-nav-gap: 3rem; /* 48px nav spacing */
   }
 
@@ -753,19 +787,6 @@ html.premiere-active .brand-root {
   font-size: clamp(0.95rem, 1vw, 1.1rem);
   line-height: 1.65;
   color: var(--footer-text-secondary);
-}
-
-.site-footer__brand-block {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.75rem, 1.5vw, 1.25rem);
-  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-@media (min-width: 1024px) {
-  .site-footer__brand-block {
-    margin-bottom: 0;
-  }
 }
 
 .site-footer__link {

@@ -1,17 +1,41 @@
 # Nexyyra Events
 
-Luxury Event Management Company in India
+> Luxury event management company in Pune, Maharashtra, India — weddings, corporate events, destination celebrations, and celebrity experiences since 2012.
 
-Website:
-https://www.nexyyra.com
+Website: https://www.nexyyra.com
 
-Services:
-Luxury Weddings
-Destination Weddings
-Celebrity Events
-Corporate Events
-Event Production
-Brand Activations
+## About
 
-Contact:
-+91 9730594753
+Nexyyra Events is a premium event planning and production company serving clients across India. We specialize in end-to-end luxury experiences — from intimate weddings to large-scale corporate galas and destination celebrations.
+
+## Services
+
+- Luxury Wedding Planning
+- Destination Weddings
+- Corporate Events & Brand Activations
+- Celebrity & VIP Event Management
+- Concert & Exhibition Management
+- Fashion Shows & Cultural Events
+- Venue Curation & Event Production
+
+## Key Pages
+
+- Home: https://www.nexyyra.com/
+- Services: https://www.nexyyra.com/services
+- Portfolio: https://www.nexyyra.com/portfolio
+- Venues: https://www.nexyyra.com/venues
+- Gallery: https://www.nexyyra.com/gallery
+- Book Consultation: https://www.nexyyra.com/book-event
+- Contact: https://www.nexyyra.com/contact
+- About: https://www.nexyyra.com/about
+
+## Contact
+
+- Phone: +91 9730594753
+- WhatsApp: https://wa.me/919730594753
+- Location: Pune, Maharashtra, India
+
+## Brand
+
+- Tagline: The Next Era of Celebrations
+- Focus: Luxury, precision, unforgettable experiences
