@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { useTheme } from "next-themes";
+import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -16,63 +17,80 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra logos — theme SVG swap (no hydration CLS). */
+/** Official Nexyyra logos — PNG + AVIF (light = black, dark = gold). */
 export const BRAND_LOGO_ASSETS = {
-  gold: "/logo-dark.svg",
-  black: "/logo-light.svg",
-  light: "/logo-light.svg",
-  dark: "/logo-dark.svg",
-  primary: "/logo-dark.svg",
-  horizontal: "/logo-dark.svg",
-  full: "/logo-dark.svg",
+  gold: "/logo.png",
+  goldAvif: "/logo.avif",
+  black: "/logo-black.png",
+  blackAvif: "/logo-black.avif",
+  light: "/logo-black.png",
+  dark: "/logo.png",
+  primary: "/logo.png",
+  horizontal: "/logo.png",
+  full: "/logo.png",
   loader: "/logo.png",
   symbol: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",
 } as const;
 
-const LOGO_W = 440;
-const LOGO_H = 160;
+export const LOGO_DISPLAY_W = 180;
+export const LOGO_DISPLAY_H = 60;
 
-type BrandLogoImageProps = {
+type ThemeLogoImageProps = {
   className?: string;
   priority?: boolean;
-  sizes?: string;
+  /** Force gold logo (mobile menu on dark overlay). */
+  forceGold?: boolean;
 };
 
-/** Dual raster logos — CSS shows correct variant per theme without client swap. */
+/** Single theme-aware logo — reserved 180×60 slot, no CSS hide tricks. */
+export function ThemeLogoImage({
+  className,
+  priority = true,
+  forceGold = false,
+}: ThemeLogoImageProps) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const useGold = forceGold || (mounted && resolvedTheme === "dark");
+  const png = useGold ? BRAND_LOGO_ASSETS.gold : BRAND_LOGO_ASSETS.black;
+  const avif = useGold ? BRAND_LOGO_ASSETS.goldAvif : BRAND_LOGO_ASSETS.blackAvif;
+
+  return (
+    <span
+      className={cn("brand-logo__slot relative block shrink-0", className)}
+      style={{ width: LOGO_DISPLAY_W, height: LOGO_DISPLAY_H, minWidth: LOGO_DISPLAY_W, minHeight: LOGO_DISPLAY_H }}
+    >
+      <picture>
+        <source srcSet={avif} type="image/avif" />
+        <img
+          src={png}
+          alt={SITE_CONFIG.name}
+          width={LOGO_DISPLAY_W}
+          height={LOGO_DISPLAY_H}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          className="brand-logo__img brand-logo__full block h-full w-full object-contain object-center"
+        />
+      </picture>
+    </span>
+  );
+}
+
+/** @deprecated Use ThemeLogoImage — kept for footer dual-stack callers migrating off CSS swap. */
 export function BrandLogoImage({
   className,
   priority = true,
-  sizes = "(max-width: 768px) 140px, 180px",
-}: BrandLogoImageProps) {
-  const shared = {
-    width: LOGO_W,
-    height: LOGO_H,
-    sizes,
-    className: cn("brand-logo__img brand-logo__img--raster", className),
-  };
-
-  return (
-    <>
-      <Image
-        src={BRAND_LOGO_ASSETS.gold}
-        alt=""
-        aria-hidden
-        priority={priority}
-        fetchPriority={priority ? "high" : "auto"}
-        {...shared}
-        className={cn(shared.className, "brand-logo__img--theme-dark")}
-      />
-      <Image
-        src={BRAND_LOGO_ASSETS.black}
-        alt={SITE_CONFIG.name}
-        priority={priority}
-        fetchPriority={priority ? "auto" : undefined}
-        {...shared}
-        className={cn(shared.className, "brand-logo__img--theme-light")}
-      />
-    </>
-  );
+}: {
+  className?: string;
+  priority?: boolean;
+  sizes?: string;
+}) {
+  return <ThemeLogoImage className={className} priority={priority} />;
 }
 
 export function Logo({
@@ -101,32 +119,39 @@ export function Logo({
     );
   } else if (resolvedVariant === "loader") {
     content = (
-      <Image
-        src={BRAND_LOGO_ASSETS.loader}
-        alt={SITE_CONFIG.name}
-        width={LOGO_W}
-        height={LOGO_H}
-        priority
-        fetchPriority="high"
-        className={cn("brand-logo__img brand-logo__img--loader", className)}
-      />
+      <span
+        className="brand-logo__slot relative block"
+        style={{ width: LOGO_DISPLAY_W, height: LOGO_DISPLAY_H }}
+      >
+        <picture>
+          <source srcSet={BRAND_LOGO_ASSETS.goldAvif} type="image/avif" />
+          <img
+            src={BRAND_LOGO_ASSETS.loader}
+            alt={SITE_CONFIG.name}
+            width={LOGO_DISPLAY_W}
+            height={LOGO_DISPLAY_H}
+            fetchPriority="high"
+            className={cn("brand-logo__img brand-logo__img--loader block h-full w-full object-contain", className)}
+          />
+        </picture>
+      </span>
     );
   } else if (resolvedVariant === "footer") {
     content = (
-      <span className={cn("brand-logo brand-logo--footer relative inline-block", className)}>
-        <BrandLogoImage priority={false} sizes="180px" className="brand-logo__full brand-logo__full--footer" />
+      <span className={cn("brand-logo brand-logo--footer inline-flex items-center justify-center", className)}>
+        <ThemeLogoImage priority={false} className="brand-logo__full--footer" />
       </span>
     );
   } else if (resolvedVariant === "image") {
     content = (
-      <span className={cn("brand-logo relative inline-block", className)}>
-        <BrandLogoImage priority={priority} className="brand-logo__full" />
+      <span className={cn("brand-logo inline-flex items-center justify-center", className)}>
+        <ThemeLogoImage priority={priority} />
       </span>
     );
   } else if (resolvedVariant === "menu") {
     content = (
-      <span className={cn("brand-logo brand-logo--menu relative inline-flex min-w-0 items-center gap-3", className)}>
-        <BrandLogoImage priority={priority} className="brand-logo__full brand-logo__full--menu" />
+      <span className={cn("brand-logo brand-logo--menu inline-flex min-w-0 items-center gap-3", className)}>
+        <ThemeLogoImage priority={priority} forceGold />
         {showTagline && (
           <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
             {SITE_CONFIG.tagline}
@@ -136,8 +161,8 @@ export function Logo({
     );
   } else {
     content = (
-      <span className={cn("brand-logo brand-logo--header relative inline-flex min-w-0 items-center justify-center", className)}>
-        <BrandLogoImage priority={priority} className="brand-logo__full brand-logo__full--header" />
+      <span className={cn("brand-logo brand-logo--header inline-flex items-center justify-center", className)}>
+        <ThemeLogoImage priority={priority} className="brand-logo__full--header" />
       </span>
     );
   }
@@ -148,7 +173,7 @@ export function Logo({
     <Link
       href={href}
       aria-label={`${SITE_CONFIG.name} — Home`}
-      className="brand-logo-link tap-target inline-flex max-w-full shrink-0 items-center justify-center overflow-visible transition-opacity hover:opacity-95 focus-visible:opacity-95"
+      className="brand-logo-link tap-target inline-flex shrink-0 items-center justify-center overflow-visible transition-opacity hover:opacity-95 focus-visible:opacity-95"
     >
       {content}
     </Link>

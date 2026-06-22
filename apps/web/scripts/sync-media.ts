@@ -2,6 +2,20 @@
  * Sync media manifest from Google Drive (preferred) or local public/images.
  * Run before build — writes media-manifest.json + brand-images.generated.ts
  */
+import fs from "node:fs";
+import path from "node:path";
+
+function loadRootEnv() {
+  const envFile = path.join(process.cwd(), "..", "..", ".env");
+  if (!fs.existsSync(envFile)) return;
+  for (const line of fs.readFileSync(envFile, "utf8").split("\n")) {
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (!m || process.env[m[1]]) continue;
+    process.env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
+  }
+}
+
+loadRootEnv();
 process.env.MEDIA_FAST_INDEX ??= "1";
 
 import { shouldUseGoogleDrive } from "../src/lib/media/drive-client";

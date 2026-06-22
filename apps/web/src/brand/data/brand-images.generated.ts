@@ -3,75 +3,75 @@
 export const GENERATED_BRAND_IMAGES = {
   "hero": {
     "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
-    "wedding": "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
-    "corporate": "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
-    "palace": "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
+    "poster": "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
+    "wedding": "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+    "corporate": "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "palace": "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920"
   },
   "weddings": [
-    "https://lh3.googleusercontent.com/d/13TF35eWflnClnh1Z_aNV-fkkMFMYt1YU=w1920",
-    "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
-    "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920",
-    "https://lh3.googleusercontent.com/d/1i0f-0uwvJ9MmhqDhZ1_N60DznRunbMFk=w1920",
-    "https://lh3.googleusercontent.com/d/1YpB0RlKWFSPUiie47muoTcB_93UpUwk1=w1920",
-    "https://lh3.googleusercontent.com/d/1o1IWmyv-yYZ0Z4QsHo61hWbK9TKYEULs=w1920"
+    "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
+    "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+    "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
+    "https://lh3.googleusercontent.com/d/16RpMQBuJ6B3Qk1eq2N_LU4juvQG9wpP8=w1920",
+    "https://lh3.googleusercontent.com/d/1xdKykEm6R_oJeS9PMa4Jq3Fg5iPKsRFK=w1920",
+    "https://lh3.googleusercontent.com/d/1UM3lZyQAgw0tiI98LvepPjPUTJVgLrQR=w1920"
   ],
   "corporate": [
-    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
-    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
-    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
-    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
+    "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
+    "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
+    "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920"
   ],
   "destinations": [
-    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
-    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
-    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
-    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920"
+    "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
+    "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
+    "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920"
   ],
   "venues": [
-    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
-    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
-    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
-    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
-    "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920",
+    "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
+    "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
     "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
-    "https://lh3.googleusercontent.com/d/19U-aj1LF3a0WFAyfavaGmVx8kAg45-X-=w1920",
-    "https://lh3.googleusercontent.com/d/1lJbfeSwmJtcckYFyav_XCLban-GILGHX=w1920"
+    "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920",
+    "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
+    "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
+    "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920"
   ],
   "vendors": [
-    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
-    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
-    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
-    "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920"
+    "https://lh3.googleusercontent.com/d/19crBMzcuGs1rlilGEUVSz33OFlMFKVW6=w1920",
+    "https://lh3.googleusercontent.com/d/1lVUcnKgYd5oy6NbI8G-1hZeEHSIm4VAU=w1920",
+    "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
+    "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920"
   ],
   "gallery": [
-    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
-    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
-    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
-    "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920",
-    "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920",
-    "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
-    "https://lh3.googleusercontent.com/d/1lVUcnKgYd5oy6NbI8G-1hZeEHSIm4VAU=w1920",
     "https://lh3.googleusercontent.com/d/19crBMzcuGs1rlilGEUVSz33OFlMFKVW6=w1920",
-    "https://lh3.googleusercontent.com/d/1Puxtl0TgR_Ckj4cooCOzbxJ_-Wij8ZZR=w1920",
-    "https://lh3.googleusercontent.com/d/11nnAr-0ypHWl-33dsaH0moueOGnyelT9=w1920",
-    "https://lh3.googleusercontent.com/d/13k2vfjcw1gkE3_Oy-VzalisSoHi63pxi=w1920",
-    "https://lh3.googleusercontent.com/d/1Z4EC3l425F-Bm6-uZTQ7EcIyMNv8HElK=w1920"
+    "https://lh3.googleusercontent.com/d/1lVUcnKgYd5oy6NbI8G-1hZeEHSIm4VAU=w1920",
+    "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
+    "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920",
+    "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920",
+    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
+    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
+    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
+    "https://lh3.googleusercontent.com/d/1rghsSq1veekVcruy8n8ZdELlqf5VL2Ac=w1920",
+    "https://lh3.googleusercontent.com/d/1gf-QbXJ6DRKfEqt1oQVwJRn0MmUsem3s=w1920",
+    "https://lh3.googleusercontent.com/d/13_DE-DhPwCcwbEqkxrg43QwIOKUbqlxU=w1920",
+    "https://lh3.googleusercontent.com/d/1WGAbmBmlDNt9ktQUZ6VJu9xMLWIz6Ghb=w1920"
   ],
   "blog": [
-    "https://lh3.googleusercontent.com/d/1B2YSBTH_da2ETWf9xOVJ68lPx--TC_n3=w1920",
-    "https://lh3.googleusercontent.com/d/1rgTOZsvrHLbDIHDBCG5nwRPHoAFS_pFA=w1920",
-    "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920"
+    "https://lh3.googleusercontent.com/d/19crBMzcuGs1rlilGEUVSz33OFlMFKVW6=w1920",
+    "https://lh3.googleusercontent.com/d/1lVUcnKgYd5oy6NbI8G-1hZeEHSIm4VAU=w1920",
+    "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920"
   ],
-  "contact": "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
-  "about": "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
-  "catering": "https://lh3.googleusercontent.com/d/1C7GenQpCkyJjkL2lo-BlnjAuMKSobSNp=w1920",
-  "decor": "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920",
-  "awards": "https://lh3.googleusercontent.com/d/1FqNW42khgP5Up_G4ZozVFJJMMurM2efO=w1920",
+  "contact": "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
+  "about": "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+  "catering": "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
+  "decor": "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
+  "awards": "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920",
   "testimonials": [
-    "https://lh3.googleusercontent.com/d/13TF35eWflnClnh1Z_aNV-fkkMFMYt1YU=w1920",
-    "https://lh3.googleusercontent.com/d/1qwBHFO4XSdHXCh1ZYQ_AF8MSHAwlpHJx=w1920",
-    "https://lh3.googleusercontent.com/d/16Eykph--U-ba7ipzamXX2JCoPf35qq2d=w1920"
+    "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
+    "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+    "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920"
   ]
 } as const;
 
@@ -79,37 +79,37 @@ export const GENERATED_HERO_SLIDES = [
   {
     "category": "Grand Ballroom",
     "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/1nVjxfKzy1gAWPaviMZRfg9cAwEvv8fN1=w1920",
-    "alt": "0T5A8656 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
+    "alt": "SMB 6785 — Nexyyra Events"
   },
   {
     "category": "Palace Estate",
     "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/1c5nKDx-AEuP223fKQFSOe0j_-bzLUn1D=w1920",
-    "alt": "0T5A8658 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
+    "alt": "4F1A7866 — Nexyyra Events"
   },
   {
     "category": "Luxury Venue",
     "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
-    "alt": "0T5A8660 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
+    "alt": "0T5A9825 — Nexyyra Events"
   },
   {
     "category": "Heritage Hall",
-    "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
-    "alt": "0T5A8667 — Nexyyra Events"
-  },
-  {
-    "category": "Garden Pavilion",
     "video": "",
     "poster": "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920",
     "alt": "0T5A8668 — Nexyyra Events"
   },
   {
+    "category": "Garden Pavilion",
+    "video": "",
+    "poster": "https://lh3.googleusercontent.com/d/1TXKFtw-TXFFXY2kXE2m5ooLKiuYycCaY=w1920",
+    "alt": "0T5A8667 — Nexyyra Events"
+  },
+  {
     "category": "Convention Suite",
     "video": "",
-    "poster": "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
-    "alt": "0T5A9825 — Nexyyra Events"
+    "poster": "https://lh3.googleusercontent.com/d/1aOjM7cEE5U8ZbLOntuAmRP99tqvL2X7v=w1920",
+    "alt": "0T5A8660 — Nexyyra Events"
   }
 ] as const;

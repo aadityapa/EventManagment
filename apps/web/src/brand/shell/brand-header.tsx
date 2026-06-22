@@ -14,15 +14,18 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
-const MEGA_SERVICES = services.slice(0, 8);
+const MEGA_SERVICES = services.slice(0, 10);
 const EXPERIENCE_WORLDS_NAV = [
   { label: "Wedding World", href: "/services/wedding-planning?world=wedding" },
   { label: "Corporate World", href: "/services/corporate-events?world=corporate" },
   { label: "Celebrity World", href: "/services/celebrity-management?world=culture" },
   { label: "Destination Weddings", href: "/services/destination-weddings?world=destination" },
   { label: "Product Launches", href: "/services/product-launches?world=corporate" },
-  { label: "Concert Management", href: "/services/concert-management?world=celebration" },
   { label: "Fashion World", href: "/services/fashion-shows?world=culture" },
+  { label: "Concert Management", href: "/services/concert-management?world=celebration" },
+  { label: "Exhibitions", href: "/services/exhibitions?world=corporate" },
+  { label: "Birthday Events", href: "/services/birthday-events?world=celebration" },
+  { label: "Conferences", href: "/services/conferences?world=corporate" },
 ];
 
 function isNavActive(pathname: string, href: string) {
@@ -153,105 +156,107 @@ export function BrandHeader() {
                     </button>
                     {servicesOpen && (
                       <div
-                        id="services-mega-menu"
-                        role="menu"
-                        className="brand-mega-menu absolute left-1/2 top-full z-[10050] mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
+                        className="brand-mega-menu-wrap absolute left-1/2 top-full z-[9999] -translate-x-1/2 pt-3"
                         onMouseLeave={() => {
                           if (hoverCapableRef.current) setServicesOpen(false);
                         }}
                       >
-                      <div className="grid lg:grid-cols-3">
-                        {/* Signature featured */}
-                        <Link
-                          href={`/services/${FEATURED_SERVICE.slug}`}
-                          role="menuitem"
-                          onClick={() => setServicesOpen(false)}
-                          className="group relative hidden min-h-[220px] overflow-hidden border-b border-[var(--glitz-border)] lg:block lg:border-b-0 lg:border-r"
+                        <div
+                          id="services-mega-menu"
+                          role="menu"
+                          className="brand-mega-menu"
                         >
-                          <BrandImage
-                            src={BRAND_IMAGES.weddings[0]}
-                            alt={FEATURED_SERVICE.title}
-                            fill
-                            sizes="240px"
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-                          <div className="absolute inset-x-0 bottom-0 p-5">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--glitz-gold)]">
-                              Signature
-                            </p>
-                            <p className="mt-1 font-[family-name:var(--font-playfair)] text-lg font-semibold text-white">
-                              Luxury Weddings
-                            </p>
-                            <p className="mt-2 line-clamp-2 text-xs text-white/75">
-                              Bespoke ceremonies with obsessive precision.
-                            </p>
-                          </div>
-                        </Link>
+                          <div className="brand-mega-menu__grid">
+                            <Link
+                              href={`/services/${FEATURED_SERVICE.slug}`}
+                              role="menuitem"
+                              onClick={() => setServicesOpen(false)}
+                              className="brand-mega-menu__image group relative block overflow-hidden"
+                            >
+                              <BrandImage
+                                src={BRAND_IMAGES.weddings[0]}
+                                alt={FEATURED_SERVICE.title}
+                                fill
+                                sizes="320px"
+                                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+                              <div className="absolute inset-x-0 bottom-0 p-5">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]">
+                                  Signature
+                                </p>
+                                <p className="mt-1 font-[family-name:var(--font-playfair)] text-lg font-semibold text-white">
+                                  Luxury Weddings
+                                </p>
+                              </div>
+                            </Link>
 
-                        {/* All services */}
-                        <div className="border-b border-[var(--glitz-border)] p-4 lg:border-b-0 lg:border-r">
-                          <p className="brand-label mb-3 px-1">All Experiences</p>
-                          <div className="grid grid-cols-2 gap-0.5">
-                            {MEGA_SERVICES.map((s) => (
+                            <div className="brand-mega-menu__col">
+                              <p className="brand-mega-menu__heading">All Experiences</p>
+                              <ul className="brand-mega-menu__list">
+                                {MEGA_SERVICES.map((s) => (
+                                  <li key={s.slug}>
+                                    <Link
+                                      href={`/services/${s.slug}`}
+                                      role="menuitem"
+                                      onClick={() => setServicesOpen(false)}
+                                      className="brand-mega-menu__link"
+                                    >
+                                      {s.title}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
                               <Link
-                                key={s.slug}
-                                href={`/services/${s.slug}`}
-                                role="menuitem"
+                                href="/services"
                                 onClick={() => setServicesOpen(false)}
-                                className="rounded-lg px-3 py-2 text-sm text-secondary transition-all hover:bg-[var(--glitz-gold)]/10 hover:text-[var(--glitz-gold)]"
+                                className="brand-mega-menu__cta"
                               >
-                                {s.title}
+                                View all experiences
+                                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                               </Link>
-                            ))}
-                          </div>
-                          <Link
-                            href="/services"
-                            onClick={() => setServicesOpen(false)}
-                            className="mt-3 flex items-center justify-center gap-1 border-t border-[var(--glitz-border)] pt-3 text-sm font-semibold text-[var(--glitz-gold)] hover:underline"
-                          >
-                            View all experiences
-                            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                          </Link>
-                        </div>
+                            </div>
 
-                        {/* Explore + Worlds */}
-                        <div className="p-4">
-                          <p className="brand-label mb-3 px-1">Experience Worlds</p>
-                          <ul className="mb-4 grid grid-cols-2 gap-0.5">
-                            {EXPERIENCE_WORLDS_NAV.map((link) => (
-                              <li key={link.href}>
-                                <Link
-                                  href={link.href}
-                                  role="menuitem"
-                                  onClick={() => setServicesOpen(false)}
-                                  className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-secondary transition-all hover:bg-[var(--glitz-gold)]/10 hover:text-[var(--glitz-gold)]"
-                                >
-                                  {link.label}
-                                  <ArrowUpRight className="h-3 w-3 opacity-40" aria-hidden="true" />
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                          <p className="brand-label mb-3 px-1">Explore</p>
-                          <ul className="space-y-1">
-                            {MEGA_EXPLORE_LINKS.map((link) => (
-                              <li key={link.href}>
-                                <Link
-                                  href={link.href}
-                                  role="menuitem"
-                                  onClick={() => setServicesOpen(false)}
-                                  className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-secondary transition-all hover:bg-[var(--glitz-gold)]/10 hover:text-[var(--glitz-gold)]"
-                                >
-                                  {link.label}
-                                  <ArrowUpRight className="h-3.5 w-3.5 opacity-40" aria-hidden="true" />
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
+                            <div className="brand-mega-menu__col">
+                              <p className="brand-mega-menu__heading">Experience Worlds</p>
+                              <ul className="brand-mega-menu__list">
+                                {EXPERIENCE_WORLDS_NAV.map((link) => (
+                                  <li key={link.href}>
+                                    <Link
+                                      href={link.href}
+                                      role="menuitem"
+                                      onClick={() => setServicesOpen(false)}
+                                      className="brand-mega-menu__link brand-mega-menu__link--arrow"
+                                    >
+                                      {link.label}
+                                      <ArrowUpRight className="h-3 w-3 shrink-0 opacity-40" aria-hidden="true" />
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="brand-mega-menu__col">
+                              <p className="brand-mega-menu__heading">Explore</p>
+                              <ul className="brand-mega-menu__list">
+                                {MEGA_EXPLORE_LINKS.map((link) => (
+                                  <li key={link.href}>
+                                    <Link
+                                      href={link.href}
+                                      role="menuitem"
+                                      onClick={() => setServicesOpen(false)}
+                                      className="brand-mega-menu__link brand-mega-menu__link--arrow"
+                                    >
+                                      {link.label}
+                                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden="true" />
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
                     )}
                 </div>
               );
