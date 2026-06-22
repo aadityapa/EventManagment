@@ -16,15 +16,15 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra logos — gold + black PNG, CSS theme swap (no hydration CLS). */
+/** Official Nexyyra logos — theme SVG swap (no hydration CLS). */
 export const BRAND_LOGO_ASSETS = {
-  gold: "/logo.png",
-  black: "/logo-black.png",
-  light: "/logo-black.png",
-  dark: "/logo.png",
-  primary: "/logo.png",
-  horizontal: "/logo.png",
-  full: "/logo.png",
+  gold: "/logo-dark.svg",
+  black: "/logo-light.svg",
+  light: "/logo-light.svg",
+  dark: "/logo-dark.svg",
+  primary: "/logo-dark.svg",
+  horizontal: "/logo-dark.svg",
+  full: "/logo-dark.svg",
   loader: "/logo.png",
   symbol: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",

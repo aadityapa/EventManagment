@@ -18,9 +18,10 @@ const MEGA_SERVICES = services.slice(0, 8);
 const EXPERIENCE_WORLDS_NAV = [
   { label: "Wedding World", href: "/services/wedding-planning?world=wedding" },
   { label: "Corporate World", href: "/services/corporate-events?world=corporate" },
-  { label: "Concert World", href: "/services/concert-management?world=celebration" },
   { label: "Celebrity World", href: "/services/celebrity-management?world=culture" },
-  { label: "Exhibition World", href: "/services/exhibitions?world=corporate" },
+  { label: "Destination Weddings", href: "/services/destination-weddings?world=destination" },
+  { label: "Product Launches", href: "/services/product-launches?world=corporate" },
+  { label: "Concert Management", href: "/services/concert-management?world=celebration" },
   { label: "Fashion World", href: "/services/fashion-shows?world=culture" },
 ];
 
@@ -59,8 +60,19 @@ export function BrandHeader() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
+  const hoverCapableRef = useRef(true);
   const isHome = pathname === "/";
   const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+
+  useEffect(() => {
+    hoverCapableRef.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }, []);
+
+  useEffect(() => {
+    setOpen(false);
+    setServicesOpen(false);
+    setMobileServicesOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -128,7 +140,10 @@ export function BrandHeader() {
                       aria-haspopup="true"
                       aria-controls="services-mega-menu"
                       onClick={() => setServicesOpen((v) => !v)}
-                      onMouseEnter={() => setServicesOpen(true)}
+                      onMouseEnter={() => {
+                        if (hoverCapableRef.current) setServicesOpen(true);
+                      }}
+                      onFocus={() => setServicesOpen(true)}
                     >
                       {l.label}
                       <ChevronDown
@@ -140,8 +155,10 @@ export function BrandHeader() {
                       <div
                         id="services-mega-menu"
                         role="menu"
-                        className="brand-mega-menu absolute left-1/2 top-full z-50 mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
-                        onMouseLeave={() => setServicesOpen(false)}
+                        className="brand-mega-menu absolute left-1/2 top-full z-[10050] mt-0 w-[min(94vw,52rem)] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-xl)] backdrop-blur-xl"
+                        onMouseLeave={() => {
+                          if (hoverCapableRef.current) setServicesOpen(false);
+                        }}
                       >
                       <div className="grid lg:grid-cols-3">
                         {/* Signature featured */}

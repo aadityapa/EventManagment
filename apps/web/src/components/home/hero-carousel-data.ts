@@ -66,3 +66,7 @@ export const HERO_CATEGORIES: HeroSlide[] = [
 ];
 
 export const HERO_FALLBACK = IMAGES.hero.wedding;
+
+export function heroCarouselFirstSlide(): string {
+  return HERO_CATEGORIES[0]?.src ?? HERO_FALLBACK;
+}

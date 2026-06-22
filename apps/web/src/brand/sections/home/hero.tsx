@@ -1,14 +1,16 @@
-import { HeroStatic, HERO_LCP_SRC } from "@/brand/sections/home/hero-static";
+import { HeroStatic } from "@/brand/sections/home/hero-static";
+import { heroCarouselFirstSlide } from "@/components/home/hero-carousel-data";
 
-/** LCP preload target — local AVIF from optimize-images script. */
+/** LCP preload target — first carousel slide. */
 export function heroLcpPosterUrl(): string {
-  return HERO_LCP_SRC;
+  return heroCarouselFirstSlide();
 }
 
 export function HomeHero() {
+  const poster = heroLcpPosterUrl();
   return (
     <>
-      <link rel="preload" as="image" href={HERO_LCP_SRC} fetchPriority="high" type="image/avif" />
+      <link rel="preload" as="image" href={poster} fetchPriority="high" />
       <HeroStatic />
     </>
   );

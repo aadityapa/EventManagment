@@ -330,6 +330,7 @@ html:not(.light) .brand-logo::after {
 
 .brand-mega-menu {
   animation: brand-mega-in 0.2s ease-out both;
+  pointer-events: auto;
 }
 
 @keyframes brand-mega-in {
@@ -503,7 +504,7 @@ html.premiere-active .brand-root {
     justify-content: center;
     gap: var(--brand-nav-gap);
     pointer-events: auto;
-    overflow: hidden;
+    overflow: visible;
   }
 }
 
@@ -542,7 +543,7 @@ html.premiere-active .brand-root {
 .brand-nav-link.is-active::after {
   content: "";
   position: absolute;
-  bottom: 1.5rem; /* 24px from bottom on 88px header */
+  bottom: 1.125rem;
   left: 50%;
   width: 1.75rem; /* 28px */
   height: 2px;

@@ -11,10 +11,11 @@ import { EASE } from "@/lib/motion";
 export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
-/** First-visit cinematic intro — 5s luxury brand reveal */
+/** First-visit cinematic intro — ~5s luxury brand reveal */
 export const LOADER_DURATION_MS = 5000;
-export const LOADER_HANDOFF_MS = 4000;
-export const LOADER_ZOOM_MS = 1000;
+export const LOADER_HANDOFF_MS = 3500;
+export const LOADER_ZOOM_MS = 3000;
+export const LOADER_CROSSFADE_MS = 1000;
 
 const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -187,8 +188,8 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
     }
 
     const particlesTimer = window.setTimeout(() => setParticlesVisible(true), 500);
-    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 2500);
-    const glowTimer = window.setTimeout(() => setGlowVisible(true), 3000);
+    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 800);
+    const glowTimer = window.setTimeout(() => setGlowVisible(true), 1800);
 
     const handoffTimer = window.setTimeout(() => {
       onHandoff();
@@ -220,7 +221,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
           className="premiere-loader fixed inset-0 z-[99999] flex items-center justify-center bg-black transform-gpu"
           initial={{ opacity: 1 }}
           animate={{ opacity: exiting ? 0 : 1 }}
-          transition={{ duration: 0.65, ease: CINEMATIC }}
+          transition={{ duration: LOADER_CROSSFADE_MS / 1000, ease: CINEMATIC }}
         >
           <p className="sr-only">Welcome to {SITE_CONFIG.name}</p>
 
@@ -249,7 +250,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
               className="relative z-[3] mb-6 w-full overflow-visible transform-gpu"
               initial={{ opacity: 0, scale: 1.35, filter: "blur(16px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.5, ease: CINEMATIC, delay: 1 }}
+              transition={{ duration: 0.8, ease: CINEMATIC, delay: 0 }}
             >
               <motion.div
                 className="pointer-events-none absolute inset-[-24%] z-[1] rounded-full transform-gpu"
@@ -277,7 +278,6 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                   height={320}
                   priority
                   fetchPriority="high"
-                  unoptimized
                   sizes="(max-width: 640px) 60vw, 420px"
                   className="relative z-[2] mx-auto max-h-[clamp(100px,26vw,220px)] w-auto max-w-full object-contain transform-gpu"
                 />

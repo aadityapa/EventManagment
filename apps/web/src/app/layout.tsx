@@ -56,9 +56,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
-        <link rel="preload" href="/logo-black.png" as="image" type="image/png" fetchPriority="high" />
+        <link rel="preload" href="/logo-light.svg" as="image" type="image/svg+xml" fetchPriority="high" />
+        <link rel="preload" href="/logo-dark.svg" as="image" type="image/svg+xml" />
         <link rel="preload" href="/logo.png" as="image" type="image/png" />
-        <link rel="preload" href="/images/hero/hero.avif" as="image" type="image/avif" fetchPriority="high" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
