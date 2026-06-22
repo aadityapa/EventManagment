@@ -51,7 +51,7 @@ async function readSidecarMeta(imagePath: string): Promise<MediaSidecarMeta | nu
 }
 
 async function generateBlurDataURL(buffer: Buffer): Promise<string> {
-  const { data, info } = await sharp(buffer)
+  const { data } = await sharp(buffer)
     .resize(16, null, { withoutEnlargement: true })
     .webp({ quality: 40 })
     .toBuffer({ resolveWithObject: true });

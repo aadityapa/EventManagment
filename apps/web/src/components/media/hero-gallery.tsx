@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { MediaAsset } from "@/lib/media/types";
 import { OptimizedMediaImage } from "./optimized-media-image";
-import { ScrollReveal, EASE, DUR } from "@/lib/motion";
+import { ScrollReveal, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 };
 
 /** Cinematic hero carousel — Apple / Aman inspired fade transitions */
-export function HeroGallery({ assets, className, autoPlayMs = 7000 }: Props) {
+export function HeroGallery({ assets, className }: Props) {
   const reducedMotion = useReducedMotion();
   const [active, setActive] = useState(0);
   const count = assets.length;

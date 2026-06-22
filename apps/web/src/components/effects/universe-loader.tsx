@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
@@ -37,21 +37,32 @@ type Props = {
 
 const PARTICLE_COUNT = 28;
 
+type GoldParticle = {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  duration: number;
+  delay: number;
+  drift: number;
+  alpha: number;
+};
+
+function createGoldParticles(): GoldParticle[] {
+  return Array.from({ length: PARTICLE_COUNT }, (_, id) => ({
+    id,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: 1.5 + Math.random() * 3.5,
+    duration: 14 + Math.random() * 10,
+    delay: Math.random() * 0.8,
+    drift: (Math.random() - 0.5) * 20,
+    alpha: 0.25 + Math.random() * 0.35,
+  }));
+}
+
 function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boolean }) {
-  const particles = useMemo(
-    () =>
-      Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: 1.5 + Math.random() * 3.5,
-        duration: 14 + Math.random() * 10,
-        delay: Math.random() * 0.8,
-        drift: (Math.random() - 0.5) * 20,
-        alpha: 0.25 + Math.random() * 0.35,
-      })),
-    []
-  );
+  const [particles] = useState(createGoldParticles);
 
   return (
     <motion.div

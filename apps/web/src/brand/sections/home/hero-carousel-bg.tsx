@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { HERO_FALLBACK } from "@/components/home/hero-carousel-data";
 import { cn } from "@/lib/utils";
@@ -9,24 +9,16 @@ const FADE_MS = 1200;
 const INTERVAL_DESKTOP = 6000;
 const INTERVAL_MOBILE = 8000;
 
-type HeroCarouselBackgroundProps = {
-  slides: string[];
-};
-
 function slideSrc(index: number, slides: string[], broken: Set<number>) {
   if (broken.has(index)) return HERO_FALLBACK;
   return slides[index] ?? HERO_FALLBACK;
 }
 
-/**
- * Client hero background carousel — slides from live Google Drive sync (server props).
- */
-export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) {
-  const slideList = useMemo(
-    () => (slides.length > 0 ? slides : [HERO_FALLBACK]),
-    [slides]
-  );
-
+function HeroCarouselSlides({
+  slideList,
+}: {
+  slideList: string[];
+}) {
   const [active, setActive] = useState(0);
   const [broken, setBroken] = useState<Set<number>>(() => new Set());
 
@@ -38,11 +30,6 @@ export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) 
       return next;
     });
   }, []);
-
-  useEffect(() => {
-    setActive(0);
-    setBroken(new Set());
-  }, [slideList]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
@@ -70,7 +57,7 @@ export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) 
   }, [active, broken, slideList]);
 
   return (
-    <div className="absolute inset-0" aria-hidden>
+    <>
       {slideList.map((src, index) => {
         const resolved = slideSrc(index, slideList, broken);
         const isActive = index === active;
@@ -92,6 +79,24 @@ export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) 
           />
         );
       })}
+    </>
+  );
+}
+
+type HeroCarouselBackgroundProps = {
+  slides: string[];
+};
+
+/**
+ * Client hero background carousel — slides from live Google Drive sync (server props).
+ */
+export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) {
+  const slideList = slides.length > 0 ? slides : [HERO_FALLBACK];
+  const slideKey = slideList.join("|");
+
+  return (
+    <div className="absolute inset-0" aria-hidden>
+      <HeroCarouselSlides key={slideKey} slideList={slideList} />
     </div>
   );
 }

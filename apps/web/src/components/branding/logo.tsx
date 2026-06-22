@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useEffect, useState, type ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -43,6 +43,14 @@ type ThemeLogoImageProps = {
   forceGold?: boolean;
 };
 
+function subscribeNoop() {
+  return () => {};
+}
+
+function useThemeMounted() {
+  return useSyncExternalStore(subscribeNoop, () => true, () => false);
+}
+
 /** Single theme-aware logo — reserved 180×60 slot, no CSS hide tricks. */
 export function ThemeLogoImage({
   className,
@@ -50,12 +58,7 @@ export function ThemeLogoImage({
   forceGold = false,
 }: ThemeLogoImageProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  const mounted = useThemeMounted();
   const useGold = forceGold || (mounted && resolvedTheme === "dark");
   const png = useGold ? BRAND_LOGO_ASSETS.gold : BRAND_LOGO_ASSETS.black;
   const avif = useGold ? BRAND_LOGO_ASSETS.goldAvif : BRAND_LOGO_ASSETS.blackAvif;

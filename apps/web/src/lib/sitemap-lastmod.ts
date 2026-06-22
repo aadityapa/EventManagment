@@ -68,7 +68,8 @@ export function servicePageLastMod(slug: string): Date {
   return toDate(SERVICE_LASTMOD[slug] ?? CONTENT_DATE);
 }
 
-export function portfolioCaseLastMod(_id: string): Date {
+export function portfolioCaseLastMod(id: string): Date {
+  void id;
   return toDate("2026-01-10");
 }
 

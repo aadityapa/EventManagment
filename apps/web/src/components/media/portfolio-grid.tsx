@@ -7,7 +7,7 @@ import type { MediaAsset } from "@/lib/media/types";
 import { MEDIA_CATEGORY_LABELS } from "@/lib/media/categories";
 import { OptimizedMediaImage } from "./optimized-media-image";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { staggerParent, staggerItem, EASE, DUR } from "@/lib/motion";
+import { staggerParent, staggerItem } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -34,7 +34,7 @@ export function PortfolioGrid({ assets, className, hrefBase = "/portfolio", colu
       whileInView="visible"
       viewport={{ once: true, amount: 0.08 }}
     >
-      {assets.map((asset, i) => (
+      {assets.map((asset) => (
         <motion.div key={asset.id} variants={staggerItem}>
           <Link
             href={`${hrefBase}?highlight=${asset.id}`}

@@ -12,7 +12,7 @@ import { masonryHeightForAsset } from "@/lib/media/utils";
 import { OptimizedMediaImage } from "./optimized-media-image";
 import { BrandLightbox } from "@/brand/primitives/brand-lightbox";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { staggerParent, staggerItem, DUR, EASE } from "@/lib/motion";
+import { staggerParent, staggerItem } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -24,31 +24,19 @@ type Props = {
 
 const DEFAULT_BATCH = 24;
 
-/** Luxury masonry — Aman Resorts editorial rhythm */
-export function LuxuryMasonryGallery({
-  assets,
-  className,
-  showFilters = true,
-  batchSize = DEFAULT_BATCH,
-}: Props) {
-  const [activeFilter, setActiveFilter] = useState<(typeof GALLERY_FILTER_LABELS)[number]>("All");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const reducedMotion = useReducedMotion();
-
-  const filtered = useMemo(
-    () =>
-      assets.filter((a) =>
-        matchesCategoryFilter(a.category, activeFilter)
-      ),
-    [assets, activeFilter]
-  );
-
+function MasonryAssetGrid({
+  filtered,
+  batchSize,
+  reducedMotion,
+  onOpenLightbox,
+}: {
+  filtered: MediaAsset[];
+  batchSize: number;
+  reducedMotion: boolean | null;
+  onOpenLightbox: (index: number) => void;
+}) {
   const [visibleCount, setVisibleCount] = useState(batchSize);
   const sentinelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setVisibleCount(batchSize);
-  }, [activeFilter, batchSize]);
 
   const loadMore = useCallback(() => {
     setVisibleCount((c) => Math.min(c + batchSize, filtered.length));
@@ -69,36 +57,8 @@ export function LuxuryMasonryGallery({
 
   const visible = filtered.slice(0, visibleCount);
 
-  if (!assets.length) return null;
-
   return (
-    <div className={className}>
-      {showFilters && (
-        <div className="mb-8 flex flex-wrap justify-center gap-2 sm:mb-10">
-          {GALLERY_FILTER_LABELS.map((label) => (
-            <button
-              key={label}
-              type="button"
-              aria-pressed={activeFilter === label}
-              onClick={() => setActiveFilter(label)}
-              className={cn(
-                "rounded-full border px-4 py-2 text-xs font-semibold transition-colors sm:px-5 sm:py-2.5 sm:text-sm",
-                activeFilter === label
-                  ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)]"
-                  : "border-[var(--glitz-border)] text-muted hover:border-[var(--glitz-gold)]/40"
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <p className="mb-6 text-center text-sm text-muted">
-        {filtered.length} {filtered.length === 1 ? "photo" : "photos"}
-        {activeFilter !== "All" ? ` · ${activeFilter}` : ""}
-      </p>
-
+    <>
       <motion.div
         className="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3"
         variants={reducedMotion ? undefined : staggerParent}
@@ -113,7 +73,7 @@ export function LuxuryMasonryGallery({
               key={asset.id}
               type="button"
               variants={reducedMotion ? undefined : staggerItem}
-              onClick={() => setLightboxIndex(i)}
+              onClick={() => onOpenLightbox(i)}
               className="gallery-masonry-item group relative mb-4 w-full break-inside-avoid cursor-zoom-in overflow-hidden rounded-[var(--v4-radius-lg)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)] sm:mb-5"
               aria-label={`View ${asset.title}`}
             >
@@ -152,6 +112,66 @@ export function LuxuryMasonryGallery({
           <span className="text-xs uppercase tracking-widest text-muted">Loading more…</span>
         </div>
       )}
+    </>
+  );
+}
+
+/** Luxury masonry — Aman Resorts editorial rhythm */
+export function LuxuryMasonryGallery({
+  assets,
+  className,
+  showFilters = true,
+  batchSize = DEFAULT_BATCH,
+}: Props) {
+  const [activeFilter, setActiveFilter] = useState<(typeof GALLERY_FILTER_LABELS)[number]>("All");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const reducedMotion = useReducedMotion();
+
+  const filtered = useMemo(
+    () =>
+      assets.filter((a) =>
+        matchesCategoryFilter(a.category, activeFilter)
+      ),
+    [assets, activeFilter]
+  );
+
+  if (!assets.length) return null;
+
+  return (
+    <div className={className}>
+      {showFilters && (
+        <div className="mb-8 flex flex-wrap justify-center gap-2 sm:mb-10">
+          {GALLERY_FILTER_LABELS.map((label) => (
+            <button
+              key={label}
+              type="button"
+              aria-pressed={activeFilter === label}
+              onClick={() => setActiveFilter(label)}
+              className={cn(
+                "rounded-full border px-4 py-2 text-xs font-semibold transition-colors sm:px-5 sm:py-2.5 sm:text-sm",
+                activeFilter === label
+                  ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)]"
+                  : "border-[var(--glitz-border)] text-muted hover:border-[var(--glitz-gold)]/40"
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <p className="mb-6 text-center text-sm text-muted">
+        {filtered.length} {filtered.length === 1 ? "photo" : "photos"}
+        {activeFilter !== "All" ? ` · ${activeFilter}` : ""}
+      </p>
+
+      <MasonryAssetGrid
+        key={`${activeFilter}-${batchSize}`}
+        filtered={filtered}
+        batchSize={batchSize}
+        reducedMotion={reducedMotion}
+        onOpenLightbox={setLightboxIndex}
+      />
 
       <BrandLightbox
         images={filtered.map((a) => ({ src: a.src, alt: a.alt }))}

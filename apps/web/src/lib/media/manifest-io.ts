@@ -1,5 +1,5 @@
 import type { MediaManifest } from "./types";
-import { readMediaManifest, writeMediaManifest } from "./manifest-read";
+import { readMediaManifest } from "./manifest-read";
 import { isMediaReadonly } from "./runtime";
 import { shouldUseLiveDriveSync, getLiveDriveManifest } from "./live-drive-manifest";
 

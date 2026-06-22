@@ -35,10 +35,6 @@ function pathBasename(src: string): string {
 }
 
 /** Use uploaded library only — no stock photo fallback */
-export function mergeWithStaticFallback(
-  assets: MediaAsset[],
-  _fallbackUrls: readonly string[],
-  _folder: MediaImageFolder
-): MediaAsset[] {
+export function mergeWithStaticFallback(assets: MediaAsset[]): MediaAsset[] {
   return assets;
 }

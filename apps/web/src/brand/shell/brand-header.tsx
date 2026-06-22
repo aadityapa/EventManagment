@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, MEGA_EXPLORE_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { services } from "@/data/cms";
@@ -58,10 +58,37 @@ function HeaderNavLink({
 
 export function BrandHeader() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState<string | null>(null);
+  const [servicesPath, setServicesPath] = useState<string | null>(null);
+  const [mobileServicesPath, setMobileServicesPath] = useState<string | null>(null);
+  const open = menuPath === pathname;
+  const servicesOpen = servicesPath === pathname;
+  const mobileServicesOpen = mobileServicesPath === pathname;
+  const setOpen = useCallback(
+    (value: boolean) => setMenuPath(value ? pathname : null),
+    [pathname]
+  );
+  const setServicesOpen = useCallback(
+    (value: boolean | ((prev: boolean) => boolean)) => {
+      setServicesPath((prev) => {
+        const current = prev === pathname;
+        const next = typeof value === "function" ? value(current) : value;
+        return next ? pathname : null;
+      });
+    },
+    [pathname]
+  );
+  const setMobileServicesOpen = useCallback(
+    (value: boolean | ((prev: boolean) => boolean)) => {
+      setMobileServicesPath((prev) => {
+        const current = prev === pathname;
+        const next = typeof value === "function" ? value(current) : value;
+        return next ? pathname : null;
+      });
+    },
+    [pathname]
+  );
   const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
   const hoverCapableRef = useRef(true);
   const isHome = pathname === "/";
@@ -70,12 +97,6 @@ export function BrandHeader() {
   useEffect(() => {
     hoverCapableRef.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   }, []);
-
-  useEffect(() => {
-    setOpen(false);
-    setServicesOpen(false);
-    setMobileServicesOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -107,7 +128,7 @@ export function BrandHeader() {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", close);
     };
-  }, [servicesOpen]);
+  }, [servicesOpen, setServicesOpen]);
 
   if (hidden) return null;
 

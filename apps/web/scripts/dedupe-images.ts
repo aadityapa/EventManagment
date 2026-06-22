@@ -113,7 +113,6 @@ function main() {
   const dryRun = process.argv.includes("--dry-run");
   const files = walk(ROOT);
 
-  const originals = files.filter((f) => isOriginalJpg(path.basename(f)));
   const variants = files.filter((f) => isWebpVariant(path.basename(f)));
 
   const report: Report = {

@@ -1,5 +1,4 @@
 import { generateSEO, faqSchema, reviewSchema, speakableWebPageSchema, eventPlanningServiceSchema, breadcrumbSchema } from "@/lib/seo";
-import { SITE_CONFIG } from "@/lib/constants";
 import { HomeView } from "@/brand";
 import { HOME_FAQ_ITEMS } from "@/brand/data/faq";
 import { testimonials } from "@/data/cms";

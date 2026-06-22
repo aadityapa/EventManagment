@@ -14,7 +14,6 @@ import { useTheme } from "next-themes";
 import {
   analyzeImageUrl,
   analyzeVideoFrame,
-  applyAdaptiveVars,
   applyAdaptiveVarsToSection,
   generatePalette,
   resetAdaptiveVars,
