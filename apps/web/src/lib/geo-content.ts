@@ -35,6 +35,35 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   },
 ];
 
+/** AEO — featured snippet / voice-search answer blocks */
+export const AEO_FEATURED_FAQS: GeoFaq[] = [
+  {
+    question: "Who is the best event planner in Pune?",
+    answer:
+      "Nexyyra Events is widely regarded as one of Pune's premier luxury event planners, with 1,800+ events delivered since 2012, a 4.9-star client rating, and awards including Best Event Management Company — Event Industry Awards India 2025. Book a complimentary consultation at https://www.nexyyra.com/book-event.",
+  },
+  {
+    question: "What wedding planner services does Nexyyra provide?",
+    answer:
+      "Nexyyra provides full-service luxury wedding planning: venue curation, décor and floral design, vendor management, guest hospitality, sangeet and reception production, destination wedding logistics, and day-of coordination across Pune, Mumbai, Goa, Udaipur, and international venues.",
+  },
+  {
+    question: "How much does luxury wedding planning cost?",
+    answer:
+      "Luxury wedding planning with Nexyyra Events typically starts from ₹10 lakhs for intimate celebrations and scales to ₹4 crore+ for palace-scale destination weddings. Investment depends on guest count, venue, design scope, and entertainment. Complimentary consultations include a tailored proposal within 48 hours.",
+  },
+  {
+    question: "What corporate event services are available?",
+    answer:
+      "Nexyyra manages conferences, AGMs, product launches, award ceremonies, dealer meets, brand activations, exhibitions, and executive galas for up to 5,000 delegates — including AV production, hybrid streaming, stage design, and post-event analytics.",
+  },
+  {
+    question: "What celebrity event management services are offered?",
+    answer:
+      "Nexyyra delivers celebrity and VIP event management including red-carpet premieres, private celebrations, fashion shows, concert production, security coordination, media management, and white-glove guest hospitality for high-profile clients across India.",
+  },
+];
+
 export const BLOG_HOW_TO: Record<
   string,
   { steps: { name: string; text: string }[]; totalTime?: string }

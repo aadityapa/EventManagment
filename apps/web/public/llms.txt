@@ -28,11 +28,36 @@ Nexyyra Events is a premium event planning and production company serving client
 - Book Consultation: https://www.nexyyra.com/book-event
 - Contact: https://www.nexyyra.com/contact
 - About: https://www.nexyyra.com/about
+- FAQs: https://www.nexyyra.com/faqs
+
+## Locations
+
+- Pune: https://www.nexyyra.com/locations/pune
+- Mumbai: https://www.nexyyra.com/locations/mumbai
+- Nashik: https://www.nexyyra.com/locations/nashik
+- Nagpur: https://www.nexyyra.com/locations/nagpur
+- Ahmedabad: https://www.nexyyra.com/locations/ahmedabad
+- Surat: https://www.nexyyra.com/locations/surat
+- Goa: https://www.nexyyra.com/locations/goa
+- Udaipur: https://www.nexyyra.com/locations/udaipur
+
+## AI Discoverability Layer
+
+- Full entity file: https://www.nexyyra.com/llms-full.txt
+- About: https://www.nexyyra.com/ai/about.md
+- Brand: https://www.nexyyra.com/ai/brand.md
+- Services: https://www.nexyyra.com/ai/services.md
+- Company: https://www.nexyyra.com/ai/company.md
+- Capabilities: https://www.nexyyra.com/ai/capabilities.md
+- Events: https://www.nexyyra.com/ai/events.md
+- FAQ: https://www.nexyyra.com/ai/faq.md
+- Knowledge base: https://www.nexyyra.com/ai/knowledge-base.md
 
 ## Contact
 
 - Phone: +91 9730594753
 - WhatsApp: https://wa.me/919730594753
+- Email: hello@nexyyra.com
 - Location: Pune, Maharashtra, India
 
 ## Brand

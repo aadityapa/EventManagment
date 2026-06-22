@@ -105,11 +105,14 @@ export function generateSEO({
 
 /** Consolidated global JSON-LD — single @graph for layout */
 export function globalGraphSchema() {
+  const aggregateRating = aggregateRatingSchema(4.9, 520);
+  const { "@context": _epsCtx, ...eventPlanningNode } = eventPlanningServiceSchema();
+  void _epsCtx;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["LocalBusiness", "EventPlanner", "Organization"],
+        "@type": ["LocalBusiness", "EventPlanner", "Organization", "ProfessionalService"],
         "@id": ORG_ID,
         name: SITE_CONFIG.legalName,
         alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
@@ -138,6 +141,46 @@ export function globalGraphSchema() {
         knowsAbout: ENTITY_FACTS.knowsAbout,
         numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
         award: ENTITY_FACTS.awards,
+        aggregateRating,
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: SITE_CONFIG.phone,
+            contactType: "customer service",
+            email: SITE_CONFIG.email,
+            areaServed: "IN",
+            availableLanguage: ENTITY_FACTS.languages,
+          },
+          {
+            "@type": "ContactPoint",
+            telephone: SITE_CONFIG.whatsapp,
+            contactType: "sales",
+            contactOption: "https://schema.org/WhatsApp",
+            areaServed: "IN",
+          },
+        ],
+        founder: {
+          "@type": "Person",
+          name: "Nexyyra Leadership",
+          jobTitle: "Founder",
+          worksFor: { "@id": ORG_ID },
+        },
+        review: [
+          {
+            "@type": "Review",
+            author: { "@type": "Person", name: "Priya & Arjun M." },
+            reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
+            reviewBody:
+              "Nexyyra transformed our Pune palace wedding into a cinematic celebration. Flawless vendor coordination and guest hospitality.",
+          },
+          {
+            "@type": "Review",
+            author: { "@type": "Person", name: "Tata Group Events" },
+            reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
+            reviewBody:
+              "Our annual leadership gala for 1,200 delegates was executed with military precision. AV, staging, and guest flow were impeccable.",
+          },
+        ],
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Luxury Event Services",
@@ -148,6 +191,7 @@ export function globalGraphSchema() {
           })),
         },
       },
+      eventPlanningNode,
       {
         "@type": "WebSite",
         "@id": WEBSITE_ID,

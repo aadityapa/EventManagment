@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 import { services, blogPosts } from "@/data/cms";
 import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
+import { LOCATION_PAGES } from "@/lib/location-pages";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import {
@@ -82,6 +83,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${SITE_CONFIG.url}/brand/logo-primary.png`],
   }));
 
+  const locationPages = LOCATION_PAGES.map((p) => ({
+    url: absUrl(`/locations/${p.slug}`),
+    lastModified: localPageLastMod(`locations-${p.slug}`),
+    changeFrequency: "monthly" as const,
+    priority: 0.82,
+    images: [`${SITE_CONFIG.url}/brand/logo-primary.png`],
+  }));
+
   const servicePages = services.map((s, index) => ({
     url: absUrl(`/services/${s.slug}`),
     lastModified: servicePageLastMod(s.slug),
@@ -106,5 +115,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: sitemapImages([cs.image]),
   }));
 
-  return [...staticPages, ...localPages, ...servicePages, ...portfolioCases, ...blogPages];
+  return [...staticPages, ...localPages, ...locationPages, ...servicePages, ...portfolioCases, ...blogPages];
 }

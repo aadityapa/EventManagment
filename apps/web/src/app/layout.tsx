@@ -56,6 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
+        <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
         <link rel="preload" href="/logo-black.png" as="image" type="image/png" fetchPriority="high" />
         <link rel="preload" href="/logo-gold.png" as="image" type="image/png" />

@@ -1077,15 +1077,34 @@ html.premiere-active .brand-root {
   padding: 1.25rem 1.5rem 1.5rem;
 }
 
-/* Left floating quick actions */
+/* Bottom-right floating quick actions */
 .quick-actions {
-  width: 72px;
+  max-width: calc(100vw - 2rem);
+  contain: layout style;
 }
 
 .quick-actions__btn {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .quick-actions__btn {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+.quick-actions__item:focus-within .quick-actions__tooltip,
+.quick-actions__btn:hover + .quick-actions__tooltip,
+a.quick-actions__btn:hover .quick-actions__tooltip {
+  opacity: 1;
+}
+
+.quick-actions__tooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 /* Destination satellite map — Leaflet + Esri World Imagery */

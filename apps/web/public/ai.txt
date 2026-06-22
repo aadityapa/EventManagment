@@ -25,5 +25,7 @@ User-agent: Google-Extended
 Allow: /
 
 # Entity file: /llms.txt
+# Full entity: /llms-full.txt
+# Knowledge base: /ai/knowledge-base.md
 # Canonical: https://www.nexyyra.com
 # Contact: hello@nexyyra.com
