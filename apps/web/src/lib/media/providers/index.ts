@@ -132,7 +132,7 @@ export class PayloadMediaProvider implements MediaProvider {
   }
 }
 
-/** Reads build-time manifest synced from Google Drive (no runtime Drive API calls). */
+/** Reads live Google Drive listing (cached) with build-time manifest fallback. */
 export class GoogleDriveMediaProvider implements MediaProvider {
   readonly name = "google-drive";
 
@@ -154,7 +154,7 @@ export class GoogleDriveMediaProvider implements MediaProvider {
 
   async upload(): Promise<MediaAsset> {
     throw new Error(
-      "GoogleDriveMediaProvider: upload photos to the shared Drive folder, then run npm run media:sync"
+      "GoogleDriveMediaProvider: upload photos to the shared Drive folder — they appear automatically within a few minutes."
     );
   }
 

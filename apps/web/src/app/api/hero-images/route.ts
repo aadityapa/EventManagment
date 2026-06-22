@@ -1,21 +1,28 @@
 import { NextResponse } from "next/server";
+import { getGalleryMedia, getHeroCarouselSlides } from "@/lib/media/server";
 import { HERO_CATEGORIES } from "@/components/home/hero-carousel-data";
-import { IMAGES } from "@/lib/images";
 
-type HeroImage = { src: string; alt: string };
-
-const FALLBACK: HeroImage[] = IMAGES.gallery.slice(0, 12).map((src, i) => ({
-  src,
-  alt: `Nexyyra event moment ${i + 1}`,
-}));
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
-  const slides = HERO_CATEGORIES.map((cat) => ({
+  const [slides, gallery] = await Promise.all([
+    getHeroCarouselSlides(12),
+    getGalleryMedia(),
+  ]);
+
+  const heroSlides = HERO_CATEGORIES.map((cat, i) => ({
     category: cat.category,
     query: cat.query,
-    src: cat.src,
+    src: slides[i] ?? cat.src,
     alt: cat.alt,
   }));
 
-  return NextResponse.json({ slides, images: FALLBACK }, { status: 200 });
+  const images = gallery.slice(0, 12).map((asset, i) => ({
+    src: asset.src,
+    alt: asset.alt || `Nexyyra event moment ${i + 1}`,
+  }));
+
+  return NextResponse.json({ slides: heroSlides, images }, { status: 200 });
 }

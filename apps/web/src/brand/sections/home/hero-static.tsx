@@ -7,17 +7,21 @@ const HEADLINE_LINES = [
   "For Extraordinary People",
 ] as const;
 
+type HeroStaticProps = {
+  slides: string[];
+};
+
 /**
- * Server-rendered homepage hero shell — static copy; carousel runs client-side.
+ * Server-rendered homepage hero shell — carousel slides from live Google Drive sync.
  */
-export function HeroStatic() {
+export function HeroStatic({ slides }: HeroStaticProps) {
   return (
     <section
       id="welcome"
       aria-label="Hero"
       className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-[var(--glitz-border)] bg-black"
     >
-      <HeroCarouselBackground />
+      <HeroCarouselBackground slides={slides} />
       <div className="absolute inset-0 bg-black/55" aria-hidden />
 
       <div className="brand-container relative z-10 w-full py-24 pb-28 text-center sm:py-28">

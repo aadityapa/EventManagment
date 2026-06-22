@@ -1,17 +1,20 @@
 import { HeroStatic } from "@/brand/sections/home/hero-static";
-import { heroCarouselFirstSlide } from "@/components/home/hero-carousel-data";
+import { getHeroCarouselSlides } from "@/lib/media/server";
 
-/** LCP preload target — first carousel slide. */
-export function heroLcpPosterUrl(): string {
-  return heroCarouselFirstSlide();
+/** LCP preload target — first live carousel slide. */
+export async function heroLcpPosterUrl(): Promise<string> {
+  const slides = await getHeroCarouselSlides(1);
+  return slides[0] ?? "/images/placeholders/generic-coming-soon.webp";
 }
 
-export function HomeHero() {
-  const poster = heroLcpPosterUrl();
+export async function HomeHero() {
+  const slides = await getHeroCarouselSlides(9);
+  const poster = slides[0] ?? "/images/placeholders/generic-coming-soon.webp";
+
   return (
     <>
       <link rel="preload" as="image" href={poster} fetchPriority="high" />
-      <HeroStatic />
+      <HeroStatic slides={slides} />
     </>
   );
 }

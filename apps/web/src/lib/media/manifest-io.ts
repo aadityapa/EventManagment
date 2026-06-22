@@ -1,11 +1,20 @@
 import type { MediaManifest } from "./types";
 import { readMediaManifest, writeMediaManifest } from "./manifest-read";
 import { isMediaReadonly } from "./runtime";
+import { shouldUseLiveDriveSync, getLiveDriveManifest } from "./live-drive-manifest";
 
 export { readMediaManifest, writeMediaManifest } from "./manifest-read";
 
-/** Read build-time manifest; avoid filesystem scans on Vercel. */
+/** Read manifest — live from Google Drive when enabled, else build-time file. */
 export async function getOrRebuildManifest(force = false): Promise<MediaManifest> {
+  if (shouldUseLiveDriveSync()) {
+    if (!force) {
+      return getLiveDriveManifest();
+    }
+    const { fetchLiveDriveManifestUncached } = await import("./live-drive-manifest");
+    return fetchLiveDriveManifestUncached();
+  }
+
   if (isMediaReadonly()) {
     const existing = await readMediaManifest();
     if (existing) return existing;
@@ -21,8 +30,18 @@ export async function getOrRebuildManifest(force = false): Promise<MediaManifest
   return rebuildMediaManifest();
 }
 
-/** Reindex: full scan locally; manifest refresh only on Vercel. */
+/** Reindex — bust live cache on production or rescan locally. */
 export async function refreshMediaManifest(): Promise<MediaManifest> {
+  if (shouldUseLiveDriveSync()) {
+    const { revalidateTag } = await import("next/cache");
+    const { LIVE_DRIVE_CACHE_TAG, fetchLiveDriveManifestUncached } = await import(
+      "./live-drive-manifest"
+    );
+    revalidateTag(LIVE_DRIVE_CACHE_TAG, "max");
+    revalidateTag("media-manifest-v2", "max");
+    return fetchLiveDriveManifestUncached();
+  }
+
   if (isMediaReadonly()) {
     const existing = await readMediaManifest();
     if (!existing) {

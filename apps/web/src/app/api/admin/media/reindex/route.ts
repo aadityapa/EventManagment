@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { getMediaProvider } from "@/lib/media/providers";
-import { MEDIA_CACHE_TAG } from "@/lib/media/server";
-import { isMediaReadonly } from "@/lib/media/runtime";
+import { MEDIA_CACHE_TAG, LIVE_DRIVE_CACHE_TAG } from "@/lib/media/server";
+import { shouldUseLiveDriveSync } from "@/lib/media/live-drive-manifest";
 import { isDevAdminBypass, requireAdminSession } from "../_lib/auth";
 
 export const runtime = "nodejs";
@@ -14,22 +14,15 @@ export async function POST() {
     if (!auth.ok) return auth.response;
   }
 
-  if (isMediaReadonly()) {
-    return NextResponse.json(
-      {
-        error: "Reindex is disabled in production. Run npm run media:sync locally, commit, and redeploy.",
-      },
-      { status: 503 }
-    );
-  }
-
   try {
     const provider = getMediaProvider();
     const manifest = await provider.reindex();
     revalidateTag(MEDIA_CACHE_TAG, "max");
+    revalidateTag(LIVE_DRIVE_CACHE_TAG, "max");
 
     return NextResponse.json({
       ok: true,
+      live: shouldUseLiveDriveSync(),
       count: manifest.assets.length,
       videos: manifest.videos.length,
       generatedAt: manifest.generatedAt,

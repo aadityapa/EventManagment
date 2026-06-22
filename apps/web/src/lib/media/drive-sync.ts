@@ -200,28 +200,33 @@ async function indexDriveFolder(
   return indexDriveFolderViaPublicEmbed(rootFolderId, folderByFilename);
 }
 
-export async function syncMediaFromGoogleDrive(): Promise<MediaManifest> {
+export async function buildDriveManifest(): Promise<MediaManifest> {
   const folderId = getDriveFolderId();
-  console.log(`☁️  Syncing media from Google Drive folder ${folderId}…`);
-
   const folderByFilename = await buildFilenameFolderMap();
   const assets = await indexDriveFolder(folderId, folderByFilename);
 
-  const manifest: MediaManifest = {
+  return {
     version: MANIFEST_VERSION,
     generatedAt: new Date().toISOString(),
     provider: "google-drive",
     assets,
     videos: [],
   };
+}
 
-  if (assets.length === 0) {
+export async function syncMediaFromGoogleDrive(): Promise<MediaManifest> {
+  const folderId = getDriveFolderId();
+  console.log(`☁️  Syncing media from Google Drive folder ${folderId}…`);
+
+  const manifest = await buildDriveManifest();
+
+  if (manifest.assets.length === 0) {
     console.warn("  ⚠ Google Drive folder returned 0 images.");
     return manifest;
   }
 
   await writeMediaManifest(manifest);
-  console.log(`  ✓ Indexed ${assets.length} images from Google Drive`);
+  console.log(`  ✓ Indexed ${manifest.assets.length} images from Google Drive`);
   return manifest;
 }
 

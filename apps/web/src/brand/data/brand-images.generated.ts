@@ -4,17 +4,17 @@ export const GENERATED_BRAND_IMAGES = {
   "hero": {
     "video": "",
     "poster": "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
-    "wedding": "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+    "wedding": "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
     "corporate": "https://lh3.googleusercontent.com/d/131RPh47oY4c9iflke0JALMHs_znZzrb1=w1920",
     "palace": "https://lh3.googleusercontent.com/d/1akR7zJ8Lg01GWB8WtvWwO1Z9krIVXDxM=w1920"
   },
   "weddings": [
-    "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
     "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
     "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
     "https://lh3.googleusercontent.com/d/16RpMQBuJ6B3Qk1eq2N_LU4juvQG9wpP8=w1920",
     "https://lh3.googleusercontent.com/d/1xdKykEm6R_oJeS9PMa4Jq3Fg5iPKsRFK=w1920",
-    "https://lh3.googleusercontent.com/d/1UM3lZyQAgw0tiI98LvepPjPUTJVgLrQR=w1920"
+    "https://lh3.googleusercontent.com/d/1UM3lZyQAgw0tiI98LvepPjPUTJVgLrQR=w1920",
+    "https://lh3.googleusercontent.com/d/1k4I1GTnmk3-_t214ogS54Z12MqI4C5Bx=w1920"
   ],
   "corporate": [
     "https://lh3.googleusercontent.com/d/1KEqaLeJksvJosN1aOKzcS3PUPPwAP9n2=w1920",
@@ -64,14 +64,14 @@ export const GENERATED_BRAND_IMAGES = {
     "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920"
   ],
   "contact": "https://lh3.googleusercontent.com/d/1Lre8QEM1XfO56HuhSAbtVTv8IMfISOI0=w1920",
-  "about": "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
+  "about": "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
   "catering": "https://lh3.googleusercontent.com/d/1jp3Isbt0QXMRfMfoYlYskPUh8sXnLh_m=w1920",
-  "decor": "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
+  "decor": "https://lh3.googleusercontent.com/d/16RpMQBuJ6B3Qk1eq2N_LU4juvQG9wpP8=w1920",
   "awards": "https://lh3.googleusercontent.com/d/1KQeemHAZE4FTuPr5CCmDplnxlTDIVSwJ=w1920",
   "testimonials": [
-    "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
     "https://lh3.googleusercontent.com/d/1fZhXmq8-0BqPxt6OdZw0VTBgqAAOE6gP=w1920",
-    "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920"
+    "https://lh3.googleusercontent.com/d/14olXTN-QcacQSSq1zELaNJlTODM-lxZR=w1920",
+    "https://lh3.googleusercontent.com/d/16RpMQBuJ6B3Qk1eq2N_LU4juvQG9wpP8=w1920"
   ]
 } as const;
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-22T05:15:56.692Z",
+  "generatedAt": "2026-06-22T05:49:25.871Z",
   "provider": "google-drive",
   "assets": [
     {
@@ -838,44 +838,6 @@
       ],
       "createdAt": "2026-06-21T15:34:34.237Z",
       "updatedAt": "2026-05-06T05:52:05.000Z"
-    },
-    {
-      "id": "weddings-0T5A9528",
-      "type": "image",
-      "folder": "weddings",
-      "category": "wedding",
-      "src": "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
-      "filename": "0T5A9528.JPG",
-      "title": "0T5A9528",
-      "alt": "0T5A9528 — Nexyyra Events",
-      "width": 8192,
-      "height": 5464,
-      "aspectRatio": 1.499267935578331,
-      "blurDataURL": "",
-      "variants": [
-        {
-          "width": 640,
-          "src": "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w640",
-          "height": 427
-        },
-        {
-          "width": 828,
-          "src": "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w828",
-          "height": 552
-        },
-        {
-          "width": 1200,
-          "src": "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1200",
-          "height": 800
-        },
-        {
-          "width": 1920,
-          "src": "https://lh3.googleusercontent.com/d/15cnSo5bRi4BvTmPXXKPj5a1UpCRZJdcu=w1920",
-          "height": 1281
-        }
-      ],
-      "createdAt": "2026-06-21T15:29:52.847Z",
-      "updatedAt": "2026-05-06T05:52:03.000Z"
     },
     {
       "id": "weddings-0T5A9523",

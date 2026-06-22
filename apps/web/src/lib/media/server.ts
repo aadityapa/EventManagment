@@ -2,7 +2,10 @@ import { unstable_cache } from "next/cache";
 import type { MediaAsset, MediaImageFolder, MediaQuery, MediaVideoAsset } from "./types";
 import { getMediaProvider } from "./providers";
 import { isComingSoonImage } from "./placeholders";
+import { buildBrandImageMap, type BrandImageMap } from "./brand-images";
+import { LIVE_DRIVE_CACHE_TAG } from "./live-drive-manifest";
 
+const REVALIDATE_SECONDS = Number(process.env.MEDIA_REVALIDATE_SECONDS ?? 120);
 const CACHE_TAG = "media-manifest-v2";
 
 const GALLERY_FOLDER_ORDER: Record<string, number> = {
@@ -52,13 +55,23 @@ export const getMediaAssets = unstable_cache(
     return fetchAssetsUncached(query);
   },
   ["media-assets"],
-  { revalidate: 60, tags: [CACHE_TAG] }
+  { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAG, LIVE_DRIVE_CACHE_TAG] }
 );
 
 export const getMediaVideos = unstable_cache(
   async () => fetchVideosUncached(),
   ["media-videos"],
-  { revalidate: 60, tags: [CACHE_TAG] }
+  { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAG, LIVE_DRIVE_CACHE_TAG] }
+);
+
+export const getBrandImageMap = unstable_cache(
+  async (): Promise<BrandImageMap> => {
+    const provider = getMediaProvider();
+    const manifest = await provider.getManifest();
+    return buildBrandImageMap(manifest.assets);
+  },
+  ["brand-image-map"],
+  { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAG, LIVE_DRIVE_CACHE_TAG] }
 );
 
 export async function getHeroMedia(limit = 8): Promise<MediaAsset[]> {
@@ -114,4 +127,31 @@ export async function getCategoryMedia(category: MediaQuery["category"]): Promis
   return getMediaAssets(JSON.stringify({ category }));
 }
 
-export { CACHE_TAG as MEDIA_CACHE_TAG };
+/** Homepage hero carousel — live Drive images, mixed folders. */
+export async function getHeroCarouselSlides(limit = 9): Promise<string[]> {
+  const [hero, gallery, weddings, venues] = await Promise.all([
+    getMediaAssets(JSON.stringify({ folder: "hero", limit })),
+    getMediaAssets(JSON.stringify({ folder: "gallery", limit })),
+    getMediaAssets(JSON.stringify({ folder: "weddings", limit })),
+    getMediaAssets(JSON.stringify({ folder: "venues", limit })),
+  ]);
+
+  const seen = new Set<string>();
+  const slides: string[] = [];
+  for (const asset of [...hero, ...venues, ...gallery, ...weddings]) {
+    if (!asset.src || isComingSoonImage(asset.src) || seen.has(asset.src)) continue;
+    seen.add(asset.src);
+    slides.push(asset.src);
+    if (slides.length >= limit) break;
+  }
+
+  if (slides.length > 0) return slides;
+
+  const { HERO_CATEGORIES, HERO_FALLBACK } = await import(
+    "@/components/home/hero-carousel-data"
+  );
+  const fallback = HERO_CATEGORIES.map((s) => s.src).filter(Boolean);
+  return fallback.length ? fallback : [HERO_FALLBACK];
+}
+
+export { CACHE_TAG as MEDIA_CACHE_TAG, LIVE_DRIVE_CACHE_TAG };
