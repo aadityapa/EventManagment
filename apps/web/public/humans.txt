@@ -1,0 +1,16 @@
+Contact: hello@nexyyra.com — +91 97305 94753
+Location: Pune, Maharashtra, India
+Last update: 2026/06/22
+
+/* TEAM */
+Founder & Creative Director: Nexyyra Leadership
+Event Production: Nexyyra Events Team
+Technology: Nexyyra Digital
+
+/* SITE */
+Standards: HTML5, CSS3, ES2024, Next.js 16, React 19
+Components: Tailwind CSS, Framer Motion, Radix UI
+Software: TypeScript, Prisma, PostgreSQL
+
+/* THANKS */
+Clients, partners, and collaborators who trust Nexyyra with extraordinary celebrations.

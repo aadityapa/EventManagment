@@ -40,28 +40,28 @@ const HomeLuxuryCta = dynamic(
 export function HomeBelowFold() {
   return (
     <>
-      <LazySection minHeight="40vh">
+      <LazySection minHeight="42vh" label="Experience Worlds">
         <HomeExperienceWorlds />
       </LazySection>
-      <LazySection minHeight="48vh">
+      <LazySection minHeight="52vh" label="Signature Experiences">
         <HomeSignatureExperiences />
       </LazySection>
-      <LazySection minHeight="50vh">
+      <LazySection minHeight="54vh" label="Portfolio">
         <HomePortfolioShowcase />
       </LazySection>
-      <LazySection minHeight="40vh">
+      <LazySection minHeight="44vh" label="Venues">
         <HomeVenueCollection />
       </LazySection>
-      <LazySection minHeight="32vh">
+      <LazySection minHeight="36vh" label="Awards">
         <HomeAwards />
       </LazySection>
-      <LazySection minHeight="40vh">
+      <LazySection minHeight="44vh" label="Testimonials">
         <HomeTestimonialsV5 />
       </LazySection>
-      <LazySection minHeight="28vh">
+      <LazySection minHeight="32vh" label="Media">
         <HomeMediaCoverage />
       </LazySection>
-      <LazySection minHeight="24vh">
+      <LazySection minHeight="28vh" label="Contact">
         <HomeLuxuryCta />
       </LazySection>
     </>

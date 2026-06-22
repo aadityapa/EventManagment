@@ -183,7 +183,11 @@ a[role="button"] {
 }
 
 .brand-logo__slot {
-  display: block;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
   width: var(--brand-logo-width);
   height: var(--brand-logo-height);
   min-width: var(--brand-logo-width);
@@ -215,18 +219,47 @@ a[role="button"] {
 .brand-logo__img--theme-dark,
 .brand-logo__img--theme-light {
   grid-area: 1 / 1;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-html.light .brand-logo__img--theme-dark {
+/* Light theme — black logo visible */
+.brand-logo__img--theme-dark {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-html:not(.light) .brand-logo__img--theme-light {
+.brand-logo__img--theme-light {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dark theme — gold logo visible */
+.dark .brand-logo__img--theme-light,
+html.dark .brand-logo__img--theme-light {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+.dark .brand-logo__img--theme-dark,
+html.dark .brand-logo__img--theme-dark {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Mobile menu overlay — always gold */
+.brand-logo--force-gold .brand-logo__img--theme-light {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.brand-logo--force-gold .brand-logo__img--theme-dark {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .brand-header-placeholder {
@@ -343,11 +376,31 @@ html:not(.light) .brand-logo::after {
   min-height: 2.75rem;
 }
 
-/* Theme logo — single visible image (no CSS hide swap) */
-.brand-logo__img--theme-dark,
-.brand-logo__img--theme-light {
-  display: none;
+.brand-mobile-nav-backdrop {
+  animation: brand-mobile-fade-in 0.28s ease-out both;
 }
+
+.brand-mobile-nav {
+  animation: brand-mobile-slide-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes brand-mobile-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes brand-mobile-slide-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mobile-nav-backdrop,
+  .brand-mobile-nav {
+    animation: none;
+  }
+}
+
 
 .brand-mega-menu-wrap {
   pointer-events: auto;
@@ -991,15 +1044,29 @@ html.premiere-active .brand-root {
   }
 }
 
+.experience-cards-grid > * {
+  display: flex;
+  min-height: 100%;
+}
+
 .experience-card {
-  height: 520px;
+  height: 100%;
+  min-height: 520px;
   display: flex;
   flex-direction: column;
 }
 
 .experience-card__image {
+  position: relative;
   height: 360px;
+  min-height: 360px;
   flex-shrink: 0;
+}
+
+.experience-card__image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .experience-card__body {

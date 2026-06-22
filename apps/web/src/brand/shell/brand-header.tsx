@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, MEGA_EXPLORE_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { services } from "@/data/cms";
@@ -20,13 +21,19 @@ const EXPERIENCE_WORLDS_NAV = [
   { label: "Corporate World", href: "/services/corporate-events?world=corporate" },
   { label: "Celebrity World", href: "/services/celebrity-management?world=culture" },
   { label: "Destination Weddings", href: "/services/destination-weddings?world=destination" },
-  { label: "Product Launches", href: "/services/product-launches?world=corporate" },
-  { label: "Fashion World", href: "/services/fashion-shows?world=culture" },
-  { label: "Concert Management", href: "/services/concert-management?world=celebration" },
-  { label: "Exhibitions", href: "/services/exhibitions?world=corporate" },
   { label: "Birthday Events", href: "/services/birthday-events?world=celebration" },
+  { label: "Product Launches", href: "/services/product-launches?world=corporate" },
+  { label: "Exhibitions", href: "/services/exhibitions?world=corporate" },
   { label: "Conferences", href: "/services/conferences?world=corporate" },
+  { label: "Concert Management", href: "/services/concert-management?world=celebration" },
 ];
+
+const MEGA_MOTION = {
+  initial: { opacity: 0, y: 10, scale: 0.98 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: 6, scale: 0.99 },
+  transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const },
+};
 
 function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -175,122 +182,126 @@ export function BrandHeader() {
                         aria-hidden="true"
                       />
                     </button>
-                    {servicesOpen && (
-                      <div
-                        className="brand-mega-menu-wrap absolute left-1/2 top-full z-[9999] -translate-x-1/2 pt-3"
-                        onMouseLeave={() => {
-                          if (hoverCapableRef.current) setServicesOpen(false);
-                        }}
-                      >
-                        <div
-                          id="services-mega-menu"
-                          role="menu"
-                          className="brand-mega-menu"
+                    <AnimatePresence>
+                      {servicesOpen && (
+                        <motion.div
+                          className="brand-mega-menu-wrap absolute left-1/2 top-full z-[9999] -translate-x-1/2 pt-3"
+                          onMouseLeave={() => {
+                            if (hoverCapableRef.current) setServicesOpen(false);
+                          }}
+                          {...MEGA_MOTION}
                         >
-                          <div className="brand-mega-menu__grid">
-                            <Link
-                              href={`/services/${FEATURED_SERVICE.slug}`}
-                              role="menuitem"
-                              onClick={() => setServicesOpen(false)}
-                              className="brand-mega-menu__image group relative block overflow-hidden"
-                            >
-                              <BrandImage
-                                src={BRAND_IMAGES.weddings[0]}
-                                alt={FEATURED_SERVICE.title}
-                                fill
-                                sizes="320px"
-                                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-                              <div className="absolute inset-x-0 bottom-0 p-5">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]">
-                                  Signature
-                                </p>
-                                <p className="mt-1 font-[family-name:var(--font-playfair)] text-lg font-semibold text-white">
-                                  Luxury Weddings
-                                </p>
-                              </div>
-                            </Link>
-
-                            <div className="brand-mega-menu__col">
-                              <p className="brand-mega-menu__heading">All Experiences</p>
-                              <ul className="brand-mega-menu__list">
-                                {MEGA_SERVICES.map((s) => (
-                                  <li key={s.slug}>
-                                    <Link
-                                      href={`/services/${s.slug}`}
-                                      role="menuitem"
-                                      onClick={() => setServicesOpen(false)}
-                                      className="brand-mega-menu__link"
-                                    >
-                                      {s.title}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
+                          <div
+                            id="services-mega-menu"
+                            role="menu"
+                            aria-label="Experience categories"
+                            className="brand-mega-menu"
+                          >
+                            <div className="brand-mega-menu__grid">
                               <Link
-                                href="/services"
+                                href={`/services/${FEATURED_SERVICE.slug}`}
+                                role="menuitem"
                                 onClick={() => setServicesOpen(false)}
-                                className="brand-mega-menu__cta"
+                                className="brand-mega-menu__image group relative block overflow-hidden"
                               >
-                                View all experiences
-                                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                                <BrandImage
+                                  src={BRAND_IMAGES.weddings[0]}
+                                  alt={FEATURED_SERVICE.title}
+                                  fill
+                                  sizes="320px"
+                                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+                                <div className="absolute inset-x-0 bottom-0 p-5">
+                                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]">
+                                    Signature
+                                  </p>
+                                  <p className="mt-1 font-[family-name:var(--font-playfair)] text-lg font-semibold text-white">
+                                    Luxury Weddings
+                                  </p>
+                                </div>
                               </Link>
-                            </div>
 
-                            <div className="brand-mega-menu__col">
-                              <p className="brand-mega-menu__heading">Experience Worlds</p>
-                              <ul className="brand-mega-menu__list">
-                                {EXPERIENCE_WORLDS_NAV.map((link) => (
-                                  <li key={link.href}>
-                                    <Link
-                                      href={link.href}
-                                      role="menuitem"
-                                      onClick={() => setServicesOpen(false)}
-                                      className="brand-mega-menu__link brand-mega-menu__link--arrow"
-                                    >
-                                      {link.label}
-                                      <ArrowUpRight className="h-3 w-3 shrink-0 opacity-40" aria-hidden="true" />
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                              <div className="brand-mega-menu__col">
+                                <p className="brand-mega-menu__heading">All Experiences</p>
+                                <ul className="brand-mega-menu__list">
+                                  {MEGA_SERVICES.map((s) => (
+                                    <li key={s.slug}>
+                                      <Link
+                                        href={`/services/${s.slug}`}
+                                        role="menuitem"
+                                        onClick={() => setServicesOpen(false)}
+                                        className="brand-mega-menu__link"
+                                      >
+                                        {s.title}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                                <Link
+                                  href="/services"
+                                  onClick={() => setServicesOpen(false)}
+                                  className="brand-mega-menu__cta"
+                                >
+                                  View all experiences
+                                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                                </Link>
+                              </div>
 
-                            <div className="brand-mega-menu__col">
-                              <p className="brand-mega-menu__heading">Explore</p>
-                              <ul className="brand-mega-menu__list">
-                                {MEGA_EXPLORE_LINKS.map((link) => (
-                                  <li key={link.href}>
-                                    <Link
-                                      href={link.href}
-                                      role="menuitem"
-                                      onClick={() => setServicesOpen(false)}
-                                      className="brand-mega-menu__link brand-mega-menu__link--arrow"
-                                    >
-                                      {link.label}
-                                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden="true" />
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
+                              <div className="brand-mega-menu__col">
+                                <p className="brand-mega-menu__heading">Experience Worlds</p>
+                                <ul className="brand-mega-menu__list">
+                                  {EXPERIENCE_WORLDS_NAV.map((link) => (
+                                    <li key={link.href}>
+                                      <Link
+                                        href={link.href}
+                                        role="menuitem"
+                                        onClick={() => setServicesOpen(false)}
+                                        className="brand-mega-menu__link brand-mega-menu__link--arrow"
+                                      >
+                                        {link.label}
+                                        <ArrowUpRight className="h-3 w-3 shrink-0 opacity-40" aria-hidden="true" />
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="brand-mega-menu__col">
+                                <p className="brand-mega-menu__heading">Explore</p>
+                                <ul className="brand-mega-menu__list">
+                                  {MEGA_EXPLORE_LINKS.map((link) => (
+                                    <li key={link.href}>
+                                      <Link
+                                        href={link.href}
+                                        role="menuitem"
+                                        onClick={() => setServicesOpen(false)}
+                                        className="brand-mega-menu__link brand-mega-menu__link--arrow"
+                                      >
+                                        {link.label}
+                                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden="true" />
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    )}
-                </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+              return (
+                <HeaderNavLink
+                  key={l.href}
+                  href={l.href}
+                  label={l.label}
+                  isActive={isNavActive(pathname, l.href)}
+                />
               );
-            }
-            return (
-              <HeaderNavLink
-                key={l.href}
-                href={l.href}
-                label={l.label}
-                isActive={isNavActive(pathname, l.href)}
-              />
-            );
-          })}
+            })}
           </nav>
 
           <div className="brand-header-actions">
@@ -332,113 +343,133 @@ export function BrandHeader() {
         </div>
       </div>
 
-      {open && (
-        <>
-          <button
-            type="button"
-            aria-label="Close menu"
-            className="brand-mobile-nav-backdrop fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
-            onClick={() => setOpen(false)}
-          />
-          <div
-            id="mobile-nav"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-            className="brand-mobile-nav fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
-          >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(245,215,110,0.14),transparent_60%)]" />
-            <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-12 sm:py-16">
-              <div className="mb-10 border-b border-white/10 pb-8">
-                <Logo variant="menu" showTagline href={undefined} priority />
-              </div>
-              <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
-                {NAV_LINKS.map((l) => {
-                  if (l.href === "/services") {
-                    return (
-                      <div key={l.href}>
-                        <button
-                          type="button"
-                          onClick={() => setMobileServicesOpen((v) => !v)}
-                          className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--footer-text,#fff)]"
-                          aria-expanded={mobileServicesOpen}
-                        >
-                          {l.label}
-                          <ChevronDown
-                            className={cn(
-                              "h-5 w-5 transition-transform duration-300",
-                              mobileServicesOpen && "rotate-180"
-                            )}
-                            aria-hidden="true"
-                          />
-                        </button>
-                        {mobileServicesOpen && (
-                          <div className="overflow-hidden pl-4">
-                            <Link
-                              href="/services"
-                              onClick={() => setOpen(false)}
-                              className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--glitz-gold)]"
-                            >
-                              All Experiences
-                            </Link>
-                            {MEGA_SERVICES.slice(0, 6).map((s) => (
-                              <Link
-                                key={s.slug}
-                                href={`/services/${s.slug}`}
-                                onClick={() => setOpen(false)}
-                                className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--footer-text-secondary,rgba(255,255,255,0.65))]"
-                              >
-                                {s.title}
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
-                  return (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={() => setOpen(false)}
-                      aria-current={pathname === l.href ? "page" : undefined}
-                      className={cn(
-                        "tap-target block rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl transition-colors",
-                        pathname === l.href
-                          ? "text-[var(--glitz-gold)]"
-                          : "text-[var(--footer-text,#fff)]"
-                      )}
-                    >
-                      {l.label}
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8">
-                <div className="flex items-center gap-3">
-                  <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
-                  <span className="text-sm text-white/60">Theme</span>
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close menu"
+              className="brand-mobile-nav-backdrop fixed inset-0 z-[9998] bg-black/75 backdrop-blur-2xl md:hidden"
+              onClick={() => setOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}
+            />
+            <motion.div
+              id="mobile-nav"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+              className="brand-mobile-nav fixed inset-0 z-[9999] flex flex-col overflow-hidden md:hidden safe-top safe-bottom"
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(245,215,110,0.14),transparent_60%)]" />
+              <div className="brand-container relative flex flex-1 flex-col justify-center overflow-y-auto py-12 sm:py-16">
+                <div className="mb-10 border-b border-white/10 pb-8">
+                  <Logo variant="menu" showTagline href={undefined} priority />
                 </div>
-                <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-                  className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"
-                >
-                  <Phone className="h-5 w-5" aria-hidden="true" />
-                  {SITE_CONFIG.phone}
-                </a>
-                <Link
-                  href="/book-event"
-                  onClick={() => setOpen(false)}
-                  className="btn-gold-metallic btn-premium-hover tap-target rounded-xl py-4 text-center text-base font-semibold"
-                >
-                  Book Consultation
-                </Link>
+                <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+                  {NAV_LINKS.map((l) => {
+                    if (l.href === "/services") {
+                      return (
+                        <div key={l.href}>
+                          <button
+                            type="button"
+                            onClick={() => setMobileServicesOpen((v) => !v)}
+                            className="tap-target flex w-full items-center justify-between rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl text-[var(--footer-text,#fff)]"
+                            aria-expanded={mobileServicesOpen}
+                            aria-controls="mobile-experience-menu"
+                          >
+                            {l.label}
+                            <ChevronDown
+                              className={cn(
+                                "h-5 w-5 transition-transform duration-300",
+                                mobileServicesOpen && "rotate-180"
+                              )}
+                              aria-hidden="true"
+                            />
+                          </button>
+                          <AnimatePresence initial={false}>
+                            {mobileServicesOpen && (
+                              <motion.div
+                                id="mobile-experience-menu"
+                                className="overflow-hidden pl-4"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                              >
+                                <Link
+                                  href="/services"
+                                  onClick={() => setOpen(false)}
+                                  className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--glitz-gold)]"
+                                >
+                                  All Experiences
+                                </Link>
+                                {EXPERIENCE_WORLDS_NAV.map((link) => (
+                                  <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    onClick={() => setOpen(false)}
+                                    className="tap-target block rounded-xl px-4 py-3 text-base text-[var(--footer-text-secondary,rgba(255,255,255,0.65))]"
+                                  >
+                                    {link.label}
+                                  </Link>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    }
+                    return (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        onClick={() => setOpen(false)}
+                        aria-current={pathname === l.href ? "page" : undefined}
+                        className={cn(
+                          "tap-target block rounded-2xl px-4 py-4 font-[family-name:var(--font-playfair)] text-2xl transition-colors",
+                          pathname === l.href
+                            ? "text-[var(--glitz-gold)]"
+                            : "text-[var(--footer-text,#fff)]"
+                        )}
+                      >
+                        {l.label}
+                      </Link>
+                    );
+                  })}
+                </nav>
+
+                <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8">
+                  <div className="flex items-center gap-3">
+                    <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
+                    <span className="text-sm text-white/60">Theme</span>
+                  </div>
+                  <a
+                    href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+                    className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"
+                  >
+                    <Phone className="h-5 w-5" aria-hidden="true" />
+                    {SITE_CONFIG.phone}
+                  </a>
+                  <Link
+                    href="/book-event"
+                    onClick={() => setOpen(false)}
+                    className="btn-gold-metallic btn-premium-hover tap-target rounded-xl py-4 text-center text-base font-semibold"
+                  >
+                    Book Consultation
+                  </Link>
+                </div>
               </div>
-            </div>
-          </div>
-        </>
-      )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

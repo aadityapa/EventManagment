@@ -72,7 +72,7 @@ export function HomeSignatureExperiences() {
           className="experience-cards-grid mt-10"
         >
           {SECONDARY.map((s) => (
-            <motion.div key={s.slug} variants={staggerItem}>
+            <motion.div key={s.slug} variants={staggerItem} className="h-full">
               <ExperienceCard service={s} location="home_signature_secondary" />
             </motion.div>
           ))}

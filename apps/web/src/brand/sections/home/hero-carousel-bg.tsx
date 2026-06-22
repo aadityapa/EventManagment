@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { HERO_FALLBACK } from "@/components/home/hero-carousel-data";
+import { BLUR_DATA_URL } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-const FADE_MS = 1200;
-const INTERVAL_DESKTOP = 6000;
-const INTERVAL_MOBILE = 8000;
+const FADE_S = 0.9;
+const INTERVAL_MS = 5000;
 
 function slideSrc(index: number, slides: string[], broken: Set<number>) {
   if (broken.has(index)) return HERO_FALLBACK;
@@ -32,21 +33,9 @@ function HeroCarouselSlides({
   }, []);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
     const tick = () => setActive((i) => (i + 1) % slideList.length);
-    let id: number | undefined;
-
-    const start = () => {
-      if (id !== undefined) window.clearInterval(id);
-      id = window.setInterval(tick, mq.matches ? INTERVAL_MOBILE : INTERVAL_DESKTOP);
-    };
-
-    start();
-    mq.addEventListener("change", start);
-    return () => {
-      if (id !== undefined) window.clearInterval(id);
-      mq.removeEventListener("change", start);
-    };
+    const id = window.setInterval(tick, INTERVAL_MS);
+    return () => window.clearInterval(id);
   }, [slideList.length]);
 
   useEffect(() => {
@@ -56,30 +45,35 @@ function HeroCarouselSlides({
     img.src = src;
   }, [active, broken, slideList]);
 
+  const resolved = slideSrc(active, slideList, broken);
+
   return (
-    <>
-      {slideList.map((src, index) => {
-        const resolved = slideSrc(index, slideList, broken);
-        const isActive = index === active;
-        return (
+    <div className="absolute inset-0 bg-[var(--glitz-bg,#050505)]">
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={`${active}-${resolved}`}
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: FADE_S, ease: [0.22, 1, 0.36, 1] }}
+        >
           <Image
-            key={`${index}-${src}`}
             src={resolved}
             alt=""
             fill
-            priority={index === 0}
-            fetchPriority={index === 0 ? "high" : "auto"}
+            priority={active === 0}
+            fetchPriority={active === 0 ? "high" : "auto"}
+            loading={active === 0 ? "eager" : "lazy"}
             sizes="100vw"
-            className={cn(
-              "object-cover transition-opacity ease-in-out",
-              isActive ? "opacity-100" : "opacity-0"
-            )}
-            style={{ transitionDuration: `${FADE_MS}ms` }}
-            onError={() => markBroken(index)}
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
+            className={cn("object-cover object-center")}
+            onError={() => markBroken(active)}
           />
-        );
-      })}
-    </>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -88,7 +82,7 @@ type HeroCarouselBackgroundProps = {
 };
 
 /**
- * Client hero background carousel — slides from live Google Drive sync (server props).
+ * Client hero background carousel — 5s autoplay, blur placeholders, Framer Motion fades.
  */
 export function HeroCarouselBackground({ slides }: HeroCarouselBackgroundProps) {
   const slideList = slides.length > 0 ? slides : [HERO_FALLBACK];

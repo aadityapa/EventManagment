@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useSyncExternalStore, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -17,18 +16,18 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra logos — PNG + AVIF (light = black, dark = gold). */
+/** Official Nexyyra logos — light = black, dark = gold (CSS swap, no JS flash). */
 export const BRAND_LOGO_ASSETS = {
-  gold: "/logo.png",
-  goldAvif: "/logo.avif",
+  gold: "/logo-gold.png",
+  goldAvif: "/logo-gold.avif",
   black: "/logo-black.png",
   blackAvif: "/logo-black.avif",
   light: "/logo-black.png",
-  dark: "/logo.png",
-  primary: "/logo.png",
-  horizontal: "/logo.png",
-  full: "/logo.png",
-  loader: "/logo.png",
+  dark: "/logo-gold.png",
+  primary: "/logo-gold.png",
+  horizontal: "/logo-gold.png",
+  full: "/logo-gold.png",
+  loader: "/logo-gold.png",
   symbol: "/brand/logo-symbol.png",
   favicon: "/brand/logo-symbol.png",
 } as const;
@@ -43,41 +42,51 @@ type ThemeLogoImageProps = {
   forceGold?: boolean;
 };
 
-function subscribeNoop() {
-  return () => {};
-}
-
-function useThemeMounted() {
-  return useSyncExternalStore(subscribeNoop, () => true, () => false);
-}
-
-/** Single theme-aware logo — reserved 180×60 slot, no CSS hide tricks. */
+/** Dual-image theme logo — both raster assets in DOM; CSS toggles via `.dark`. */
 export function ThemeLogoImage({
   className,
   priority = true,
   forceGold = false,
 }: ThemeLogoImageProps) {
-  const { resolvedTheme } = useTheme();
-  const mounted = useThemeMounted();
-  const useGold = forceGold || (mounted && resolvedTheme === "dark");
-  const png = useGold ? BRAND_LOGO_ASSETS.gold : BRAND_LOGO_ASSETS.black;
-  const avif = useGold ? BRAND_LOGO_ASSETS.goldAvif : BRAND_LOGO_ASSETS.blackAvif;
+  const fetchPriority = priority ? "high" : "auto";
 
   return (
     <span
-      className={cn("brand-logo__slot relative block shrink-0", className)}
-      style={{ width: LOGO_DISPLAY_W, height: LOGO_DISPLAY_H, minWidth: LOGO_DISPLAY_W, minHeight: LOGO_DISPLAY_H }}
+      className={cn(
+        "brand-logo__slot relative block shrink-0",
+        forceGold && "brand-logo--force-gold",
+        className
+      )}
+      style={{
+        width: LOGO_DISPLAY_W,
+        height: LOGO_DISPLAY_H,
+        minWidth: LOGO_DISPLAY_W,
+        minHeight: LOGO_DISPLAY_H,
+      }}
     >
-      <picture>
-        <source srcSet={avif} type="image/avif" />
+      <picture className="brand-logo__img brand-logo__img--theme-light brand-logo__full">
+        <source srcSet={BRAND_LOGO_ASSETS.blackAvif} type="image/avif" />
         <img
-          src={png}
+          src={BRAND_LOGO_ASSETS.black}
           alt={SITE_CONFIG.name}
           width={LOGO_DISPLAY_W}
           height={LOGO_DISPLAY_H}
           decoding="async"
-          fetchPriority={priority ? "high" : "auto"}
-          className="brand-logo__img brand-logo__full block h-full w-full object-contain object-center"
+          fetchPriority={fetchPriority}
+          className="block h-full w-full object-contain object-center"
+        />
+      </picture>
+      <picture className="brand-logo__img brand-logo__img--theme-dark brand-logo__full">
+        <source srcSet={BRAND_LOGO_ASSETS.goldAvif} type="image/avif" />
+        <img
+          src={BRAND_LOGO_ASSETS.gold}
+          alt=""
+          aria-hidden
+          width={LOGO_DISPLAY_W}
+          height={LOGO_DISPLAY_H}
+          decoding="async"
+          fetchPriority={fetchPriority}
+          className="block h-full w-full object-contain object-center"
         />
       </picture>
     </span>

@@ -156,6 +156,14 @@ export function globalGraphSchema() {
         description: SITE_CONFIG.description,
         inLanguage: "en-IN",
         publisher: { "@id": ORG_ID },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${SITE_CONFIG.url}/venues?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        },
       },
     ],
   };

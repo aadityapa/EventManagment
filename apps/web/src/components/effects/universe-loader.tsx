@@ -11,11 +11,11 @@ import { EASE } from "@/lib/motion";
 export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
-/** First-visit cinematic intro — ~5s luxury brand reveal */
-export const LOADER_DURATION_MS = 5000;
-export const LOADER_HANDOFF_MS = 3500;
-export const LOADER_ZOOM_MS = 3000;
-export const LOADER_CROSSFADE_MS = 1000;
+/** First-visit cinematic intro — 2.5s luxury brand reveal */
+export const LOADER_DURATION_MS = 2500;
+export const LOADER_HANDOFF_MS = 1800;
+export const LOADER_ZOOM_MS = 1500;
+export const LOADER_CROSSFADE_MS = 500;
 
 const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -55,7 +55,7 @@ function createGoldParticles(): GoldParticle[] {
     y: Math.random() * 100,
     size: 1.5 + Math.random() * 3.5,
     duration: 14 + Math.random() * 10,
-    delay: Math.random() * 0.8,
+    delay: Math.random() * 0.4,
     drift: (Math.random() - 0.5) * 20,
     alpha: 0.25 + Math.random() * 0.35,
   }));
@@ -75,7 +75,7 @@ function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boole
             ? { opacity: 1, scale: 1 }
             : { opacity: 0, scale: 1.1 }
       }
-      transition={{ duration: dissolving ? 0.7 : 0.8, ease: CINEMATIC, delay: visible && !dissolving ? 0.5 : 0 }}
+      transition={{ duration: dissolving ? 0.35 : 0.4, ease: CINEMATIC, delay: visible && !dissolving ? 0.25 : 0 }}
     >
       {particles.map((p) => (
         <motion.span
@@ -95,13 +95,13 @@ function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boole
           }}
           transition={{
             opacity: {
-              duration: dissolving ? 0.55 : p.duration,
+              duration: dissolving ? 0.28 : p.duration,
               repeat: dissolving ? 0 : Infinity,
               ease: "easeInOut",
               delay: p.delay,
             },
             y: {
-              duration: dissolving ? 0.55 : p.duration,
+              duration: dissolving ? 0.28 : p.duration,
               repeat: dissolving ? 0 : Infinity,
               ease: "easeInOut",
               delay: p.delay,
@@ -138,9 +138,9 @@ function TaglineLetters({ visible }: { visible: boolean }) {
               : { opacity: 0, y: 30, letterSpacing: "20px" }
           }
           transition={{
-            duration: 0.55,
+            duration: 0.28,
             ease: CINEMATIC,
-            delay: visible ? i * 0.035 : 0,
+            delay: visible ? i * 0.018 : 0,
           }}
         >
           {char === " " ? "\u00A0" : char}
@@ -159,9 +159,8 @@ export function useLoaderSound() {
 }
 
 /**
- * Cinematic intro loader — 5s sequence:
- * 0s bg · 0.5s particles · 1.0s logo fade · 1.5s logo scale · 2.0s brand name
- * · 2.5s tagline · 3.0s gold glow · 4.0s zoom out · 5.0s reveal
+ * Cinematic intro loader — 2.5s sequence:
+ * logo fade · glow · tagline · zoom · hero reveal
  */
 export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
   const reducedMotion = useReducedMotion();
@@ -188,7 +187,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
     onSkip?.();
     onHandoff();
     setExiting(true);
-    window.setTimeout(finish, 320);
+    window.setTimeout(finish, 160);
   }, [onSkip, onHandoff, finish]);
 
   useEffect(() => {
@@ -198,9 +197,9 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
       return;
     }
 
-    const particlesTimer = window.setTimeout(() => setParticlesVisible(true), 500);
-    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 800);
-    const glowTimer = window.setTimeout(() => setGlowVisible(true), 1800);
+    const particlesTimer = window.setTimeout(() => setParticlesVisible(true), 250);
+    const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 400);
+    const glowTimer = window.setTimeout(() => setGlowVisible(true), 900);
 
     const handoffTimer = window.setTimeout(() => {
       onHandoff();
@@ -256,12 +255,11 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
             }
             transition={{ duration: LOADER_ZOOM_MS / 1000, ease: CINEMATIC, delay: exiting ? 0 : 0 }}
           >
-            {/* 1.0s logo fade in · 1.5s scale settle */}
             <motion.div
               className="relative z-[3] mb-6 w-full overflow-visible transform-gpu"
               initial={{ opacity: 0, scale: 1.35, filter: "blur(16px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.8, ease: CINEMATIC, delay: 0 }}
+              transition={{ duration: 0.4, ease: CINEMATIC, delay: 0 }}
             >
               <motion.div
                 className="pointer-events-none absolute inset-[-24%] z-[1] rounded-full transform-gpu"
@@ -275,12 +273,12 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                     ? { opacity: [0, 1, 0.75], scale: [0.75, 1.15, 1.05] }
                     : { opacity: 0, scale: 0.75 }
                 }
-                transition={{ duration: 1.1, ease: CINEMATIC, delay: glowVisible ? 0 : 0 }}
+                transition={{ duration: 0.55, ease: CINEMATIC, delay: glowVisible ? 0 : 0 }}
               />
               <motion.div
                 initial={{ scale: 1.12 }}
                 animate={{ scale: 1 }}
-                transition={{ duration: 0.55, ease: CINEMATIC, delay: 1.5 }}
+                transition={{ duration: 0.28, ease: CINEMATIC, delay: 0.75 }}
               >
                 <Image
                   src={BRAND_LOGO_ASSETS.loader}
@@ -295,17 +293,15 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
               </motion.div>
             </motion.div>
 
-            {/* 2.0s brand name */}
             <motion.p
               className="relative z-[3] mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: CINEMATIC, delay: 2 }}
+              transition={{ duration: 0.22, ease: CINEMATIC, delay: 1 }}
             >
               {BRAND_NAME}
             </motion.p>
 
-            {/* 2.5s tagline */}
             <div className="relative z-[3] min-h-[2.5rem]">
               <TaglineLetters visible={taglineVisible} />
             </div>
