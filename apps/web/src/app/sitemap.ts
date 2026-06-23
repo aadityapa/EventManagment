@@ -48,13 +48,8 @@ function sitemapImages(sources: readonly string[]): string[] {
   return sources.map(sitemapImage);
 }
 
-function brandImageAt(index: number): string {
-  const pool = [
-    ...BRAND_IMAGES.weddings,
-    ...BRAND_IMAGES.gallery,
-    ...BRAND_IMAGES.venues,
-  ];
-  return absUrl(pool[index % pool.length] ?? BRAND_IMAGES.hero.poster);
+function brandImageAt(_index: number): string {
+  return absUrl("/logo.png");
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
