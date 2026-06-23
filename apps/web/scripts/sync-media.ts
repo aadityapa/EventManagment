@@ -1,17 +1,25 @@
 /**
  * Sync media manifest from Google Drive (preferred) or local public/images.
  * Run before build — writes media-manifest.json + brand-images.generated.ts
+ *
+ * On Vercel without GOOGLE_DRIVE_API_KEY, falls back to the committed manifest
+ * so builds never fail due to missing Drive credentials.
  */
 import fs from "node:fs";
 import path from "node:path";
 
 function loadRootEnv() {
-  const envFile = path.join(process.cwd(), "..", "..", ".env");
-  if (!fs.existsSync(envFile)) return;
-  for (const line of fs.readFileSync(envFile, "utf8").split("\n")) {
-    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
-    if (!m || process.env[m[1]]) continue;
-    process.env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
+  const candidates = [
+    path.join(process.cwd(), "..", "..", ".env"),
+    path.join(process.cwd(), ".env"),
+  ];
+  for (const envFile of candidates) {
+    if (!fs.existsSync(envFile)) continue;
+    for (const line of fs.readFileSync(envFile, "utf8").split("\n")) {
+      const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+      if (!m || process.env[m[1]]) continue;
+      process.env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
+    }
   }
 }
 
@@ -27,6 +35,25 @@ import {
 import { writeBrandImagesModule } from "../src/lib/media/brand-images";
 import { readMediaManifest, writeMediaManifest } from "../src/lib/media/manifest-io";
 
+const MANIFEST_PATH = path.join(process.cwd(), "public", "media-manifest.json");
+const ON_VERCEL = process.env.VERCEL === "1";
+
+function hasDriveCredentials() {
+  return Boolean(
+    process.env.GOOGLE_DRIVE_API_KEY?.trim() ||
+      process.env.GOOGLE_SERVICE_ACCOUNT_JSON?.trim(),
+  );
+}
+
+async function useCommittedManifest(reason: string) {
+  const existing = await readMediaManifest();
+  if (!existing?.assets.length) return false;
+  console.warn(`⚠ ${reason} — using committed manifest (${existing.assets.length} assets)`);
+  await writeBrandImagesModule(existing.assets);
+  console.log(`✓ Manifest: public/media-manifest.json (${existing.generatedAt})`);
+  return true;
+}
+
 async function preserveOrUse(manifest: Awaited<ReturnType<typeof syncMediaWithDrivePreference>>) {
   if (manifest.assets.length > 0) {
     if (manifest.provider !== "google-drive") {
@@ -36,21 +63,22 @@ async function preserveOrUse(manifest: Awaited<ReturnType<typeof syncMediaWithDr
     return manifest;
   }
 
-  const existing = await readMediaManifest();
-  if (existing?.assets.length) {
-    console.warn("⚠ No new images indexed — keeping committed manifest");
-    await writeBrandImagesModule(existing.assets);
-    return existing;
+  if (await useCommittedManifest("No new images indexed")) {
+    return (await readMediaManifest())!;
   }
 
   throw new Error(
     "No media assets found. Upload photos to Google Drive and set GOOGLE_DRIVE_API_KEY, " +
-      "or add images under public/images/ locally, then rerun media:sync."
+      "or add images under public/images/ locally, then rerun media:sync.",
   );
 }
 
 async function main() {
   await ensureMediaDirectories();
+
+  if (ON_VERCEL && !hasDriveCredentials() && fs.existsSync(MANIFEST_PATH)) {
+    if (await useCommittedManifest("Vercel build without Drive credentials")) return;
+  }
 
   let manifest;
   if (shouldUseGoogleDrive()) {
@@ -69,7 +97,16 @@ async function main() {
   console.log(`✓ Manifest: public/media-manifest.json (${manifest.generatedAt})`);
 }
 
-main().catch((err) => {
+main().catch(async (err: Error) => {
+  if (ON_VERCEL && fs.existsSync(MANIFEST_PATH)) {
+    try {
+      if (await useCommittedManifest(`Media sync failed (${err.message})`)) {
+        process.exit(0);
+      }
+    } catch {
+      /* fall through */
+    }
+  }
   console.error(err);
   process.exit(1);
 });
