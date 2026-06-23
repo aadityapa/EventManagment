@@ -8,8 +8,7 @@ import {
 } from "./drive-client";
 import { listPublicDriveFolderFiles } from "./drive-public-list";
 import { buildDriveVariants, driveImageUrl } from "./drive-urls";
-import { readMediaManifest, writeMediaManifest } from "./manifest-io";
-import { scanMediaLibrary } from "./manifest-service";
+import { readMediaManifest, writeMediaManifest } from "./manifest-read";
 
 const MANIFEST_VERSION = 1;
 const IMAGE_MIME_PREFIX = "image/";
@@ -242,5 +241,6 @@ export async function syncMediaWithDrivePreference(): Promise<MediaManifest> {
   }
 
   console.log("📸 Falling back to local public/images scan…");
+  const { scanMediaLibrary } = await import("./manifest-service");
   return scanMediaLibrary();
 }

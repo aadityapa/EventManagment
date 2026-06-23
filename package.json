@@ -10,7 +10,6 @@
     "dev:web:https": "cd apps/web && npm run dev -- -H 0.0.0.0 --experimental-https --experimental-https-key ../../certs/key.pem --experimental-https-cert ../../certs/cert.pem",
     "dev:api": "cd server && npm run dev",
     "build": "cd apps/web && npm run build",
-    "vercel-build": "npm run build --prefix apps/web",
     "start": "concurrently \"cd apps/web && npm start\" \"cd server && npm start\"",
     "db:generate": "npx prisma generate --schema=prisma/schema.prisma && node scripts/sync-prisma-client.js",
     "postinstall": "node scripts/postinstall.js",

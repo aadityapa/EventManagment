@@ -1,48 +1,67 @@
-# Vercel deployment — Nexyyra Events monorepo
+# Vercel deployment — Nexyyra Events
 
-## Recommended (simplest)
+## Required dashboard settings
 
-In Vercel **Project Settings → General → Root Directory**, set:
+In **Vercel → Project → Settings → General**:
+
+| Setting | Value |
+|---------|--------|
+| **Root Directory** | `apps/web` |
+| **Framework Preset** | Next.js |
+| **Node.js Version** | 22.x |
+| **Install Command** | Leave **empty** (uses `npm ci` from `vercel.json`) |
+| **Build Command** | Leave **empty** (uses `npm run build` from `vercel.json`) |
+| **Output Directory** | Leave **default** |
+
+If Install Command was set to `npm ci --prefix apps/web`, **clear it** — that breaks when Root Directory is `apps/web`.
+
+## Environment variables (Production)
 
 ```
-apps/web
+NEXT_PUBLIC_APP_URL=https://www.nexyyra.com
+NEXT_PUBLIC_API_URL=https://www.nexyyra.com/api
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-5WS115MZ5E
+NEXT_PUBLIC_COMPANY_PHONE=+91 9730594753
+NEXT_PUBLIC_COMPANY_EMAIL=hello@nexyyra.com
+NEXT_PUBLIC_WHATSAPP_NUMBER=+919730594753
+MEDIA_PROVIDER=google-drive
+GOOGLE_DRIVE_FOLDER_ID=1UZR_UhiZfVvcLUNvDJi3Rvw8udkfKgYM
+GOOGLE_DRIVE_API_KEY=<your-key>
+MEDIA_LIVE_SYNC=1
+MEDIA_REVALIDATE_SECONDS=120
+CRON_SECRET=<random-32-char-secret>
 ```
-
-Leave Install Command and Build Command as defaults (`npm ci` / `npm run build`).
-
-`apps/web/vercel.json` provides crons, redirects, and security headers.
-
-## Alternative (repo root as Root Directory)
-
-If Root Directory is `./`, the root `vercel.json` routes install/build to `apps/web`:
-
-- Install: `npm ci --prefix apps/web`
-- Build: `npm run vercel-build` (runs `apps/web` build)
-
-## Environment variables
-
-Set in Vercel → Settings → Environment Variables (Production + Preview):
-
-| Variable | Required |
-|----------|----------|
-| `NEXT_PUBLIC_APP_URL` | Yes — `https://www.nexyyra.com` |
-| `GOOGLE_DRIVE_API_KEY` | Recommended for live media |
-| `GOOGLE_DRIVE_FOLDER_ID` | Yes if using Drive |
-| `MEDIA_LIVE_SYNC` | `1` |
-| `CRON_SECRET` | Yes for cron route |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | `G-5WS115MZ5E` |
 
 See `.env.example` for the full list.
 
-## Media sync on build
+## Build flow
 
-If `GOOGLE_DRIVE_API_KEY` is not set on Vercel, `prebuild` uses the committed
-`public/media-manifest.json` instead of failing the deploy.
+1. `npm ci` — installs from `apps/web/package-lock.json`
+2. `prebuild` — cache clean + media sync (falls back to committed manifest without Drive key)
+3. `next build` — 86 static/SSG routes
 
-## Cron (media sync)
+## Cron (Hobby plan)
 
-Hobby plan allows **one cron run per day**. Schedule: `0 6 * * *` (06:00 UTC daily).
+One run per day: `0 6 * * *` (06:00 UTC). Live media also refreshes via `MEDIA_LIVE_SYNC` on requests.
 
-For every-5-minute sync, upgrade to Vercel Pro or rely on `MEDIA_LIVE_SYNC` at request time (2-min cache).
+## Domain
 
-Add `nexyyra.com` and `www.nexyyra.com` in Vercel Domains. Apex redirects to www via `vercel.json`.
+Add `nexyyra.com` and `www.nexyyra.com`. Apex → www redirect is in `apps/web/vercel.json`.
+
+## CLI deploy
+
+```bash
+cd apps/web
+vercel login
+vercel link
+vercel --prod
+```
+
+## Troubleshooting
+
+| Error | Fix |
+|-------|-----|
+| `npm ci --prefix apps/web` failed | Set Root Directory to `apps/web`, clear Install Command override |
+| Cron Hobby limit | Already set to daily schedule |
+| Media sync failed | Set `GOOGLE_DRIVE_API_KEY` or rely on committed `media-manifest.json` |
+| 404 / wrong app | Root Directory must be `apps/web`, not `./` |

@@ -25,7 +25,7 @@ import {
   masterWebpFilename,
   variantFilename,
 } from "./paths";
-import { readMediaManifest, writeMediaManifest } from "./manifest-io";
+import { readMediaManifest, writeMediaManifest } from "./manifest-read";
 import { isMediaReadonly } from "./runtime";
 
 const MANIFEST_VERSION = 1;

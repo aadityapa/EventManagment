@@ -33,7 +33,7 @@ import {
   rebuildMediaManifest,
 } from "../src/lib/media/manifest-service";
 import { writeBrandImagesModule } from "../src/lib/media/brand-images";
-import { readMediaManifest, writeMediaManifest } from "../src/lib/media/manifest-io";
+import { readMediaManifest } from "../src/lib/media/manifest-read";
 
 const MANIFEST_PATH = path.join(process.cwd(), "public", "media-manifest.json");
 const ON_VERCEL = process.env.VERCEL === "1";
