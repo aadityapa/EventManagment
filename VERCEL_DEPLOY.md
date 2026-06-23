@@ -39,6 +39,10 @@ See `.env.example` for the full list.
 If `GOOGLE_DRIVE_API_KEY` is not set on Vercel, `prebuild` uses the committed
 `public/media-manifest.json` instead of failing the deploy.
 
-## Domain
+## Cron (media sync)
+
+Hobby plan allows **one cron run per day**. Schedule: `0 6 * * *` (06:00 UTC daily).
+
+For every-5-minute sync, upgrade to Vercel Pro or rely on `MEDIA_LIVE_SYNC` at request time (2-min cache).
 
 Add `nexyyra.com` and `www.nexyyra.com` in Vercel Domains. Apex redirects to www via `vercel.json`.
