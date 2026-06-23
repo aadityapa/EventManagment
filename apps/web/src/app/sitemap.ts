@@ -38,11 +38,10 @@ function absUrl(path: string) {
   return `${SITE_CONFIG.url}${path}`;
 }
 
-/** Sitemap image:loc must be valid XML — no raw `&` in query strings. */
+/** Sitemap image:loc — same-origin only (external Drive URLs break XML generation). */
 function sitemapImage(src: string): string {
   if (src.startsWith("/")) return absUrl(src);
-  if (src.startsWith("http") && !src.includes("&")) return src;
-  return absUrl(BRAND_IMAGES.hero.poster);
+  return absUrl("/logo.png");
 }
 
 function sitemapImages(sources: readonly string[]): string[] {
