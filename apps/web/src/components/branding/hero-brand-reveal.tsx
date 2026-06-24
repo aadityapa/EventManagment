@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -21,12 +20,9 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
   if (reducedMotion) {
     return (
       <div className={className}>
-        <Image
-          src={BRAND_LOGO_ASSETS.primary}
+        <img
+          src={BRAND_LOGO_ASSETS.dark}
           alt={SITE_CONFIG.name}
-          width={440}
-          height={160}
-          priority
           fetchPriority="high"
           className="brand-logo__full hero-brand-logo max-w-[min(100%,280px)]"
         />
@@ -46,15 +42,10 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
         transition={{ duration: 1.2, ease: EASE.luxe, delay }}
         className="overflow-visible"
       >
-        <Image
-          src={BRAND_LOGO_ASSETS.primary}
+        <img
+          src={BRAND_LOGO_ASSETS.dark}
           alt={SITE_CONFIG.name}
-          width={440}
-          height={160}
-          priority
           fetchPriority="high"
-          sizes="(max-width: 640px) 200px, 280px"
-          quality={100}
           className="brand-logo__full hero-brand-logo max-w-[min(100%,280px)]"
         />
       </motion.div>

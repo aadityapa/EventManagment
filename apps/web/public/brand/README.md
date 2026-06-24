@@ -1,6 +1,9 @@
 # Nexyyra Events — Official Brand Assets
 
-Master source: `nexyyra-logo-source.png` (transparent PNG).
+Master sources:
+
+- `nexyyra-logo-source.png` — transparent / checkerboard studio export
+- `nexyyra-logo-dark-source.png` — dark background gold luxury export
 
 Regenerate all derivatives:
 
@@ -10,7 +13,7 @@ node scripts/generate-brand-assets.mjs
 
 | Asset | Use |
 |-------|-----|
-| `nexyyra-logo.svg` | Default full logo (SVG wrapper) |
+| `nexyyra-logo.svg` | Default full logo (embedded cleaned raster) |
 | `nexyyra-logo-dark.svg` | Dark theme — gold luxury |
 | `nexyyra-logo-light.svg` | Light theme — charcoal |
 | `nexyyra-monogram.png` / `.svg` | Favicon, PWA, app icons |

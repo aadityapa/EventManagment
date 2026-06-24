@@ -1,103 +1,72 @@
-# Nexyyra Events — Logo Migration Report
+# Logo Migration Report — Nexyyra Events
 
 **Date:** 2026-06-24  
-**Commit:** `feat: migrate entire platform to new Nexyyra Events logo system and SVG branding architecture`
+**Commit message:** `fix(brand): remove checkerboard PNG, enforce SVG logos in header footer loader`
 
 ## Summary
 
-Migrated the entire platform from legacy logo assets to the new official Nexyyra Events logo (transparent PNG master). Theme-aware SVG wrappers, NX monogram icons, header/footer/loader integration, SEO/OpenGraph updates, and PWA manifest icons are complete.
+Migrated all in-app logo display to self-contained SVG files with embedded, checkerboard-stripped raster data. Header, footer, loader, and hero now reference SVG paths only. PNG remains for favicon/PWA icons (monogram) and Open Graph (`nexyyra-og.png`).
 
-## 1. Files Replaced / Created
+## Checkerboard removal method
 
-| Asset | Path | Size |
-|-------|------|------|
-| Master source | `public/brand/nexyyra-logo-source.png` | 186 KB |
-| Full logo PNG | `public/brand/nexyyra-logo.png` | 437 KB |
-| Dark theme PNG | `public/brand/nexyyra-logo-dark.png` | — |
-| Light theme PNG | `public/brand/nexyyra-logo-light.png` | 609 KB |
-| SVG wrappers | `nexyyra-logo.svg`, `-dark.svg`, `-light.svg` | ~330 B each |
-| NX monogram | `nexyyra-monogram.png` / `.svg` | 370 KB / 281 B |
-| OG image | `nexyyra-og.png` (1200×630) | 477 KB |
-| Favicon | `favicon.svg`, `favicon-16.png`, `favicon-32.png`, `favicon.ico` | — |
-| PWA | `apple-touch-icon.png`, `android-chrome-*.png`, maskable icons | — |
-| Generator | `scripts/generate-brand-assets.mjs` | — |
+`scripts/generate-brand-assets.mjs` processes masters with **sharp** raw pixel buffers:
 
-## 2. Files Removed
+1. **Transparent master** (`nexyyra-logo-source.png`) — `stripCheckerboard()` sets `alpha=0` on low-saturation pixels matching studio checkerboard tones (~`#FFFFFF`, `#C0C0C0`, `#808080`).
+2. **Dark master** (`nexyyra-logo-dark-source.png`) — `stripDarkBackground()` removes near-black studio backdrops (luminance &lt; 28, or low-saturation dark grays).
+3. **Light theme** — modulated charcoal variant from cleaned transparent master (`brightness: 0.38`, `saturation: 0.12`).
+4. **SVG output** — cleaned PNGs embedded as **base64 data URIs** inside SVG (`role="img"`, `<title>`, `aria-label`). No external PNG dependency in components.
 
-- `public/logo.png`, `logo-black.png`, `logo-gold.png`
-- `public/logo.avif`, `logo-black.avif`, `logo-gold.avif`
-- `public/brand/logo-primary.png`, `logo-symbol.png`
-- `public/brand/logo-gold.svg`, `logo-light.svg`, `logo-mark-*.svg`
-- `public/logos/nexyyra-gold.svg`
+Regenerate: `node scripts/generate-brand-assets.mjs`
 
-## 3. Code Updated
+## Old logo references removed
 
-| Area | File |
-|------|------|
-| Logo component | `src/components/branding/logo.tsx` |
-| Header | `src/brand/shell/brand-header.tsx` (via Logo) |
-| Footer | `src/brand/shell/brand-footer.tsx` |
-| Loader | `src/components/effects/universe-loader.tsx` |
-| Layout / icons | `src/app/layout.tsx` |
-| SEO / JSON-LD | `src/lib/seo.ts`, `sitemap.ts`, `local-seo-pages.ts`, `location-pages.ts` |
-| PWA | `public/manifest.json` |
-| Vercel cache | `vercel.json` |
-| Stitch | `src/lib/stitch/load-screen.ts` |
-| Styles | `src/styles/responsive-system.css` |
+| Removed / deprecated | Notes |
+|----------------------|-------|
+| `BRAND_LOGO_ASSETS.gold`, `.black`, `.primary`, `.loader`, `.horizontal` | PNG display paths dropped from `logo.tsx` |
+| `public/brand/nexyyra-logo.png` | Deleted on regenerate |
+| `public/brand/nexyyra-logo-dark.png` | Deleted on regenerate |
+| `public/brand/nexyyra-logo-light.png` | Deleted on regenerate |
+| SVG wrappers linking to external PNG | Replaced with embedded base64 |
+| `hero-brand-reveal.tsx` `Image` + `primary` PNG | Now `img` + `nexyyra-logo-dark.svg` |
+| `load-screen.ts` stitch sanitizer | `nexyyra-logo-dark.png` → `.svg` |
+| Legacy `public/logo*.png`, `brand/logo-*.svg` | Previously removed |
 
-## 4. Theme Support
+## New logo references added
 
-| Theme | Logo asset | Behavior |
-|-------|------------|----------|
-| Light | `nexyyra-logo-light.svg` | Charcoal/darkened — visible on ivory backgrounds |
-| Dark | `nexyyra-logo-dark.svg` | Gold luxury — premium on dark backgrounds |
-| Menu overlay | `forceGold` | Always gold variant |
+| Path | Use |
+|------|-----|
+| `/brand/nexyyra-logo.svg` | Default / full logo |
+| `/brand/nexyyra-logo-dark.svg` | Dark theme — gold luxury (header dark, loader, footer, hero) |
+| `/brand/nexyyra-logo-light.svg` | Light theme — charcoal (header light) |
+| `/brand/nexyyra-logo-source.png` | Transparent master (build input only) |
+| `/brand/nexyyra-logo-dark-source.png` | Dark-bg master (build input only) |
+| `/brand/nexyyra-monogram.png` | Favicon / PWA icon source only |
+| `/brand/nexyyra-og.png` | SEO / Open Graph only |
 
-CSS swap via `.brand-logo__img--theme-light` / `--theme-dark` — zero hydration flash.
+## Header fixed
 
-## 5. Favicon & PWA
+- **File:** `src/components/branding/logo.tsx`, `src/brand/shell/brand-header.tsx`
+- **Sizing:** height 56px desktop / 40px mobile (`--brand-logo-height`)
+- **Theme swap:** CSS dual-`img` with `brand-logo__img--theme-light` / `--theme-dark`
+- **CSS:** removed square 56×56 width clamp that hid horizontal wordmark; header grid column widened; `opacity: 1`, `overflow: visible`, `z-index: 2`
 
-- **favicon.svg** — NX monogram only
-- **favicon.ico** — 16×16 + 32×32 from monogram
-- **apple-touch-icon.png** — 180×180
-- **android-chrome-192/512.png** — manifest `any` purpose
-- **icon-*-maskable.png** — PWA safe zone
+## Footer fixed
 
-## 6. SEO Updates
+- **File:** `src/brand/shell/brand-footer.tsx` — `Logo variant="footer"`
+- **Sizing:** width 220px desktop / 160px mobile (`--brand-logo-footer-width`)
+- **Theme:** `forceGold` on dark footer background
+- **Hover:** gold + purple luxury glow preserved
 
-- Default OG/Twitter image: `/brand/nexyyra-og.png`
-- Organization / LocalBusiness / WebSite schema `logo` and `image` fields updated
-- Sitemap image fallbacks updated
+## Loader fixed
 
-## 7. Performance
+- **File:** `src/components/effects/universe-loader.tsx`
+- **Asset:** `BRAND_LOGO_ASSETS.dark` SVG (no checkerboard)
+- **Animation:** 2.5s fade · gold/purple glow · tagline reveal · scale/zoom handoff
 
-- SVG wrappers ~330 B — instant parse, embedded PNG cached separately
-- Header preloads: `nexyyra-logo-dark.svg`, `nexyyra-logo-light.svg`, `nexyyra-monogram.png`
-- Fixed dimensions on logo slot (`--brand-logo-width/height`) — **no CLS**
-- Native `<img>` for theme swap (intentional — avoids next/image hydration mismatch)
-
-## 8. Loader Animation (2.5s)
-
-1. Logo fades in  
-2. Gold radial glow  
-3. Purple accent glow (violet radial)  
-4. Tagline letter reveal  
-5. Scale-down handoff  
-6. Homepage reveal  
-
-## 9. Validation
+## Validation
 
 | Check | Result |
 |-------|--------|
-| `npm run build` | ✅ Pass |
-| `npm run lint` | ⚠️ Pre-existing `sync-media.ts` hook naming warnings (unrelated) |
-| TypeScript | ✅ Pass (via build) |
-
-## 10. Regenerate Assets
-
-```bash
-cd apps/web
-node scripts/generate-brand-assets.mjs
-```
-
-Place master PNG at `public/brand/nexyyra-logo-source.png` before running.
+| `npm run typecheck` | Pass |
+| `npm run build` | Pass (exit 0) |
+| `npm run lint` | Pre-existing errors in `scripts/sync-media.ts`; new `no-img-element` warnings on intentional SVG `<img>` usage |

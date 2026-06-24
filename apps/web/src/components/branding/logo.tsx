@@ -16,32 +16,31 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra Events brand assets — master: /brand/nexyyra-logo-source.png */
+/** Official Nexyyra Events brand assets — SVG with embedded cleaned raster */
 export const BRAND_LOGO_ASSETS = {
   full: "/brand/nexyyra-logo.svg",
   dark: "/brand/nexyyra-logo-dark.svg",
   light: "/brand/nexyyra-logo-light.svg",
-  gold: "/brand/nexyyra-logo-dark.png",
-  black: "/brand/nexyyra-logo-light.png",
-  primary: "/brand/nexyyra-logo-dark.png",
-  horizontal: "/brand/nexyyra-logo-dark.png",
-  loader: "/brand/nexyyra-logo-dark.png",
   og: "/brand/nexyyra-og.png",
   symbol: "/brand/nexyyra-monogram.svg",
   monogram: "/brand/nexyyra-monogram.png",
   favicon: "/favicon.svg",
 } as const;
 
-export const LOGO_DISPLAY_W = 56;
-export const LOGO_DISPLAY_H = 56;
-export const LOGO_FOOTER_H = 72;
+export const LOGO_HEADER_H_DESKTOP = 56;
+export const LOGO_HEADER_H_MOBILE = 40;
+export const LOGO_FOOTER_W_DESKTOP = 220;
+export const LOGO_FOOTER_W_MOBILE = 160;
 export const LOGO_LOADER_MAX = 220;
 
 type ThemeLogoImageProps = {
   className?: string;
   priority?: boolean;
   forceGold?: boolean;
+  /** Height for header/menu slots (px) */
   height?: number;
+  /** Width for footer slot (px) */
+  width?: number;
 };
 
 /** Dual SVG theme logo — CSS swap, zero hydration flash */
@@ -49,24 +48,27 @@ export function ThemeLogoImage({
   className,
   priority = true,
   forceGold = false,
-  height = LOGO_DISPLAY_H,
+  height,
+  width,
 }: ThemeLogoImageProps) {
-  const width = height;
+  const sizeStyle =
+    width != null
+      ? { width, height: "auto", minWidth: width }
+      : { height: height ?? LOGO_HEADER_H_DESKTOP, width: "auto" };
 
   return (
     <span
       className={cn(
         "brand-logo__slot relative block shrink-0",
         forceGold && "brand-logo--force-gold",
+        width != null && "brand-logo__slot--footer",
         className,
       )}
-      style={{ width, height, minWidth: width, minHeight: height }}
+      style={sizeStyle}
     >
       <img
         src={BRAND_LOGO_ASSETS.light}
         alt={SITE_CONFIG.name}
-        width={width}
-        height={height}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
         className="brand-logo__img brand-logo__img--theme-light brand-logo__full block h-full w-full object-contain object-center"
@@ -75,8 +77,6 @@ export function ThemeLogoImage({
         src={BRAND_LOGO_ASSETS.dark}
         alt=""
         aria-hidden
-        width={width}
-        height={height}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
         className="brand-logo__img brand-logo__img--theme-dark brand-logo__full block h-full w-full object-contain object-center"
@@ -127,8 +127,6 @@ export function Logo({
         <img
           src={BRAND_LOGO_ASSETS.dark}
           alt={SITE_CONFIG.name}
-          width={280}
-          height={280}
           fetchPriority="high"
           className={cn(
             "brand-logo__img brand-logo__img--loader relative z-[2] mx-auto max-h-[clamp(120px,28vw,220px)] w-auto max-w-full object-contain",
@@ -141,11 +139,11 @@ export function Logo({
     content = (
       <span
         className={cn(
-        "brand-logo brand-logo--footer inline-flex items-center justify-center transition-[filter] duration-300 hover:drop-shadow-[0_0_14px_rgba(201,162,39,0.5)] hover:[filter:drop-shadow(0_0_6px_rgba(138,43,226,0.35))]",
+          "brand-logo brand-logo--footer inline-flex items-center justify-center transition-[filter] duration-300 hover:drop-shadow-[0_0_14px_rgba(201,162,39,0.5)] hover:[filter:drop-shadow(0_0_6px_rgba(138,43,226,0.35))]",
           className,
         )}
       >
-        <ThemeLogoImage priority={false} height={LOGO_FOOTER_H} className="brand-logo__full--footer" />
+        <ThemeLogoImage priority={false} forceGold className="brand-logo__full--footer" />
       </span>
     );
   } else if (resolvedVariant === "image") {
@@ -157,7 +155,7 @@ export function Logo({
   } else if (resolvedVariant === "menu") {
     content = (
       <span className={cn("brand-logo brand-logo--menu inline-flex min-w-0 items-center gap-3", className)}>
-        <ThemeLogoImage priority={priority} forceGold />
+        <ThemeLogoImage priority={priority} forceGold height={LOGO_HEADER_H_DESKTOP} />
         {showTagline && (
           <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.32em] text-[var(--footer-text-secondary,rgba(255,255,255,0.72))]">
             {SITE_CONFIG.tagline}

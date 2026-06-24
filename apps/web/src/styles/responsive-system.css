@@ -162,11 +162,11 @@ a[role="button"] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Responsive brand logo — official raster, dual-theme, height-based           */
+/* Responsive brand logo — SVG dual-theme, height-based header / width footer  */
 /* -------------------------------------------------------------------------- */
 :root {
-  --brand-logo-width: 3.5rem; /* 56px desktop header */
-  --brand-logo-height: 3.5rem;
+  --brand-logo-height: 3.5rem; /* 56px desktop header */
+  --brand-logo-footer-width: 13.75rem; /* 220px desktop footer */
   --nav-height: 5.625rem; /* 90px — fixed sitewide for CLS */
   --header-height: var(--nav-height);
   --brand-nav-active: #c9a227;
@@ -174,9 +174,9 @@ a[role="button"] {
 }
 
 .brand-logo-link {
-  width: var(--brand-logo-width);
-  min-width: var(--brand-logo-width);
-  max-width: var(--brand-logo-width);
+  width: auto;
+  min-width: 0;
+  max-width: none;
   height: var(--brand-logo-height);
   min-height: var(--brand-logo-height);
   overflow: visible;
@@ -187,14 +187,22 @@ a[role="button"] {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   align-items: center;
-  justify-items: center;
-  width: var(--brand-logo-width);
+  justify-items: start;
+  width: auto;
   height: var(--brand-logo-height);
-  min-width: var(--brand-logo-width);
+  min-width: 0;
   min-height: var(--brand-logo-height);
   overflow: visible;
   opacity: 1;
   visibility: visible;
+}
+
+.brand-logo__slot--footer {
+  width: var(--brand-logo-footer-width);
+  min-width: var(--brand-logo-footer-width);
+  height: auto;
+  min-height: 0;
+  justify-items: center;
 }
 
 .brand-logo {
@@ -264,8 +272,8 @@ html.dark .brand-logo__img--theme-dark {
 
 @media (max-width: 767px) {
   :root {
-    --brand-logo-width: 2.375rem; /* 38px mobile */
-    --brand-logo-height: 2.375rem;
+    --brand-logo-height: 2.5rem; /* 40px mobile header */
+    --brand-logo-footer-width: 10rem; /* 160px mobile footer */
   }
 }
 
@@ -303,17 +311,32 @@ html.dark .brand-logo__img--theme-dark {
   display: block;
   height: var(--brand-logo-height);
   width: auto;
-  max-width: 100%;
+  max-width: none;
   object-fit: contain;
-  object-position: center center;
+  object-position: left center;
   image-rendering: -webkit-optimize-contrast;
   transform: translateZ(0);
   overflow: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
 .brand-logo__full--header {
-  width: 11.25rem; /* ~180px retina slot */
-  max-width: 11.25rem;
+  height: var(--brand-logo-height);
+  width: auto;
+  max-width: min(12.5rem, 42vw);
+}
+
+.brand-logo__full--footer,
+.brand-logo__slot--footer .brand-logo__img {
+  width: 100%;
+  height: auto;
+  max-width: var(--brand-logo-footer-width);
+  object-position: center center;
+}
+
+.brand-logo--footer .brand-logo__slot {
+  height: auto;
 }
 
 html.light .brand-logo__img--light-theme,
@@ -644,7 +667,7 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-grid {
-    grid-template-columns: 80px minmax(0, 1fr) 360px;
+    grid-template-columns: minmax(5.5rem, auto) minmax(0, 1fr) 360px;
     column-gap: 1.25rem;
   }
 }
@@ -655,31 +678,35 @@ html.premiere-active .brand-root {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: var(--brand-logo-width);
-  min-width: var(--brand-logo-width);
-  max-width: var(--brand-logo-width);
+  width: auto;
+  min-width: 0;
+  max-width: min(12.5rem, 42vw);
   flex-shrink: 0;
+  overflow: visible;
+  z-index: 2;
 }
 
 .brand-header-logo .brand-logo-link {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: var(--brand-logo-width);
+  width: auto;
   height: var(--brand-logo-height);
-  max-width: var(--brand-logo-width);
+  max-width: min(12.5rem, 42vw);
+  overflow: visible;
 }
 
 .brand-header-logo .brand-logo__full,
 .brand-header-logo .brand-logo__img,
 .brand-header-logo .brand-logo__slot {
-  width: var(--brand-logo-width);
+  width: auto;
   height: var(--brand-logo-height);
-  max-width: var(--brand-logo-width);
+  max-width: min(12.5rem, 42vw);
   object-fit: contain;
-  object-position: center center;
+  object-position: left center;
   opacity: 1;
   visibility: visible;
+  overflow: visible;
 }
 
 /* Navigation — centered in middle grid column (no absolute overlap) */
