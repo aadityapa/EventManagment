@@ -1,6 +1,14 @@
 /**
- * Generate Nexyyra brand assets from official master PNGs.
- * Strips checkerboard / flat backgrounds, embeds cleaned rasters in SVG.
+ * Generate Nexyyra Events brand assets from the official master logo.
+ *
+ * The raw master (`public/brand/nexyyra-logo-raw.png`) is a luxury logo on a
+ * solid black background. This script:
+ *   1. Removes the black background -> true transparent master.
+ *   2. Embeds the transparent raster as base64 inside self-contained SVGs
+ *      (so they render correctly inside <img> tags AND stay transparent —
+ *      no checkerboard, no external <image href> that browsers block).
+ *   3. Crops the NX monogram for favicon / PWA / launcher icons.
+ *
  * Run: node scripts/generate-brand-assets.mjs
  */
 import fs from "node:fs";
@@ -12,202 +20,176 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const brandDir = path.join(root, "public", "brand");
 const publicDir = path.join(root, "public");
+const srcDir = path.join(__dirname, "assets");
 
-const TRANSPARENT_SRCS = [
-  path.join(brandDir, "nexyyra-logo-source.png"),
-  path.resolve(root, "../../OpenAI Playground 2026-06-24 at 17.25.22.png"),
-  path.resolve(
-    root,
-    "../../.cursor/projects/c-Users-IT-Pune-Desktop-JIJU/assets/c__Users_IT_Pune_Desktop_JIJU_OpenAI_Playground_2026-06-24_at_17.25.22.png",
-  ),
+// Raw master is the official logo on a black background (NOT served to clients).
+const RAW_CANDIDATES = [
+  path.join(srcDir, "nexyyra-logo-raw.png"),
+  path.resolve(root, "../../ChatGPT Image Jun 24, 2026, 07_44_08 PM.png"),
 ];
 
-const DARK_SRCS = [
-  path.join(brandDir, "nexyyra-logo-dark-source.png"),
-  path.resolve(root, "../../OpenAI Playground 2026-06-24 at 16.51.33.png"),
-  path.resolve(
-    root,
-    "../../.cursor/projects/c-Users-IT-Pune-Desktop-JIJU/assets/c__Users_IT_Pune_Desktop_JIJU_OpenAI_Playground_2026-06-24_at_16.51.33.png",
-  ),
-];
-
-function resolveFirst(paths, label) {
-  for (const p of paths) {
+function resolveRaw() {
+  for (const p of RAW_CANDIDATES) {
     if (fs.existsSync(p)) return p;
   }
-  throw new Error(`${label} not found. Place master at public/brand/`);
+  throw new Error("Raw master not found. Place it at scripts/assets/nexyyra-logo-raw.png");
 }
 
-/** Detect checkerboard / flat studio backgrounds and set alpha=0 */
-function stripCheckerboard(data, info) {
-  const { channels } = info;
-  for (let i = 0; i < data.length; i += channels) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const sat = max - min;
+/** Luminance key — turns the pure-black background transparent, keeps the logo. */
+async function removeBlackBackground(inputPath) {
+  const { data, info } = await sharp(inputPath)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
 
-    if (sat > 18) continue;
+  const { width, height, channels } = info;
+  const out = Buffer.from(data);
+  const LOW = 10; // <= this brightness = background
+  const HIGH = 72; // >= this brightness = solid logo; between = soft edge
 
-    const isWhite = r >= 248 && g >= 248 && b >= 248;
-    const isLightGray = r >= 176 && r <= 208 && g >= 176 && g <= 208 && b >= 176 && b <= 208;
-    const isMidGray = r >= 112 && r <= 144 && g >= 112 && g <= 144 && b >= 112 && b <= 144;
-
-    if (isWhite || isLightGray || isMidGray) {
-      data[i + 3] = 0;
-    }
+  for (let i = 0; i < out.length; i += channels) {
+    const m = Math.max(out[i], out[i + 1], out[i + 2]);
+    let a;
+    if (m <= LOW) a = 0;
+    else if (m >= HIGH) a = 255;
+    else a = Math.round(((m - LOW) / (HIGH - LOW)) * 255);
+    out[i + 3] = Math.round((a * out[i + 3]) / 255);
   }
+
+  return sharp(out, { raw: { width, height, channels } }).png({ compressionLevel: 9 });
 }
 
-/** Remove near-black studio backdrops from dark-bg master */
-function stripDarkBackground(data, info) {
-  const { channels } = info;
-  for (let i = 0; i < data.length; i += channels) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-    if (lum < 28) {
-      data[i + 3] = 0;
-      continue;
-    }
-
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    if (max - min < 12 && lum < 55) {
-      data[i + 3] = 0;
-    }
-  }
-}
-
-async function cleanRaster(inputPath, mode) {
-  const { data, info } = await sharp(inputPath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  const buf = Buffer.from(data);
-  if (mode === "checkerboard") stripCheckerboard(buf, info);
-  else if (mode === "dark-bg") stripDarkBackground(buf, info);
-
-  return sharp(buf, { raw: info }).png({ compressionLevel: 9 }).toBuffer();
-}
-
-function writeEmbeddedSvg(outPath, label, pngBuf, w, h) {
-  const b64 = pngBuf.toString("base64");
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}" viewBox="0 0 ${w} ${h}">
-  <title>${label}</title>
-  <image href="data:image/png;base64,${b64}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>
-</svg>`;
-  fs.writeFileSync(outPath, svg.trim());
+/** Build a self-contained, transparent SVG that embeds a PNG buffer as base64. */
+function buildEmbeddedSvg(pngBuffer, w, h, label) {
+  const b64 = pngBuffer.toString("base64");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"><title>${label}</title><image width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,${b64}"/></svg>`;
 }
 
 async function main() {
   fs.mkdirSync(brandDir, { recursive: true });
+  const rawPath = resolveRaw();
 
-  const transparentPath = resolveFirst(TRANSPARENT_SRCS, "Transparent logo master");
-  const darkPath = resolveFirst(DARK_SRCS, "Dark-background logo master");
+  // 1. Transparent master (trimmed).
+  const transparentMaster = await (await removeBlackBackground(rawPath))
+    .trim({ threshold: 8 })
+    .toBuffer();
+  const masterMeta = await sharp(transparentMaster).metadata();
+  const mW = masterMeta.width ?? 1024;
+  const mH = masterMeta.height ?? 1024;
 
-  fs.copyFileSync(transparentPath, path.join(brandDir, "nexyyra-logo-source.png"));
-  fs.copyFileSync(darkPath, path.join(brandDir, "nexyyra-logo-dark-source.png"));
+  // Embed master at a retina-friendly size to keep SVG light.
+  const EMBED_MAX = 720;
+  const goldEmbed = await sharp(transparentMaster)
+    .resize({ width: EMBED_MAX, withoutEnlargement: true })
+    .png({ compressionLevel: 9, quality: 90 })
+    .toBuffer();
+  const goldMeta = await sharp(goldEmbed).metadata();
 
-  const transparentClean = await cleanRaster(transparentPath, "checkerboard");
-  const darkClean = await cleanRaster(darkPath, "dark-bg");
+  // Charcoal variant for light backgrounds (keeps shape, darkens metal).
+  const charcoalEmbed = await sharp(transparentMaster)
+    .resize({ width: EMBED_MAX, withoutEnlargement: true })
+    .modulate({ brightness: 0.32, saturation: 0.25 })
+    .linear(0.85, -8)
+    .png({ compressionLevel: 9, quality: 90 })
+    .toBuffer();
 
-  const meta = await sharp(transparentClean).metadata();
-  const w = meta.width ?? 1024;
-  const h = meta.height ?? 1024;
+  const gw = goldMeta.width ?? mW;
+  const gh = goldMeta.height ?? mH;
 
-  const darkMeta = await sharp(darkClean).metadata();
-  const dw = darkMeta.width ?? w;
-  const dh = darkMeta.height ?? h;
+  fs.writeFileSync(
+    path.join(brandDir, "nexyyra-logo.svg"),
+    buildEmbeddedSvg(goldEmbed, gw, gh, "Nexyyra Events"),
+  );
+  fs.writeFileSync(
+    path.join(brandDir, "nexyyra-logo-dark.svg"),
+    buildEmbeddedSvg(goldEmbed, gw, gh, "Nexyyra Events"),
+  );
+  fs.writeFileSync(
+    path.join(brandDir, "nexyyra-logo-light.svg"),
+    buildEmbeddedSvg(charcoalEmbed, gw, gh, "Nexyyra Events"),
+  );
 
-  const lightClean = await sharp(transparentClean)
-    .modulate({ brightness: 0.38, saturation: 0.12 })
+  // 2. NX monogram — crop the upper emblem, then trim transparent edges.
+  const monoCropH = Math.round(mH * 0.56);
+  const monogramBuf = await sharp(transparentMaster)
+    .extract({ left: 0, top: 0, width: mW, height: monoCropH })
+    .trim({ threshold: 8 })
     .png({ compressionLevel: 9 })
     .toBuffer();
+  const monoMeta = await sharp(monogramBuf).metadata();
+  const monoW = monoMeta.width ?? 512;
+  const monoH = monoMeta.height ?? 512;
 
-  writeEmbeddedSvg(path.join(brandDir, "nexyyra-logo.svg"), "Nexyyra Events", transparentClean, w, h);
-  writeEmbeddedSvg(path.join(brandDir, "nexyyra-logo-dark.svg"), "Nexyyra Events", darkClean, dw, dh);
-  writeEmbeddedSvg(path.join(brandDir, "nexyyra-logo-light.svg"), "Nexyyra Events", lightClean, w, h);
-
-  const cropH = Math.round(h * 0.42);
-  const monogramBuf = await sharp(transparentClean)
-    .extract({ left: 0, top: 0, width: w, height: cropH })
-    .trim()
+  const monoEmbed = await sharp(monogramBuf)
+    .resize({ width: 512, withoutEnlargement: true })
+    .png({ compressionLevel: 9 })
     .toBuffer();
+  const monoEmbedMeta = await sharp(monoEmbed).metadata();
+  const monoSvg = buildEmbeddedSvg(
+    monoEmbed,
+    monoEmbedMeta.width ?? monoW,
+    monoEmbedMeta.height ?? monoH,
+    "Nexyyra",
+  );
+  fs.writeFileSync(path.join(brandDir, "nexyyra-monogram.svg"), monoSvg);
+  fs.writeFileSync(path.join(publicDir, "favicon.svg"), monoSvg);
 
-  const monogramMeta = await sharp(monogramBuf).metadata();
-  const monoW = monogramMeta.width ?? 512;
-  const monoH = monogramMeta.height ?? 512;
+  // 3. Square monogram canvas for icons (centered, padded).
+  const squareIcon = async (size, pad) => {
+    const inner = size - pad * 2;
+    const fitted = await sharp(monogramBuf)
+      .resize(inner, inner, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .toBuffer();
+    return sharp({
+      create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+    })
+      .composite([{ input: fitted, gravity: "center" }])
+      .png({ compressionLevel: 9 })
+      .toBuffer();
+  };
 
-  const monoPng = path.join(brandDir, "nexyyra-monogram.png");
-  await sharp(monogramBuf).png({ compressionLevel: 9 }).toFile(monoPng);
-
-  const ogPng = path.join(brandDir, "nexyyra-og.png");
-  await sharp(darkClean)
-    .resize(1200, 630, { fit: "contain", background: { r: 10, g: 10, b: 10, alpha: 1 } })
-    .png()
-    .toFile(ogPng);
-
-  const faviconSvg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nexyyra" viewBox="0 0 ${monoW} ${monoH}">
-  <title>Nexyyra</title>
-  <image href="/brand/nexyyra-monogram.png" width="${monoW}" height="${monoH}"/>
-</svg>`;
-  fs.writeFileSync(path.join(publicDir, "favicon.svg"), faviconSvg.trim());
-  fs.writeFileSync(path.join(brandDir, "nexyyra-monogram.svg"), faviconSvg.trim());
-
-  const iconSizes = [
-    { name: "apple-touch-icon.png", size: 180 },
-    { name: "android-chrome-192.png", size: 192 },
-    { name: "android-chrome-512.png", size: 512 },
-    { name: "icon-192-maskable.png", size: 192 },
-    { name: "icon-512-maskable.png", size: 512 },
+  const icons = [
+    { name: "apple-touch-icon.png", size: 180, pad: 16 },
+    { name: "android-chrome-192.png", size: 192, pad: 12 },
+    { name: "android-chrome-512.png", size: 512, pad: 32 },
+    { name: "icon-192-maskable.png", size: 192, pad: 30 },
+    { name: "icon-512-maskable.png", size: 512, pad: 80 },
   ];
-
-  for (const { name, size } of iconSizes) {
-    await sharp(monogramBuf)
-      .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .png()
-      .toFile(path.join(brandDir, name));
+  for (const { name, size, pad } of icons) {
+    fs.writeFileSync(path.join(brandDir, name), await squareIcon(size, pad));
   }
 
-  await sharp(monogramBuf)
-    .resize(32, 32, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
-    .toFile(path.join(publicDir, "favicon-32.png"));
+  const fav32 = await squareIcon(32, 2);
+  const fav16 = await squareIcon(16, 1);
+  fs.writeFileSync(path.join(publicDir, "favicon-32.png"), fav32);
+  fs.writeFileSync(path.join(publicDir, "favicon-16.png"), fav16);
 
-  await sharp(monogramBuf)
-    .resize(16, 16, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
-    .toFile(path.join(publicDir, "favicon-16.png"));
-
-  const favicon16 = await fs.promises.readFile(path.join(publicDir, "favicon-16.png"));
-  const favicon32 = await fs.promises.readFile(path.join(publicDir, "favicon-32.png"));
   try {
     const toIco = (await import("to-ico")).default;
-    const ico = await toIco([favicon16, favicon32]);
-    fs.writeFileSync(path.join(publicDir, "favicon.ico"), ico);
+    fs.writeFileSync(path.join(publicDir, "favicon.ico"), await toIco([fav16, fav32]));
   } catch {
-    fs.copyFileSync(path.join(publicDir, "favicon-32.png"), path.join(publicDir, "favicon.ico"));
-    console.warn("  (to-ico unavailable — favicon.ico copied from favicon-32.png)");
+    fs.writeFileSync(path.join(publicDir, "favicon.ico"), fav32);
+    console.warn("  (to-ico unavailable — favicon.ico written as PNG payload)");
   }
 
-  for (const legacy of [
-    "nexyyra-logo.png",
-    "nexyyra-logo-dark.png",
-    "nexyyra-logo-light.png",
-  ]) {
-    const p = path.join(brandDir, legacy);
-    if (fs.existsSync(p)) fs.unlinkSync(p);
-  }
+  // 4. OpenGraph / social card — transparent logo on deep luxury background.
+  const ogLogo = await sharp(transparentMaster)
+    .resize(1040, 540, { fit: "inside", withoutEnlargement: true })
+    .toBuffer();
+  await sharp({
+    create: { width: 1200, height: 630, channels: 4, background: { r: 8, g: 8, b: 10, alpha: 1 } },
+  })
+    .composite([{ input: ogLogo, gravity: "center" }])
+    .png()
+    .toFile(path.join(brandDir, "nexyyra-og.png"));
 
-  console.log(`✓ Brand assets generated`);
-  console.log(`  Transparent master: ${path.basename(transparentPath)} (${w}×${h})`);
-  console.log(`  Dark master: ${path.basename(darkPath)} (${dw}×${dh})`);
+  const svgSize = (n) => (fs.statSync(path.join(brandDir, n)).size / 1024).toFixed(1) + "KB";
+  console.log(`✓ Brand assets generated from ${path.basename(rawPath)}`);
+  console.log(`  Transparent master: ${mW}×${mH}px`);
   console.log(`  Monogram: ${monoW}×${monoH}px`);
-  console.log(`  SVG logos: embedded base64 (no external PNG deps)`);
+  console.log(`  nexyyra-logo-dark.svg: ${svgSize("nexyyra-logo-dark.svg")}`);
+  console.log(`  nexyyra-logo-light.svg: ${svgSize("nexyyra-logo-light.svg")}`);
+  console.log(`  nexyyra-monogram.svg: ${svgSize("nexyyra-monogram.svg")}`);
 }
 
 main().catch((err) => {

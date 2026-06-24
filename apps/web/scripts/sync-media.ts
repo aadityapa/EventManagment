@@ -45,7 +45,7 @@ function hasDriveCredentials() {
   );
 }
 
-async function useCommittedManifest(reason: string) {
+async function fallbackToCommittedManifest(reason: string) {
   const existing = await readMediaManifest();
   if (!existing?.assets.length) return false;
   console.warn(`⚠ ${reason} — using committed manifest (${existing.assets.length} assets)`);
@@ -63,7 +63,7 @@ async function preserveOrUse(manifest: Awaited<ReturnType<typeof syncMediaWithDr
     return manifest;
   }
 
-  if (await useCommittedManifest("No new images indexed")) {
+  if (await fallbackToCommittedManifest("No new images indexed")) {
     return (await readMediaManifest())!;
   }
 
@@ -77,7 +77,7 @@ async function main() {
   await ensureMediaDirectories();
 
   if (ON_VERCEL && !hasDriveCredentials() && fs.existsSync(MANIFEST_PATH)) {
-    if (await useCommittedManifest("Vercel build without Drive credentials")) return;
+    if (await fallbackToCommittedManifest("Vercel build without Drive credentials")) return;
   }
 
   let manifest;
@@ -100,7 +100,7 @@ async function main() {
 main().catch(async (err: Error) => {
   if (ON_VERCEL && fs.existsSync(MANIFEST_PATH)) {
     try {
-      if (await useCommittedManifest(`Media sync failed (${err.message})`)) {
+      if (await fallbackToCommittedManifest(`Media sync failed (${err.message})`)) {
         process.exit(0);
       }
     } catch {

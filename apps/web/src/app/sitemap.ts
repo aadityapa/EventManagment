@@ -48,7 +48,7 @@ function sitemapImages(sources: readonly string[]): string[] {
   return sources.map(sitemapImage);
 }
 
-function brandImageAt(_index: number): string {
+function brandImageAt(): string {
   return absUrl("/brand/nexyyra-og.png");
 }
 
@@ -85,20 +85,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${SITE_CONFIG.url}/brand/nexyyra-og.png`],
   }));
 
-  const servicePages = services.map((s, index) => ({
+  const servicePages = services.map((s) => ({
     url: absUrl(`/services/${s.slug}`),
     lastModified: servicePageLastMod(s.slug),
     changeFrequency: "monthly" as const,
     priority: 0.7,
-    images: [s.image.startsWith("/") ? sitemapImage(s.image) : brandImageAt(index)],
+    images: [s.image.startsWith("/") ? sitemapImage(s.image) : brandImageAt()],
   }));
 
-  const blogPages = blogPosts.map((p, index) => ({
+  const blogPages = blogPosts.map((p) => ({
     url: absUrl(`/blog/${p.slug}`),
     lastModified: blogPostLastMod(p.publishedAt),
     changeFrequency: "monthly" as const,
     priority: 0.6,
-    images: [p.image.startsWith("/") ? sitemapImage(p.image) : brandImageAt(index)],
+    images: [p.image.startsWith("/") ? sitemapImage(p.image) : brandImageAt()],
   }));
 
   const portfolioCases = BRAND_CASE_STUDIES.map((cs) => ({

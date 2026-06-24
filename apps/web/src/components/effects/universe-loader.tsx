@@ -292,9 +292,12 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.28, ease: CINEMATIC, delay: 0.75 }}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element -- transparent base64 SVG logo */}
                 <img
-                  src={BRAND_LOGO_ASSETS.dark}
+                  src={BRAND_LOGO_ASSETS.loader}
                   alt={SITE_CONFIG.name}
+                  width={280}
+                  height={280}
                   fetchPriority="high"
                   className="relative z-[2] mx-auto max-h-[clamp(120px,28vw,220px)] w-auto max-w-full object-contain transform-gpu"
                 />

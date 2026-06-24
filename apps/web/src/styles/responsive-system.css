@@ -162,11 +162,11 @@ a[role="button"] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Responsive brand logo — SVG dual-theme, height-based header / width footer  */
+/* Responsive brand logo — official raster, dual-theme, height-based           */
 /* -------------------------------------------------------------------------- */
 :root {
   --brand-logo-height: 3.5rem; /* 56px desktop header */
-  --brand-logo-footer-width: 13.75rem; /* 220px desktop footer */
+  --footer-logo-width: 13.75rem; /* 220px desktop footer */
   --nav-height: 5.625rem; /* 90px — fixed sitewide for CLS */
   --header-height: var(--nav-height);
   --brand-nav-active: #c9a227;
@@ -174,35 +174,9 @@ a[role="button"] {
 }
 
 .brand-logo-link {
-  width: auto;
-  min-width: 0;
-  max-width: none;
   height: var(--brand-logo-height);
   min-height: var(--brand-logo-height);
   overflow: visible;
-}
-
-.brand-logo__slot {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
-  justify-items: start;
-  width: auto;
-  height: var(--brand-logo-height);
-  min-width: 0;
-  min-height: var(--brand-logo-height);
-  overflow: visible;
-  opacity: 1;
-  visibility: visible;
-}
-
-.brand-logo__slot--footer {
-  width: var(--brand-logo-footer-width);
-  min-width: var(--brand-logo-footer-width);
-  height: auto;
-  min-height: 0;
-  justify-items: center;
 }
 
 .brand-logo {
@@ -212,68 +186,97 @@ a[role="button"] {
   line-height: 0;
 }
 
-/* Dual-theme logos — CSS swap avoids hydration CLS */
-.brand-logo.relative,
-.brand-logo--header,
-.brand-logo--footer,
-.brand-logo--menu {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
-  justify-items: center;
+/* Square, height-driven slot (header / menu / generic) */
+.brand-logo__slot {
+  position: relative;
+  display: block;
+  height: var(--brand-logo-height);
+  width: auto;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* Fluid, width-driven slot (footer) */
+.brand-logo__slot--fluid {
+  width: var(--footer-logo-width);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+}
+
+/* Stacked dual-theme images share one box; swap by opacity only (no CLS) */
+.brand-logo__slot .brand-logo__img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.brand-logo__slot--fluid .brand-logo__img {
+  height: auto;
+  width: 100%;
+}
+
+.brand-logo__slot .brand-logo__img--theme-dark {
+  position: absolute;
+  inset: 0;
 }
 
 .brand-logo__img--theme-dark,
 .brand-logo__img--theme-light {
-  grid-area: 1 / 1;
-  transition: opacity 0.15s ease, visibility 0.15s ease;
+  transition: opacity 0.2s ease;
 }
 
-/* Light theme — black logo visible */
+/* Light theme — charcoal logo visible, gold hidden */
 .brand-logo__img--theme-dark {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
 .brand-logo__img--theme-light {
   opacity: 1;
-  visibility: visible;
 }
 
-/* Dark theme — gold logo visible */
+/* Dark theme — gold logo visible, charcoal hidden */
 .dark .brand-logo__img--theme-light,
 html.dark .brand-logo__img--theme-light {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
 .dark .brand-logo__img--theme-dark,
 html.dark .brand-logo__img--theme-dark {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
 }
 
-/* Mobile menu overlay — always gold */
+/* Forced-gold (mobile menu overlay on dark) */
 .brand-logo--force-gold .brand-logo__img--theme-light {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
 .brand-logo--force-gold .brand-logo__img--theme-dark {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
+}
+
+/* Footer luxury hover glow — gold + purple */
+.brand-logo--footer {
+  display: inline-block;
+  transition: filter 0.3s ease;
+}
+
+.brand-logo--footer:hover {
+  filter: drop-shadow(0 0 14px rgba(201, 162, 39, 0.5))
+    drop-shadow(0 0 8px rgba(138, 43, 226, 0.3));
 }
 
 @media (max-width: 767px) {
   :root {
-    --brand-logo-height: 2.5rem; /* 40px mobile header */
-    --brand-logo-footer-width: 10rem; /* 160px mobile footer */
+    --brand-logo-height: 2.5rem; /* 40px mobile */
+    --footer-logo-width: 10rem; /* 160px mobile footer */
   }
 }
 
@@ -303,53 +306,23 @@ html.dark .brand-logo__img--theme-dark {
   }
 }
 
-.brand-logo__full,
-.brand-logo__mark,
-.brand-logo__img {
-  position: relative;
-  z-index: 1;
+.brand-logo__mark {
   display: block;
   height: var(--brand-logo-height);
   width: auto;
-  max-width: none;
+  max-width: 100%;
   object-fit: contain;
-  object-position: left center;
-  image-rendering: -webkit-optimize-contrast;
-  transform: translateZ(0);
-  overflow: visible;
-  opacity: 1;
-  visibility: visible;
+  object-position: center;
 }
 
-.brand-logo__full--header {
-  height: var(--brand-logo-height);
+/* Loader logo — large transparent SVG, no fixed slot */
+.brand-logo__img--loader {
+  display: block;
   width: auto;
-  max-width: min(12.5rem, 42vw);
-}
-
-.brand-logo__full--footer,
-.brand-logo__slot--footer .brand-logo__img {
-  width: 100%;
-  height: auto;
-  max-width: var(--brand-logo-footer-width);
-  object-position: center center;
-}
-
-.brand-logo--footer .brand-logo__slot {
-  height: auto;
-}
-
-html.light .brand-logo__img--light-theme,
-html.light .brand-logo__img--svg,
-html.light .brand-logo__img--raster {
-  filter: none;
-}
-
-html.dark .brand-logo__img--svg,
-html.dark .brand-logo__img--raster,
-:root:not(.light) .brand-logo__img--svg,
-:root:not(.light) .brand-logo__img--raster {
-  filter: none;
+  max-width: 100%;
+  max-height: clamp(120px, 28vw, 220px);
+  margin-inline: auto;
+  object-fit: contain;
 }
 
 .hero-brand-logo {
@@ -363,38 +336,6 @@ html.dark .brand-logo__img--raster,
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
   max-width: 28rem;
   overflow-wrap: break-word;
-}
-
-.brand-logo__full--menu {
-  max-width: 12.5rem;
-}
-
-/* Subtle luxury glow — theme-aware */
-.dark .brand-logo::after,
-html:not(.light) .brand-logo::after {
-  content: "";
-  position: absolute;
-  inset: -14% -8%;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.24) 0%, transparent 68%);
-  opacity: 0.85;
-}
-
-.light .brand-logo::after {
-  content: "";
-  position: absolute;
-  inset: -12% -6%;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(80, 60, 20, 0.1) 0%, transparent 70%);
-  opacity: 0.9;
-}
-
-.brand-logo--header::before,
-.brand-logo--header::after {
-  content: none;
-  animation: none;
 }
 
 .brand-header-theme-slot {
@@ -667,7 +608,7 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-grid {
-    grid-template-columns: minmax(5.5rem, auto) minmax(0, 1fr) 360px;
+    grid-template-columns: 80px minmax(0, 1fr) 360px;
     column-gap: 1.25rem;
   }
 }
@@ -678,35 +619,14 @@ html.premiere-active .brand-root {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: auto;
-  min-width: 0;
-  max-width: min(12.5rem, 42vw);
   flex-shrink: 0;
-  overflow: visible;
-  z-index: 2;
 }
 
 .brand-header-logo .brand-logo-link {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: auto;
   height: var(--brand-logo-height);
-  max-width: min(12.5rem, 42vw);
-  overflow: visible;
-}
-
-.brand-header-logo .brand-logo__full,
-.brand-header-logo .brand-logo__img,
-.brand-header-logo .brand-logo__slot {
-  width: auto;
-  height: var(--brand-logo-height);
-  max-width: min(12.5rem, 42vw);
-  object-fit: contain;
-  object-position: left center;
-  opacity: 1;
-  visibility: visible;
-  overflow: visible;
 }
 
 /* Navigation — centered in middle grid column (no absolute overlap) */

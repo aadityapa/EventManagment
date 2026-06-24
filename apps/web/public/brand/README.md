@@ -1,23 +1,28 @@
 # Nexyyra Events — Official Brand Assets
 
-Master sources:
+All assets in this folder are **generated** — do not edit by hand.
 
-- `nexyyra-logo-source.png` — transparent / checkerboard studio export
-- `nexyyra-logo-dark-source.png` — dark background gold luxury export
+- **Source (not served):** `apps/web/scripts/assets/nexyyra-logo-raw.png`
+  (official logo on a black background)
+- **Generator:** `apps/web/scripts/generate-brand-assets.mjs`
 
-Regenerate all derivatives:
+Regenerate everything:
 
 ```bash
+cd apps/web
 node scripts/generate-brand-assets.mjs
 ```
 
+The generator removes the black background to produce a **transparent** master,
+then embeds it as base64 inside self-contained SVGs (so they render correctly in
+`<img>` tags with no checkerboard and no blocked external references).
+
 | Asset | Use |
 |-------|-----|
-| `nexyyra-logo.svg` | Default full logo (embedded cleaned raster) |
-| `nexyyra-logo-dark.svg` | Dark theme — gold luxury |
-| `nexyyra-logo-light.svg` | Light theme — charcoal |
-| `nexyyra-monogram.png` / `.svg` | Favicon, PWA, app icons |
-| `nexyyra-og.png` | Open Graph, Twitter, SEO |
-| `apple-touch-icon.png` | iOS home screen |
-| `android-chrome-*.png` | Android / manifest |
-| `icon-*-maskable.png` | PWA maskable icons |
+| `nexyyra-logo.svg` / `nexyyra-logo-dark.svg` | Gold logo — dark theme, loader, hero, OG |
+| `nexyyra-logo-light.svg` | Charcoal logo — light theme |
+| `nexyyra-monogram.svg` | NX monogram — favicon, app icons |
+| `nexyyra-og.png` | Open Graph / Twitter / SEO card (1200×630) |
+| `apple-touch-icon.png` | iOS home screen (180) |
+| `android-chrome-192/512.png` | Android / manifest |
+| `icon-192/512-maskable.png` | PWA maskable icons |

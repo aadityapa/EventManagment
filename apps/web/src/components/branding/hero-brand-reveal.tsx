@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- transparent base64 SVG logo */
+
 import { motion, useReducedMotion } from "framer-motion";
 import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -24,7 +26,7 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
           src={BRAND_LOGO_ASSETS.dark}
           alt={SITE_CONFIG.name}
           fetchPriority="high"
-          className="brand-logo__full hero-brand-logo max-w-[min(100%,280px)]"
+          className="hero-brand-logo max-w-[min(100%,280px)]"
         />
         <p className="hero-brand-tagline mt-4 text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--hero-muted)]">
           {TAGLINE}
@@ -46,7 +48,7 @@ export function HeroBrandReveal({ className, delay = 0 }: Props) {
           src={BRAND_LOGO_ASSETS.dark}
           alt={SITE_CONFIG.name}
           fetchPriority="high"
-          className="brand-logo__full hero-brand-logo max-w-[min(100%,280px)]"
+          className="hero-brand-logo max-w-[min(100%,280px)]"
         />
       </motion.div>
 

@@ -60,9 +60,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
-        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
-        <link rel="preload" href="/brand/nexyyra-logo-light.svg" as="image" type="image/svg+xml" />
-        <link rel="preload" href="/brand/nexyyra-monogram.png" as="image" type="image/png" />
+        <link rel="preload" href="/brand/nexyyra-logo-light.svg" as="image" type="image/svg+xml" fetchPriority="high" />
+        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>

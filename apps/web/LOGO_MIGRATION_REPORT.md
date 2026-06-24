@@ -1,72 +1,83 @@
-# Logo Migration Report — Nexyyra Events
+# Nexyyra Events — Logo System Fix Report
 
-**Date:** 2026-06-24  
-**Commit message:** `fix(brand): remove checkerboard PNG, enforce SVG logos in header footer loader`
+**Date:** 2026-06-24
+**Commit:** `fix: rebuild Nexyyra logo system with transparent SVGs (header/footer/loader/theme)`
 
-## Summary
+## Root Causes (why the previous migration failed)
 
-Migrated all in-app logo display to self-contained SVG files with embedded, checkerboard-stripped raster data. Header, footer, loader, and hero now reference SVG paths only. PNG remains for favicon/PWA icons (monogram) and Open Graph (`nexyyra-og.png`).
+1. **Source PNG was not transparent.** `nexyyra-logo-source.png` had `hasAlpha: false` — the
+   "transparent" original had the checkerboard pattern **baked into its pixels**. Every surface
+   that rendered it (loader) showed the checkerboard.
+2. **SVGs referenced external PNGs** via `<image href="/brand/...png">`. When an SVG is loaded
+   through an HTML `<img src>` tag, browsers run it in restricted mode and **block external
+   resource references** — so the header and footer logos rendered blank ("missing").
 
-## Checkerboard removal method
+## Fix
 
-`scripts/generate-brand-assets.mjs` processes masters with **sharp** raw pixel buffers:
-
-1. **Transparent master** (`nexyyra-logo-source.png`) — `stripCheckerboard()` sets `alpha=0` on low-saturation pixels matching studio checkerboard tones (~`#FFFFFF`, `#C0C0C0`, `#808080`).
-2. **Dark master** (`nexyyra-logo-dark-source.png`) — `stripDarkBackground()` removes near-black studio backdrops (luminance &lt; 28, or low-saturation dark grays).
-3. **Light theme** — modulated charcoal variant from cleaned transparent master (`brightness: 0.38`, `saturation: 0.12`).
-4. **SVG output** — cleaned PNGs embedded as **base64 data URIs** inside SVG (`role="img"`, `<title>`, `aria-label`). No external PNG dependency in components.
-
-Regenerate: `node scripts/generate-brand-assets.mjs`
+1. Took the new official logo (on a black background) as the raw master.
+2. **Removed the black background** programmatically (luminance key with soft anti-aliased edges)
+   → a genuinely transparent master (782×784).
+3. **Embedded the transparent raster as base64 inside self-contained SVGs.** These render
+   correctly inside `<img>` (no blocked external references) and are fully transparent
+   (no checkerboard, no white/opaque box).
 
 ## Old logo references removed
 
-| Removed / deprecated | Notes |
-|----------------------|-------|
-| `BRAND_LOGO_ASSETS.gold`, `.black`, `.primary`, `.loader`, `.horizontal` | PNG display paths dropped from `logo.tsx` |
-| `public/brand/nexyyra-logo.png` | Deleted on regenerate |
-| `public/brand/nexyyra-logo-dark.png` | Deleted on regenerate |
-| `public/brand/nexyyra-logo-light.png` | Deleted on regenerate |
-| SVG wrappers linking to external PNG | Replaced with embedded base64 |
-| `hero-brand-reveal.tsx` `Image` + `primary` PNG | Now `img` + `nexyyra-logo-dark.svg` |
-| `load-screen.ts` stitch sanitizer | `nexyyra-logo-dark.png` → `.svg` |
-| Legacy `public/logo*.png`, `brand/logo-*.svg` | Previously removed |
+- `nexyyra-logo-source.png` (opaque, baked checkerboard) — deleted
+- `nexyyra-logo.png`, `nexyyra-logo-dark.png`, `nexyyra-logo-light.png` (opaque rasters) — deleted
+- `nexyyra-monogram.png`, `nexyyra-logo-master.png`, `nexyyra-logo-dark-source.png` (strays) — deleted
+- Raw source moved **out of `/public`** to `scripts/assets/nexyyra-logo-raw.png` (not served)
+- `BRAND_LOGO_ASSETS` keys `primary / gold / black / horizontal / monogram` removed (unused)
 
 ## New logo references added
 
-| Path | Use |
-|------|-----|
-| `/brand/nexyyra-logo.svg` | Default / full logo |
-| `/brand/nexyyra-logo-dark.svg` | Dark theme — gold luxury (header dark, loader, footer, hero) |
-| `/brand/nexyyra-logo-light.svg` | Light theme — charcoal (header light) |
-| `/brand/nexyyra-logo-source.png` | Transparent master (build input only) |
-| `/brand/nexyyra-logo-dark-source.png` | Dark-bg master (build input only) |
-| `/brand/nexyyra-monogram.png` | Favicon / PWA icon source only |
-| `/brand/nexyyra-og.png` | SEO / Open Graph only |
+| Asset | Path | Size |
+|-------|------|------|
+| Gold logo (dark theme/loader/hero/OG) | `/brand/nexyyra-logo.svg`, `nexyyra-logo-dark.svg` | 156 KB |
+| Charcoal logo (light theme) | `/brand/nexyyra-logo-light.svg` | 144 KB |
+| NX monogram (favicon/PWA) | `/brand/nexyyra-monogram.svg`, `/favicon.svg` | 196 KB |
+| OG card 1200×630 | `/brand/nexyyra-og.png` | 270 KB |
+| App icons | `apple-touch-icon`, `android-chrome-192/512`, `icon-*-maskable` | — |
+| Favicons | `favicon.svg`, `favicon-16/32.png`, `favicon.ico` | — |
+
+All logos served are `.svg` (transparent). No `.png`/`.jpg`/`.webp` logo is rendered in the UI.
 
 ## Header fixed
 
-- **File:** `src/components/branding/logo.tsx`, `src/brand/shell/brand-header.tsx`
-- **Sizing:** height 56px desktop / 40px mobile (`--brand-logo-height`)
-- **Theme swap:** CSS dual-`img` with `brand-logo__img--theme-light` / `--theme-dark`
-- **CSS:** removed square 56×56 width clamp that hid horizontal wordmark; header grid column widened; `opacity: 1`, `overflow: visible`, `z-index: 2`
+- Height-driven square slot: **56px desktop / 40px mobile** (`--brand-logo-height`).
+- Removed the broken `width: 11.25rem` override that letterboxed/hid the logo.
+- Theme images stacked with opacity swap — visible on every page, no z-index/overflow/opacity traps.
 
 ## Footer fixed
 
-- **File:** `src/brand/shell/brand-footer.tsx` — `Logo variant="footer"`
-- **Sizing:** width 220px desktop / 160px mobile (`--brand-logo-footer-width`)
-- **Theme:** `forceGold` on dark footer background
-- **Hover:** gold + purple luxury glow preserved
+- Fluid width-driven slot: **220px desktop / 160px mobile** (`--footer-logo-width`).
+- Luxury hover glow: gold + purple `drop-shadow`.
+- Always renders (self-contained transparent SVG).
 
 ## Loader fixed
 
-- **File:** `src/components/effects/universe-loader.tsx`
-- **Asset:** `BRAND_LOGO_ASSETS.dark` SVG (no checkerboard)
-- **Animation:** 2.5s fade · gold/purple glow · tagline reveal · scale/zoom handoff
+- Uses the transparent gold SVG (`BRAND_LOGO_ASSETS.loader`) — **no checkerboard, no image background**.
+- 2.5s sequence: logo fade-in → gold glow → purple glow → tagline reveal → scale-down → homepage reveal.
+
+## Theme switching
+
+- Light theme → charcoal logo; Dark theme → gold logo.
+- Pure CSS opacity swap keyed off `html.dark` — instant, zero hydration flash, no CLS.
 
 ## Validation
 
 | Check | Result |
 |-------|--------|
-| `npm run typecheck` | Pass |
-| `npm run build` | Pass (exit 0) |
-| `npm run lint` | Pre-existing errors in `scripts/sync-media.ts`; new `no-img-element` warnings on intentional SVG `<img>` usage |
+| `npm run lint` | ✅ 0 errors, 0 warnings |
+| `npm run typecheck` | ✅ Pass |
+| `npm run build` | ✅ Pass (86 pages) |
+
+Also fixed a pre-existing lint/type error in `scripts/sync-media.ts`
+(`useCommittedManifest` → `fallbackToCommittedManifest`).
+
+## Regenerate
+
+```bash
+cd apps/web
+node scripts/generate-brand-assets.mjs
+```
