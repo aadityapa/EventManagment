@@ -16,84 +16,76 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-/** Official Nexyyra logos — light = black, dark = gold (CSS swap, no JS flash). */
+/** Official Nexyyra Events brand assets — master: /brand/nexyyra-logo-source.png */
 export const BRAND_LOGO_ASSETS = {
-  gold: "/logo-gold.png",
-  goldAvif: "/logo-gold.avif",
-  black: "/logo-black.png",
-  blackAvif: "/logo-black.avif",
-  light: "/logo-black.png",
-  dark: "/logo-gold.png",
-  primary: "/logo-gold.png",
-  horizontal: "/logo-gold.png",
-  full: "/logo-gold.png",
-  loader: "/logo-gold.png",
-  symbol: "/brand/logo-symbol.png",
-  favicon: "/brand/logo-symbol.png",
+  full: "/brand/nexyyra-logo.svg",
+  dark: "/brand/nexyyra-logo-dark.svg",
+  light: "/brand/nexyyra-logo-light.svg",
+  gold: "/brand/nexyyra-logo-dark.png",
+  black: "/brand/nexyyra-logo-light.png",
+  primary: "/brand/nexyyra-logo-dark.png",
+  horizontal: "/brand/nexyyra-logo-dark.png",
+  loader: "/brand/nexyyra-logo-dark.png",
+  og: "/brand/nexyyra-og.png",
+  symbol: "/brand/nexyyra-monogram.svg",
+  monogram: "/brand/nexyyra-monogram.png",
+  favicon: "/favicon.svg",
 } as const;
 
-export const LOGO_DISPLAY_W = 180;
-export const LOGO_DISPLAY_H = 60;
+export const LOGO_DISPLAY_W = 56;
+export const LOGO_DISPLAY_H = 56;
+export const LOGO_FOOTER_H = 72;
+export const LOGO_LOADER_MAX = 220;
 
 type ThemeLogoImageProps = {
   className?: string;
   priority?: boolean;
-  /** Force gold logo (mobile menu on dark overlay). */
   forceGold?: boolean;
+  height?: number;
 };
 
-/** Dual-image theme logo — both raster assets in DOM; CSS toggles via `.dark`. */
+/** Dual SVG theme logo — CSS swap, zero hydration flash */
 export function ThemeLogoImage({
   className,
   priority = true,
   forceGold = false,
+  height = LOGO_DISPLAY_H,
 }: ThemeLogoImageProps) {
-  const fetchPriority = priority ? "high" : "auto";
+  const width = height;
 
   return (
     <span
       className={cn(
         "brand-logo__slot relative block shrink-0",
         forceGold && "brand-logo--force-gold",
-        className
+        className,
       )}
-      style={{
-        width: LOGO_DISPLAY_W,
-        height: LOGO_DISPLAY_H,
-        minWidth: LOGO_DISPLAY_W,
-        minHeight: LOGO_DISPLAY_H,
-      }}
+      style={{ width, height, minWidth: width, minHeight: height }}
     >
-      <picture className="brand-logo__img brand-logo__img--theme-light brand-logo__full">
-        <source srcSet={BRAND_LOGO_ASSETS.blackAvif} type="image/avif" />
-        <img
-          src={BRAND_LOGO_ASSETS.black}
-          alt={SITE_CONFIG.name}
-          width={LOGO_DISPLAY_W}
-          height={LOGO_DISPLAY_H}
-          decoding="async"
-          fetchPriority={fetchPriority}
-          className="block h-full w-full object-contain object-center"
-        />
-      </picture>
-      <picture className="brand-logo__img brand-logo__img--theme-dark brand-logo__full">
-        <source srcSet={BRAND_LOGO_ASSETS.goldAvif} type="image/avif" />
-        <img
-          src={BRAND_LOGO_ASSETS.gold}
-          alt=""
-          aria-hidden
-          width={LOGO_DISPLAY_W}
-          height={LOGO_DISPLAY_H}
-          decoding="async"
-          fetchPriority={fetchPriority}
-          className="block h-full w-full object-contain object-center"
-        />
-      </picture>
+      <img
+        src={BRAND_LOGO_ASSETS.light}
+        alt={SITE_CONFIG.name}
+        width={width}
+        height={height}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        className="brand-logo__img brand-logo__img--theme-light brand-logo__full block h-full w-full object-contain object-center"
+      />
+      <img
+        src={BRAND_LOGO_ASSETS.dark}
+        alt=""
+        aria-hidden
+        width={width}
+        height={height}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        className="brand-logo__img brand-logo__img--theme-dark brand-logo__full block h-full w-full object-contain object-center"
+      />
     </span>
   );
 }
 
-/** @deprecated Use ThemeLogoImage — kept for footer dual-stack callers migrating off CSS swap. */
+/** @deprecated Use ThemeLogoImage */
 export function BrandLogoImage({
   className,
   priority = true,
@@ -120,10 +112,10 @@ export function Logo({
   if (resolvedVariant === "symbol") {
     content = (
       <Image
-        src={BRAND_LOGO_ASSETS.symbol}
+        src={BRAND_LOGO_ASSETS.monogram}
         alt=""
-        width={96}
-        height={96}
+        width={48}
+        height={48}
         priority={priority}
         aria-hidden
         className={cn("brand-logo__mark", className)}
@@ -131,27 +123,29 @@ export function Logo({
     );
   } else if (resolvedVariant === "loader") {
     content = (
-      <span
-        className="brand-logo__slot relative block"
-        style={{ width: LOGO_DISPLAY_W, height: LOGO_DISPLAY_H }}
-      >
-        <picture>
-          <source srcSet={BRAND_LOGO_ASSETS.goldAvif} type="image/avif" />
-          <img
-            src={BRAND_LOGO_ASSETS.loader}
-            alt={SITE_CONFIG.name}
-            width={LOGO_DISPLAY_W}
-            height={LOGO_DISPLAY_H}
-            fetchPriority="high"
-            className={cn("brand-logo__img brand-logo__img--loader block h-full w-full object-contain", className)}
-          />
-        </picture>
+      <span className="brand-logo__slot brand-logo__slot--loader relative block">
+        <img
+          src={BRAND_LOGO_ASSETS.dark}
+          alt={SITE_CONFIG.name}
+          width={280}
+          height={280}
+          fetchPriority="high"
+          className={cn(
+            "brand-logo__img brand-logo__img--loader relative z-[2] mx-auto max-h-[clamp(120px,28vw,220px)] w-auto max-w-full object-contain",
+            className,
+          )}
+        />
       </span>
     );
   } else if (resolvedVariant === "footer") {
     content = (
-      <span className={cn("brand-logo brand-logo--footer inline-flex items-center justify-center", className)}>
-        <ThemeLogoImage priority={false} className="brand-logo__full--footer" />
+      <span
+        className={cn(
+        "brand-logo brand-logo--footer inline-flex items-center justify-center transition-[filter] duration-300 hover:drop-shadow-[0_0_14px_rgba(201,162,39,0.5)] hover:[filter:drop-shadow(0_0_6px_rgba(138,43,226,0.35))]",
+          className,
+        )}
+      >
+        <ThemeLogoImage priority={false} height={LOGO_FOOTER_H} className="brand-logo__full--footer" />
       </span>
     );
   } else if (resolvedVariant === "image") {

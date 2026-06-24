@@ -41,7 +41,7 @@ function absUrl(path: string) {
 /** Sitemap image:loc — same-origin only (external Drive URLs break XML generation). */
 function sitemapImage(src: string): string {
   if (src.startsWith("/")) return absUrl(src);
-  return absUrl("/logo.png");
+  return absUrl("/brand/nexyyra-og.png");
 }
 
 function sitemapImages(sources: readonly string[]): string[] {
@@ -49,7 +49,7 @@ function sitemapImages(sources: readonly string[]): string[] {
 }
 
 function brandImageAt(_index: number): string {
-  return absUrl("/logo.png");
+  return absUrl("/brand/nexyyra-og.png");
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -74,7 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: localPageLastMod(p.slug),
     changeFrequency: "monthly" as const,
     priority: 0.85,
-    images: [`${SITE_CONFIG.url}/brand/logo-primary.png`],
+    images: [`${SITE_CONFIG.url}/brand/nexyyra-og.png`],
   }));
 
   const locationPages = LOCATION_PAGES.map((p) => ({
@@ -82,7 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: localPageLastMod(`locations-${p.slug}`),
     changeFrequency: "monthly" as const,
     priority: 0.82,
-    images: [`${SITE_CONFIG.url}/brand/logo-primary.png`],
+    images: [`${SITE_CONFIG.url}/brand/nexyyra-og.png`],
   }));
 
   const servicePages = services.map((s, index) => ({

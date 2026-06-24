@@ -30,10 +30,12 @@ export const metadata: Metadata = {
   ...generateSEO(),
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
-      { url: "/brand/logo-symbol.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/brand/android-chrome-192.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: "/logo.png",
+    apple: "/brand/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
   category: "Event Management",
@@ -58,10 +60,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
-        <link rel="preload" href="/logo-black.png" as="image" type="image/png" fetchPriority="high" />
-        <link rel="preload" href="/logo-gold.png" as="image" type="image/png" />
-        <link rel="preload" href="/logo-black.avif" as="image" type="image/avif" />
-        <link rel="preload" href="/logo-gold.avif" as="image" type="image/avif" />
+        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
+        <link rel="preload" href="/brand/nexyyra-logo-light.svg" as="image" type="image/svg+xml" />
+        <link rel="preload" href="/brand/nexyyra-monogram.png" as="image" type="image/png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>

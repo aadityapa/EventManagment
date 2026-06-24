@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
 import { trackEvent } from "@/lib/analytics";
@@ -17,7 +16,6 @@ export const LOADER_HANDOFF_MS = 1800;
 export const LOADER_ZOOM_MS = 1500;
 export const LOADER_CROSSFADE_MS = 500;
 
-const BRAND_NAME = "NEXYYRA EVENTS";
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
 const CINEMATIC = EASE.silk;
 
@@ -262,6 +260,20 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
               transition={{ duration: 0.4, ease: CINEMATIC, delay: 0 }}
             >
               <motion.div
+                className="pointer-events-none absolute inset-[-28%] z-[0] rounded-full transform-gpu"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, rgba(138,43,226,0.22) 0%, transparent 70%)",
+                }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={
+                  glowVisible
+                    ? { opacity: [0, 0.85, 0.55], scale: [0.8, 1.2, 1.05] }
+                    : { opacity: 0, scale: 0.8 }
+                }
+                transition={{ duration: 0.6, ease: CINEMATIC, delay: glowVisible ? 0.05 : 0 }}
+              />
+              <motion.div
                 className="pointer-events-none absolute inset-[-24%] z-[1] rounded-full transform-gpu"
                 style={{
                   background:
@@ -280,27 +292,16 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.28, ease: CINEMATIC, delay: 0.75 }}
               >
-                <Image
+                <img
                   src={BRAND_LOGO_ASSETS.loader}
                   alt={SITE_CONFIG.name}
-                  width={880}
-                  height={320}
-                  priority
+                  width={280}
+                  height={280}
                   fetchPriority="high"
-                  sizes="(max-width: 640px) 60vw, 420px"
-                  className="relative z-[2] mx-auto max-h-[clamp(100px,26vw,220px)] w-auto max-w-full object-contain transform-gpu"
+                  className="relative z-[2] mx-auto max-h-[clamp(120px,28vw,220px)] w-auto max-w-full object-contain transform-gpu"
                 />
               </motion.div>
             </motion.div>
-
-            <motion.p
-              className="relative z-[3] mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--gold)]"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.22, ease: CINEMATIC, delay: 1 }}
-            >
-              {BRAND_NAME}
-            </motion.p>
 
             <div className="relative z-[3] min-h-[2.5rem]">
               <TaglineLetters visible={taglineVisible} />

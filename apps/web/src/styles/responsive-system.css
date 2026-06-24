@@ -165,8 +165,8 @@ a[role="button"] {
 /* Responsive brand logo — official raster, dual-theme, height-based           */
 /* -------------------------------------------------------------------------- */
 :root {
-  --brand-logo-width: 11.25rem; /* 180px */
-  --brand-logo-height: 3.75rem; /* 60px */
+  --brand-logo-width: 3.5rem; /* 56px desktop header */
+  --brand-logo-height: 3.5rem;
   --nav-height: 5.625rem; /* 90px — fixed sitewide for CLS */
   --header-height: var(--nav-height);
   --brand-nav-active: #c9a227;
@@ -260,6 +260,13 @@ html.dark .brand-logo__img--theme-dark {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --brand-logo-width: 2.375rem; /* 38px mobile */
+    --brand-logo-height: 2.375rem;
+  }
 }
 
 .brand-header-placeholder {
@@ -637,7 +644,7 @@ html.premiere-active .brand-root {
 
 @media (min-width: 1024px) {
   .brand-header-grid {
-    grid-template-columns: 220px minmax(0, 1fr) 360px;
+    grid-template-columns: 80px minmax(0, 1fr) 360px;
     column-gap: 1.25rem;
   }
 }

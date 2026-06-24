@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, Phone, Play, X } from "lucide-react";
+import { Logo } from "@/components/branding/logo";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { HERO_SHOWREEL_VIDEO, HERO_VIDEO_SLIDES } from "@/components/home/hero-video-data";
@@ -247,8 +248,7 @@ function FooterColumnHeading({ children }: { children: React.ReactNode }) {
 function FooterBrandCopy({ descriptionClassName }: { descriptionClassName?: string }) {
   return (
     <>
-      <p className="site-footer__brand-name">Nexyyra Events</p>
-      <p className="site-footer__tagline">{SITE_CONFIG.tagline}</p>
+      <Logo variant="footer" href="/" className="mb-3" />
       <p className={cn("site-footer__description", descriptionClassName)}>
         Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
       </p>

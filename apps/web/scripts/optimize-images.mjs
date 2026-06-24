@@ -22,22 +22,6 @@ const TARGETS = [
     quality: 52,
     remote: HERO_REMOTE,
   },
-  {
-    name: "logo-gold",
-    input: path.join(publicDir, "logo.png"),
-    output: path.join(publicDir, "logo.avif"),
-    maxBytes: 80 * 1024,
-    width: 440,
-    quality: 60,
-  },
-  {
-    name: "logo-black",
-    input: path.join(publicDir, "logo-black.png"),
-    output: path.join(publicDir, "logo-black.avif"),
-    maxBytes: 80 * 1024,
-    width: 440,
-    quality: 60,
-  },
 ];
 
 async function fetchBuffer(url) {

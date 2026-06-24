@@ -249,7 +249,7 @@ export function locationBusinessSchema(page: LocationPage) {
     url: `${SITE_CONFIG.url}/locations/${page.slug}`,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/brand/logo-primary.png`,
+    image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
     priceRange: "₹₹₹₹",
     address: {
       "@type": "PostalAddress",
