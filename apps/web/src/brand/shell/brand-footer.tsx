@@ -1,15 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
-import { Mail, MapPin, MessageCircle, Phone, Play, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Logo } from "@/components/branding/logo";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { MagneticButton } from "@/components/effects/magnetic-button";
-import { HERO_SHOWREEL_VIDEO, HERO_VIDEO_SLIDES } from "@/components/home/hero-video-data";
+import { GENERATED_BRAND_IMAGES } from "@/brand/data/brand-images.generated";
 import { ScrollReveal } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -99,62 +99,12 @@ const SOCIAL_LINKS = [
   { href: `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`, label: "WhatsApp", icon: MessageCircle },
 ] as const;
 
-function ShowreelModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--background)]/90 p-4 backdrop-blur-xl"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Nexyyra Events showreel"
-      onClick={onClose}
-    >
-      <div
-        className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-[var(--footer-glow)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="tap-target absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--surface)] text-[var(--text-primary)] transition-colors hover:bg-[var(--card)]"
-          aria-label="Close showreel"
-        >
-          <X className="h-5 w-5" />
-        </button>
-        <video autoPlay controls playsInline className="aspect-video w-full object-cover" poster={HERO_VIDEO_SLIDES[0]?.poster}>
-          <source src={HERO_SHOWREEL_VIDEO} type="video/mp4" />
-        </video>
-      </div>
-    </div>
-  );
-}
-
-function FooterBg({ reducedMotion }: { reducedMotion: boolean | null }) {
-  const poster = HERO_VIDEO_SLIDES[0]?.poster;
+function FooterBg() {
+  const poster = GENERATED_BRAND_IMAGES.hero.poster;
   return (
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-      {!reducedMotion ? (
-        <video autoPlay muted loop playsInline className="h-full w-full scale-105 object-cover opacity-35 blur-sm" poster={poster}>
-          <source src={HERO_VIDEO_SLIDES[0]?.video} type="video/mp4" />
-        </video>
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={poster} alt="" className="h-full w-full scale-105 object-cover opacity-35 blur-sm" />
-      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={poster} alt="" className="h-full w-full scale-105 object-cover opacity-35 blur-sm" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--footer-bg)]/90 via-[var(--footer-bg)]/95 to-[var(--footer-bg)]" />
     </div>
   );
@@ -258,13 +208,6 @@ function FooterBrandCopy({ descriptionClassName }: { descriptionClassName?: stri
 
 export function BrandFooter() {
   const pathname = usePathname();
-  const reducedMotion = useReducedMotion();
-  const [showreelOpen, setShowreelOpen] = useState(false);
-
-  const openShowreel = useCallback(() => {
-    analytics.ctaClick("watch_showreel", "footer");
-    setShowreelOpen(true);
-  }, []);
 
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) return null;
 
@@ -274,7 +217,7 @@ export function BrandFooter() {
   return (
     <>
       <footer className="site-footer relative mt-auto overflow-x-clip" role="contentinfo">
-        <FooterBg reducedMotion={reducedMotion} />
+        <FooterBg />
         <div className="pointer-events-none absolute inset-0 -z-[5] opacity-25">
           <GoldParticles className="h-full w-full" />
         </div>
@@ -295,16 +238,6 @@ export function BrandFooter() {
                   <BrandButton href="/book-event" variant="gold" className="w-full sm:min-w-[200px]" onClick={() => analytics.ctaClick("book_consultation", "footer")}>
                     Book Consultation
                   </BrandButton>
-                </MagneticButton>
-                <MagneticButton>
-                  <button
-                    type="button"
-                    onClick={openShowreel}
-                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg border border-[var(--footer-border)] bg-[var(--footer-card)] px-6 py-3 text-sm font-semibold text-[var(--footer-text)] backdrop-blur-sm transition-all hover:border-[var(--footer-accent)] hover:shadow-[var(--footer-glow)] sm:w-auto sm:min-w-[200px]"
-                  >
-                    <Play className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />
-                    Watch Showreel
-                  </button>
                 </MagneticButton>
               </div>
             </ScrollReveal>
@@ -416,8 +349,6 @@ export function BrandFooter() {
           </div>
         </div>
       </footer>
-
-      <ShowreelModal open={showreelOpen} onClose={() => setShowreelOpen(false)} />
     </>
   );
 }
