@@ -6,6 +6,7 @@ interface SEOProps {
   description?: string;
   keywords?: string[];
   image?: string;
+  twitterImage?: string;
   path?: string;
   type?: "website" | "article";
   noIndex?: boolean;
@@ -35,6 +36,7 @@ export function generateSEO({
   description = SITE_CONFIG.description,
   keywords = SEO_KEYWORDS,
   image = "/brand/nexyyra-og.png",
+  twitterImage = "/brand/nexyyra-twitter.png",
   path = "",
   type = "website",
   noIndex = false,
@@ -81,7 +83,7 @@ export function generateSEO({
       card: "summary_large_image",
       title: fullTitle,
       description: metaDescription,
-      images: [image],
+      images: [twitterImage],
       creator: "@nexyyraevents",
       site: "@nexyyraevents",
     },
@@ -121,7 +123,7 @@ export function globalGraphSchema() {
         telephone: SITE_CONFIG.phone,
         email: SITE_CONFIG.email,
         image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
-        logo: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+        logo: `${SITE_CONFIG.url}/brand/nexyyra-logo-dark.svg`,
         slogan: SITE_CONFIG.tagline,
         foundingDate: String(ENTITY_FACTS.foundingYear),
         priceRange: "₹₹₹₹",

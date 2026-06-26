@@ -31,10 +31,12 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/brand/android-chrome-192.png", sizes: "192x192", type: "image/png" },
     ],
     apple: "/brand/apple-touch-icon.png",
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#C9A227" }],
   },
   manifest: "/manifest.json",
   category: "Event Management",
