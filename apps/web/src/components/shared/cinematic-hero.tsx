@@ -60,7 +60,7 @@ export function CinematicHero({
         {image ? (
           <LuxuryImage src={image} alt="" fill priority sizes="100vw" className="object-cover" aria-hidden />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-[#1a1a1a] to-[#0A0A0A]" />
+          <div className="h-full w-full bg-gradient-to-br from-[#101b35] to-[#050816]" />
         )}
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
