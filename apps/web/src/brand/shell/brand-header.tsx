@@ -148,7 +148,7 @@ export function BrandHeader() {
         glass || (isHome && !scrolled)
           ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent",
-        scrolled && "shadow-[var(--shadow-glow-gold-sm)]"
+        scrolled && "is-scrolled shadow-[var(--shadow-glow-gold-sm)]"
       )}
       role="banner"
     >

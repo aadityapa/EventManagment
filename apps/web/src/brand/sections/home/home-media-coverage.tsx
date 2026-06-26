@@ -1,6 +1,6 @@
 "use client";
 
-import { Play } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { BRAND_MEDIA } from "@/brand/data/content";
 import { ScrollReveal } from "@/lib/motion";
@@ -41,11 +41,11 @@ export function HomeMediaCoverage() {
         <ScrollReveal preset="fade" delay={0.22} className="mt-12">
           <GlassPanel variant="portal" className="mx-auto flex max-w-md items-center gap-4 px-5 py-4">
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--glitz-gold)]/15">
-              <Play className="h-6 w-6 text-[var(--glitz-gold)]" aria-hidden />
+              <Sparkles className="h-6 w-6 text-[var(--glitz-gold)]" aria-hidden />
             </span>
             <div>
-              <p className="text-sm font-semibold text-[var(--text-primary)]">Cinematic Showreel</p>
-              <p className="text-xs text-[var(--text-muted)]">Full production film available on request</p>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">Editorial Production Archive</p>
+              <p className="text-xs text-[var(--text-muted)]">Curated press and post-event documentation available on request</p>
             </div>
           </GlassPanel>
         </ScrollReveal>

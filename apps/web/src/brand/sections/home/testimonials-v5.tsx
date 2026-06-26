@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { testimonials } from "@/data/cms";
 import { ScrollReveal } from "@/lib/motion";
@@ -53,7 +53,7 @@ export function HomeTestimonialsV5() {
                   className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-gold)]/40 bg-[var(--glitz-gold)]/10"
                   aria-hidden
                 >
-                  <Play className="h-5 w-5 text-[var(--glitz-gold)]" />
+                  <Quote className="h-5 w-5 text-[var(--glitz-gold)]" />
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--glitz-gold)]">

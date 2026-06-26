@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight, MapPin, Play, Users } from "lucide-react";
+import { ArrowUpRight, MapPin, Sparkles, Users } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import { ScrollReveal } from "@/lib/motion";
@@ -73,7 +73,7 @@ function CaseCard({ cs }: { cs: (typeof BRAND_CASE_STUDIES)[number] }) {
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity duration-300 group-hover:bg-black/40 group-hover:opacity-100" aria-hidden>
             <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--glitz-gold)]/50 bg-black/50">
-              <Play className="h-6 w-6 text-[var(--glitz-gold)]" />
+              <Sparkles className="h-6 w-6 text-[var(--glitz-gold)]" />
             </span>
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

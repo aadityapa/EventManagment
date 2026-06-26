@@ -23,7 +23,8 @@ function useReducedMotion() {
 function shuffle<T>(arr: T[]) {
   const out = [...arr];
   for (let i = out.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const x = Math.sin((i + 1) * 12.9898 + 78.233) * 43758.5453;
+    const j = Math.floor((x - Math.floor(x)) * (i + 1));
     [out[i], out[j]] = [out[j], out[i]];
   }
   return out;

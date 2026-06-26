@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { HeroCarouselBackground } from "@/brand/sections/home/hero-carousel-bg";
+import { BrandImage } from "@/brand/primitives/brand-image";
+import { Logo } from "@/components/branding/logo";
 
-const HEADLINE_LINES = [
-  "Crafting Extraordinary",
-  "Experiences",
-  "For Extraordinary People",
+const HERO_METRICS = [
+  { value: "1,800+", label: "productions" },
+  { value: "35+", label: "cities" },
+  { value: "120+", label: "event crew" },
+] as const;
+
+const HERO_SIGNATURES = [
+  "Royal Weddings",
+  "Corporate Galas",
+  "Concerts",
+  "Celebrity Events",
 ] as const;
 
 type HeroStaticProps = {
@@ -15,53 +24,88 @@ type HeroStaticProps = {
  * Server-rendered homepage hero shell — carousel slides from live Google Drive sync.
  */
 export function HeroStatic({ slides }: HeroStaticProps) {
+  const heroImages = slides.length > 0 ? slides : ["/images/placeholders/generic-coming-soon.webp"];
+  const collage = [heroImages[1] ?? heroImages[0], heroImages[2] ?? heroImages[0], heroImages[3] ?? heroImages[0]];
+
   return (
     <section
       id="welcome"
       aria-label="Hero"
-      className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-[var(--glitz-border)] bg-black"
+      className="luxury-hero relative flex min-h-svh items-center overflow-hidden border-b border-white/10 bg-[#050814]"
     >
       <HeroCarouselBackground slides={slides} />
-      <div className="absolute inset-0 bg-black/55" aria-hidden />
+      <div className="luxury-hero__veil" aria-hidden />
+      <div className="luxury-hero__aurora" aria-hidden />
+      <div className="luxury-hero__grid" aria-hidden />
 
-      <div className="brand-container relative z-10 w-full py-24 pb-28 text-center sm:py-28">
-        <p className="hero-brand-tagline mb-4 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/80 sm:text-[11px]">
-          The Next Era of Celebrations
-        </p>
+      <div className="brand-container relative z-10 grid w-full items-center gap-12 py-28 pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.86fr)] lg:py-32 xl:gap-16">
+        <div className="max-w-4xl">
+          <div className="luxury-hero__eyebrow">
+            <span className="luxury-hero__eyebrow-line" aria-hidden />
+            The Next Era of Celebrations
+          </div>
 
-        <h1 className="nex-hero-text mx-auto font-[family-name:var(--font-playfair)] font-bold text-white">
-          {HEADLINE_LINES.map((line, i) => (
-            <span
-              key={line}
-              className={
-                i === HEADLINE_LINES.length - 1
-                  ? "mt-0.5 block text-[var(--glitz-gold,#d4af37)]"
-                  : "block"
-              }
-            >
-              {line}
-            </span>
-          ))}
-        </h1>
+          <h1 className="luxury-hero__title">
+            We architect
+            <span> impossible celebrations</span>
+            for people who expect the exceptional.
+          </h1>
 
-        <p className="mx-auto mt-5 max-w-[36rem] text-[clamp(0.9375rem,0.9rem+0.25vw,1.0625rem)] leading-relaxed text-white/85">
-          Nexyyra Events designs luxury weddings, destination celebrations, corporate
-          experiences, celebrity events and unforgettable moments across India.
-        </p>
+          <p className="luxury-hero__copy">
+            Nexyyra Events is a luxury event architecture house for weddings, destination
+            celebrations, corporate galas, concerts, celebrity moments and brand experiences
+            across India.
+          </p>
 
-        <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
-          <Link
-            href="/book-event"
-            className="btn-gold-metallic tap-target inline-flex min-h-[48px] w-full min-w-0 items-center justify-center rounded-lg px-8 py-3 text-sm font-semibold tracking-wide sm:min-w-[12.5rem] sm:w-auto"
-          >
-            Book Consultation
-          </Link>
-          <Link
-            href="/portfolio"
-            className="tap-target inline-flex min-h-[48px] w-full min-w-0 items-center justify-center rounded-lg border border-[var(--glitz-gold,#d4af37)]/45 bg-black/30 px-8 py-3 text-sm font-semibold tracking-wide text-white hover:border-[var(--glitz-gold,#d4af37)]/70 sm:min-w-[12.5rem] sm:w-auto"
-          >
-            View Portfolio
-          </Link>
+          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href="/book-event" className="luxury-button luxury-button--gold tap-target">
+              Book Consultation
+            </Link>
+            <Link href="/portfolio" className="luxury-button luxury-button--ghost tap-target">
+              Explore Portfolio
+            </Link>
+            <Link href="/ai" className="luxury-button luxury-button--text tap-target">
+              Plan with AI Concierge
+            </Link>
+          </div>
+
+          <dl className="luxury-hero__metrics">
+            {HERO_METRICS.map((metric) => (
+              <div key={metric.label}>
+                <dt>{metric.value}</dt>
+                <dd>{metric.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div className="luxury-hero__stage" aria-label="Nexyyra signature event preview">
+          <div className="luxury-hero__logo-orbit" aria-hidden>
+            <Logo variant="image" href={undefined} priority className="luxury-hero__logo" />
+          </div>
+          <div className="luxury-hero__collage">
+            {collage.map((src, index) => (
+              <div key={`${src}-${index}`} className={`luxury-hero__frame luxury-hero__frame--${index + 1}`}>
+                <BrandImage
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) 42vw, 260px"
+                  className="object-cover"
+                  priority={index === 0}
+                  aria-hidden
+                />
+              </div>
+            ))}
+          </div>
+          <div className="luxury-hero__signature-card">
+            <p>Signature Worlds</p>
+            <ul>
+              {HERO_SIGNATURES.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

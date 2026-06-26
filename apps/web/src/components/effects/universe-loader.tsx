@@ -7,13 +7,13 @@ import { trackEvent } from "@/lib/analytics";
 import { SITE_CONFIG } from "@/lib/constants";
 import { EASE } from "@/lib/motion";
 
-export const LOADER_STORAGE_KEY = "glitz-v6-premiere-seen";
+export const LOADER_STORAGE_KEY = "glitz-v7-luxury-premiere-seen";
 const LEGACY_LOADER_KEY = "glitz-loader-seen";
 
-/** First-visit cinematic intro — 2.5s luxury brand reveal */
-export const LOADER_DURATION_MS = 2500;
-export const LOADER_HANDOFF_MS = 1800;
-export const LOADER_ZOOM_MS = 1500;
+/** First-visit cinematic intro — 2s luxury brand reveal */
+export const LOADER_DURATION_MS = 2000;
+export const LOADER_HANDOFF_MS = 1420;
+export const LOADER_ZOOM_MS = 1150;
 export const LOADER_CROSSFADE_MS = 500;
 
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
@@ -46,17 +46,25 @@ type GoldParticle = {
   alpha: number;
 };
 
+function seededParticleValue(seed: number) {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 function createGoldParticles(): GoldParticle[] {
-  return Array.from({ length: PARTICLE_COUNT }, (_, id) => ({
-    id,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: 1.5 + Math.random() * 3.5,
-    duration: 14 + Math.random() * 10,
-    delay: Math.random() * 0.4,
-    drift: (Math.random() - 0.5) * 20,
-    alpha: 0.25 + Math.random() * 0.35,
-  }));
+  return Array.from({ length: PARTICLE_COUNT }, (_, id) => {
+    const seed = id + 1;
+    return {
+      id,
+      x: seededParticleValue(seed) * 100,
+      y: seededParticleValue(seed + 101) * 100,
+      size: 1.5 + seededParticleValue(seed + 202) * 3.5,
+      duration: 14 + seededParticleValue(seed + 303) * 10,
+      delay: seededParticleValue(seed + 404) * 0.4,
+      drift: (seededParticleValue(seed + 505) - 0.5) * 20,
+      alpha: 0.25 + seededParticleValue(seed + 606) * 0.35,
+    };
+  });
 }
 
 function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boolean }) {
