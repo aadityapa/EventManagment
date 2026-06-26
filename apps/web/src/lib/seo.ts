@@ -413,6 +413,46 @@ export function eventSchema(event: {
   };
 }
 
+type VideoObjectSchemaInput = {
+  hasDedicatedVideo: boolean;
+  name: string;
+  description: string;
+  path: `/videos/${string}` | `/stories/${string}` | `/portfolio/video/${string}` | `/gallery/video/${string}`;
+  thumbnailUrl: string;
+  uploadDate: string;
+  contentUrl?: string;
+  embedUrl?: string;
+  duration?: string;
+};
+
+/**
+ * Guarded VideoObject helper.
+ *
+ * Google video indexing expects VideoObject only on real watch pages where the
+ * primary purpose is watching a specific video. Decorative/background videos,
+ * gallery previews, landing pages, FAQs, contact, pricing, blog listings, and
+ * legal pages must never emit VideoObject.
+ */
+export function videoObjectSchema(video: VideoObjectSchemaInput) {
+  if (!video.hasDedicatedVideo) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: video.name,
+    description: video.description,
+    url: `${SITE_CONFIG.url}${video.path}`,
+    thumbnailUrl: video.thumbnailUrl.startsWith("http")
+      ? video.thumbnailUrl
+      : `${SITE_CONFIG.url}${video.thumbnailUrl}`,
+    uploadDate: video.uploadDate,
+    ...(video.duration && { duration: video.duration }),
+    ...(video.contentUrl && { contentUrl: video.contentUrl }),
+    ...(video.embedUrl && { embedUrl: video.embedUrl }),
+    publisher: { "@id": ORG_ID },
+  };
+}
+
 /** Homepage primary service entity — AEO EventPlanningService */
 export function eventPlanningServiceSchema() {
   return {
@@ -672,8 +712,8 @@ export function aboutPageSchema(
 }
 
 /** Inject multiple JSON-LD blocks as React-safe script elements */
-export function jsonLdScripts(...schemas: object[]) {
-  return schemas.map((schema, i) => ({
+export function jsonLdScripts(...schemas: Array<object | null | undefined | false>) {
+  return schemas.filter((schema): schema is object => Boolean(schema)).map((schema, i) => ({
     key: `jsonld-${i}`,
     html: JSON.stringify(schema),
   }));

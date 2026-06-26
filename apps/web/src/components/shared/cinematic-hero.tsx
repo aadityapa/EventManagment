@@ -12,7 +12,6 @@ interface CinematicHeroProps {
   title: string;
   subtitle?: string;
   image?: string;
-  video?: string;
   children?: React.ReactNode;
   className?: string;
   size?: "default" | "full";
@@ -23,19 +22,16 @@ export function CinematicHero({
   title,
   subtitle,
   image,
-  video,
   children,
   className,
   size = "default",
 }: CinematicHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const setAdaptiveRef = useAdaptiveBackdrop({
     imageSrc: image,
-    videoRef,
     region: "left-third",
     priority: 75,
-    enabled: Boolean(image || video),
+    enabled: Boolean(image),
   });
 
   useEffect(() => {
@@ -61,11 +57,7 @@ export function CinematicHero({
       )}
     >
       <div ref={bgRef} className="absolute inset-0 origin-center">
-        {video ? (
-          <video ref={videoRef} autoPlay muted loop playsInline className="h-full w-full object-cover" aria-hidden>
-            <source src={video} type="video/mp4" />
-          </video>
-        ) : image ? (
+        {image ? (
           <LuxuryImage src={image} alt="" fill priority sizes="100vw" className="object-cover" aria-hidden />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-[#1a1a1a] to-[#0A0A0A]" />

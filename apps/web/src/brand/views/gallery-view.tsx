@@ -1,7 +1,5 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
-import { Play } from "lucide-react";
 import type { MediaAsset } from "@/lib/media/types";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
@@ -11,13 +9,9 @@ import { ScrollReveal } from "@/lib/motion";
 type Props = {
   assets: MediaAsset[];
   heroSrc: string;
-  videoSrc: string;
-  videoPoster: string;
 };
 
-export function GalleryView({ assets, heroSrc, videoSrc, videoPoster }: Props) {
-  const reducedMotion = useReducedMotion();
-
+export function GalleryView({ assets, heroSrc }: Props) {
   return (
     <div className="brand-root">
       <section className="relative flex min-h-[68svh] items-end overflow-hidden">
@@ -46,37 +40,22 @@ export function GalleryView({ assets, heroSrc, videoSrc, videoPoster }: Props) {
       <section className="v4-section border-b border-[var(--glitz-border)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-4">Cinematic Reel</span>
+            <span className="v4-kicker mb-4">Visual Archive</span>
             <h2 className="v4-title">Behind the Lens</h2>
           </ScrollReveal>
           <ScrollReveal preset="fade" delay={0.12} className="mt-8">
             <GlassPanel className="relative overflow-hidden p-0">
               <div className="relative aspect-[21/9] min-h-[240px] w-full overflow-hidden bg-black">
-                {videoSrc ? (
-                  <video
-                    src={videoSrc}
-                    poster={videoPoster}
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    autoPlay={!reducedMotion}
-                    className="h-full w-full object-cover"
-                    aria-label="Nexyyra Events highlight reel"
-                  />
-                ) : (
-                  <BrandImage
-                    src={videoPoster || heroSrc}
-                    alt="Nexyyra Events gallery highlight"
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                )}
+                <BrandImage
+                  src={heroSrc}
+                  alt="Nexyyra Events gallery highlight"
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-                <div className="absolute bottom-6 left-6 flex items-center gap-2 text-sm text-white/90">
-                  <Play className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-                  Event highlight reel
+                <div className="absolute bottom-6 left-6 text-sm text-white/90">
+                  Editorial moments from Nexyyra Events
                 </div>
               </div>
             </GlassPanel>

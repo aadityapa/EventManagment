@@ -1,6 +1,6 @@
 import { generateSEO } from "@/lib/seo";
 import { GalleryView } from "@/brand";
-import { getGalleryMedia, getMediaVideos } from "@/lib/media/server";
+import { getGalleryMedia } from "@/lib/media/server";
 
 export const metadata = generateSEO({
   title: "Visual Stories Gallery",
@@ -12,21 +12,13 @@ export const metadata = generateSEO({
 export const revalidate = 3600;
 
 export default async function GalleryPage() {
-  const [galleryAssets, videos] = await Promise.all([
-    getGalleryMedia(),
-    getMediaVideos(),
-  ]);
-
+  const galleryAssets = await getGalleryMedia();
   const heroAsset = galleryAssets[0];
-  const videoSrc = videos[0]?.src ?? "";
-  const videoPoster = videos[0]?.poster ?? heroAsset?.src ?? "";
 
   return (
     <GalleryView
       assets={galleryAssets}
       heroSrc={heroAsset?.src ?? ""}
-      videoSrc={videoSrc}
-      videoPoster={videoPoster}
     />
   );
 }

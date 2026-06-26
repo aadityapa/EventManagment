@@ -18,7 +18,6 @@ interface BrandHeroProps {
   title: string;
   subtitle?: string;
   image?: string;
-  video?: string;
   full?: boolean;
   threeD?: boolean;
   backgroundLayers?: ReactNode;
@@ -27,16 +26,14 @@ interface BrandHeroProps {
   children?: ReactNode;
 }
 
-export function BrandHero({ label, title, subtitle, image, video, full = false, threeD = false, backgroundLayers, decoration, scrollIndicator, children }: BrandHeroProps) {
+export function BrandHero({ label, title, subtitle, image, full = false, threeD = false, backgroundLayers, decoration, scrollIndicator, children }: BrandHeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const setAdaptiveRef = useAdaptiveBackdrop({
     imageSrc: image,
-    videoRef,
     region: "left-third",
     priority: 80,
-    enabled: Boolean(image || video),
+    enabled: Boolean(image),
   });
 
   useEffect(() => {
@@ -60,11 +57,7 @@ export function BrandHero({ label, title, subtitle, image, video, full = false, 
       className={`relative overflow-hidden border-b border-[var(--glitz-border)] ${full ? "min-h-[100dvh]" : "min-h-[55vh] pt-16"}`}
     >
       <div ref={bgRef} className="absolute inset-0 origin-center">
-        {video ? (
-          <video ref={videoRef} autoPlay muted loop playsInline poster={image} className="h-full w-full object-cover" aria-hidden>
-            <source src={video} type="video/mp4" />
-          </video>
-        ) : image ? (
+        {image ? (
           <BrandImage src={image} alt="" fill priority sizes="100vw" aria-hidden />
         ) : null}
         {comingSoon ? <ComingSoonOverlay className="z-[1]" /> : null}
