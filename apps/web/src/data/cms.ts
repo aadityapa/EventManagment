@@ -17,15 +17,6 @@ export const companyProfile = {
   },
 };
 
-export const teamMembers = [
-  { id: "1", name: "Priya Sharma", role: "Founder & CEO", bio: "15+ years transforming events into legendary experiences.", image: EVENT_IMAGES.wedding, specialty: "Luxury Weddings" },
-  { id: "2", name: "Raj Mehta", role: "Creative Director", bio: "Award-winning designer with a passion for immersive experiences.", image: EVENT_IMAGES.corporate, specialty: "Brand Events" },
-  { id: "3", name: "Ananya Kapoor", role: "Head of Operations", bio: "Ensures flawless execution across every event detail.", image: EVENT_IMAGES.venue1, specialty: "Corporate Events" },
-  { id: "4", name: "Vikram Singh", role: "Technical Director", bio: "Master of stage design, lighting, and production technology.", image: EVENT_IMAGES.concert, specialty: "Concerts & Festivals" },
-  { id: "5", name: "Sneha Reddy", role: "Wedding Specialist", bio: "Curates dream destination weddings across the globe.", image: EVENT_IMAGES.destinationWedding, specialty: "Destination Weddings" },
-  { id: "6", name: "Arjun Patel", role: "Client Relations", bio: "Your dedicated partner from first call to final applause.", image: EVENT_IMAGES.gallery[0], specialty: "Client Experience" },
-];
-
 export const services = [
   { slug: "corporate-events", title: "Corporate Events", description: "Elevate your brand with impeccably planned corporate gatherings, galas, and team celebrations.", icon: "Building2", image: EVENT_IMAGES.corporate, features: ["Conference Planning", "Annual Day Events", "Team Building", "Award Ceremonies"], basePrice: 500000 },
   { slug: "wedding-planning", title: "Wedding Planning", description: "Full-service luxury wedding planning in Pune — venue scouting, vendor curation, design direction, and flawless on-ground execution.", icon: "Heart", image: EVENT_IMAGES.wedding, features: ["Full Planning", "Day-of Coordination", "Vendor Management", "Custom Design"], basePrice: 800000 },

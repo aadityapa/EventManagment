@@ -3,14 +3,14 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { Award, ArrowRight, Eye, Target, Gem } from "lucide-react";
+import { Award, ArrowRight, Eye, Target, Gem, Crown, ShieldCheck, Globe, Sparkles } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { BRAND_TIMELINE, BRAND_AWARDS, BRAND_MEDIA } from "@/brand/data/content";
-import { companyProfile, teamMembers } from "@/data/cms";
+import { BRAND_TIMELINE, BRAND_AWARDS, BRAND_MEDIA, BRAND_TRUST } from "@/brand/data/content";
+import { companyProfile } from "@/data/cms";
 import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
@@ -18,6 +18,13 @@ import { cn } from "@/lib/utils";
 
 const MANIFESTO =
   "We believe luxury is intention — every candle, every cue, every guest experience deliberately crafted so the celebration feels effortless and eternal.";
+
+const TRUST_PILLARS = [
+  { icon: Crown, title: "Uncompromising Craft", copy: "Every detail engineered to museum standards — nothing is left to chance." },
+  { icon: ShieldCheck, title: "Absolute Discretion", copy: "NDA-bound teams and airtight privacy for high-profile clients and brands." },
+  { icon: Globe, title: "Pan-India Production", copy: "35+ cities, palace to penthouse — fully in-house, fully owned execution." },
+  { icon: Sparkles, title: "Cinematic Execution", copy: "Broadcast-grade AV, lighting and stagecraft on every single production." },
+] as const;
 
 export function AboutView() {
   const timelineRef = useRef<HTMLElement>(null);
@@ -274,33 +281,53 @@ export function AboutView() {
         </div>
       </section>
 
-      {/* Founders / team */}
+      {/* Why premium brands trust Nexyyra (replaces team section) */}
       <section className="v4-section v4-dune-glow bg-[var(--glitz-surface)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-4">Leadership</span>
-            <h2 className="v4-display">Meet our team</h2>
+            <span className="v4-kicker mb-4">Why Nexyyra</span>
+            <h2 className="v4-display max-w-3xl">
+              Why India&apos;s Premium Brands <span className="v4-gold-text">Trust Nexyyra</span>
+            </h2>
           </ScrollReveal>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {teamMembers.slice(0, 3).map((member, i) => (
-              <ScrollReveal key={member.id} preset="scale" delay={i * 0.06}>
-                <GlassPanel className="group p-6 text-center transition-transform hover:-translate-y-1">
-                  <BrandImage
-                    src={member.image}
-                    alt={member.name}
-                    width={96}
-                    height={96}
-                    className="mx-auto h-24 w-24 rounded-full border-2 border-[var(--glitz-gold)]/40 transition-transform group-hover:scale-105"
-                  />
-                  <h3 className="mt-4 font-semibold">{member.name}</h3>
-                  <p className="text-sm text-[var(--glitz-gold)]">{member.role}</p>
-                  <p className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">
-                    {member.bio}
-                  </p>
-                </GlassPanel>
-              </ScrollReveal>
-            ))}
+          <ScrollReveal preset="fade" delay={0.12}>
+            <p className="v4-standfirst mt-5 max-w-2xl">
+              A dozen years of flawless, discreet, cinematic celebrations — engineered in-house and
+              delivered across 35+ cities for India&apos;s most discerning families and brands.
+            </p>
+          </ScrollReveal>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {TRUST_PILLARS.map((pillar, i) => {
+              const Icon = pillar.icon;
+              return (
+                <ScrollReveal key={pillar.title} preset="scale" delay={i * 0.06}>
+                  <GlassPanel className="group h-full p-6 transition-transform duration-500 hover:-translate-y-1.5">
+                    <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-gold)]/35 bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]">
+                      <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+                    </span>
+                    <h3 className="font-[family-name:var(--font-cormorant)] text-xl font-semibold text-[var(--text-primary)]">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{pillar.copy}</p>
+                  </GlassPanel>
+                </ScrollReveal>
+              );
+            })}
           </div>
+
+          <ScrollReveal preset="fade" delay={0.16} className="mt-14">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.28em] text-[var(--text-muted)]">
+              Trusted by visionaries
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              {BRAND_TRUST.slice(0, 10).map((name) => (
+                <span key={name} className="font-[family-name:var(--font-cormorant)] text-lg text-[var(--text-secondary)]">
+                  {name}
+                </span>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 

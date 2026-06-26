@@ -1,6 +1,5 @@
-import { generateSEO, aboutPageSchema } from "@/lib/seo";
+import { generateSEO, breadcrumbSchema } from "@/lib/seo";
 import { AboutView } from "@/brand";
-import { teamMembers } from "@/data/cms";
 
 export const metadata = generateSEO({
   title: "About — Luxury Event Management",
@@ -9,7 +8,10 @@ export const metadata = generateSEO({
 });
 
 export default function AboutPage() {
-  const schema = aboutPageSchema(teamMembers, "Priya Sharma");
+  const schema = breadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "About", url: "/about" },
+  ]);
 
   return (
     <>
