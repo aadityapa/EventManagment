@@ -3,66 +3,45 @@
 import dynamic from "next/dynamic";
 import { LazySection } from "@/components/shared/lazy-section";
 
-const HomeExperienceWorlds = dynamic(
-  () => import("@/brand/sections/home/experience-worlds").then((m) => m.HomeExperienceWorlds),
+const HomeExpertise = dynamic(
+  () => import("@/brand/sections/home/expertise").then((m) => m.HomeExpertise),
   { ssr: false }
 );
-const HomeSignatureExperiences = dynamic(
-  () => import("@/brand/sections/home/signature-experiences").then((m) => m.HomeSignatureExperiences),
+const HomeAboutLuxe = dynamic(
+  () => import("@/brand/sections/home/about-luxe").then((m) => m.HomeAboutLuxe),
   { ssr: false }
 );
-const HomePortfolioShowcase = dynamic(
-  () => import("@/brand/sections/home/portfolio-showcase").then((m) => m.HomePortfolioShowcase),
+const HomeFeaturedWork = dynamic(
+  () => import("@/brand/sections/home/featured-work").then((m) => m.HomeFeaturedWork),
   { ssr: false }
 );
-const HomeVenueCollection = dynamic(
-  () => import("@/brand/sections/home/venue-collection").then((m) => m.HomeVenueCollection),
+const HomeCounters = dynamic(
+  () => import("@/brand/sections/home/counters").then((m) => m.HomeCounters),
   { ssr: false }
 );
-const HomeAwards = dynamic(
-  () => import("@/brand/sections/home/home-awards").then((m) => m.HomeAwards),
-  { ssr: false }
-);
-const HomeTestimonialsV5 = dynamic(
-  () => import("@/brand/sections/home/testimonials-v5").then((m) => m.HomeTestimonialsV5),
-  { ssr: false }
-);
-const HomeMediaCoverage = dynamic(
-  () => import("@/brand/sections/home/home-media-coverage").then((m) => m.HomeMediaCoverage),
-  { ssr: false }
-);
-const HomeLuxuryCta = dynamic(
-  () => import("@/brand/sections/home/luxury-cta").then((m) => m.HomeLuxuryCta),
+const HomeCtaBand = dynamic(
+  () => import("@/brand/sections/home/cta-band").then((m) => m.HomeCtaBand),
   { ssr: false }
 );
 
-/** Below-fold homepage sections — client-only bundles loaded on scroll. */
+/** Below-fold homepage — luxury reference layout: Expertise → About → Featured Work → Counters → CTA. */
 export function HomeBelowFold() {
   return (
     <>
-      <LazySection minHeight="42vh" label="Experience Worlds">
-        <HomeExperienceWorlds />
+      <LazySection minHeight="48vh" label="Our Expertise">
+        <HomeExpertise />
       </LazySection>
-      <LazySection minHeight="52vh" label="Signature Experiences">
-        <HomeSignatureExperiences />
+      <LazySection minHeight="60vh" label="About">
+        <HomeAboutLuxe />
       </LazySection>
-      <LazySection minHeight="54vh" label="Portfolio">
-        <HomePortfolioShowcase />
+      <LazySection minHeight="52vh" label="Featured Work">
+        <HomeFeaturedWork />
       </LazySection>
-      <LazySection minHeight="44vh" label="Venues">
-        <HomeVenueCollection />
+      <LazySection minHeight="28vh" label="By the Numbers">
+        <HomeCounters />
       </LazySection>
-      <LazySection minHeight="36vh" label="Awards">
-        <HomeAwards />
-      </LazySection>
-      <LazySection minHeight="44vh" label="Testimonials">
-        <HomeTestimonialsV5 />
-      </LazySection>
-      <LazySection minHeight="32vh" label="Media">
-        <HomeMediaCoverage />
-      </LazySection>
-      <LazySection minHeight="28vh" label="Contact">
-        <HomeLuxuryCta />
+      <LazySection minHeight="24vh" label="Plan Together">
+        <HomeCtaBand />
       </LazySection>
     </>
   );
