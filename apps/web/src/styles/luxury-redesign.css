@@ -1142,3 +1142,31 @@ body.brand-body {
     text-align: left;
   }
 }
+
+/* ==========================================================================
+   Inner-page inheritance — lift shared section classes to the luxury system
+   ========================================================================== */
+
+.v4-display,
+.v4-hero-display {
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif !important;
+  letter-spacing: -0.015em;
+}
+
+.v4-kicker {
+  color: var(--lux-gold) !important;
+  letter-spacing: 0.3em;
+}
+
+.v4-gold-text {
+  background: linear-gradient(120deg, #ffffff 0%, #f9e9bd 38%, var(--lux-gold) 74%, #ad8b31 100%) !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* Page heroes (CinematicHero / PageHero / BrandHero) on deep navy */
+.container-page,
+.brand-container {
+  position: relative;
+}
