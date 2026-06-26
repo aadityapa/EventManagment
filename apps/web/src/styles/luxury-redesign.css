@@ -1243,3 +1243,113 @@ body.brand-body {
 .brand-container {
   position: relative;
 }
+
+/* ==========================================================================
+   Inner-page luxury polish — shared heroes, glass panels, cards, forms
+   ========================================================================== */
+
+.lux-inner-hero {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(110, 60, 188, 0.22), transparent 30rem),
+    radial-gradient(circle at 82% 14%, rgba(212, 175, 55, 0.14), transparent 26rem),
+    #050814;
+}
+
+.lux-inner-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 20, 0.94), rgba(5, 8, 20, 0.68), rgba(5, 8, 20, 0.9)),
+    radial-gradient(circle at 50% 100%, rgba(61, 36, 108, 0.42), transparent 34rem);
+  z-index: 1;
+}
+
+.lux-inner-hero > *:not(.lux-inner-hero__aura) {
+  position: relative;
+  z-index: 2;
+}
+
+.lux-inner-hero__aura {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(circle at 65% 42%, black, transparent 64%);
+}
+
+.lux-inner-hero__title {
+  max-width: 13ch;
+  color: #fff;
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
+  font-size: clamp(3rem, 6.4vw, 6.75rem);
+  font-weight: 600;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.lux-panel {
+  position: relative;
+  border-color: var(--lux-border) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.lux-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 36%);
+  opacity: 0.55;
+}
+
+.lux-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* General page cards and editorial surfaces */
+.brand-root article,
+.brand-root .luxury-card,
+.brand-root .glass-card {
+  transform: translateZ(0);
+}
+
+.brand-root input,
+.brand-root textarea,
+.brand-root select {
+  border-color: var(--lux-border);
+  background-color: rgba(255, 255, 255, 0.045);
+  color: #fff;
+}
+
+.brand-root input:focus,
+.brand-root textarea:focus,
+.brand-root select:focus {
+  border-color: rgba(160, 107, 230, 0.55);
+  box-shadow: 0 0 0 1px rgba(160, 107, 230, 0.25), 0 0 32px rgba(110, 60, 188, 0.18);
+}
+
+.brand-root input::placeholder,
+.brand-root textarea::placeholder {
+  color: rgba(246, 246, 246, 0.45);
+}
+
+@media (max-width: 640px) {
+  .lux-inner-hero__title {
+    max-width: 11ch;
+    font-size: clamp(2.8rem, 15vw, 4.8rem);
+  }
+}

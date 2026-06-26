@@ -37,6 +37,7 @@ export function GlassPanel({
   return (
     <Tag
       className={cn(
+        "lux-panel",
         VARIANT_CLASS[resolved],
         glow && "v5-dune-glow v4-dune-glow",
         className

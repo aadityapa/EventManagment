@@ -54,7 +54,7 @@ export function BrandHero({ label, title, subtitle, image, full = false, threeD 
     <section
       ref={setAdaptiveRef}
       data-adaptive-backdrop=""
-      className={`relative overflow-hidden border-b border-[var(--glitz-border)] ${full ? "min-h-[100dvh]" : "min-h-[55vh] pt-16"}`}
+      className={`lux-inner-hero relative overflow-hidden border-b border-[var(--glitz-border)] ${full ? "min-h-[100dvh]" : "min-h-[55vh] pt-16"}`}
     >
       <div ref={bgRef} className="absolute inset-0 origin-center">
         {image ? (
@@ -64,14 +64,15 @@ export function BrandHero({ label, title, subtitle, image, full = false, threeD 
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />
+        <div className="lux-inner-hero__aura" aria-hidden />
         {backgroundLayers}
       </div>
 
       {threeD && full && <HeroThreeCanvas />}
       {decoration}
       <div className={`brand-container relative z-10 flex flex-col justify-end ${full ? "min-h-[100dvh] pb-20 pt-28" : "pb-16 pt-32"}`}>
-        {label && <span className="brand-label mb-4">{label}</span>}
-        <h1 ref={titleRef} className="brand-display max-w-5xl text-[clamp(2.25rem,6vw,4.25rem)] font-bold leading-[1.08] text-[var(--adaptive-text)]">
+        {label && <span className="lux-label mb-4">{label}</span>}
+        <h1 ref={titleRef} className="lux-inner-hero__title max-w-5xl">
           {words.map((w, i) => (
             <span key={i} className="mr-[0.2em] inline-block overflow-hidden">
               <span data-word className="inline-block">{w}</span>

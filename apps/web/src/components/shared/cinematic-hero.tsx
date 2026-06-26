@@ -51,7 +51,7 @@ export function CinematicHero({
       ref={setAdaptiveRef}
       data-adaptive-backdrop=""
       className={cn(
-        "relative flex items-end overflow-hidden border-b border-border/40",
+        "lux-inner-hero relative flex items-end overflow-hidden border-b border-border/40",
         size === "full" ? "min-h-[70vh]" : "min-h-[50vh] pt-16",
         className
       )}
@@ -64,6 +64,7 @@ export function CinematicHero({
         )}
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
+        <div className="lux-inner-hero__aura" aria-hidden />
       </div>
 
       <div className="container-page relative z-10 pb-16 pt-32 sm:pb-20 sm:pt-40">
@@ -74,11 +75,11 @@ export function CinematicHero({
           className="max-w-4xl"
         >
           {label && (
-            <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-[var(--adaptive-accent)]">
+            <span className="lux-label mb-4">
               {label}
             </span>
           )}
-          <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.08] text-[var(--adaptive-text)]">
+          <h1 className="lux-inner-hero__title">
             {title}
           </h1>
           {subtitle && (
