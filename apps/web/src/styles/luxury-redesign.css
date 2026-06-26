@@ -338,6 +338,24 @@ body.brand-body {
   box-shadow: 0 0 28px rgba(216, 178, 106, 0.12);
 }
 
+.luxury-button--full {
+  width: 100%;
+}
+
+.luxury-button--compact {
+  min-width: auto;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.72rem;
+}
+
+.luxury-button:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
 .luxury-hero__metrics {
   margin-top: clamp(2rem, 5vw, 4rem);
   display: grid;
@@ -1217,32 +1235,97 @@ body.brand-body {
   border-top: 1px solid var(--lux-border);
 }
 
-.brand-mega-menu__cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 0.7rem 1.4rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+.brand-mega-menu {
+  padding: clamp(2rem, 3.5vw, 3rem) !important;
+}
+
+.brand-mega-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.brand-mega-menu__link {
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.9rem !important;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--lux-ease);
+}
+
+.brand-mega-menu__link--arrow:hover svg {
+  opacity: 1 !important;
+  transform: translate(2px, -2px);
+  transition: transform 0.3s var(--lux-ease), opacity 0.25s ease;
+}
+
+.brand-mega-menu__cta {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid var(--lux-border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--lux-white);
-  transition: transform 0.3s var(--lux-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 0.68rem;
 }
 
-.brand-mega-menu__cta-btn:hover {
-  transform: translateY(-2px);
-  border-color: rgba(180, 124, 255, 0.5);
-  box-shadow: var(--lux-glow-purple);
+/* Portfolio masonry — luxury hover lift */
+.gallery-masonry-item {
+  border-radius: var(--lux-radius-lg);
+  transition: transform 0.45s var(--lux-ease), box-shadow 0.45s ease;
 }
 
-.brand-mega-menu__cta-btn--gold {
-  border-color: rgba(255, 238, 180, 0.36);
-  background: linear-gradient(135deg, #8f6b13 0%, var(--lux-gold) 38%, #fff0b1 54%, #b78724 100%);
+.gallery-masonry-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), 0 0 36px rgba(216, 178, 106, 0.14);
+}
+
+.gallery-masonry-item:focus-visible {
+  box-shadow: 0 0 0 2px rgba(216, 178, 106, 0.55), 0 0 36px rgba(216, 178, 106, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-masonry-item,
+  .gallery-masonry-item:hover {
+    transform: none;
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Venues — filter bar & map luxury shell */
+.venue-lux-filter {
+  background: rgba(5, 8, 22, 0.92) !important;
+  border-bottom-color: var(--lux-border-gold) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.destination-map-shell {
+  border-color: var(--lux-border-gold) !important;
+  border-radius: var(--lux-radius-xl) !important;
+  box-shadow: var(--lux-glow) !important;
+  background: linear-gradient(180deg, rgba(7, 10, 24, 0.55), rgba(7, 10, 24, 0.88));
+}
+
+.destination-map-shell .leaflet-control-zoom a {
+  border-color: rgba(216, 178, 106, 0.4) !important;
+  background: rgba(5, 8, 22, 0.88) !important;
+  color: var(--lux-gold) !important;
+}
+
+.destination-map-pin.is-active .destination-map-pin__label {
+  background: rgba(216, 178, 106, 0.92);
   color: #100b03;
+}
+
+/* Testimonials — carousel glass cards */
+.testimonial-lux-card {
+  border: 1px solid var(--lux-border);
+  border-radius: var(--lux-radius-lg);
+  background: var(--lux-card);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(22px);
+  transition: opacity 0.5s var(--lux-ease), transform 0.5s var(--lux-ease), box-shadow 0.5s ease;
+}
+
+.testimonial-lux-card.is-active {
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.38), 0 0 42px rgba(216, 178, 106, 0.12);
 }
 
 .v4-display,

@@ -237,7 +237,7 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
             </div>
             <button
               type="button"
-              className="group mt-8 inline-flex items-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-[var(--glitz-gold)]/50"
+              className="luxury-button luxury-button--ghost luxury-button--compact mt-8 tap-target"
               aria-label="Open featured case study"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--glitz-gold)]/60 bg-[var(--glitz-gold)]/15">

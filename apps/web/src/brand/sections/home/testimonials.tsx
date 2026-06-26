@@ -39,18 +39,18 @@ export function HomeTestimonials() {
             onClick={prev}
             aria-controls={carouselId}
             aria-label="Previous testimonial"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]"
+            className="lux-arrow"
           >
-            <ChevronLeft aria-hidden="true" />
+            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={next}
             aria-controls={carouselId}
             aria-label="Next testimonial"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)]"
+            className="lux-arrow"
           >
-            <ChevronRight aria-hidden="true" />
+            <ChevronRight className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
         <div ref={emblaRef} id={carouselId} className="overflow-hidden" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
@@ -64,7 +64,7 @@ export function HomeTestimonials() {
                 aria-hidden={sel !== i}
                 className="min-w-0 flex-[0_0_100%] lg:flex-[0_0_75%]"
               >
-                <div className={cn("brand-surface flex flex-col gap-6 p-8 sm:flex-row sm:items-center", sel !== i && "opacity-70")}>
+                <div className={cn("testimonial-lux-card flex flex-col gap-6 p-8 sm:flex-row sm:items-center", sel === i ? "is-active" : "opacity-60")}>
                   <BrandImage src={t.image} alt={t.name} width={80} height={80} className="h-20 w-20 shrink-0 rounded-full border-2 border-[var(--glitz-gold)]/40" />
                   <div>
                     <Quote className="mb-2 h-5 w-5 text-[var(--glitz-gold)]/50" aria-hidden="true" />

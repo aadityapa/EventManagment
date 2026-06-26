@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { EVENT_TYPES } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
 import { FormInput, FormTextarea } from "@/components/ui/form-input";
 
 export function ContactForm() {
@@ -44,9 +43,9 @@ export function ContactForm() {
         </div>
       </div>
       <FormTextarea id="message" name="message" label="Message" required placeholder="Tell us about your event..." rows={5} />
-      <Button type="submit" size="lg" disabled={loading} className="w-full sm:w-auto btn-premium-hover">
+      <button type="submit" disabled={loading} className="luxury-button luxury-button--gold luxury-button--compact w-full sm:w-auto tap-target">
         {loading ? "Sending..." : "Send Message"}
-      </Button>
+      </button>
     </form>
   );
 }

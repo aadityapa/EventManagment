@@ -129,7 +129,7 @@ export function HomeAiPlanner() {
           <div><label className="mb-2 flex items-center gap-2 text-sm text-muted"><Wallet className="h-4 w-4 text-[var(--glitz-gold)]" /> Budget</label><OptionChips options={BUDGETS} val={budget} onSelect={setBudget} /></div>
           <div><label className="mb-2 flex items-center gap-2 text-sm text-muted"><Users className="h-4 w-4 text-[var(--glitz-gold)]" /> Guests</label><OptionChips options={GUESTS} val={guests} onSelect={setGuests} /></div>
           <div><label className="mb-2 flex items-center gap-2 text-sm text-muted"><MapPin className="h-4 w-4 text-[var(--glitz-gold)]" /> Location</label><OptionChips options={LOCS} val={loc} onSelect={setLoc} /></div>
-          <button type="button" onClick={generate} disabled={!type || !budget || !guests || !loc || loading} className="w-full rounded-lg bg-[var(--glitz-gold)] py-3.5 text-sm font-semibold text-[#0A0A0A] shadow-[var(--glitz-glow)] disabled:opacity-40">{loading ? "Crafting..." : "Generate Luxury Proposal"}</button>
+          <button type="button" onClick={generate} disabled={!type || !budget || !guests || !loc || loading} className="luxury-button luxury-button--gold luxury-button--full tap-target">{loading ? "Crafting..." : "Generate Luxury Proposal"}</button>
         </div>
         <div className="brand-surface p-6 sm:p-8">
           {plan ? (

@@ -153,14 +153,14 @@ export function PricingView() {
                         )
                       }
                       className={cn(
-                        "mt-8 block rounded-[var(--v4-radius-sm)] py-3 text-center text-sm font-semibold transition-all btn-premium-hover tap-target",
+                        "luxury-button luxury-button--full mt-8 tap-target",
                         col.featured
-                          ? "btn-gold-metallic"
-                          : "border border-[var(--glitz-gold)]/40 text-[var(--glitz-gold)] hover:bg-[var(--glitz-gold)]/10"
+                          ? "luxury-button--gold"
+                          : "luxury-button--ghost"
                       )}
                     >
                       Request Consultation{" "}
-                      <ArrowRight className="ml-1 inline h-3.5 w-3.5" aria-hidden="true" />
+                      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </Link>
                   </GlassPanel>
                 </motion.div>

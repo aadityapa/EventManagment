@@ -261,21 +261,21 @@ export function BrandHeader() {
                               <Link
                                 href="/book-event"
                                 onClick={() => setServicesOpen(false)}
-                                className="brand-mega-menu__cta-btn brand-mega-menu__cta-btn--gold"
+                                className="luxury-button luxury-button--gold luxury-button--compact tap-target"
                               >
                                 Book Consultation
                               </Link>
                               <Link
                                 href="/services"
                                 onClick={() => setServicesOpen(false)}
-                                className="brand-mega-menu__cta-btn"
+                                className="luxury-button luxury-button--ghost luxury-button--compact tap-target"
                               >
                                 Explore Experiences
                               </Link>
                               <Link
                                 href="/portfolio"
                                 onClick={() => setServicesOpen(false)}
-                                className="brand-mega-menu__cta-btn"
+                                className="luxury-button luxury-button--ghost luxury-button--compact tap-target"
                               >
                                 View Portfolio
                               </Link>

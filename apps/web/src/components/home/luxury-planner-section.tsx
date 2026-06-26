@@ -259,13 +259,13 @@ export function LuxuryPlannerSection() {
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
               </Button>
               {step < 5 ? (
-                <Button onClick={() => setStep((s) => s + 1)} disabled={!canNext()}>
-                  Next <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <button type="button" onClick={() => setStep((s) => s + 1)} disabled={!canNext()} className="luxury-button luxury-button--gold luxury-button--compact tap-target">
+                  Next <ArrowRight className="h-4 w-4" />
+                </button>
               ) : (
-                <Button onClick={submit} disabled={!canNext() || submitting}>
+                <button type="button" onClick={submit} disabled={!canNext() || submitting} className="luxury-button luxury-button--gold luxury-button--compact tap-target">
                   {submitting ? "Submitting..." : "Submit & WhatsApp"}
-                </Button>
+                </button>
               )}
             </div>
           )}

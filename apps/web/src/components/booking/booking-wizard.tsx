@@ -742,14 +742,15 @@ export function BookingWizard({ variant = "default" }: { variant?: "default" | "
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <Button
+              <button
+                type="button"
                 onClick={() => void next()}
                 disabled={!canProceed()}
-                className="w-full btn-gold-metallic sm:w-auto"
+                className="luxury-button luxury-button--gold luxury-button--compact w-full sm:w-auto tap-target"
               >
                 {step === 8 ? (isPaying ? "Processing..." : "Confirm & Pay") : "Continue"}
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </button>
             </div>
           )}
         </div>

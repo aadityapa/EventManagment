@@ -32,7 +32,7 @@ export function HomeFaq() {
           <Link
             href="/contact"
             onClick={() => analytics.ctaClick("chat_with_team", "home_faq")}
-            className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-lg bg-[var(--glitz-gold)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] transition-all hover:shadow-[var(--glitz-glow)] btn-premium-hover tap-target"
+            className="luxury-button luxury-button--gold luxury-button--compact shrink-0 tap-target"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
             Chat with our team

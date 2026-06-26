@@ -95,8 +95,8 @@ export function HomePlanner() {
           {step < 6 && (
             <div className="mt-8 flex justify-between">
               <button type="button" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="flex items-center gap-1 text-sm text-muted disabled:opacity-40"><ArrowLeft className="h-4 w-4" /> Back</button>
-              {step < 5 ? <button type="button" onClick={() => setStep((s) => s + 1)} disabled={!ok()} className="flex items-center gap-1 rounded-lg bg-[var(--glitz-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-40">Next <ArrowRight className="h-4 w-4" /></button>
-                : <button type="button" onClick={submit} disabled={!ok() || loading} className="rounded-lg bg-[var(--glitz-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-40">{loading ? "Sending..." : "Submit & WhatsApp"}</button>}
+              {step < 5 ? <button type="button" onClick={() => setStep((s) => s + 1)} disabled={!ok()} className="luxury-button luxury-button--gold luxury-button--compact tap-target">Next <ArrowRight className="h-4 w-4" /></button>
+                : <button type="button" onClick={submit} disabled={!ok() || loading} className="luxury-button luxury-button--gold luxury-button--compact tap-target">{loading ? "Sending..." : "Submit & WhatsApp"}</button>}
             </div>
           )}
         </div>

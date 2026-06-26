@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Phone, Loader2, CheckCircle2 } from "lucide-react";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
 import { SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
 export function CallbackRequestForm() {
   const [name, setName] = useState("");
@@ -62,10 +61,7 @@ export function CallbackRequestForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className={cn(
-          "flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--glitz-gold)] py-3.5 text-sm font-semibold text-[#0A0A0A]",
-          status === "loading" && "opacity-70"
-        )}
+        className="luxury-button luxury-button--gold luxury-button--full tap-target"
       >
         {status === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Phone className="h-4 w-4" />}
         Request Callback

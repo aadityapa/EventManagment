@@ -34,7 +34,7 @@ export function TestimonialsView() {
         </div>
         <div ref={emblaRef} className="overflow-hidden"><div className="flex gap-6">{testimonials.map((t, i) => (
           <div key={t.id} className="min-w-0 flex-[0_0_100%] lg:flex-[0_0_70%]">
-            <div className={cn("brand-surface flex flex-col gap-6 p-8 sm:flex-row sm:items-center", sel !== i && "opacity-70")}>
+            <div className={cn("testimonial-lux-card flex flex-col gap-6 p-8 sm:flex-row sm:items-center", sel === i ? "is-active" : "opacity-60")}>
               <BrandImage src={t.image} alt={t.name} width={80} height={80} className="h-20 w-20 shrink-0 rounded-full border-2 border-[var(--glitz-gold)]/40" />
               <div><Quote className="mb-2 h-5 w-5 text-[var(--glitz-gold)]/50" /><div className="mb-2 flex gap-1">{Array.from({ length: t.rating }).map((_, j) => <Star key={j} className="h-4 w-4 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div><blockquote className="brand-display text-lg">&ldquo;{t.content}&rdquo;</blockquote><p className="mt-3 font-semibold">{t.name}</p><p className="text-sm text-muted">{t.role}</p></div>
             </div>
@@ -44,7 +44,7 @@ export function TestimonialsView() {
       <BrandSection alt>
         <BrandHeader label="Google Reviews" title="4.9 Star Excellence" center />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{testimonials.map((t) => (
-          <article key={t.id} className="brand-surface p-6"><div className="flex gap-1">{Array.from({ length: t.rating }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div><p className="mt-3 text-sm text-muted line-clamp-4">&ldquo;{t.content}&rdquo;</p><div className="mt-4 flex items-center gap-3"><BrandImage src={t.image} alt={t.name} width={40} height={40} className="h-10 w-10 rounded-full" /><div><p className="text-sm font-medium">{t.name}</p><p className="text-xs text-muted">{t.role}</p></div></div></article>
+          <article key={t.id} className="testimonial-lux-card p-6"><div className="flex gap-1">{Array.from({ length: t.rating }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div><p className="mt-3 text-sm text-muted line-clamp-4">&ldquo;{t.content}&rdquo;</p><div className="mt-4 flex items-center gap-3"><BrandImage src={t.image} alt={t.name} width={40} height={40} className="h-10 w-10 rounded-full" /><div><p className="text-sm font-medium">{t.name}</p><p className="text-xs text-muted">{t.role}</p></div></div></article>
         ))}</div>
       </BrandSection>
     </div>

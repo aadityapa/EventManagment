@@ -124,7 +124,7 @@ export function AiExperienceView() {
                   type="button"
                   onClick={sendChat}
                   disabled={chatLoading}
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-lg btn-gold-metallic px-6 py-2.5 text-sm font-semibold disabled:opacity-60"
+                  className="luxury-button luxury-button--gold luxury-button--compact shrink-0 tap-target"
                 >
                   Send
                 </button>

@@ -89,10 +89,10 @@ function MasonryAssetGrid({
                   targetWidth={640}
                   quality={75}
                   priority={i < 2}
-                  className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="h-auto w-full transition-transform duration-700 group-hover:scale-105 motion-reduce:transform-none"
                 />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-5">
-                  <div>
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/85 via-black/30 to-transparent p-4 opacity-0 transition-all duration-500 group-hover:opacity-100 motion-reduce:transition-none sm:p-5">
+                  <div className="translate-y-2 transition-transform duration-500 group-hover:translate-y-0 motion-reduce:transform-none">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--glitz-gold)]">
                       {MEDIA_CATEGORY_LABELS[asset.category]}
                     </span>

@@ -268,7 +268,7 @@ export function VenuesView() {
       </section>
 
       {/* Filters — sticky bar */}
-      <section id="venues" className="sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl scroll-mt-24">
+      <section id="venues" className="venue-lux-filter sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] backdrop-blur-xl scroll-mt-24">
         <div className="brand-container py-4">
           <div className="mb-3 flex items-center gap-2 text-sm text-muted">
             <Filter className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
@@ -333,7 +333,7 @@ export function VenuesView() {
               </div>
               <Link
                 href="/book-event"
-                className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[var(--glitz-gold)] hover:underline"
+                className="luxury-button luxury-button--text luxury-button--compact mt-3 tap-target"
               >
                 Request availability for compared venues
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -404,7 +404,7 @@ export function VenuesView() {
                     <div className="mt-4 flex gap-2">
                       <Link
                         href="/book-event"
-                        className="flex-1 rounded-[var(--v4-radius-sm)] border border-[var(--glitz-gold)]/40 py-2.5 text-center text-sm font-semibold text-[var(--glitz-gold)] transition-colors hover:bg-[var(--glitz-gold)]/10"
+                        className="luxury-button luxury-button--ghost luxury-button--compact flex-1 tap-target"
                       >
                         Request Availability
                       </Link>
