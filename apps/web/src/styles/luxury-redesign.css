@@ -1179,8 +1179,21 @@ body.brand-body {
   border-top-color: var(--lux-border) !important;
 }
 
-.brand-mega-menu__image {
-  border-radius: 22px !important;
+.brand-mega-menu__grid--no-media {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(2rem, 4vw, 4rem) !important;
+}
+
+@media (max-width: 768px) {
+  .brand-mega-menu__grid--no-media {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .brand-mega-menu__grid--no-media {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .brand-mega-menu__footer {

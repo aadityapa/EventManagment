@@ -7,13 +7,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, MEGA_EXPLORE_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { services } from "@/data/cms";
-import { BRAND_SERVICE_CATEGORIES } from "@/brand/data/content";
-import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { Logo } from "@/components/branding/logo";
-import { BrandImage } from "@/brand/primitives/brand-image";
 import { cn } from "@/lib/utils";
 
-const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
 const MEGA_SERVICES = services.slice(0, 10);
 const EXPERIENCE_WORLDS_NAV = [
   { label: "Wedding World", href: "/services/wedding-planning?world=wedding" },
@@ -196,31 +192,7 @@ export function BrandHeader() {
                             aria-label="Experience categories"
                             className="brand-mega-menu"
                           >
-                            <div className="brand-mega-menu__grid">
-                              <Link
-                                href={`/services/${FEATURED_SERVICE.slug}`}
-                                role="menuitem"
-                                onClick={() => setServicesOpen(false)}
-                                className="brand-mega-menu__image group relative block overflow-hidden"
-                              >
-                                <BrandImage
-                                  src={BRAND_IMAGES.weddings[0]}
-                                  alt={FEATURED_SERVICE.title}
-                                  fill
-                                  sizes="320px"
-                                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-                                <div className="absolute inset-x-0 bottom-0 p-5">
-                                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]">
-                                    Signature
-                                  </p>
-                                  <p className="mt-1 font-[family-name:var(--font-playfair)] text-lg font-semibold text-white">
-                                    Luxury Weddings
-                                  </p>
-                                </div>
-                              </Link>
-
+                            <div className="brand-mega-menu__grid brand-mega-menu__grid--no-media">
                               <div className="brand-mega-menu__col">
                                 <p className="brand-mega-menu__heading">All Experiences</p>
                                 <ul className="brand-mega-menu__list">
