@@ -8,6 +8,7 @@
   --lux-gold: #d4af37;
   --lux-rose: #c8a36a;
   --lux-purple: #6e3cbc;
+  --lux-purple-bright: #a06be6;
   --lux-violet: #3d246c;
   --lux-white: #ffffff;
   --lux-muted: #f6f6f6;
@@ -15,9 +16,37 @@
   --lux-border: rgba(255, 255, 255, 0.08);
   --lux-border-gold: rgba(212, 175, 55, 0.28);
   --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(212, 175, 55, 0.12);
+  --lux-glow-purple: 0 18px 50px rgba(110, 60, 188, 0.4);
   --lux-radius-lg: 1.5rem;
   --lux-radius-xl: 2rem;
   --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Gold section label — "— OUR EXPERTISE —" editorial caps */
+.lux-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--lux-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.lux-label::before,
+.lux-label::after {
+  content: "";
+  width: clamp(1.5rem, 4vw, 2.75rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lux-gold), transparent);
+}
+
+.lux-accent-purple {
+  background: linear-gradient(120deg, var(--lux-purple-bright), #c79bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 html {
@@ -80,6 +109,21 @@ body.brand-body {
   background: rgba(5, 8, 20, 0.74) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34), 0 0 22px rgba(212, 175, 55, 0.08) !important;
+}
+
+/* Header CTA — purple luxury pill (reference design language) */
+.brand-header-cta {
+  border-radius: 999px !important;
+  border: 1px solid rgba(160, 107, 230, 0.5) !important;
+  background: linear-gradient(135deg, var(--lux-violet) 0%, var(--lux-purple) 55%, var(--lux-purple-bright) 100%) !important;
+  color: #ffffff !important;
+  box-shadow: var(--lux-glow-purple);
+  transition: transform 0.3s var(--lux-ease), box-shadow 0.3s ease !important;
+}
+
+.brand-header-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 60px rgba(110, 60, 188, 0.5);
 }
 
 .brand-nav-link {
@@ -180,20 +224,19 @@ body.brand-body {
 }
 
 .luxury-hero__title {
-  margin-top: 1.25rem;
-  max-width: 13ch;
+  margin-top: 1.35rem;
+  max-width: 16ch;
   color: var(--lux-white);
   font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
-  font-size: clamp(4.25rem, 9vw, 8.8rem);
-  font-weight: 700;
-  line-height: 0.82;
-  letter-spacing: -0.055em;
+  font-size: clamp(2.85rem, 5.4vw, 5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-.luxury-hero__title span {
-  display: block;
-  background: linear-gradient(120deg, #ffffff 0%, #f9e9bd 38%, var(--lux-gold) 72%, #ad8b31 100%);
+.luxury-hero__accent {
+  background: linear-gradient(120deg, var(--lux-purple-bright) 0%, #c79bff 60%, #e7d2ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -214,6 +257,7 @@ body.brand-body {
   min-width: 12.5rem;
   align-items: center;
   justify-content: center;
+  gap: 0.55rem;
   overflow: hidden;
   border-radius: 999px;
   padding: 0.95rem 1.45rem;
@@ -249,6 +293,18 @@ body.brand-body {
   background: linear-gradient(135deg, #8f6b13 0%, var(--lux-gold) 36%, #fff0b1 52%, #b78724 100%);
   color: #100b03;
   box-shadow: 0 18px 48px rgba(212, 175, 55, 0.22);
+}
+
+.luxury-button--purple {
+  gap: 0.55rem;
+  border: 1px solid rgba(160, 107, 230, 0.5);
+  background: linear-gradient(135deg, var(--lux-violet) 0%, var(--lux-purple) 52%, var(--lux-purple-bright) 100%);
+  color: #ffffff;
+  box-shadow: var(--lux-glow-purple);
+}
+
+.luxury-button--purple:hover {
+  box-shadow: 0 22px 60px rgba(110, 60, 188, 0.5);
 }
 
 .luxury-button--ghost {
