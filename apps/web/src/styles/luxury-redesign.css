@@ -946,3 +946,199 @@ body.brand-body {
     text-align: left;
   }
 }
+
+/* ==========================================================================
+   Footer — reference luxury layout
+   ========================================================================== */
+
+.lux-footer {
+  position: relative;
+  margin-top: auto;
+  border-top: 1px solid var(--lux-border);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(110, 60, 188, 0.14), transparent 26rem),
+    radial-gradient(circle at 88% 10%, rgba(212, 175, 55, 0.08), transparent 24rem),
+    #04060f;
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.lux-footer__grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: 1fr;
+}
+
+.lux-footer__brand .brand-logo--footer {
+  --footer-logo-width: 12rem;
+}
+
+.lux-footer__tagline {
+  margin-top: 1.1rem;
+  max-width: 22rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.lux-footer__socials {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.lux-social {
+  display: inline-flex;
+  height: 2.6rem;
+  width: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--lux-border);
+  background: var(--lux-card);
+  color: var(--text-secondary);
+  transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lux-social:hover {
+  color: var(--lux-gold);
+  border-color: var(--lux-border-gold);
+  box-shadow: 0 0 22px rgba(212, 175, 55, 0.16);
+}
+
+.lux-footer__heading {
+  color: var(--lux-white);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.1rem;
+}
+
+.lux-footer__list,
+.lux-footer__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.lux-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  transition: color 0.25s ease, transform 0.25s var(--lux-ease);
+}
+
+.lux-footer__link:hover {
+  color: var(--lux-gold);
+  transform: translateX(2px);
+}
+
+.lux-footer__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.lux-newsletter {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 22rem;
+  border: 1px solid var(--lux-border);
+  border-radius: 999px;
+  background: var(--lux-card);
+  padding: 0.35rem 0.35rem 0.35rem 1.1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lux-newsletter:focus-within {
+  border-color: rgba(160, 107, 230, 0.5);
+  box-shadow: var(--lux-glow-purple);
+}
+
+.lux-newsletter__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--lux-white);
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.lux-newsletter__input::placeholder {
+  color: var(--text-muted);
+}
+
+.lux-newsletter__btn {
+  display: inline-flex;
+  height: 2.6rem;
+  width: 2.6rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--lux-violet), var(--lux-purple) 55%, var(--lux-purple-bright));
+  color: #fff;
+  transition: transform 0.3s var(--lux-ease), box-shadow 0.3s ease;
+}
+
+.lux-newsletter__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--lux-glow-purple);
+}
+
+.lux-footer__divider {
+  margin-block: clamp(2rem, 4vw, 3rem) 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lux-border-gold), transparent);
+}
+
+.lux-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.lux-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.25rem;
+}
+
+.lux-footer__url {
+  color: var(--lux-gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 640px) {
+  .lux-footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lux-footer__grid {
+    grid-template-columns: 1.6fr 1fr 1.2fr 1.4fr;
+  }
+
+  .lux-footer__bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}

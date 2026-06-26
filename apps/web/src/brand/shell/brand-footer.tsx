@@ -1,61 +1,28 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { toast } from "sonner";
 import { Logo } from "@/components/branding/logo";
-import { BrandButton } from "@/brand/primitives/brand-button";
-import { MagneticButton } from "@/components/effects/magnetic-button";
-import { GENERATED_BRAND_IMAGES } from "@/brand/data/brand-images.generated";
-import { ScrollReveal } from "@/lib/motion";
-import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { SITE_CONFIG } from "@/lib/constants";
 import { analytics } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-const GoldParticles = dynamic(
-  () => import("@/components/effects/gold-particles").then((m) => m.GoldParticles),
-  { ssr: false }
-);
-
-const EXPERIENCE_LINKS = [
-  { href: "/services/wedding-planning", label: "Luxury Weddings" },
-  { href: "/services/corporate-events", label: "Corporate Experiences" },
-  { href: "/services/destination-weddings", label: "Destination Weddings" },
-  { href: "/services/celebrity-management", label: "Celebrity Events" },
-  { href: "/services/brand-promotions", label: "Brand Activations" },
-  { href: "/services/event-production", label: "Award Ceremonies" },
-  { href: "/services/fashion-shows", label: "Fashion Shows" },
-] as const;
-
-const TRUST_METRICS = [
-  { end: 12, suffix: "+", label: "Years", decimals: 0 },
-  { end: 1000, suffix: "+", label: "Events", decimals: 0 },
-  { end: 500, suffix: "+", label: "Clients", decimals: 0 },
-  { end: 4.9, suffix: "", label: "Rating", decimals: 1 },
-] as const;
-
-const FEATURED_CLIENTS = [
-  "Netflix",
-  "Amazon",
-  "Google",
-  "Taj Hotels",
-  "JW Marriott",
-  "ITC",
-  "Hyatt",
-  "Mahindra",
-  "Aditya Birla Group",
+const QUICK_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact Us" },
 ] as const;
 
 const LEGAL_LINKS = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms & Conditions" },
   { href: "/refund", label: "Refund Policy" },
-  { href: "/privacy#cookies", label: "Cookies" },
   { href: "/sitemap.xml", label: "Sitemap", external: true },
 ] as const;
 
@@ -99,111 +66,64 @@ const SOCIAL_LINKS = [
   { href: `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`, label: "WhatsApp", icon: MessageCircle },
 ] as const;
 
-function FooterBg() {
-  const poster = GENERATED_BRAND_IMAGES.hero.poster;
-  return (
-    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={poster} alt="" className="h-full w-full scale-105 object-cover opacity-35 blur-sm" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--footer-bg)]/90 via-[var(--footer-bg)]/95 to-[var(--footer-bg)]" />
-    </div>
-  );
-}
-
-function StatGrid() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGsapContext(ref, () => {
-    ref.current?.querySelectorAll("[data-count]").forEach((el) => {
-      const node = el as HTMLElement;
-      const end = Number(node.dataset.end);
-      const suffix = node.dataset.suffix ?? "";
-      const decimals = Number(node.dataset.decimals ?? 0);
-      const obj = { v: 0 };
-      gsap.to(obj, {
-        v: end,
-        duration: 2,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 92%", once: true },
-        onUpdate: () => {
-          const val = decimals ? obj.v.toFixed(decimals) : Math.round(obj.v).toLocaleString("en-IN");
-          node.textContent = `${val}${suffix}`;
-        },
-      });
-    });
-  }, []);
-
-  return (
-    <div ref={ref} className="site-footer__stat-grid">
-      {TRUST_METRICS.map((m) => (
-        <div key={m.label} className="site-footer__stat-card">
-          <p
-            data-count
-            data-end={m.end}
-            data-suffix={m.suffix}
-            data-decimals={m.decimals}
-            className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[var(--footer-accent)] sm:text-4xl"
-          >
-            0{m.suffix}
-          </p>
-          <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--footer-text-muted)]">{m.label}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ClientMarquee() {
-  const items = [...FEATURED_CLIENTS, ...FEATURED_CLIENTS];
-  return (
-    <div className="relative overflow-hidden py-1">
-      <div className="site-footer__marquee-fade pointer-events-none absolute inset-y-0 left-0 z-10 w-16" aria-hidden />
-      <div className="site-footer__marquee-fade site-footer__marquee-fade--right pointer-events-none absolute inset-y-0 right-0 z-10 w-16" aria-hidden />
-      <div className="brand-marquee gap-12 px-4">
-        {items.map((name, i) => (
-          <span
-            key={`${name}-${i}`}
-            className="flex shrink-0 items-center gap-3 whitespace-nowrap font-[family-name:var(--font-playfair)] text-sm text-[var(--footer-text-muted)]"
-          >
-            <span className="h-px w-5 bg-[var(--footer-accent)]/40" aria-hidden />
-            {name}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function SocialIconLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) {
-  const external = href.startsWith("http");
   return (
     <motion.a
       href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label={`Follow Nexyyra on ${label}`}
-      className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-[var(--footer-border)] bg-[var(--footer-card)] text-[var(--footer-text-secondary)] backdrop-blur-md transition-colors hover:border-[var(--footer-accent)] hover:text-[var(--footer-accent)] sm:h-14 sm:w-14"
+      className="lux-social"
       whileHover={{ scale: 1.06, y: -2 }}
       whileTap={{ scale: 0.96 }}
     >
-      <Icon className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
+      <Icon className="h-5 w-5" />
     </motion.a>
   );
 }
 
-function FooterColumnHeading({ children }: { children: React.ReactNode }) {
-  return <h3 className="site-footer__heading mb-4">{children}</h3>;
+function FooterNewsletter() {
+  const [email, setEmail] = useState("");
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const value = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    analytics.ctaClick("newsletter_subscribe", "footer");
+    void fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: value, source: "newsletter" }),
+    }).catch(() => {});
+    toast.success("You're on the list — welcome to Nexyyra.");
+    setEmail("");
+  };
+
+  return (
+    <form className="lux-newsletter" onSubmit={onSubmit}>
+      <label htmlFor="footer-newsletter" className="sr-only">Email address</label>
+      <input
+        id="footer-newsletter"
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        className="lux-newsletter__input"
+        autoComplete="email"
+      />
+      <button type="submit" className="lux-newsletter__btn tap-target" aria-label="Subscribe to newsletter">
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </button>
+    </form>
+  );
 }
 
-function FooterBrandCopy({ descriptionClassName }: { descriptionClassName?: string }) {
-  return (
-    <>
-      <Logo variant="footer" href="/" className="mb-3" />
-      <p className={cn("site-footer__description", descriptionClassName)}>
-        Crafting unforgettable experiences through luxury, innovation and timeless storytelling.
-      </p>
-    </>
-  );
+function FooterHeading({ children }: { children: React.ReactNode }) {
+  return <h3 className="lux-footer__heading">{children}</h3>;
 }
 
 export function BrandFooter() {
@@ -215,140 +135,74 @@ export function BrandFooter() {
   const mailHref = `mailto:${SITE_CONFIG.email}`;
 
   return (
-    <>
-      <footer className="site-footer relative mt-auto overflow-x-clip" role="contentinfo">
-        <FooterBg />
-        <div className="pointer-events-none absolute inset-0 -z-[5] opacity-25">
-          <GoldParticles className="h-full w-full" />
+    <footer className="lux-footer" role="contentinfo">
+      <div className="brand-container">
+        <div className="lux-footer__grid">
+          <div className="lux-footer__brand">
+            <Logo variant="footer" href="/" />
+            <p className="lux-footer__tagline">
+              Crafting experiences that inspire, celebrate and become unforgettable.
+            </p>
+            <div className="lux-footer__socials">
+              {SOCIAL_LINKS.map((s) => (
+                <SocialIconLink key={s.label} {...s} />
+              ))}
+            </div>
+          </div>
+
+          <nav className="lux-footer__col" aria-label="Quick links">
+            <FooterHeading>Quick Links</FooterHeading>
+            <ul className="lux-footer__list">
+              {QUICK_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="lux-footer__link">{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="lux-footer__col">
+            <FooterHeading>Contact Us</FooterHeading>
+            <ul className="lux-footer__contact">
+              <li>
+                <a href={telHref} className="lux-footer__link">
+                  <Phone className="h-4 w-4 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.phone}
+                </a>
+              </li>
+              <li>
+                <a href={mailHref} className="lux-footer__link">
+                  <Mail className="h-4 w-4 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.email}
+                </a>
+              </li>
+              <li className="lux-footer__contact-item">
+                <MapPin className="h-4 w-4 shrink-0 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.address}
+              </li>
+            </ul>
+          </div>
+
+          <div className="lux-footer__col">
+            <FooterHeading>Newsletter</FooterHeading>
+            <p className="lux-footer__tagline">Stay updated with our latest events and offers.</p>
+            <FooterNewsletter />
+          </div>
         </div>
 
-        {/* CTA band */}
-        <section className="border-b border-[var(--footer-border)] py-10 md:py-12" aria-labelledby="footer-cta-heading">
-          <div className="brand-container max-w-3xl text-center">
-            <ScrollReveal preset="fade">
-              <span className="v4-kicker mb-4 justify-center text-[var(--footer-accent)]">The Final Scene</span>
-              <h2 id="footer-cta-heading" className="nex-section-text font-[family-name:var(--font-playfair)] font-semibold text-[var(--footer-text)]">
-                Ready To Create
-                <br />
-                <span className="v4-gold-text">The Next Era Of Celebrations?</span>
-              </h2>
-              <p className="mx-auto mt-4 max-w-md text-[var(--footer-text-secondary)]">Luxury experiences designed for visionaries.</p>
-              <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
-                <MagneticButton>
-                  <BrandButton href="/book-event" variant="gold" className="w-full sm:min-w-[200px]" onClick={() => analytics.ctaClick("book_consultation", "footer")}>
-                    Book Consultation
-                  </BrandButton>
-                </MagneticButton>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
+        <div className="lux-footer__divider" aria-hidden />
 
-        <div className="brand-container py-12 md:py-16">
-          {/* Mobile brand + accordion — avoid site-footer__brand-block here; its display:flex overrides lg:hidden */}
-          <div className="mb-6 flex flex-col gap-3 lg:hidden md:mb-8 md:gap-4">
-            <FooterBrandCopy descriptionClassName="max-w-md" />
-          </div>
-          <div className="mb-8 lg:hidden">
-            <Accordion type="single" collapsible className="space-y-2">
-              <AccordionItem value="experiences" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
-                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Experiences</AccordionTrigger>
-                <AccordionContent className="px-4 pb-4">
-                  <ul className="space-y-2">
-                    {EXPERIENCE_LINKS.map((link) => (
-                      <li key={link.label}>
-                        <Link href={link.href} className="site-footer__link tap-target block py-1.5 text-sm">{link.label}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="contact" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
-                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Contact</AccordionTrigger>
-                <AccordionContent className="px-4 pb-4">
-                  <ul className="space-y-3 text-sm text-[var(--footer-text-secondary)]">
-                    <li className="flex gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.address}</li>
-                    <li><a href={telHref} className="site-footer__link flex gap-3 py-1"><Phone className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.phone}</a></li>
-                    <li><a href={mailHref} className="site-footer__link flex gap-3 py-1"><Mail className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.email}</a></li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="social" className="rounded-xl border border-[var(--footer-border)] bg-[var(--footer-card)] px-0">
-                <AccordionTrigger className="site-footer__heading tap-target px-4 py-3 hover:no-underline">Social</AccordionTrigger>
-                <AccordionContent className="px-4 pb-4">
-                  <div className="flex flex-wrap gap-3">
-                    {SOCIAL_LINKS.map((s) => (
-                      <SocialIconLink key={s.label} {...s} />
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-
-          {/* 12-column desktop grid — 4 equal columns */}
-          <div className="hidden grid-cols-12 gap-8 lg:grid xl:gap-10">
-            <div className="col-span-3 space-y-4">
-              <FooterColumnHeading>Brand</FooterColumnHeading>
-              <FooterBrandCopy descriptionClassName="max-w-sm" />
-            </div>
-            <div className="col-span-3">
-              <FooterColumnHeading>Experiences</FooterColumnHeading>
-              <ul className="space-y-2.5">
-                {EXPERIENCE_LINKS.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="site-footer__link group inline-flex items-center text-sm">
-                      <span className="mr-0 h-px w-0 bg-[var(--footer-accent)] transition-all group-hover:mr-2 group-hover:w-3" />
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="col-span-3">
-              <FooterColumnHeading>Contact</FooterColumnHeading>
-              <ul className="space-y-3 text-sm text-[var(--footer-text-secondary)]">
-                <li className="flex gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.address}</li>
-                <li><a href={telHref} className="site-footer__link flex gap-3"><Phone className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.phone}</a></li>
-                <li><a href={mailHref} className="site-footer__link flex gap-3"><Mail className="h-4 w-4 text-[var(--footer-accent)]" aria-hidden />{SITE_CONFIG.email}</a></li>
-              </ul>
-            </div>
-            <div className="col-span-3">
-              <FooterColumnHeading>Social</FooterColumnHeading>
-              <div className="flex flex-wrap gap-3">
-                {SOCIAL_LINKS.map((s) => (
-                  <SocialIconLink key={s.label} {...s} />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Statistics */}
-          <div className="mt-10 border-y border-[var(--footer-border)] py-8 md:mt-12">
-            <StatGrid />
-          </div>
-
-          {/* Trust marquee */}
-          <div className="py-8">
-            <p className="site-footer__heading mb-5 text-center">Trusted By Visionaries</p>
-            <ClientMarquee />
-          </div>
-
-          {/* Legal */}
-          <div className="flex flex-col items-center justify-between gap-4 border-t border-[var(--footer-border)] pt-6 text-sm text-[var(--footer-text-muted)] sm:flex-row">
-            <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.</p>
-            <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
-              {LEGAL_LINKS.map((l) =>
-                "external" in l && l.external ? (
-                  <a key={l.href} href={l.href} className="site-footer__link">{l.label}</a>
-                ) : (
-                  <Link key={l.href} href={l.href} className="site-footer__link">{l.label}</Link>
-                )
-              )}
-            </nav>
-          </div>
+        <div className="lux-footer__bottom">
+          <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.</p>
+          <nav aria-label="Legal links" className="lux-footer__legal">
+            {LEGAL_LINKS.map((l) =>
+              "external" in l && l.external ? (
+                <a key={l.href} href={l.href} className="lux-footer__link">{l.label}</a>
+              ) : (
+                <Link key={l.href} href={l.href} className="lux-footer__link">{l.label}</Link>
+              )
+            )}
+          </nav>
+          <a href={SITE_CONFIG.url} className="lux-footer__url">www.nexyyra.com</a>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }
