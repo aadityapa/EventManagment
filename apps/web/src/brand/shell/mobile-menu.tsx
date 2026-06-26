@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Mail, MessageCircle, Phone } from "lucide-react";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
@@ -22,14 +23,21 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
-const DRAWER_MOTION = {
+const PANEL_MOTION = {
   initial: { opacity: 0, x: "100%" },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: "100%" },
-  transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] as const },
+  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-const REDUCED_MOTION = {
+const OVERLAY_MOTION = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.35, ease: "easeOut" as const },
+};
+
+const REDUCED_PANEL = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
@@ -40,7 +48,12 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [experiencesOpen, setExperiencesOpen] = useState(false);
-  const motionProps = prefersReducedMotion ? REDUCED_MOTION : DRAWER_MOTION;
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+  const panelMotion = prefersReducedMotion ? REDUCED_PANEL : PANEL_MOTION;
 
   const handleClose = useCallback(() => {
     setExperiencesOpen(false);
@@ -76,31 +89,38 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`;
   const phoneHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 
-  return (
+  if (!isClient) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          id="mobile-nav-drawer"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation menu"
-          className="mobile-nav-drawer lg:hidden"
-          {...motionProps}
-        >
-          <div className="mobile-nav-drawer__veil" aria-hidden="true" />
-          <div className="mobile-nav-drawer__noise" aria-hidden="true" />
+        <>
+          <motion.button
+            type="button"
+            className="mobile-nav__overlay lg:hidden"
+            aria-label="Close menu"
+            onClick={handleClose}
+            {...OVERLAY_MOTION}
+          />
 
-          <div className="mobile-nav-drawer__content">
-            <nav className="mobile-nav-drawer__links" aria-label="Mobile navigation">
+          <motion.div
+            id="mobile-nav-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            className="mobile-nav__panel lg:hidden"
+            {...panelMotion}
+          >
+            <nav className="mobile-nav__links" aria-label="Mobile navigation">
               {NAV_LINKS.map((link) => {
                 if (link.href === "/services") {
                   const servicesActive = pathname.startsWith("/services");
                   return (
-                    <div key={link.href} className="mobile-nav-drawer__accordion">
+                    <div key={link.href} className="mobile-nav__accordion">
                       <button
                         type="button"
                         className={cn(
-                          "mobile-nav-drawer__link mobile-nav-drawer__accordion-trigger tap-target",
+                          "mobile-nav__link mobile-nav__accordion-trigger tap-target",
                           servicesActive && "is-active"
                         )}
                         onClick={() => setExperiencesOpen((v) => !v)}
@@ -109,10 +129,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       >
                         {link.label}
                         <ChevronDown
-                          className={cn(
-                            "mobile-nav-drawer__chevron",
-                            experiencesOpen && "is-open"
-                          )}
+                          className={cn("mobile-nav__chevron", experiencesOpen && "is-open")}
                           aria-hidden="true"
                         />
                       </button>
@@ -120,7 +137,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {experiencesOpen && (
                           <motion.div
                             id="mobile-experience-accordion"
-                            className="mobile-nav-drawer__accordion-panel"
+                            className="mobile-nav__accordion-panel"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
@@ -130,7 +147,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                 : { duration: 0.28, ease: [0.22, 1, 0.36, 1] }
                             }
                           >
-                            <div className="mobile-nav-drawer__accordion-inner">
+                            <div className="mobile-nav__accordion-inner">
                               {EXPERIENCE_CATEGORIES.map((item) => {
                                 const active = isNavActive(pathname, item.href);
                                 return (
@@ -139,10 +156,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                     href={item.href}
                                     onClick={handleClose}
                                     aria-current={active ? "page" : undefined}
-                                    className={cn(
-                                      "mobile-nav-drawer__sub-link tap-target",
-                                      active && "is-active"
-                                    )}
+                                    className={cn("mobile-nav__sub-link tap-target", active && "is-active")}
                                   >
                                     {item.label}
                                   </Link>
@@ -163,55 +177,61 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     href={link.href}
                     onClick={handleClose}
                     aria-current={active ? "page" : undefined}
-                    className={cn("mobile-nav-drawer__link tap-target", active && "is-active")}
+                    className={cn("mobile-nav__link tap-target", active && "is-active")}
                   >
                     {link.label}
                   </Link>
                 );
               })}
+
+              <Link
+                href="/book-event"
+                onClick={handleClose}
+                aria-current={pathname === "/book-event" ? "page" : undefined}
+                className={cn(
+                  "mobile-nav__link tap-target",
+                  pathname === "/book-event" && "is-active"
+                )}
+              >
+                Book Consultation
+              </Link>
             </nav>
 
-            <div className="mobile-nav-drawer__footer">
-              <a href={phoneHref} className="mobile-nav-drawer__contact tap-target">
-                <Phone className="mobile-nav-drawer__contact-icon" aria-hidden="true" />
+            <footer className="mobile-nav__footer">
+              <a href={phoneHref} className="mobile-nav__contact tap-target">
+                <Phone className="mobile-nav__contact-icon" aria-hidden="true" />
                 {SITE_CONFIG.phone}
               </a>
               <a
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mobile-nav-drawer__contact tap-target"
+                className="mobile-nav__contact tap-target"
               >
-                <MessageCircle className="mobile-nav-drawer__contact-icon" aria-hidden="true" />
+                <MessageCircle className="mobile-nav__contact-icon" aria-hidden="true" />
                 WhatsApp
               </a>
               <a
                 href={SITE_CONFIG.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mobile-nav-drawer__contact tap-target"
+                className="mobile-nav__contact tap-target"
               >
-                <InstagramIcon className="mobile-nav-drawer__contact-icon" />
+                <InstagramIcon className="mobile-nav__contact-icon" />
                 Instagram
               </a>
-              <a
-                href={`mailto:${SITE_CONFIG.email}`}
-                className="mobile-nav-drawer__contact tap-target"
-              >
-                <Mail className="mobile-nav-drawer__contact-icon" aria-hidden="true" />
+              <a href={`mailto:${SITE_CONFIG.email}`} className="mobile-nav__contact tap-target">
+                <Mail className="mobile-nav__contact-icon" aria-hidden="true" />
                 {SITE_CONFIG.email}
               </a>
-              <Link
-                href="/book-event"
-                onClick={handleClose}
-                className="mobile-nav-drawer__cta tap-target"
-              >
+              <Link href="/book-event" onClick={handleClose} className="mobile-nav__cta tap-target">
                 Book Consultation
               </Link>
-            </div>
-          </div>
-        </motion.div>
+            </footer>
+          </motion.div>
+        </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
