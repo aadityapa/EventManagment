@@ -285,6 +285,29 @@ export function BrandHeader() {
                                 </ul>
                               </div>
                             </div>
+                            <div className="brand-mega-menu__footer">
+                              <Link
+                                href="/book-event"
+                                onClick={() => setServicesOpen(false)}
+                                className="brand-mega-menu__cta-btn brand-mega-menu__cta-btn--gold"
+                              >
+                                Book Consultation
+                              </Link>
+                              <Link
+                                href="/services"
+                                onClick={() => setServicesOpen(false)}
+                                className="brand-mega-menu__cta-btn"
+                              >
+                                Explore Experiences
+                              </Link>
+                              <Link
+                                href="/portfolio"
+                                onClick={() => setServicesOpen(false)}
+                                className="brand-mega-menu__cta-btn"
+                              >
+                                View Portfolio
+                              </Link>
+                            </div>
                           </div>
                         </motion.div>
                       )}

@@ -1147,6 +1147,79 @@ body.brand-body {
    Inner-page inheritance — lift shared section classes to the luxury system
    ========================================================================== */
 
+/* Mega menu — dark luxury glass panel with gradient border */
+.brand-mega-menu {
+  width: min(94vw, 90rem) !important;
+  max-width: 90rem !important;
+  border: 1px solid transparent !important;
+  border-radius: 30px !important;
+  background:
+    linear-gradient(rgba(7, 10, 24, 0.96), rgba(7, 10, 24, 0.96)) padding-box,
+    linear-gradient(135deg, rgba(212, 175, 55, 0.55), rgba(110, 60, 188, 0.55)) border-box !important;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55), 0 0 70px rgba(110, 60, 188, 0.16) !important;
+  backdrop-filter: blur(30px) !important;
+  -webkit-backdrop-filter: blur(30px) !important;
+}
+
+.brand-mega-menu__heading {
+  color: var(--lux-gold) !important;
+}
+
+.brand-mega-menu__link {
+  color: rgba(246, 246, 246, 0.82) !important;
+}
+
+.brand-mega-menu__link:hover {
+  background-color: rgba(212, 175, 55, 0.12) !important;
+  color: var(--lux-gold) !important;
+}
+
+.brand-mega-menu__cta {
+  color: var(--lux-gold) !important;
+  border-top-color: var(--lux-border) !important;
+}
+
+.brand-mega-menu__image {
+  border-radius: 22px !important;
+}
+
+.brand-mega-menu__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--lux-border);
+}
+
+.brand-mega-menu__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--lux-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--lux-white);
+  transition: transform 0.3s var(--lux-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-mega-menu__cta-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(160, 107, 230, 0.5);
+  box-shadow: var(--lux-glow-purple);
+}
+
+.brand-mega-menu__cta-btn--gold {
+  border-color: rgba(255, 238, 180, 0.36);
+  background: linear-gradient(135deg, #8f6b13 0%, var(--lux-gold) 38%, #fff0b1 54%, #b78724 100%);
+  color: #100b03;
+}
+
 .v4-display,
 .v4-hero-display {
   font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif !important;
