@@ -25,7 +25,7 @@ export function HomeCta() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-2xl border border-[var(--glitz-gold)]/25 bg-gradient-to-br from-[var(--glitz-card)] to-[var(--glitz-surface-elevated)] p-10 text-center shadow-[var(--shadow-glow-gold-sm)] sm:p-14 lg:p-16"
+          className="relative rounded-2xl border border-[var(--glitz-gold)]/25 bg-gradient-to-br from-[var(--glitz-card)] to-[var(--glitz-surface-elevated)] p-10 text-center shadow-[var(--shadow-glow-gold-sm)] sm:p-14 lg:p-16"
         >
           <div className="brand-divider mx-auto mb-8 max-w-xs" aria-hidden="true" />
           <span className="brand-label">Begin Your Story</span>

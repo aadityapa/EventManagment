@@ -268,7 +268,7 @@ export function VenuesView() {
       </section>
 
       {/* Filters — sticky bar */}
-      <section id="venues" className="venue-lux-filter sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] backdrop-blur-xl scroll-mt-24">
+      <section id="venues" className="venue-lux-filter sticky top-[var(--header-height,3.75rem)] z-40 border-b border-[var(--glitz-border)] backdrop-blur-xl scroll-mt-[calc(var(--nav-height,4.25rem)+1rem)]">
         <div className="brand-container py-4">
           <div className="mb-3 flex items-center gap-2 text-sm text-muted">
             <Filter className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />

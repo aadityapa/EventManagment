@@ -37,7 +37,7 @@ export function BookView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
         <div className="brand-container relative w-full pb-12 pt-32 sm:pb-16">
-          <GlassPanel className="max-w-2xl px-8 py-9 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-9 sm:px-10">
             <span className="v4-kicker mb-3">Consultation</span>
             <h1 className="v4-display text-white">
               Book Your <span className="v4-gold-text">Extraordinary</span> Event

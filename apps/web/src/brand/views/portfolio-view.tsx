@@ -89,7 +89,7 @@ export function PortfolioView({ liveMedia }: { liveMedia?: MediaAsset[] }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/25" />
         <div className="brand-container relative w-full pb-14 pt-[calc(var(--nav-height)+2rem)] sm:pb-16">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Our Films</span>
             <h1 className="v4-display text-white">
               Luxury <span className="v4-gold-text">Portfolio</span>

@@ -31,7 +31,7 @@ export function HomeIntro() {
   }, []);
 
   return (
-    <section id="atelier" className="v4-section v4-dune-glow relative overflow-hidden bg-[var(--glitz-bg)]" aria-labelledby="atelier-heading">
+    <section id="atelier" className="v4-section v4-dune-glow relative overflow-visible bg-[var(--glitz-bg)] pb-12 sm:pb-16" aria-labelledby="atelier-heading">
       <div className="brand-container grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Editorial text — 7 cols */}
         <div ref={textRef} className="lg:col-span-7">
@@ -105,7 +105,7 @@ export function HomeIntro() {
             </Parallax>
           </ScrollReveal>
 
-          <Parallax distance={-40} axis="y" className="absolute -bottom-7 -left-5 sm:-left-8">
+          <Parallax distance={-40} axis="y" className="absolute -bottom-7 -left-5 z-10 sm:-left-8">
             <div className="v4-glass-liquid px-6 py-5">
               <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[var(--glitz-gold)]">
                 12<span className="text-[var(--glitz-gold-light)]">+</span>

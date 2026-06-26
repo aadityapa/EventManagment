@@ -32,8 +32,9 @@ export function HomeExpertise() {
   return (
     <section id="expertise" className="lux-section" aria-labelledby="expertise-heading">
       <div className="brand-container">
-        <div className="lux-section__head">
+        <div className="lux-section__head flex-col gap-4">
           <span className="lux-label">Our Expertise</span>
+          <h2 id="expertise-heading" className="lux-heading">What We Create</h2>
         </div>
 
         <div className="lux-expertise-grid">
@@ -53,7 +54,7 @@ export function HomeExpertise() {
                   <span className="lux-expertise-card__icon" aria-hidden>
                     <Icon className="h-6 w-6" strokeWidth={1.5} />
                   </span>
-                  <h3 id={i === 0 ? "expertise-heading" : undefined} className="lux-expertise-card__title">
+                  <h3 className="lux-expertise-card__title">
                     {item.title}
                   </h3>
                   <p className="lux-expertise-card__copy">{item.description}</p>

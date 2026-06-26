@@ -8,6 +8,11 @@ interface GlassPanelProps {
   glow?: boolean;
   /** Use stronger glass opacity variant. Default true (liquid). */
   liquid?: boolean;
+  /**
+   * Opaque panel without backdrop-filter — keeps gradient / gold headline text
+   * visible (backdrop-filter breaks background-clip:text in Chromium).
+   */
+  textSafe?: boolean;
   /** V5 variant — portal (strong blur) or commission (warm sand tint). */
   variant?: "standard" | "liquid" | "portal" | "commission";
   as?: "div" | "section" | "article";
@@ -29,15 +34,17 @@ export function GlassPanel({
   className,
   glow = false,
   liquid = true,
+  textSafe = false,
   variant,
   as: Tag = "div",
 }: GlassPanelProps) {
-  const resolved = variant ?? (liquid ? "liquid" : "standard");
+  const resolved = variant ?? (textSafe ? "standard" : liquid ? "liquid" : "standard");
 
   return (
     <Tag
       className={cn(
         "lux-panel",
+        textSafe && "lux-panel--text-safe",
         VARIANT_CLASS[resolved],
         glow && "v5-dune-glow v4-dune-glow",
         className

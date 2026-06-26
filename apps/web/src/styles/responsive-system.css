@@ -375,6 +375,11 @@ html.dark .brand-logo__img--theme-dark {
 
 .brand-mega-menu-wrap {
   pointer-events: auto;
+  position: fixed;
+  z-index: 9999;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  transform: none;
 }
 
 .brand-mega-menu {

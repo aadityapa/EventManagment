@@ -48,7 +48,7 @@ export function PricingView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Investment</span>
             <h1 className="v4-display text-white">
               The Nexyyra <span className="v4-gold-text">Collection</span>
@@ -118,7 +118,7 @@ export function PricingView() {
                     glow={col.featured}
                     className={cn(
                       "relative flex h-full flex-col p-8 transition-all duration-500 hover:-translate-y-1",
-                      col.featured && "ring-2 ring-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)] lg:-mt-4 lg:mb-4"
+                      col.featured && "lux-panel--overflow-visible ring-2 ring-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)] lg:-mt-4 lg:mb-4 lg:pt-10"
                     )}
                   >
                     {col.featured && (

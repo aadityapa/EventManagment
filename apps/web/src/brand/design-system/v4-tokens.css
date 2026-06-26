@@ -172,11 +172,17 @@
 }
 
 .v4-gold-text {
-  background: var(--glitz-gradient-gold);
+  display: inline;
+  background-image: var(--glitz-gradient-gold);
+  background-size: 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  padding-bottom: 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transform: translateZ(0);
 }
 
 /* ----------------------------------------------------------------------------

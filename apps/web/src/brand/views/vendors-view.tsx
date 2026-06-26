@@ -70,7 +70,7 @@ export function VendorsView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Partners</span>
             <h1 className="v4-display text-white">
               Luxury Vendor <span className="v4-gold-text">Marketplace</span>
@@ -84,7 +84,7 @@ export function VendorsView() {
       </section>
 
       {/* Category filters */}
-      <section className="sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl">
+      <section className="sticky top-[var(--header-height,3.75rem)] z-40 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl">
         <div className="brand-container flex flex-wrap gap-2 py-4">
           {CATS.map((c) => {
             const Icon = ICONS[c];

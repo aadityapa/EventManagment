@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, MEGA_EXPLORE_LINKS, SITE_CONFIG } from "@/lib/constants";
@@ -92,6 +92,8 @@ export function BrandHeader() {
   );
   const [scrolled, setScrolled] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
+  const megaTriggerRef = useRef<HTMLButtonElement>(null);
+  const megaMenuWrapRef = useRef<HTMLDivElement>(null);
   const hoverCapableRef = useRef(true);
   const isHome = pathname === "/";
   const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
@@ -132,6 +134,38 @@ export function BrandHeader() {
     };
   }, [servicesOpen, setServicesOpen]);
 
+  const positionMegaMenu = useCallback(() => {
+    const trigger = megaTriggerRef.current;
+    const wrap = megaMenuWrapRef.current;
+    const menu = wrap?.querySelector(".brand-mega-menu") as HTMLElement | null;
+    if (!trigger || !wrap || !menu) return;
+
+    const triggerRect = trigger.getBoundingClientRect();
+    const menuWidth = menu.offsetWidth;
+    const viewportPad = 16;
+    const centerX = triggerRect.left + triggerRect.width / 2;
+    let left = centerX - menuWidth / 2;
+    left = Math.max(viewportPad, Math.min(left, window.innerWidth - menuWidth - viewportPad));
+
+    wrap.style.left = `${left}px`;
+    wrap.style.top = `${triggerRect.bottom + 12}px`;
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!servicesOpen) return;
+    const run = () => {
+      positionMegaMenu();
+      requestAnimationFrame(() => positionMegaMenu());
+    };
+    run();
+    window.addEventListener("resize", positionMegaMenu);
+    window.addEventListener("scroll", positionMegaMenu, { passive: true });
+    return () => {
+      window.removeEventListener("resize", positionMegaMenu);
+      window.removeEventListener("scroll", positionMegaMenu);
+    };
+  }, [servicesOpen, positionMegaMenu, pathname]);
+
   if (hidden) return null;
 
   const glass = scrolled || !isHome;
@@ -160,6 +194,7 @@ export function BrandHeader() {
                 return (
                   <div key={l.href} ref={megaRef} className="relative flex h-full items-center">
                     <button
+                      ref={megaTriggerRef}
                       type="button"
                       className={cn("brand-nav-link", servicesActive && "is-active")}
                       aria-expanded={servicesOpen}
@@ -180,7 +215,8 @@ export function BrandHeader() {
                     <AnimatePresence>
                       {servicesOpen && (
                         <motion.div
-                          className="brand-mega-menu-wrap absolute left-1/2 top-full z-[9999] -translate-x-1/2 pt-3"
+                          ref={megaMenuWrapRef}
+                          className="brand-mega-menu-wrap"
                           onMouseLeave={() => {
                             if (hoverCapableRef.current) setServicesOpen(false);
                           }}

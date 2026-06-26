@@ -40,7 +40,7 @@ export function BlogView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">The Nexyyra Journal</span>
             <h1 className="v4-display text-white">
               Event <span className="v4-gold-text">Insights</span>

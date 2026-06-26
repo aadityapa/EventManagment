@@ -53,10 +53,14 @@
 }
 
 .lux-accent-purple {
-  background: linear-gradient(120deg, var(--lux-purple-bright), #c79bff);
+  display: inline;
+  background-image: linear-gradient(120deg, var(--lux-purple-bright), #c79bff);
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 html {
@@ -107,6 +111,7 @@ body.brand-body {
 .brand-site-header {
   --header-scale: 1;
   --header-y: 0;
+  overflow: visible;
 }
 
 .brand-site-header .brand-nav-bar {
@@ -1070,9 +1075,12 @@ body.brand-body {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
+  min-width: 0;
   color: var(--text-secondary);
   font-size: 0.88rem;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .lux-newsletter {
@@ -1339,11 +1347,30 @@ body.brand-body {
   letter-spacing: 0.3em;
 }
 
-.v4-gold-text {
-  background: linear-gradient(120deg, #ffffff 0%, #f9e9bd 38%, var(--lux-gold) 74%, #ad8b31 100%) !important;
-  -webkit-background-clip: text;
-  background-clip: text;
+.v4-gold-text,
+.brand-gold-text {
+  display: inline;
+  background-image: linear-gradient(120deg, #ffffff 0%, #f9e9bd 38%, var(--lux-gold) 74%, #ad8b31 100%) !important;
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
   color: transparent !important;
+  padding-bottom: 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .v4-gold-text,
+  .brand-gold-text {
+    background: none !important;
+    -webkit-text-fill-color: var(--lux-gold) !important;
+    color: var(--lux-gold) !important;
+  }
 }
 
 /* Page heroes (CinematicHero / PageHero / BrandHero) on deep navy */
@@ -1411,6 +1438,27 @@ body.brand-body {
     linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)) !important;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(24px) saturate(150%);
+}
+
+/* Hero / headline panels — backdrop-filter breaks gradient text clipping */
+.lux-panel--text-safe {
+  overflow: visible !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background:
+    linear-gradient(145deg, rgba(7, 10, 24, 0.94), rgba(5, 8, 22, 0.9)) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.lux-panel--text-safe.v4-glass-liquid::before,
+.lux-panel--text-safe.v5-glass-liquid::before,
+.lux-panel--text-safe.v4-glass-liquid::after,
+.lux-panel--text-safe.v5-glass-liquid::after {
+  opacity: 0.35;
+}
+
+.lux-panel--overflow-visible {
+  overflow: visible !important;
 }
 
 .lux-panel::before {

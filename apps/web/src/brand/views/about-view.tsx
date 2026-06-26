@@ -87,7 +87,7 @@ export function AboutView() {
       <section className="relative flex min-h-[72svh] items-end overflow-hidden">
         <BrandImage
           src={BRAND_IMAGES.about}
-          alt=""
+          alt="Luxury celebration produced by Nexyyra Events"
           fill
           priority
           sizes="100vw"
@@ -95,7 +95,7 @@ export function AboutView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/25" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Our Story</span>
             <h1 className="v4-display text-white">
               The Next Era of <span className="v4-gold-text">Celebrations</span>
@@ -164,8 +164,12 @@ export function AboutView() {
       </section>
 
       {/* Vision / Mission / Philosophy */}
-      <section className="v4-section bg-[var(--glitz-bg)]">
+      <section className="v4-section bg-[var(--glitz-bg)]" aria-labelledby="vision-heading">
         <div className="brand-container">
+          <ScrollReveal preset="reveal" className="mb-8 text-center md:text-left">
+            <span className="v4-kicker mb-4">Purpose</span>
+            <h2 id="vision-heading" className="v4-display">Vision, Mission &amp; Philosophy</h2>
+          </ScrollReveal>
           <motion.div
             variants={staggerParent}
             initial="hidden"

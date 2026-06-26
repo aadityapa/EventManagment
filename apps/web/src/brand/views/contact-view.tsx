@@ -34,7 +34,7 @@ export function ContactView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
         <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
+          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
             <span className="v4-kicker mb-4">Concierge</span>
             <h1 className="v4-display text-white">
               Let&apos;s Create Something <span className="v4-gold-text">Extraordinary</span>
@@ -46,8 +46,9 @@ export function ContactView() {
         </div>
       </section>
 
-      <section className="v4-section">
+      <section className="v4-section" aria-labelledby="contact-main-heading">
         <div className="brand-container">
+          <h2 id="contact-main-heading" className="sr-only">Contact Nexyyra Events</h2>
           <div className="grid gap-8 lg:grid-cols-12">
             {/* Contact info */}
             <div className="space-y-4 lg:col-span-3">
