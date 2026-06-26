@@ -153,8 +153,8 @@ export function VenuesView() {
 
   return (
     <div className="brand-root">
-      {/* Hero */}
-      <section className="relative flex min-h-[68svh] items-end overflow-hidden">
+      {/* Hero — full-screen luxury */}
+      <section className="luxury-hero relative flex min-h-svh items-center overflow-hidden border-b border-white/10">
         <BrandImage
           src={BRAND_IMAGES.venues[0]}
           alt=""
@@ -163,18 +163,29 @@ export function VenuesView() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
-        <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel className="max-w-2xl px-8 py-10 sm:px-10">
-            <span className="v4-kicker mb-4">Destinations</span>
-            <h1 className="v4-display text-white">
-              Luxury <span className="v4-gold-text">Venues</span>
-            </h1>
-            <p className="v4-standfirst mt-4 text-white/80">
-              Handpicked palaces, estates, and convention halls across India — filter, compare, and
-              inquire with our concierge team.
-            </p>
-          </GlassPanel>
+        <div className="luxury-hero__veil" aria-hidden />
+        <div className="luxury-hero__aurora" aria-hidden />
+        <div className="brand-container relative z-10 py-32">
+          <div className="luxury-hero__eyebrow">
+            <span className="luxury-hero__eyebrow-line" aria-hidden />
+            Destinations
+          </div>
+          <h1 className="luxury-hero__title">
+            Venues Worthy of a <span className="luxury-hero__accent">Legend</span>
+          </h1>
+          <p className="luxury-hero__copy">
+            Handpicked palaces, lakefront estates, and grand convention halls across India — filter,
+            compare, and inquire with our private concierge.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href="/book-event" className="luxury-button luxury-button--purple tap-target">
+              Book a Venue
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <a href="#venues" className="luxury-button luxury-button--ghost tap-target">
+              Explore Venues
+            </a>
+          </div>
         </div>
       </section>
 
@@ -257,7 +268,7 @@ export function VenuesView() {
       </section>
 
       {/* Filters — sticky bar */}
-      <section className="sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl">
+      <section id="venues" className="sticky top-[var(--header-height,3.75rem)] z-30 border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)]/95 backdrop-blur-xl scroll-mt-24">
         <div className="brand-container py-4">
           <div className="mb-3 flex items-center gap-2 text-sm text-muted">
             <Filter className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
