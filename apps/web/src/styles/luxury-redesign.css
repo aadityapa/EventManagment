@@ -175,9 +175,10 @@ body.brand-body {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(5, 8, 22, 0.94) 0%, rgba(5, 8, 22, 0.78) 42%, rgba(5, 8, 22, 0.52) 72%, rgba(5, 8, 22, 0.84) 100%),
-    radial-gradient(circle at 74% 42%, rgba(216, 178, 106, 0.18), transparent 28rem),
-    radial-gradient(circle at 50% 100%, rgba(61, 36, 108, 0.42), transparent 34rem);
+    linear-gradient(105deg, rgba(5, 8, 20, 0.92) 0%, rgba(5, 8, 20, 0.72) 42%, rgba(5, 8, 20, 0.35) 100%),
+    linear-gradient(180deg, rgba(5, 8, 20, 0.45) 0%, transparent 35%, rgba(5, 8, 20, 0.55) 100%),
+    radial-gradient(circle at 74% 42%, rgba(216, 178, 106, 0.14), transparent 28rem),
+    radial-gradient(circle at 50% 100%, rgba(61, 36, 108, 0.32), transparent 34rem);
 }
 
 .luxury-hero__aurora,
@@ -270,8 +271,9 @@ body.brand-body {
 .luxury-button {
   position: relative;
   display: inline-flex;
+  width: 100%;
   min-height: 3.25rem;
-  min-width: 12.5rem;
+  min-width: 0;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
@@ -284,6 +286,13 @@ body.brand-body {
   text-transform: uppercase;
   transition: transform 0.35s var(--lux-ease), border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
   transform: translate3d(0, 0, 0);
+}
+
+@media (min-width: 640px) {
+  .luxury-button {
+    width: auto;
+    min-width: 12.5rem;
+  }
 }
 
 .luxury-button::after {
@@ -1189,14 +1198,85 @@ body.brand-body {
 .brand-mega-menu {
   width: min(94vw, 90rem) !important;
   max-width: 90rem !important;
+  padding: clamp(2rem, 3.5vw, 3rem) !important;
   border: 1px solid transparent !important;
-  border-radius: 30px !important;
+  border-radius: 2rem !important;
   background:
     linear-gradient(rgba(7, 10, 24, 0.96), rgba(7, 10, 24, 0.96)) padding-box,
-    linear-gradient(135deg, rgba(216, 178, 106, 0.55), rgba(139, 77, 255, 0.55)) border-box !important;
-  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55), 0 0 70px rgba(139, 77, 255, 0.16) !important;
-  backdrop-filter: blur(30px) !important;
-  -webkit-backdrop-filter: blur(30px) !important;
+    linear-gradient(135deg, rgba(216, 178, 106, 0.55), rgba(139, 77, 255, 0.35)) border-box !important;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(139, 77, 255, 0.12) !important;
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+
+.brand-mega-menu__media {
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(216, 178, 106, 0.2);
+}
+
+.brand-mega-menu__media-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(5, 8, 20, 0.92) 100%);
+}
+
+.brand-mega-menu__media-caption {
+  position: absolute;
+  inset-inline: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 2;
+}
+
+.brand-mega-menu__media-eyebrow {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--lux-gold);
+}
+
+.brand-mega-menu__media-title {
+  margin-top: 0.35rem;
+  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
+  font-size: 1.65rem;
+  color: #fff;
+}
+
+.brand-mega-menu__media-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lux-gold);
+}
+
+.brand-mega-menu__link--icon {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-mega-menu__icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--lux-gold);
+  opacity: 0.85;
+  transition: transform 0.3s var(--lux-ease), opacity 0.25s ease;
+}
+
+.brand-mega-menu__link--icon:hover .brand-mega-menu__icon {
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .brand-mega-menu__heading {
@@ -1217,23 +1297,6 @@ body.brand-body {
   border-top-color: var(--lux-border) !important;
 }
 
-.brand-mega-menu__grid--no-media {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: clamp(2rem, 4vw, 4rem) !important;
-}
-
-@media (max-width: 768px) {
-  .brand-mega-menu__grid--no-media {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-@media (max-width: 520px) {
-  .brand-mega-menu__grid--no-media {
-    grid-template-columns: 1fr !important;
-  }
-}
-
 .brand-mega-menu__footer {
   display: flex;
   flex-wrap: wrap;
@@ -1241,10 +1304,6 @@ body.brand-body {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--lux-border);
-}
-
-.brand-mega-menu {
-  padding: clamp(2rem, 3.5vw, 3rem) !important;
 }
 
 .brand-mega-menu__list {
