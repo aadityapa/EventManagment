@@ -169,7 +169,7 @@ a[role="button"] {
   --footer-logo-width: 13.75rem; /* 220px desktop footer */
   --nav-height: 5.625rem; /* 90px — fixed sitewide for CLS */
   --header-height: var(--nav-height);
-  --brand-nav-active: #c9a227;
+  --brand-nav-active: #d8b26a;
   --brand-nav-gap: 2rem; /* 32px mobile */
 }
 
@@ -329,7 +329,7 @@ html.dark .brand-logo__img--theme-dark {
   height: clamp(3.5rem, 12vw, 5.5rem);
   width: auto;
   max-width: min(100%, 17.5rem);
-  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.28));
+  filter: drop-shadow(0 0 14px rgba(216, 178, 106, 0.28));
 }
 
 .hero-brand-tagline {
@@ -382,7 +382,7 @@ html.dark .brand-logo__img--theme-dark {
   max-width: 87.5rem;
   padding: 2.5rem;
   border-radius: 1.25rem;
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(216, 178, 106, 0.15);
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(24px);
@@ -443,7 +443,7 @@ html.dark .brand-logo__img--theme-dark {
 .brand-mega-menu__link:hover {
   opacity: 1;
   transform: translateY(-2px);
-  background-color: rgba(212, 175, 55, 0.1);
+  background-color: rgba(216, 178, 106, 0.1);
   color: #8b6914;
 }
 
@@ -458,7 +458,7 @@ html.dark .brand-logo__img--theme-dark {
   gap: 0.25rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  border-top: 1px solid rgba(216, 178, 106, 0.2);
   width: 100%;
   font-size: 0.9375rem;
   font-weight: 600;

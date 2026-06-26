@@ -47,15 +47,15 @@
 
 /* Dark luxury */
 .dark {
-  --background: #050505;
-  --surface: #111111;
-  --card: #181818;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d1d1;
-  --text-muted: #a0a0a0;
-  --gold: #d4af37;
-  --gold-light: #e6c67a;
-  --border: rgba(212, 175, 55, 0.18);
+  --background: #050816;
+  --surface: #081226;
+  --card: #101b35;
+  --text-primary: #f7f7f7;
+  --text-secondary: #b6b8c6;
+  --text-muted: #7d8498;
+  --gold: #d8b26a;
+  --gold-light: #f4d08d;
+  --border: rgba(216, 178, 106, 0.18);
 
   --glitz-bg: var(--background);
   --glitz-surface: var(--surface);
@@ -64,9 +64,9 @@
   --glitz-gold: var(--gold);
   --glitz-gold-light: var(--gold-light);
   --glitz-gold-metallic: var(--gold);
-  --glitz-gold-shine: #ffd700;
-  --glitz-dune: #d8b26e;
-  --glitz-dune-glow: #e6c67a;
+  --glitz-gold-shine: #f4d08d;
+  --glitz-dune: #d9a47b;
+  --glitz-dune-glow: #f4d08d;
   --glitz-ivory: #fdfbf5;
   --glitz-text: var(--text-primary);
   --glitz-text-secondary: var(--text-secondary);
@@ -75,8 +75,8 @@
   --glitz-glass: rgba(17, 17, 17, 0.65);
   --glitz-glow: 0 0 40px rgba(212, 175, 55, 0.25);
   --glitz-glow-strong: 0 0 56px rgba(255, 215, 0, 0.28);
-  --glitz-gradient-gold: linear-gradient(135deg, #c9a227 0%, #ffd700 38%, #d4af37 72%, #e6c67a 100%);
-  --glitz-gradient-gold-hover: linear-gradient(135deg, #d4af37 0%, #ffd700 45%, #e6c67a 100%);
+  --glitz-gradient-gold: linear-gradient(135deg, #d8b26a 0%, #f4d08d 42%, #d9a47b 76%, #f4d08d 100%);
+  --glitz-gradient-gold-hover: linear-gradient(135deg, #f4d08d 0%, #fff0c4 45%, #d8b26a 100%);
   --glitz-gradient-hero: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.12) 42%, transparent 70%);
   --glitz-hero-scrim-static: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.14) 40%, transparent 68%);
   --glitz-hero-bottom-static: linear-gradient(to top, rgba(5, 5, 5, 0.35) 0%, transparent 38%);

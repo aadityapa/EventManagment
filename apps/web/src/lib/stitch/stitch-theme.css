@@ -5,11 +5,11 @@
   --st-text: #1c1814;
   --st-muted: #6b6358;
   --st-gold: #b8860b;
-  --st-gold-bright: #d4af37;
+  --st-gold-bright: #d8b26a;
   --st-gold-soft: #e8c547;
   --st-glass: rgba(255, 255, 255, 0.82);
   --st-glass-border: rgba(197, 160, 40, 0.28);
-  --st-shadow-glow: 0 0 24px rgba(212, 175, 55, 0.18);
+  --st-shadow-glow: 0 0 24px rgba(216, 178, 106, 0.18);
   background: var(--st-bg);
   color: var(--st-text);
   font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
@@ -313,8 +313,8 @@ html[data-stitch-active] {
 }
 
 .stitch-shell .glass-pill.active {
-  color: #b8860b !important;
-  border-color: #d4af37 !important;
+  color: #d8b26a !important;
+  border-color: #d8b26a !important;
 }
 
 .stitch-shell section .flex.flex-wrap {

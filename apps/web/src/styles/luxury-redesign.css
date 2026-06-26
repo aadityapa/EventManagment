@@ -4,19 +4,29 @@
    ============================================================================ */
 
 :root {
-  --lux-bg: #050814;
-  --lux-gold: #d4af37;
-  --lux-rose: #c8a36a;
-  --lux-purple: #6e3cbc;
-  --lux-purple-bright: #a06be6;
-  --lux-violet: #3d246c;
-  --lux-white: #ffffff;
-  --lux-muted: #f6f6f6;
-  --lux-card: rgba(255, 255, 255, 0.04);
+  /* Canonical luxury palette — single source of truth */
+  --lux-bg: #050816;            /* primary background */
+  --lux-bg-secondary: #081226;  /* secondary background */
+  --lux-section: #0d1730;       /* section surfaces */
+  --lux-card-solid: #101b35;    /* solid card surface */
+
+  --lux-gold: #d8b26a;          /* champagne gold */
+  --lux-gold-metal: #f4d08d;    /* metal gold */
+  --lux-rose: #d9a47b;          /* rose gold */
+
+  --lux-purple: #8b4dff;        /* accent purple */
+  --lux-purple-bright: #b47cff; /* light purple */
+  --lux-violet: #6f42ff;        /* royal violet */
+
+  --lux-white: #f7f7f7;
+  --lux-muted: #b6b8c6;         /* paragraph text */
+  --lux-subtle: #7d8498;        /* muted text */
+
+  --lux-card: rgba(16, 27, 53, 0.55);   /* navy glass derived from #101b35 */
   --lux-border: rgba(255, 255, 255, 0.08);
-  --lux-border-gold: rgba(212, 175, 55, 0.28);
-  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(212, 175, 55, 0.12);
-  --lux-glow-purple: 0 18px 50px rgba(110, 60, 188, 0.4);
+  --lux-border-gold: rgba(216, 178, 106, 0.28);
+  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(216, 178, 106, 0.14);
+  --lux-glow-purple: 0 18px 50px rgba(139, 77, 255, 0.4);
   --lux-radius-lg: 1.5rem;
   --lux-radius-xl: 2rem;
   --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -55,9 +65,9 @@ html {
 
 body.brand-body {
   background:
-    radial-gradient(circle at 18% 8%, rgba(110, 60, 188, 0.18), transparent 28rem),
-    radial-gradient(circle at 84% 18%, rgba(212, 175, 55, 0.12), transparent 26rem),
-    linear-gradient(180deg, #050814 0%, #080712 45%, #050814 100%);
+    radial-gradient(circle at 84% 8%, rgba(139, 77, 255, 0.2), transparent 30rem),
+    radial-gradient(circle at 12% 88%, rgba(216, 178, 106, 0.12), transparent 28rem),
+    linear-gradient(180deg, #081226 0%, #050816 48%, #050816 100%);
 }
 
 .brand-root,
@@ -67,18 +77,20 @@ body.brand-body {
 
 .dark,
 :root {
-  --glitz-bg: #050814;
-  --glitz-surface: rgba(255, 255, 255, 0.04);
-  --glitz-card: rgba(255, 255, 255, 0.04);
-  --glitz-border: rgba(255, 255, 255, 0.08);
+  --glitz-bg: var(--lux-bg);
+  --glitz-surface: var(--lux-card);
+  --glitz-card: var(--lux-card);
+  --glitz-border: var(--lux-border);
   --glitz-gold: var(--lux-gold);
-  --glitz-gold-light: #f0d98d;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(246, 246, 246, 0.78);
-  --text-muted: rgba(246, 246, 246, 0.58);
-  --footer-bg: #050814;
-  --footer-card: rgba(255, 255, 255, 0.04);
-  --footer-border: rgba(255, 255, 255, 0.08);
+  --glitz-gold-light: var(--lux-gold-metal);
+  --gold: var(--lux-gold);
+  --gold-light: var(--lux-gold-metal);
+  --text-primary: var(--lux-white);
+  --text-secondary: var(--lux-muted);
+  --text-muted: var(--lux-subtle);
+  --footer-bg: #04060f;
+  --footer-card: var(--lux-card);
+  --footer-border: var(--lux-border);
   --footer-accent: var(--lux-gold);
 }
 
@@ -106,15 +118,15 @@ body.brand-body {
 .brand-site-header.is-scrolled {
   --header-scale: 0.965;
   --header-y: -0.125rem;
-  background: rgba(5, 8, 20, 0.74) !important;
+  background: rgba(5, 8, 22, 0.74) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34), 0 0 22px rgba(212, 175, 55, 0.08) !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34), 0 0 22px rgba(216, 178, 106, 0.08) !important;
 }
 
 /* Header CTA — purple luxury pill (reference design language) */
 .brand-header-cta {
   border-radius: 999px !important;
-  border: 1px solid rgba(160, 107, 230, 0.5) !important;
+  border: 1px solid rgba(180, 124, 255, 0.5) !important;
   background: linear-gradient(135deg, var(--lux-violet) 0%, var(--lux-purple) 55%, var(--lux-purple-bright) 100%) !important;
   color: #ffffff !important;
   box-shadow: var(--lux-glow-purple);
@@ -123,7 +135,7 @@ body.brand-body {
 
 .brand-header-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 22px 60px rgba(110, 60, 188, 0.5);
+  box-shadow: 0 22px 60px rgba(139, 77, 255, 0.5);
 }
 
 .brand-nav-link {
@@ -158,8 +170,8 @@ body.brand-body {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(5, 8, 20, 0.94) 0%, rgba(5, 8, 20, 0.78) 42%, rgba(5, 8, 20, 0.52) 72%, rgba(5, 8, 20, 0.84) 100%),
-    radial-gradient(circle at 74% 42%, rgba(212, 175, 55, 0.18), transparent 28rem),
+    linear-gradient(90deg, rgba(5, 8, 22, 0.94) 0%, rgba(5, 8, 22, 0.78) 42%, rgba(5, 8, 22, 0.52) 72%, rgba(5, 8, 22, 0.84) 100%),
+    radial-gradient(circle at 74% 42%, rgba(216, 178, 106, 0.18), transparent 28rem),
     radial-gradient(circle at 50% 100%, rgba(61, 36, 108, 0.42), transparent 34rem);
 }
 
@@ -186,14 +198,14 @@ body.brand-body {
 .luxury-hero__aurora::before {
   right: 5%;
   top: 10%;
-  background: rgba(110, 60, 188, 0.52);
+  background: rgba(139, 77, 255, 0.52);
   animation: lux-float-a 12s var(--lux-ease) infinite alternate;
 }
 
 .luxury-hero__aurora::after {
   left: 48%;
   bottom: 6%;
-  background: rgba(212, 175, 55, 0.26);
+  background: rgba(216, 178, 106, 0.26);
   animation: lux-float-b 14s var(--lux-ease) infinite alternate;
 }
 
@@ -292,23 +304,23 @@ body.brand-body {
   border: 1px solid rgba(255, 238, 180, 0.36);
   background: linear-gradient(135deg, #8f6b13 0%, var(--lux-gold) 36%, #fff0b1 52%, #b78724 100%);
   color: #100b03;
-  box-shadow: 0 18px 48px rgba(212, 175, 55, 0.22);
+  box-shadow: 0 18px 48px rgba(216, 178, 106, 0.22);
 }
 
 .luxury-button--purple {
   gap: 0.55rem;
-  border: 1px solid rgba(160, 107, 230, 0.5);
+  border: 1px solid rgba(180, 124, 255, 0.5);
   background: linear-gradient(135deg, var(--lux-violet) 0%, var(--lux-purple) 52%, var(--lux-purple-bright) 100%);
   color: #ffffff;
   box-shadow: var(--lux-glow-purple);
 }
 
 .luxury-button--purple:hover {
-  box-shadow: 0 22px 60px rgba(110, 60, 188, 0.5);
+  box-shadow: 0 22px 60px rgba(139, 77, 255, 0.5);
 }
 
 .luxury-button--ghost {
-  border: 1px solid rgba(212, 175, 55, 0.34);
+  border: 1px solid rgba(216, 178, 106, 0.34);
   background: rgba(255, 255, 255, 0.045);
   color: var(--lux-white);
   backdrop-filter: blur(18px);
@@ -322,8 +334,8 @@ body.brand-body {
 
 .luxury-button--ghost:hover,
 .luxury-button--text:hover {
-  border-color: rgba(212, 175, 55, 0.58);
-  box-shadow: 0 0 28px rgba(212, 175, 55, 0.12);
+  border-color: rgba(216, 178, 106, 0.58);
+  box-shadow: 0 0 28px rgba(216, 178, 106, 0.12);
 }
 
 .luxury-hero__metrics {
@@ -374,10 +386,10 @@ body.brand-body {
   height: clamp(12rem, 24vw, 18rem);
   width: clamp(12rem, 24vw, 18rem);
   place-items: center;
-  border: 1px solid rgba(212, 175, 55, 0.18);
+  border: 1px solid rgba(216, 178, 106, 0.18);
   border-radius: 999px;
   background:
-    radial-gradient(circle, rgba(212, 175, 55, 0.17), transparent 66%),
+    radial-gradient(circle, rgba(216, 178, 106, 0.17), transparent 66%),
     rgba(255, 255, 255, 0.035);
   box-shadow: var(--lux-glow);
   transform: translate(-50%, -50%) rotateX(10deg) rotateY(-14deg);
@@ -390,13 +402,13 @@ body.brand-body {
   position: absolute;
   inset: -16%;
   border-radius: inherit;
-  border: 1px solid rgba(212, 175, 55, 0.14);
+  border: 1px solid rgba(216, 178, 106, 0.14);
   transform: rotate(18deg);
 }
 
 .luxury-hero__logo-orbit::after {
   inset: -28%;
-  border-color: rgba(110, 60, 188, 0.2);
+  border-color: rgba(139, 77, 255, 0.2);
   transform: rotate(-28deg);
 }
 
@@ -423,7 +435,7 @@ body.brand-body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 32%, rgba(5, 8, 20, 0.54));
+  background: linear-gradient(180deg, transparent 32%, rgba(5, 8, 22, 0.54));
 }
 
 .luxury-hero__frame--1 {
@@ -458,7 +470,7 @@ body.brand-body {
   width: min(20rem, 72vw);
   border: 1px solid var(--lux-border-gold);
   border-radius: 1.5rem;
-  background: rgba(5, 8, 20, 0.74);
+  background: rgba(5, 8, 22, 0.74);
   padding: 1.25rem;
   box-shadow: var(--lux-glow);
   backdrop-filter: blur(24px);
@@ -484,8 +496,8 @@ body.brand-body {
 .v4-section,
 .v4-section-lg {
   background:
-    radial-gradient(circle at 12% 0%, rgba(110, 60, 188, 0.1), transparent 28rem),
-    radial-gradient(circle at 86% 18%, rgba(212, 175, 55, 0.08), transparent 24rem),
+    radial-gradient(circle at 12% 0%, rgba(139, 77, 255, 0.1), transparent 28rem),
+    radial-gradient(circle at 86% 18%, rgba(216, 178, 106, 0.08), transparent 24rem),
     var(--lux-bg) !important;
 }
 
@@ -641,7 +653,7 @@ body.brand-body {
   margin-bottom: 1.1rem;
   border-radius: 999px;
   border: 1px solid var(--lux-border-gold);
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(216, 178, 106, 0.16), transparent 70%);
   color: var(--lux-gold);
 }
 
@@ -702,7 +714,7 @@ body.brand-body {
   text-align: center;
   border-radius: 999px;
   border: 1px solid var(--lux-border-gold);
-  background: rgba(5, 8, 20, 0.86);
+  background: rgba(5, 8, 22, 0.86);
   box-shadow: var(--lux-glow-purple);
   backdrop-filter: blur(18px);
 }
@@ -744,8 +756,8 @@ body.brand-body {
   align-items: center;
   justify-content: center;
   border-radius: 0.85rem;
-  border: 1px solid rgba(160, 107, 230, 0.32);
-  background: radial-gradient(circle, rgba(110, 60, 188, 0.22), transparent 72%);
+  border: 1px solid rgba(180, 124, 255, 0.32);
+  background: radial-gradient(circle, rgba(139, 77, 255, 0.22), transparent 72%);
   color: var(--lux-purple-bright);
 }
 
@@ -787,7 +799,7 @@ body.brand-body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  border: 1px solid rgba(160, 107, 230, 0.4);
+  border: 1px solid rgba(180, 124, 255, 0.4);
   background: linear-gradient(135deg, var(--lux-violet), var(--lux-purple));
   color: #fff;
   transition: transform 0.3s var(--lux-ease), box-shadow 0.3s ease;
@@ -837,7 +849,7 @@ body.brand-body {
 .lux-gallery-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 38%, rgba(5, 8, 20, 0.85));
+  background: linear-gradient(180deg, transparent 38%, rgba(5, 8, 22, 0.85));
 }
 
 .lux-gallery-card__meta {
@@ -894,7 +906,7 @@ body.brand-body {
   justify-content: center;
   border-radius: 999px;
   border: 1px solid var(--lux-border-gold);
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(216, 178, 106, 0.16), transparent 70%);
   color: var(--lux-gold);
 }
 
@@ -956,8 +968,8 @@ body.brand-body {
   margin-top: auto;
   border-top: 1px solid var(--lux-border);
   background:
-    radial-gradient(circle at 12% 0%, rgba(110, 60, 188, 0.14), transparent 26rem),
-    radial-gradient(circle at 88% 10%, rgba(212, 175, 55, 0.08), transparent 24rem),
+    radial-gradient(circle at 12% 0%, rgba(139, 77, 255, 0.14), transparent 26rem),
+    radial-gradient(circle at 88% 10%, rgba(216, 178, 106, 0.08), transparent 24rem),
     #04060f;
   padding-block: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
 }
@@ -1003,7 +1015,7 @@ body.brand-body {
 .lux-social:hover {
   color: var(--lux-gold);
   border-color: var(--lux-border-gold);
-  box-shadow: 0 0 22px rgba(212, 175, 55, 0.16);
+  box-shadow: 0 0 22px rgba(216, 178, 106, 0.16);
 }
 
 .lux-footer__heading {
@@ -1059,7 +1071,7 @@ body.brand-body {
 }
 
 .lux-newsletter:focus-within {
-  border-color: rgba(160, 107, 230, 0.5);
+  border-color: rgba(180, 124, 255, 0.5);
   box-shadow: var(--lux-glow-purple);
 }
 
@@ -1155,8 +1167,8 @@ body.brand-body {
   border-radius: 30px !important;
   background:
     linear-gradient(rgba(7, 10, 24, 0.96), rgba(7, 10, 24, 0.96)) padding-box,
-    linear-gradient(135deg, rgba(212, 175, 55, 0.55), rgba(110, 60, 188, 0.55)) border-box !important;
-  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55), 0 0 70px rgba(110, 60, 188, 0.16) !important;
+    linear-gradient(135deg, rgba(216, 178, 106, 0.55), rgba(139, 77, 255, 0.55)) border-box !important;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55), 0 0 70px rgba(139, 77, 255, 0.16) !important;
   backdrop-filter: blur(30px) !important;
   -webkit-backdrop-filter: blur(30px) !important;
 }
@@ -1170,7 +1182,7 @@ body.brand-body {
 }
 
 .brand-mega-menu__link:hover {
-  background-color: rgba(212, 175, 55, 0.12) !important;
+  background-color: rgba(216, 178, 106, 0.12) !important;
   color: var(--lux-gold) !important;
 }
 
@@ -1223,7 +1235,7 @@ body.brand-body {
 
 .brand-mega-menu__cta-btn:hover {
   transform: translateY(-2px);
-  border-color: rgba(160, 107, 230, 0.5);
+  border-color: rgba(180, 124, 255, 0.5);
   box-shadow: var(--lux-glow-purple);
 }
 
@@ -1264,9 +1276,9 @@ body.brand-body {
 .lux-inner-hero {
   isolation: isolate;
   background:
-    radial-gradient(circle at 14% 0%, rgba(110, 60, 188, 0.22), transparent 30rem),
-    radial-gradient(circle at 82% 14%, rgba(212, 175, 55, 0.14), transparent 26rem),
-    #050814;
+    radial-gradient(circle at 14% 0%, rgba(139, 77, 255, 0.22), transparent 30rem),
+    radial-gradient(circle at 82% 14%, rgba(216, 178, 106, 0.14), transparent 26rem),
+    #050816;
 }
 
 .lux-inner-hero::after {
@@ -1275,7 +1287,7 @@ body.brand-body {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(5, 8, 20, 0.94), rgba(5, 8, 20, 0.68), rgba(5, 8, 20, 0.9)),
+    linear-gradient(90deg, rgba(5, 8, 22, 0.94), rgba(5, 8, 22, 0.68), rgba(5, 8, 22, 0.9)),
     radial-gradient(circle at 50% 100%, rgba(61, 36, 108, 0.42), transparent 34rem);
   z-index: 1;
 }
@@ -1351,8 +1363,8 @@ body.brand-body {
 .brand-root input:focus,
 .brand-root textarea:focus,
 .brand-root select:focus {
-  border-color: rgba(160, 107, 230, 0.55);
-  box-shadow: 0 0 0 1px rgba(160, 107, 230, 0.25), 0 0 32px rgba(110, 60, 188, 0.18);
+  border-color: rgba(180, 124, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(180, 124, 255, 0.25), 0 0 32px rgba(139, 77, 255, 0.18);
 }
 
 .brand-root input::placeholder,

@@ -37,29 +37,29 @@
 }
 
 .dark {
-  --background: #050505;
+  --background: #050816;
   --foreground: var(--text-primary);
   --card: var(--glitz-card);
   --surface: var(--glitz-surface);
-  --card-border: rgba(212, 175, 55, 0.18);
+  --card-border: rgba(216, 178, 106, 0.18);
   --muted: var(--text-muted);
   --muted-foreground: var(--text-secondary);
   --primary: var(--glitz-gold);
-  --primary-foreground: #050505;
-  --secondary: #111111;
-  --accent: #e6c67a;
-  --gold: var(--gold);
-  --gold-light: var(--gold-light);
+  --primary-foreground: #050816;
+  --secondary: #081226;
+  --accent: var(--lux-gold-metal);
+  --gold: var(--lux-gold);
+  --gold-light: var(--lux-gold-metal);
   --destructive: #ef4444;
-  --border: rgba(212, 175, 55, 0.14);
-  --ring: #d4af37;
-  --glass: rgba(17, 17, 17, 0.65);
-  --glass-border: rgba(212, 175, 55, 0.2);
-  --gradient-gold: linear-gradient(135deg, #c9a227 0%, #ffd700 40%, #d4af37 100%);
-  --gradient-dark: linear-gradient(180deg, #050505 0%, #111111 50%, #050505 100%);
-  --gradient-hero: linear-gradient(90deg, rgba(5, 5, 5, 0.35) 0%, transparent 68%);
-  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.25);
-  --shadow-glow-lg: 0 0 64px rgba(255, 215, 0, 0.2);
+  --border: rgba(216, 178, 106, 0.14);
+  --ring: var(--lux-gold);
+  --glass: rgba(16, 27, 53, 0.6);
+  --glass-border: rgba(216, 178, 106, 0.2);
+  --gradient-gold: linear-gradient(135deg, #d8b26a 0%, #f4d08d 45%, #d9a47b 100%);
+  --gradient-dark: linear-gradient(180deg, #050816 0%, #081226 50%, #050816 100%);
+  --gradient-hero: linear-gradient(90deg, rgba(5, 8, 22, 0.35) 0%, transparent 68%);
+  --shadow-glow: 0 0 40px rgba(216, 178, 106, 0.25);
+  --shadow-glow-lg: 0 0 64px rgba(244, 208, 141, 0.2);
 }
 
 @theme inline {

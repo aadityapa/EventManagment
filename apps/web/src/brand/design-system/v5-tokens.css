@@ -206,7 +206,7 @@
 }
 
 .v5-gold-text {
-  background: linear-gradient(135deg, var(--v5-copper) 0%, var(--v5-gold-champagne) 50%, var(--v5-gold-luxury) 100%);
+  background: linear-gradient(135deg, var(--lux-rose, #d9a47b) 0%, var(--lux-gold-metal, #f4d08d) 50%, var(--lux-gold, #d8b26a) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
