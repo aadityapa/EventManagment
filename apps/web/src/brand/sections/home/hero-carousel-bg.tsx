@@ -68,7 +68,7 @@ function HeroCarouselSlides({
             sizes="100vw"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
-            className={cn("object-cover object-center")}
+            className={cn("object-cover object-[center_28%] sm:object-[center_32%]")}
             onError={() => markBroken(active)}
           />
         </motion.div>

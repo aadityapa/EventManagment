@@ -23,7 +23,7 @@ export function HeroStatic({ slides }: HeroStaticProps) {
       <div className="luxury-hero__aurora" aria-hidden />
       <div className="luxury-hero__grid" aria-hidden />
 
-      <div className="brand-container relative z-10 grid w-full items-center gap-12 py-28 pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.9fr)] lg:py-32 xl:gap-16">
+      <div className="brand-container relative z-10 grid w-full items-center gap-10 py-24 pb-16 sm:gap-12 sm:py-28 sm:pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.85fr)] lg:py-32 xl:gap-16">
         <div className="max-w-3xl">
           <div className="luxury-hero__eyebrow">
             <span className="luxury-hero__eyebrow-line" aria-hidden />
@@ -40,7 +40,7 @@ export function HeroStatic({ slides }: HeroStaticProps) {
             creativity, precision and perfection.
           </p>
 
-          <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="mt-8 flex w-full max-w-md flex-col gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap">
             <Link href="/services" className="luxury-button luxury-button--purple tap-target">
               Explore Services
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
