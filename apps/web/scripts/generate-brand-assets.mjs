@@ -18,16 +18,10 @@ const brandDir = path.join(root, "public", "brand");
 const publicDir = path.join(root, "public");
 const srcDir = path.join(__dirname, "assets");
 
-const RAW_CANDIDATES = [
-  path.join(srcDir, "nexyyra-logo-raw.png"),
-  path.resolve(root, "../../nexyyra without background (1).png"),
-  path.resolve(root, "../../ChatGPT Image Jun 24, 2026, 07_44_08 PM.png"),
-];
+const RAW_PATH = path.join(srcDir, "nexyyra-logo-raw.png");
 
 function resolveRaw() {
-  for (const p of RAW_CANDIDATES) {
-    if (fs.existsSync(p)) return p;
-  }
+  if (fs.existsSync(RAW_PATH)) return RAW_PATH;
   throw new Error("Raw master not found. Place it at scripts/assets/nexyyra-logo-raw.png");
 }
 

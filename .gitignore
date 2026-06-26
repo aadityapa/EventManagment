@@ -31,3 +31,6 @@ apps/web/public/images/**/*.webp
 coverage/
 *.tsbuildinfo
 apps/web/data/leads.json
+# Local logo uploads — canonical copy lives in apps/web/scripts/assets/
+nexyyra without background*.png
+ChatGPT Image*.png
