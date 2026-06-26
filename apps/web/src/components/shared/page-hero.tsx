@@ -20,7 +20,7 @@ export function PageHero({ title, subtitle, className, children }: PageHeroProps
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.18),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(216,178,106,0.18),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
       <div className="lux-inner-hero__aura" aria-hidden />
       <GoldParticles className="pointer-events-none absolute inset-0 opacity-60" />

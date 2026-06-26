@@ -26,9 +26,9 @@ export function FaqsView() {
               <BrandFaqAccordion items={ALL_FAQS.filter((f) => f.category === cat)} location="faqs_page" />
             </div>
           ))}
-          <div className="brand-surface p-8 text-center">
+          <div className="lux-card lux-panel p-8 text-center">
             <h3 className="brand-display text-xl font-bold">Still have questions?</h3>
-            <Link href="/contact" className="mt-4 inline-block rounded-lg bg-[var(--glitz-gold)] px-8 py-3 text-sm font-semibold text-[#0A0A0A]">Contact Us</Link>
+            <Link href="/contact" className="luxury-button luxury-button--gold mt-5">Contact Us</Link>
           </div>
         </div>
       </BrandSection>

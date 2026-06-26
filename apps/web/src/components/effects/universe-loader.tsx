@@ -92,7 +92,7 @@ function GoldDust({ dissolving, visible }: { dissolving: boolean; visible: boole
             top: `${p.y}%`,
             width: p.size,
             height: p.size,
-            background: `radial-gradient(circle, rgba(212,175,55,${p.alpha}), transparent 70%)`,
+            background: `radial-gradient(circle, rgba(216,178,106,${p.alpha}), transparent 70%)`,
           }}
           animate={{
             opacity: dissolving ? 0 : [0.3, 0.7, 0.45, 0.65],
@@ -285,7 +285,7 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
                 className="pointer-events-none absolute inset-[-24%] z-[1] rounded-full transform-gpu"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center, rgba(212,175,55,0.28) 0%, transparent 68%)",
+                    "radial-gradient(ellipse at center, rgba(216,178,106,0.28) 0%, transparent 68%)",
                 }}
                 initial={{ opacity: 0, scale: 0.75 }}
                 animate={

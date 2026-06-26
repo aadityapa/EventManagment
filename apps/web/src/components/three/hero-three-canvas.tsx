@@ -34,7 +34,7 @@ function GoldKnot() {
     <mesh ref={meshRef} position={[0.2, 0, 0]} rotation={[0.2, 0.1, 0]}>
       <torusKnotGeometry args={[1.05, 0.32, 220, 28]} />
       <meshStandardMaterial
-        color="#d4af37"
+        color="#d8b26a"
         metalness={1}
         roughness={0.18}
         emissive="#2a1a00"
@@ -60,10 +60,10 @@ function HaloRings() {
         <mesh key={i} rotation={[Math.PI / 2, 0, i * 0.6]} scale={1 + i * 0.28}>
           <torusGeometry args={[1.6, 0.02, 16, 200]} />
           <meshStandardMaterial
-            color={i === 0 ? "#f4e4a1" : "#d4af37"}
+            color={i === 0 ? "#f4d08d" : "#d8b26a"}
             metalness={1}
             roughness={0.35}
-            emissive="#d4af37"
+            emissive="#d8b26a"
             emissiveIntensity={0.25}
             transparent
             opacity={0.18}
@@ -81,8 +81,8 @@ function Scene() {
       <fog attach="fog" args={["#0a0a0a", 5, 12]} />
 
       <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 4, 3]} intensity={1.2} color="#f4e4a1" />
-      <pointLight position={[-3, 1.5, 2]} intensity={0.9} color="#d4af37" />
+      <directionalLight position={[3, 4, 3]} intensity={1.2} color="#f4d08d" />
+      <pointLight position={[-3, 1.5, 2]} intensity={0.9} color="#d8b26a" />
 
       <GoldKnot />
       <HaloRings />

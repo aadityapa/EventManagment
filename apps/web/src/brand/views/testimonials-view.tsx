@@ -29,8 +29,8 @@ export function TestimonialsView() {
       <BrandPageHero label="Client Stories" title="Voices of Excellence" subtitle="Trusted by India's most discerning clients." image={BRAND_IMAGES.testimonials[0]} />
       <BrandSection>
         <div className="mb-6 flex justify-end gap-2">
-          <button type="button" onClick={prev} className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)]" aria-label="Previous"><ChevronLeft /></button>
-          <button type="button" onClick={next} className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--glitz-border)] text-[var(--glitz-gold)]" aria-label="Next"><ChevronRight /></button>
+          <button type="button" onClick={prev} className="lux-arrow" aria-label="Previous"><ChevronLeft className="h-5 w-5" /></button>
+          <button type="button" onClick={next} className="lux-arrow" aria-label="Next"><ChevronRight className="h-5 w-5" /></button>
         </div>
         <div ref={emblaRef} className="overflow-hidden"><div className="flex gap-6">{testimonials.map((t, i) => (
           <div key={t.id} className="min-w-0 flex-[0_0_100%] lg:flex-[0_0_70%]">

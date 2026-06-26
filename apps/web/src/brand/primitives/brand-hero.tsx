@@ -63,7 +63,7 @@ export function BrandHero({ label, title, subtitle, image, full = false, threeD 
         {comingSoon ? <ComingSoonOverlay className="z-[1]" /> : null}
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim)" }} />
         <div className="absolute inset-0" style={{ background: "var(--adaptive-scrim-bottom)" }} />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_65%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(216,178,106,0.07),transparent_65%)]" />
         <div className="lux-inner-hero__aura" aria-hidden />
         {backgroundLayers}
       </div>

@@ -30,7 +30,7 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
           translateX: spotlightX,
           translateY: spotlightY,
           background: isDark
-            ? "radial-gradient(circle, rgba(212,175,55,0.14) 0%, transparent 68%)"
+            ? "radial-gradient(circle, rgba(216,178,106,0.14) 0%, transparent 68%)"
             : "radial-gradient(circle, rgba(201,162,39,0.2) 0%, transparent 68%)",
         }}
       />
@@ -51,7 +51,7 @@ export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
         className="absolute right-[-10%] top-[15%] h-[90vmin] w-[90vmin] rounded-full opacity-15 will-change-transform"
         style={{
           background: isDark
-            ? "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.1), transparent)"
+            ? "conic-gradient(from 0deg, transparent, rgba(216,178,106,0.1), transparent)"
             : "conic-gradient(from 0deg, transparent, rgba(201,162,39,0.12), transparent)",
         }}
         animate={reducedMotion ? undefined : { rotate: 360 }}

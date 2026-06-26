@@ -70,7 +70,7 @@ export function AboutView() {
 
       gsap.to(item.querySelector("[data-year-pin]"), {
         scale: 1.12,
-        borderColor: "rgba(212, 175, 55, 0.9)",
+        borderColor: "rgba(216, 178, 106, 0.9)",
         duration: 0.35,
         scrollTrigger: {
           trigger: item,

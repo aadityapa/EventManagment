@@ -75,7 +75,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
       {/* Mobile orbit (kept lighter and higher to avoid covering the CTAs) */}
       <div className="absolute left-1/2 top-24 -translate-x-1/2 md:hidden">
         <div className="relative h-[320px] w-[320px] opacity-[0.62]">
-          <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_60%)] backdrop-blur-sm" />
+          <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(216,178,106,0.12),transparent_60%)] backdrop-blur-sm" />
           <motion.div
             className="absolute inset-0"
             animate={reduced ? undefined : { rotate: 360 }}
@@ -102,7 +102,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                     animate={reduced ? undefined : { y: [0, -5, 0] }}
                     transition={reduced ? undefined : { duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
                   >
-                    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(244,228,161,0.32),rgba(212,175,55,0.06),transparent_70%)] blur-[10px]" />
+                    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(244,228,161,0.32),rgba(216,178,106,0.06),transparent_70%)] blur-[10px]" />
                     <div className="absolute inset-0 rounded-full border border-[var(--glitz-gold)]/20 bg-black/20" />
                     <Image
                       src={img.src}
@@ -125,7 +125,7 @@ export function HeroImageOrbit({ className }: { className?: string }) {
 
       <div className="absolute right-[-180px] top-1/2 hidden -translate-y-1/2 md:block lg:right-[-140px]">
         <div className="relative h-[460px] w-[460px] opacity-[0.92] lg:h-[560px] lg:w-[560px]">
-          <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_62%)] backdrop-blur-sm" />
+          <div className="absolute inset-0 rounded-full border border-[var(--glitz-border)] bg-[radial-gradient(circle_at_center,rgba(216,178,106,0.12),transparent_62%)] backdrop-blur-sm" />
           <motion.div
             className="absolute inset-0"
             animate={reduced ? undefined : { rotate: 360 }}
@@ -152,14 +152,14 @@ export function HeroImageOrbit({ className }: { className?: string }) {
                     animate={reduced ? undefined : { y: [0, -6, 0] }}
                     transition={reduced ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.08 }}
                   >
-                    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(244,228,161,0.35),rgba(212,175,55,0.08),transparent_70%)] blur-[10px]" />
+                    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(244,228,161,0.35),rgba(216,178,106,0.08),transparent_70%)] blur-[10px]" />
                     <div className="absolute inset-0 rounded-full border border-[var(--glitz-gold)]/25 bg-black/25" />
                     <Image
                       src={img.src}
                       alt={img.alt}
                       width={layout.size}
                       height={layout.size}
-                      className="relative rounded-full object-cover shadow-[0_0_40px_rgba(212,175,55,0.12)]"
+                      className="relative rounded-full object-cover shadow-[0_0_40px_rgba(216,178,106,0.12)]"
                       sizes={`${layout.size}px`}
                       unoptimized
                       referrerPolicy="no-referrer"
