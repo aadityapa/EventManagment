@@ -39,43 +39,26 @@ export const BRAND_LOGO_ASSETS = {
 type ThemeLogoImageProps = {
   className?: string;
   priority?: boolean;
+  /** @deprecated single dark theme — always gold. Kept for call-site compatibility. */
   forceGold?: boolean;
   /** Fluid = width-driven (footer); otherwise height-driven square slot. */
   fluid?: boolean;
 };
 
-/** Dual-theme logo — CSS opacity swap, zero hydration flash, fully transparent. */
+/** Single luxury gold logo — one premium dark theme, fully transparent SVG. */
 export function ThemeLogoImage({
   className,
   priority = true,
-  forceGold = false,
   fluid = false,
 }: ThemeLogoImageProps) {
-  const fetchPriority = priority ? "high" : "auto";
-
   return (
-    <span
-      className={cn(
-        "brand-logo__slot",
-        fluid && "brand-logo__slot--fluid",
-        forceGold && "brand-logo--force-gold",
-        className,
-      )}
-    >
-      <img
-        src={BRAND_LOGO_ASSETS.light}
-        alt={SITE_CONFIG.name}
-        decoding="async"
-        fetchPriority={fetchPriority}
-        className="brand-logo__img brand-logo__img--theme-light"
-      />
+    <span className={cn("brand-logo__slot", fluid && "brand-logo__slot--fluid", className)}>
       <img
         src={BRAND_LOGO_ASSETS.dark}
-        alt=""
-        aria-hidden
+        alt={SITE_CONFIG.name}
         decoding="async"
-        fetchPriority={fetchPriority}
-        className="brand-logo__img brand-logo__img--theme-dark"
+        fetchPriority={priority ? "high" : "auto"}
+        className="brand-logo__img"
       />
     </span>
   );

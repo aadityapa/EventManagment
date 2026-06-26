@@ -10,7 +10,6 @@ import {
   useRef,
   type ReactNode,
 } from "react";
-import { useTheme } from "next-themes";
 import {
   analyzeImageUrl,
   analyzeVideoFrame,
@@ -39,7 +38,8 @@ const AdaptiveThemeContext = createContext<AdaptiveThemeContextValue | null>(nul
 const VISIBILITY_THRESHOLD = 0.15;
 
 export function AdaptiveThemeProvider({ children }: { children: ReactNode }) {
-  const { resolvedTheme } = useTheme();
+  /** Single premium dark luxury theme. */
+  const resolvedTheme = "dark";
   const registrations = useRef(new Map<string, RegisterOptions & { visibility: number }>());
   const observerRef = useRef<IntersectionObserver | null>(null);
   const activeIdRef = useRef<string | null>(null);

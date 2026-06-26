@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import { useReducedMotion } from "framer-motion";
 import { motion, type MotionValue, useTransform } from "framer-motion";
-import { useTheme } from "next-themes";
 
 const GoldParticles = dynamic(
   () => import("@/components/effects/gold-particles").then((m) => m.GoldParticles),
@@ -17,9 +16,8 @@ type Props = {
 };
 
 export function HeroCinematicFx({ active, mouseX, mouseY }: Props) {
-  const { resolvedTheme } = useTheme();
   const reducedMotion = useReducedMotion();
-  const isDark = resolvedTheme === "dark";
+  const isDark = true;
 
   const spotlightX = useTransform(mouseX, (v) => `calc(-50% + ${v * 18}vmin)`);
   const spotlightY = useTransform(mouseY, (v) => `calc(-50% + ${v * 12}vmin)`);

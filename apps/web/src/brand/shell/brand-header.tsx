@@ -11,7 +11,6 @@ import { BRAND_SERVICE_CATEGORIES } from "@/brand/data/content";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { Logo } from "@/components/branding/logo";
 import { BrandImage } from "@/brand/primitives/brand-image";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const FEATURED_SERVICE = BRAND_SERVICE_CATEGORIES[0];
@@ -313,7 +312,6 @@ export function BrandHeader() {
               <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
               {SITE_CONFIG.phone}
             </a>
-            <ThemeToggle className="brand-header-theme border-[var(--glitz-border)] text-[var(--glitz-gold)] hover:border-[var(--glitz-gold)]/50" />
             <Link
               href="/book-event"
               className="brand-header-cta btn-gold-metallic btn-premium-hover tap-target"
@@ -446,10 +444,6 @@ export function BrandHeader() {
                 </nav>
 
                 <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8">
-                  <div className="flex items-center gap-3">
-                    <ThemeToggle className="brand-header-theme border-white/20 text-[var(--glitz-gold)]" />
-                    <span className="text-sm text-white/60">Theme</span>
-                  </div>
                   <a
                     href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
                     className="tap-target inline-flex items-center gap-3 text-lg text-[var(--glitz-gold)]"

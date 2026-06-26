@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, Manrope, Montserrat, Playfair_Display, Poppins } from "next/font/google";
 import { Suspense } from "react";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AdaptiveThemeProvider } from "@/components/adaptive/adaptive-theme-provider";
 import { CacheVersionClear } from "@/components/providers/cache-version-clear";
 import { CinematicProvider } from "@/components/providers/cinematic-provider";
@@ -55,22 +54,20 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const globalSchema = globalGraphSchema();
   return (
-    <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en-IN" className="dark" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
-        <link rel="preload" href="/brand/nexyyra-logo-light.svg" as="image" type="image/svg+xml" fetchPriority="high" />
-        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" />
+        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="glitz-theme" disableTransitionOnChange>
-          <CacheVersionClear />
-          <SentryInit />
-          <AnalyticsProvider />
-          <AdaptiveThemeProvider>
+        <CacheVersionClear />
+        <SentryInit />
+        <AnalyticsProvider />
+        <AdaptiveThemeProvider>
           <CinematicProvider>
             <Suspense fallback={null}>
               <PortalTransition />
@@ -86,8 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <CookieConsent />
             <ToastProvider />
           </CinematicProvider>
-          </AdaptiveThemeProvider>
-        </ThemeProvider>
+        </AdaptiveThemeProvider>
       </body>
     </html>
   );
