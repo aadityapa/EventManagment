@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
+import { TiltCard } from "@/components/effects/tilt-card";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { analytics } from "@/lib/analytics";
@@ -58,6 +59,7 @@ export function HomeFeaturedWork() {
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (i % 4) * 0.06 }}
               className="lux-gallery-card"
             >
+              <TiltCard max={5}>
               <Link
                 href={item.href}
                 onClick={() => analytics.featureClick(item.title, "home_featured_work")}
@@ -76,6 +78,7 @@ export function HomeFeaturedWork() {
                   <span className="lux-gallery-card__title">{item.title}</span>
                 </span>
               </Link>
+              </TiltCard>
             </motion.div>
           ))}
         </div>

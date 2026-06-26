@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { CalendarDays, Gem, Landmark, Lightbulb, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { TiltCard } from "@/components/effects/tilt-card";
 
 type Expertise = {
   icon: LucideIcon;
@@ -39,23 +40,25 @@ export function HomeExpertise() {
           {EXPERTISE.map((item, i) => {
             const Icon = item.icon;
             return (
-              <motion.article
+              <motion.div
                 key={item.title}
                 custom={i}
                 variants={reveal}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
-                className="lux-card lux-expertise-card"
+                className="h-full"
               >
-                <span className="lux-expertise-card__icon" aria-hidden>
-                  <Icon className="h-6 w-6" strokeWidth={1.5} />
-                </span>
-                <h3 id={i === 0 ? "expertise-heading" : undefined} className="lux-expertise-card__title">
-                  {item.title}
-                </h3>
-                <p className="lux-expertise-card__copy">{item.description}</p>
-              </motion.article>
+                <TiltCard className="lux-card lux-expertise-card h-full">
+                  <span className="lux-expertise-card__icon" aria-hidden>
+                    <Icon className="h-6 w-6" strokeWidth={1.5} />
+                  </span>
+                  <h3 id={i === 0 ? "expertise-heading" : undefined} className="lux-expertise-card__title">
+                    {item.title}
+                  </h3>
+                  <p className="lux-expertise-card__copy">{item.description}</p>
+                </TiltCard>
+              </motion.div>
             );
           })}
         </div>
