@@ -56,7 +56,16 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
   async redirects() {
-    return [{ source: "/experiences", destination: "/services", permanent: true }];
+    return [
+      { source: "/experiences", destination: "/services", permanent: true },
+      // Apex + non-www → canonical www (single 301 hop; HTTP handled at platform edge)
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "nexyyra.com" }],
+        destination: "https://www.nexyyra.com/:path*",
+        permanent: true,
+      },
+    ];
   },
   poweredByHeader: false,
   ...(isDockerBuild ? { output: "standalone" as const } : {}),
