@@ -29,7 +29,11 @@ function trimDescription(text: string, max = 160): string {
 }
 
 const ORG_ID = `${SITE_CONFIG.url}/#organization`;
+const LOCAL_BUSINESS_ID = `${SITE_CONFIG.url}/#localbusiness`;
 const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
+
+const ORG_RATING_VALUE = 4.9;
+const ORG_REVIEW_COUNT = 520;
 
 export function generateSEO({
   title,
@@ -105,16 +109,15 @@ export function generateSEO({
   };
 }
 
-/** Consolidated global JSON-LD — single @graph for layout */
+/** Consolidated global JSON-LD — single @graph for layout; ONE aggregateRating on Organization only. */
 export function globalGraphSchema() {
-  const aggregateRating = aggregateRatingSchema(4.9, 520);
   const { "@context": _epsCtx, ...eventPlanningNode } = eventPlanningServiceSchema();
   void _epsCtx;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["LocalBusiness", "EventPlanner", "Organization", "ProfessionalService"],
+        "@type": "Organization",
         "@id": ORG_ID,
         name: SITE_CONFIG.legalName,
         alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
@@ -126,24 +129,11 @@ export function globalGraphSchema() {
         logo: `${SITE_CONFIG.url}/brand/nexyyra-logo-dark.svg`,
         slogan: SITE_CONFIG.tagline,
         foundingDate: String(ENTITY_FACTS.foundingYear),
-        priceRange: "₹₹₹₹",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: SITE_CONFIG.city,
-          addressRegion: SITE_CONFIG.region,
-          addressCountry: "IN",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: 18.5204,
-          longitude: 73.8567,
-        },
-        areaServed: ENTITY_FACTS.serviceAreas.map((name) => ({ "@type": "Place", name })),
         sameAs: Object.values(SITE_CONFIG.social),
         knowsAbout: ENTITY_FACTS.knowsAbout,
         numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
         award: ENTITY_FACTS.awards,
-        aggregateRating,
+        aggregateRating: ORG_AGGREGATE_RATING,
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -167,22 +157,6 @@ export function globalGraphSchema() {
           jobTitle: "Founder",
           worksFor: { "@id": ORG_ID },
         },
-        review: [
-          {
-            "@type": "Review",
-            author: { "@type": "Person", name: "Priya & Arjun M." },
-            reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
-            reviewBody:
-              "Nexyyra transformed our Pune palace wedding into a cinematic celebration. Flawless vendor coordination and guest hospitality.",
-          },
-          {
-            "@type": "Review",
-            author: { "@type": "Person", name: "Tata Group Events" },
-            reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
-            reviewBody:
-              "Our annual leadership gala for 1,200 delegates was executed with military precision. AV, staging, and guest flow were impeccable.",
-          },
-        ],
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Luxury Event Services",
@@ -192,6 +166,31 @@ export function globalGraphSchema() {
             itemOffered: { "@type": "Service", name, provider: { "@id": ORG_ID } },
           })),
         },
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": LOCAL_BUSINESS_ID,
+        name: SITE_CONFIG.name,
+        description: SITE_CONFIG.description,
+        url: SITE_CONFIG.url,
+        telephone: SITE_CONFIG.phone,
+        email: SITE_CONFIG.email,
+        image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+        priceRange: "₹₹₹₹",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: SITE_CONFIG.city,
+          addressRegion: SITE_CONFIG.region,
+          addressCountry: "IN",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 18.5204,
+          longitude: 73.8567,
+        },
+        areaServed: ENTITY_FACTS.serviceAreas.map((name) => ({ "@type": "Place", name })),
+        parentOrganization: { "@id": ORG_ID },
+        additionalType: ["https://schema.org/EventPlanner", "https://schema.org/ProfessionalService"],
       },
       eventPlanningNode,
       {
@@ -232,7 +231,7 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": ORG_ID,
+    "@id": LOCAL_BUSINESS_ID,
     name: SITE_CONFIG.legalName,
     alternateName: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
@@ -261,6 +260,7 @@ export function organizationSchema() {
       opens: "09:00",
       closes: "21:00",
     },
+    parentOrganization: { "@id": ORG_ID },
   };
 }
 
@@ -514,15 +514,17 @@ export function reviewSchema(reviews: {
   ratingValue: number;
   datePublished?: string;
 }[]) {
-  return reviews.map((r) => ({
+  return {
     "@context": "https://schema.org",
-    "@type": "Review",
-    author: { "@type": "Person", name: r.author },
-    reviewBody: r.reviewBody,
-    reviewRating: { "@type": "Rating", ratingValue: r.ratingValue, bestRating: 5 },
-    itemReviewed: { "@id": ORG_ID },
-    ...(r.datePublished && { datePublished: r.datePublished }),
-  }));
+    "@graph": reviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.author },
+      reviewBody: r.reviewBody,
+      reviewRating: { "@type": "Rating", ratingValue: r.ratingValue, bestRating: 5 },
+      itemReviewed: { "@id": ORG_ID },
+      ...(r.datePublished && { datePublished: r.datePublished }),
+    })),
+  };
 }
 
 export function aggregateRatingSchema(ratingValue: number, reviewCount: number) {
@@ -533,6 +535,9 @@ export function aggregateRatingSchema(ratingValue: number, reviewCount: number) 
     bestRating: "5",
   };
 }
+
+/** Single source of truth — only ONE AggregateRating per page (layout org node). */
+export const ORG_AGGREGATE_RATING = aggregateRatingSchema(ORG_RATING_VALUE, ORG_REVIEW_COUNT);
 
 export function venueSchema(venue: {
   name: string;
@@ -711,6 +716,19 @@ export function aboutPageSchema(
       ),
     ],
   };
+}
+
+/** Merge page-level schemas into one @graph block (no duplicate @context nodes). */
+export function pageGraphSchema(...schemas: object[]) {
+  const nodes = schemas.flatMap((schema) => {
+    if ("@graph" in schema && Array.isArray((schema as { "@graph": unknown[] })["@graph"])) {
+      return (schema as { "@graph": object[] })["@graph"];
+    }
+    const { "@context": _ctx, ...node } = schema as { "@context"?: string } & Record<string, unknown>;
+    void _ctx;
+    return [node];
+  });
+  return { "@context": "https://schema.org", "@graph": nodes };
 }
 
 /** Inject multiple JSON-LD blocks as React-safe script elements */

@@ -19,9 +19,7 @@ export default function TestimonialsPage() {
 
   return (
     <>
-      {reviewsLd.map((r, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(r) }} />
-      ))}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }} />
       <TestimonialsView />
     </>
   );

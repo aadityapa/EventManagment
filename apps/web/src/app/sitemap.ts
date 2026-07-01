@@ -58,7 +58,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absUrl(path),
       lastModified: staticPageLastMod(path || "/"),
       changeFrequency: staticPageChangeFreq(path || "/"),
-      priority: path === "" ? 1 : ["/privacy", "/terms", "/refund"].includes(path) ? 0.3 : 0.8,
+      priority: path === "" ? 1 : path === "/blog" ? 0.7 : ["/privacy", "/terms", "/refund"].includes(path) ? 0.3 : 0.8,
     };
     if (path === "/gallery") {
       entry.images = sitemapImages(BRAND_IMAGES.gallery);
