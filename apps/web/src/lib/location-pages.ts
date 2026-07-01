@@ -199,6 +199,136 @@ export const LOCATION_PAGES: LocationPage[] = [
     geo: { latitude: 15.2993, longitude: 74.124 },
   },
   {
+    slug: "delhi",
+    city: "Delhi",
+    state: "Delhi NCR",
+    title: "Luxury Event Planner Delhi",
+    h1: "Luxury Event Planner in Delhi NCR",
+    description:
+      "Premium wedding and corporate event planning in Delhi NCR — five-star galas, palace weddings, product launches, and luxury celebrations by Nexyyra Events.",
+    keywords: ["Event Planner Delhi", "Wedding Planner Delhi NCR", "Corporate Events Delhi"],
+    intro:
+      "Nexyyra Events serves Delhi NCR's most discerning clients with luxury wedding planning, corporate conferences, brand activations, and celebrity event management across South Delhi, Gurgaon, Noida, and heritage venues.",
+    highlights: [
+      "Five-star hotel and heritage venue partnerships across Delhi NCR",
+      "Corporate galas for leading brands and institutions",
+      "Large-scale wedding and reception production",
+      "VIP guest management and celebrity entertainment",
+    ],
+    faqs: [
+      {
+        question: "Does Nexyyra plan events in Delhi?",
+        answer:
+          "Yes. We plan and execute luxury weddings, corporate events, product launches, and award ceremonies across Delhi NCR, coordinated from our Pune headquarters with dedicated on-ground teams.",
+      },
+    ],
+    geo: { latitude: 28.6139, longitude: 77.209 },
+  },
+  {
+    slug: "jaipur",
+    city: "Jaipur",
+    state: "Rajasthan",
+    title: "Palace Wedding Planner Jaipur",
+    h1: "Palace Wedding Planner in Jaipur",
+    description:
+      "Heritage palace weddings and luxury celebrations in Jaipur — royal décor, guest logistics, and white-glove production by Nexyyra Events.",
+    keywords: ["Palace Wedding Jaipur", "Wedding Planner Jaipur", "Destination Wedding Rajasthan"],
+    intro:
+      "Nexyyra Events crafts palace-scale celebrations in Jaipur — heritage haveli partnerships, royal-themed décor, multi-day wedding itineraries, and guest concierge across the Pink City.",
+    highlights: [
+      "Heritage palace and luxury hotel partnerships in Jaipur",
+      "Royal-themed décor and cultural programming",
+      "Multi-day wedding itineraries with guest hospitality",
+      "Coordination with Udaipur and Rajasthan destination venues",
+    ],
+    faqs: [
+      {
+        question: "Does Nexyyra plan palace weddings in Jaipur?",
+        answer:
+          "Yes. We specialise in heritage palace and luxury hotel weddings in Jaipur with bespoke décor, entertainment, and full guest logistics management.",
+      },
+    ],
+    geo: { latitude: 26.9124, longitude: 75.7873 },
+  },
+  {
+    slug: "hyderabad",
+    city: "Hyderabad",
+    state: "Telangana",
+    title: "Luxury Event Planner Hyderabad",
+    h1: "Luxury Event Planner in Hyderabad",
+    description:
+      "Premium wedding and corporate event planning in Hyderabad — luxury weddings, tech conferences, and brand activations by Nexyyra Events.",
+    keywords: ["Event Planner Hyderabad", "Wedding Planner Hyderabad", "Corporate Events Hyderabad"],
+    intro:
+      "Nexyyra Events delivers luxury event planning across Hyderabad and Telangana — weddings, corporate conferences, product launches, and cultural celebrations with full production capabilities.",
+    highlights: [
+      "Five-star hotel and convention centre partnerships",
+      "Tech industry corporate events and product launches",
+      "Luxury wedding planning for Hyderabad families",
+      "Entertainment and stage production at scale",
+    ],
+    faqs: [
+      {
+        question: "Does Nexyyra serve clients in Hyderabad?",
+        answer:
+          "Yes. We plan weddings, corporate events, and brand activations in Hyderabad with dedicated on-ground teams and vendor networks across Telangana.",
+      },
+    ],
+    geo: { latitude: 17.385, longitude: 78.4867 },
+  },
+  {
+    slug: "bangalore",
+    city: "Bangalore",
+    state: "Karnataka",
+    title: "Luxury Event Planner Bangalore",
+    h1: "Luxury Event Planner in Bangalore",
+    description:
+      "Premium wedding and corporate event management in Bangalore — tech conferences, luxury weddings, and brand experiences by Nexyyra Events.",
+    keywords: ["Event Planner Bangalore", "Wedding Planner Bangalore", "Corporate Events Bangalore"],
+    intro:
+      "Nexyyra Events serves Bangalore and Karnataka with luxury wedding planning, corporate conferences, product launches, and entertainment productions for India's tech capital and beyond.",
+    highlights: [
+      "Convention centre and resort venue partnerships",
+      "Tech industry conferences and product launches",
+      "Luxury wedding and reception production",
+      "Artist management and stage production",
+    ],
+    faqs: [
+      {
+        question: "Does Nexyyra plan events in Bangalore?",
+        answer:
+          "Yes. We manage weddings, corporate events, concerts, and brand activations across Bangalore with full vendor curation and on-ground execution teams.",
+      },
+    ],
+    geo: { latitude: 12.9716, longitude: 77.5946 },
+  },
+  {
+    slug: "indore",
+    city: "Indore",
+    state: "Madhya Pradesh",
+    title: "Event Management Indore",
+    h1: "Luxury Event Management in Indore",
+    description:
+      "Premium event management in Indore — luxury weddings, corporate events, exhibitions, and celebrations by Nexyyra Events.",
+    keywords: ["Event Management Indore", "Wedding Planner Indore", "Corporate Events Indore"],
+    intro:
+      "Nexyyra Events delivers luxury event management across Indore and Central India — weddings, corporate conferences, exhibitions, and milestone celebrations with white-glove service.",
+    highlights: [
+      "Luxury wedding planning for Indore families",
+      "Corporate conferences and dealer meets",
+      "Central India venue and vendor partnerships",
+      "Travel and logistics coordination from Pune HQ",
+    ],
+    faqs: [
+      {
+        question: "Does Nexyyra serve clients in Indore?",
+        answer:
+          "Yes. We plan weddings, corporate events, and exhibitions in Indore with dedicated planning teams and vetted vendor networks across Madhya Pradesh.",
+      },
+    ],
+    geo: { latitude: 22.7196, longitude: 75.8577 },
+  },
+  {
     slug: "udaipur",
     city: "Udaipur",
     state: "Rajasthan",

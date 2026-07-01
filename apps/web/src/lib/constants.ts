@@ -30,7 +30,7 @@ export const ENTITY_FACTS = {
   citiesCovered: 35,
   teamSize: 50,
   languages: ["English", "Hindi", "Marathi"],
-  serviceAreas: ["Pune", "Mumbai", "Nashik", "Nagpur", "Ahmedabad", "Surat", "Goa", "Udaipur", "Maharashtra", "India", "International destinations"],
+  serviceAreas: ["Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Jaipur", "Indore", "Nashik", "Nagpur", "Ahmedabad", "Surat", "Goa", "Udaipur", "Maharashtra", "India", "International destinations"],
   awards: [
     "Best Event Management Company — Event Industry Awards India 2025",
     "Luxury Wedding Planner of the Year — Wedding Sutra 2024",

@@ -31,6 +31,19 @@ const LOCAL_LASTMOD: Record<string, string> = {
   "luxury-wedding-planner-maharashtra": CONTENT_DATE,
   "exhibition-management-pune": "2026-03-20",
   "destination-wedding-planner-pune": CONTENT_DATE,
+  "locations-delhi": CONTENT_DATE,
+  "locations-jaipur": CONTENT_DATE,
+  "locations-hyderabad": CONTENT_DATE,
+  "locations-bangalore": CONTENT_DATE,
+  "locations-indore": CONTENT_DATE,
+  "locations-pune": CONTENT_DATE,
+  "locations-mumbai": CONTENT_DATE,
+  "locations-nashik": CONTENT_DATE,
+  "locations-nagpur": CONTENT_DATE,
+  "locations-ahmedabad": CONTENT_DATE,
+  "locations-surat": CONTENT_DATE,
+  "locations-goa": CONTENT_DATE,
+  "locations-udaipur": CONTENT_DATE,
 };
 
 const SERVICE_LASTMOD: Record<string, string> = {

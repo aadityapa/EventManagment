@@ -58,6 +58,12 @@ export function generateSEO({
   const url = `${SITE_CONFIG.url}${path}`;
   const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
   const bingVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
+  const pinterestVerification = process.env.NEXT_PUBLIC_PINTEREST_SITE_VERIFICATION;
+  const yandexVerification = process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION;
+
+  const verificationOther: Record<string, string> = {};
+  if (bingVerification) verificationOther["msvalidate.01"] = bingVerification;
+  if (pinterestVerification) verificationOther["p:domain_verify"] = pinterestVerification;
 
   return {
     title: fullTitle,
@@ -98,11 +104,12 @@ export function generateSEO({
           follow: true,
           googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
         },
-    ...(googleVerification || bingVerification
+    ...(googleVerification || bingVerification || pinterestVerification || yandexVerification
       ? {
           verification: {
             ...(googleVerification && { google: googleVerification }),
-            ...(bingVerification && { other: { "msvalidate.01": bingVerification } }),
+            ...(yandexVerification && { yandex: yandexVerification }),
+            ...(Object.keys(verificationOther).length > 0 && { other: verificationOther }),
           },
         }
       : {}),
