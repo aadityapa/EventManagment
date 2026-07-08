@@ -1,0 +1,244 @@
+/* ============================================================================
+   Nexyyra Premium Motion Layer
+   Cinematic entrances, 3D hero support, marquee, scroll progress, ambient
+   aurora. Transform/opacity-only animations; reduced-motion safe via the
+   global prefers-reduced-motion override in globals.css.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------- entrances */
+@keyframes lux-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.lux-enter {
+  animation: lux-rise 0.95s var(--lux-ease) both;
+}
+
+.lux-enter-1 { animation-delay: 0.08s; }
+.lux-enter-2 { animation-delay: 0.22s; }
+.lux-enter-3 { animation-delay: 0.38s; }
+.lux-enter-4 { animation-delay: 0.54s; }
+.lux-enter-5 { animation-delay: 0.7s; }
+
+@keyframes lux-section-rise {
+  from {
+    opacity: 0;
+    transform: translateY(38px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lux-section-enter {
+  animation: lux-section-rise 0.85s var(--lux-ease) both;
+}
+
+/* ------------------------------------------------------------ hero 3D layer */
+.luxury-hero__three {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .luxury-hero__three {
+    left: 38%;
+  }
+}
+
+/* Gold accent sheen on the hero headline */
+.luxury-hero__accent {
+  background-size: 220% 100%;
+  animation: lux-accent-sheen 6s ease-in-out infinite;
+}
+
+@keyframes lux-accent-sheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Floating logo orbit — keeps the base rotateX/rotateY pose */
+.luxury-hero__logo-orbit {
+  animation: lux-orbit-float 9s ease-in-out infinite;
+}
+
+@keyframes lux-orbit-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotateX(10deg) rotateY(-14deg);
+  }
+  50% {
+    transform: translate(-50%, -53%) rotateX(13deg) rotateY(-9deg);
+  }
+}
+
+/* ------------------------------------------------------------- hero marquee */
+.lux-hero-marquee {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 9;
+  overflow: hidden;
+  border-top: 1px solid var(--lux-border);
+  background: rgba(5, 8, 20, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding-block: 0.85rem;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.lux-hero-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: lux-marquee 38s linear infinite;
+}
+
+.lux-hero-marquee__track:hover {
+  animation-play-state: paused;
+}
+
+.lux-hero-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.9rem;
+  padding-inline: 0.95rem;
+  white-space: nowrap;
+  color: rgba(246, 246, 246, 0.62);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.lux-hero-marquee__item::after {
+  content: "✦";
+  color: var(--lux-gold);
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+@keyframes lux-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* --------------------------------------------------------- scroll progress */
+.lux-scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 140;
+  height: 2px;
+  pointer-events: none;
+}
+
+.lux-scroll-progress__bar {
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--lux-gold) 0%, var(--lux-gold-metal) 40%, var(--lux-purple-bright) 100%);
+  box-shadow: 0 0 14px rgba(216, 178, 106, 0.55);
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------- ambient aurora */
+@media (min-width: 1024px) {
+  body.brand-body {
+    isolation: isolate;
+  }
+
+  body.brand-body::before,
+  body.brand-body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    border-radius: 999px;
+    pointer-events: none;
+    filter: blur(96px);
+    will-change: transform;
+  }
+
+  body.brand-body::before {
+    top: -14rem;
+    right: -10rem;
+    width: 40rem;
+    height: 40rem;
+    background: rgba(139, 77, 255, 0.5);
+    opacity: 0.16;
+    animation: lux-orb-a 28s ease-in-out infinite alternate;
+  }
+
+  body.brand-body::after {
+    bottom: -16rem;
+    left: -12rem;
+    width: 42rem;
+    height: 42rem;
+    background: rgba(216, 178, 106, 0.45);
+    opacity: 0.11;
+    animation: lux-orb-b 34s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes lux-orb-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-9rem, 7rem, 0) scale(1.15); }
+}
+
+@keyframes lux-orb-b {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(8rem, -6rem, 0) scale(1.12); }
+}
+
+/* -------------------------------------------------------------- micro polish */
+.lux-expertise-card__icon {
+  transition: transform 0.45s var(--lux-ease), box-shadow 0.45s ease;
+}
+
+@media (hover: hover) {
+  .lux-expertise-card:hover .lux-expertise-card__icon {
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 0 32px rgba(216, 178, 106, 0.38);
+  }
+}
+
+.luxury-button--purple {
+  animation: lux-cta-pulse 3.4s ease-in-out infinite;
+}
+
+@keyframes lux-cta-pulse {
+  0%, 100% { box-shadow: 0 18px 50px rgba(139, 77, 255, 0.38); }
+  50% { box-shadow: 0 18px 66px rgba(139, 77, 255, 0.6); }
+}
+
+/* ---------------------------------------------------- reduced-motion guards */
+@media (prefers-reduced-motion: reduce) {
+  .lux-enter,
+  .lux-section-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .lux-hero-marquee__track,
+  .luxury-hero__logo-orbit,
+  .luxury-hero__accent,
+  .luxury-button--purple,
+  body.brand-body::before,
+  body.brand-body::after {
+    animation: none;
+  }
+}

@@ -72,7 +72,11 @@ export function LazySection({
 
   return (
     <div ref={ref} className={cn(className)} style={{ minHeight }} aria-busy={!visible}>
-      {visible ? children : <SectionSkeleton minHeight={minHeight} label={label} />}
+      {visible ? (
+        <div className="lux-section-enter">{children}</div>
+      ) : (
+        <SectionSkeleton minHeight={minHeight} label={label} />
+      )}
     </div>
   );
 }
