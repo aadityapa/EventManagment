@@ -22,6 +22,7 @@ const STATIC_PATHS = [
   "/venues",
   "/vendors",
   "/gallery",
+  "/sitemap",
   "/testimonials",
   "/pricing",
   "/blog",

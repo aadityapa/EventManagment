@@ -3,6 +3,8 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { SITEMAP_CHILDREN } from "@/lib/sitemap-entries";
 import { maxLastMod, renderSitemapIndex, SITEMAP_XML_HEADERS } from "@/lib/sitemap-xml";
 
+export const dynamic = "force-static";
+
 export function GET() {
   const sitemaps = SITEMAP_CHILDREN.map((child) => ({
     loc: `${SITE_CONFIG.url}${child.path}`,

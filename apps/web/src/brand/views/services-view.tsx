@@ -133,7 +133,7 @@ export function ServicesView() {
               Full <span className="v4-gold-text">Spectrum</span>
             </h2>
             <p className="v4-standfirst mt-4 max-w-2xl">
-              Nine pillars of excellence — each delivered with the same cinematic precision we bring
+              Twelve pillars of excellence — each delivered with the same cinematic precision we bring
               to palace weddings.
             </p>
           </ScrollReveal>

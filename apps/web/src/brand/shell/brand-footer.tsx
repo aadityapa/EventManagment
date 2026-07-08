@@ -8,6 +8,9 @@ import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { Logo } from "@/components/branding/logo";
 import { SITE_CONFIG } from "@/lib/constants";
+import { services, blogPosts } from "@/data/cms";
+import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
+import { LOCATION_PAGES } from "@/lib/location-pages";
 import { analytics } from "@/lib/analytics";
 
 const QUICK_LINKS = [
@@ -23,7 +26,34 @@ const LEGAL_LINKS = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms & Conditions" },
   { href: "/refund", label: "Refund Policy" },
-  { href: "/sitemap.xml", label: "Sitemap", external: true },
+  { href: "/sitemap", label: "Sitemap" },
+  { href: "/sitemap.xml", label: "XML Sitemap", external: true },
+] as const;
+
+const FOOTER_DISCOVERY_GROUPS = [
+  {
+    title: "Services",
+    links: services.map((service) => ({ href: `/services/${service.slug}`, label: service.title })),
+  },
+  {
+    title: "Locations",
+    links: LOCATION_PAGES.map((location) => ({
+      href: `/locations/${location.slug}`,
+      label: location.city,
+    })),
+  },
+  {
+    title: "Planning Guides",
+    links: blogPosts.slice(-6).map((post) => ({ href: `/blog/${post.slug}`, label: post.title })),
+  },
+  {
+    title: "Popular Pages",
+    links: [
+      ...LOCAL_SEO_PAGES.map((page) => ({ href: `/${page.slug}`, label: page.title })),
+      { href: "/gallery", label: "Gallery" },
+      { href: "/portfolio/cs-2", label: "TechCorp Annual Gala" },
+    ],
+  },
 ] as const;
 
 function LinkedinIcon({ className }: { className?: string }) {
@@ -186,6 +216,23 @@ export function BrandFooter() {
             <FooterNewsletter />
           </div>
         </div>
+
+        <nav className="mt-10 border-t border-[var(--lux-border)] pt-8" aria-label="Popular pages">
+          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+            {FOOTER_DISCOVERY_GROUPS.map((group) => (
+              <div key={group.title}>
+                <FooterHeading>{group.title}</FooterHeading>
+                <ul className="lux-footer__list">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="lux-footer__link">{link.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </nav>
 
         <div className="lux-footer__divider" aria-hidden />
 
