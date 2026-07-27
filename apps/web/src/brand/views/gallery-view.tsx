@@ -37,34 +37,14 @@ export function GalleryView({ assets, heroSrc }: Props) {
         </div>
       </section>
 
-      <section className="v4-section border-b border-[var(--glitz-border)]">
-        <div className="brand-container">
-          <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-4">Visual Archive</span>
-            <h2 className="v4-title">Behind the Lens</h2>
-          </ScrollReveal>
-          <ScrollReveal preset="fade" delay={0.12} className="mt-8">
-            <GlassPanel className="relative overflow-hidden p-0">
-              <div className="relative aspect-[21/9] min-h-[240px] w-full overflow-hidden bg-black">
-                <BrandImage
-                  src={heroSrc}
-                  alt="Nexyyra Events gallery highlight"
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-                <div className="absolute bottom-6 left-6 text-sm text-white/90">
-                  Editorial moments from Nexyyra Events
-                </div>
-              </div>
-            </GlassPanel>
-          </ScrollReveal>
-        </div>
-      </section>
-
+      {/* Masonry archive — headline leads straight into the photo wall
+          (the old duplicate hero image block created a redundant gap here) */}
       <section className="v4-section">
         <div className="brand-container">
+          <ScrollReveal preset="reveal" className="mb-10 text-center">
+            <span className="v4-kicker mb-4">Visual Archive</span>
+            <h2 className="v4-title [text-wrap:balance]">Behind the Lens</h2>
+          </ScrollReveal>
           <LuxuryMasonryGallery assets={assets} />
         </div>
       </section>

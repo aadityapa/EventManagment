@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { applyWorldPreset, clearWorldPreset, type WorldPresetId, WORLD_PRESETS } from "@/lib/adaptive-theme/world-presets";
@@ -15,9 +15,14 @@ export function PortalTransition() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const reduced = useReducedMotion();
+  const [ready, setReady] = useState(false);
   const worldParam = searchParams.get("world");
   const world =
     worldParam && VALID_WORLDS.has(worldParam) ? (worldParam as WorldPresetId) : null;
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
   useEffect(() => {
     if (!world) {
@@ -27,7 +32,8 @@ export function PortalTransition() {
     applyWorldPreset(world);
   }, [world, pathname]);
 
-  if (reduced || !world) return null;
+  // Defer overlay until after hydration so reduced-motion / motion styles match.
+  if (!ready || reduced || !world) return null;
 
   return (
     <AnimatePresence>

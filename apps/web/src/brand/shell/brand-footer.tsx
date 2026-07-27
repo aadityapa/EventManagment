@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, ChevronDown, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Logo } from "@/components/branding/logo";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -26,8 +26,6 @@ const LEGAL_LINKS = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms & Conditions" },
   { href: "/refund", label: "Refund Policy" },
-  { href: "/sitemap", label: "Sitemap" },
-  { href: "/sitemap.xml", label: "XML Sitemap", external: true },
 ] as const;
 
 const FOOTER_DISCOVERY_GROUPS = [
@@ -98,17 +96,15 @@ const SOCIAL_LINKS = [
 
 function SocialIconLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) {
   return (
-    <motion.a
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Follow Nexyyra on ${label}`}
-      className="lux-social"
-      whileHover={{ scale: 1.06, y: -2 }}
-      whileTap={{ scale: 0.96 }}
+      className="lux-social transition-transform hover:-translate-y-0.5 hover:scale-105 active:scale-95"
     >
       <Icon className="h-5 w-5" />
-    </motion.a>
+    </a>
   );
 }
 
@@ -156,6 +152,46 @@ function FooterHeading({ children }: { children: React.ReactNode }) {
   return <h3 className="lux-footer__heading">{children}</h3>;
 }
 
+/**
+ * Collapsible footer section — dropdown-style link groups.
+ * Collapsed by default on every viewport; links remain in the DOM for SEO.
+ */
+function FooterSection({
+  title,
+  ariaLabel,
+  children,
+}: {
+  title: string;
+  ariaLabel?: string;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const bodyId = useId();
+
+  return (
+    <nav
+      className={cn("lux-footer-acc", open && "is-open")}
+      aria-label={ariaLabel ?? title}
+    >
+      <h3 className="lux-footer__heading lux-footer-acc__heading">
+        <button
+          type="button"
+          className="lux-footer-acc__trigger tap-target"
+          aria-expanded={open}
+          aria-controls={bodyId}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {title}
+          <ChevronDown className="lux-footer-acc__chevron" aria-hidden="true" />
+        </button>
+      </h3>
+      <div id={bodyId} className="lux-footer-acc__body">
+        <div className="lux-footer-acc__inner">{children}</div>
+      </div>
+    </nav>
+  );
+}
+
 export function BrandFooter() {
   const pathname = usePathname();
 
@@ -180,16 +216,17 @@ export function BrandFooter() {
             </div>
           </div>
 
-          <nav className="lux-footer__col" aria-label="Quick links">
-            <FooterHeading>Quick Links</FooterHeading>
-            <ul className="lux-footer__list">
-              {QUICK_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="lux-footer__link">{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="lux-footer__col">
+            <FooterSection title="Quick Links" ariaLabel="Quick links">
+              <ul className="lux-footer__list">
+                {QUICK_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="lux-footer__link">{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </FooterSection>
+          </div>
 
           <div className="lux-footer__col">
             <FooterHeading>Contact Us</FooterHeading>
@@ -217,11 +254,10 @@ export function BrandFooter() {
           </div>
         </div>
 
-        <nav className="mt-10 border-t border-[var(--lux-border)] pt-8" aria-label="Popular pages">
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 border-t border-[var(--lux-border)] pt-8">
+          <div className="grid gap-x-8 gap-y-4 md:grid-cols-2 xl:grid-cols-4">
             {FOOTER_DISCOVERY_GROUPS.map((group) => (
-              <div key={group.title}>
-                <FooterHeading>{group.title}</FooterHeading>
+              <FooterSection key={group.title} title={group.title}>
                 <ul className="lux-footer__list">
                   {group.links.map((link) => (
                     <li key={link.href}>
@@ -229,23 +265,19 @@ export function BrandFooter() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </FooterSection>
             ))}
           </div>
-        </nav>
+        </div>
 
         <div className="lux-footer__divider" aria-hidden />
 
         <div className="lux-footer__bottom">
           <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.</p>
           <nav aria-label="Legal links" className="lux-footer__legal">
-            {LEGAL_LINKS.map((l) =>
-              "external" in l && l.external ? (
-                <a key={l.href} href={l.href} className="lux-footer__link">{l.label}</a>
-              ) : (
-                <Link key={l.href} href={l.href} className="lux-footer__link">{l.label}</Link>
-              )
-            )}
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="lux-footer__link">{l.label}</Link>
+            ))}
           </nav>
           <a href={SITE_CONFIG.url} className="lux-footer__url">www.nexyyra.com</a>
         </div>

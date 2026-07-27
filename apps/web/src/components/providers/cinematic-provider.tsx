@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   UniverseLoader,
   LOADER_STORAGE_KEY,
@@ -10,26 +9,26 @@ import {
 import { PremiereContext } from "@/components/providers/premiere-context";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/lib/motion/page-transition";
-import { EASE } from "@/lib/motion";
-
-function subscribeLoaderSeen(cb: () => void) {
-  window.addEventListener("storage", cb);
-  return () => window.removeEventListener("storage", cb);
-}
-
-function getLoaderSeenSnapshot() {
-  return hasSeenPremiere();
-}
 
 export function CinematicProvider({ children }: { children: React.ReactNode }) {
-  const skipPremiere = useSyncExternalStore(subscribeLoaderSeen, getLoaderSeenSnapshot, () => false);
-  const [premiereComplete, setPremiereComplete] = useState(skipPremiere);
-  const [handoffActive, setHandoffActive] = useState(skipPremiere);
+  // Keep SSR + first client paint identical; resolve premiere only after mount.
+  const [hydrated, setHydrated] = useState(false);
+  const [skipPremiere, setSkipPremiere] = useState(false);
+  const [premiereComplete, setPremiereComplete] = useState(false);
+  const [handoffActive, setHandoffActive] = useState(false);
+
+  useEffect(() => {
+    const seen = hasSeenPremiere();
+    setSkipPremiere(seen);
+    setPremiereComplete(seen);
+    setHandoffActive(seen);
+    setHydrated(true);
+  }, []);
 
   const onHandoff = useCallback(() => setHandoffActive(true), []);
   const onComplete = useCallback(() => setPremiereComplete(true), []);
 
-  const premiereActive = !skipPremiere && !premiereComplete;
+  const premiereActive = hydrated && !skipPremiere && !premiereComplete;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -41,16 +40,18 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
       root.classList.remove("premiere-active");
       document.body.style.overflow = "";
       document.body.style.backgroundColor = "";
-      import("@/lib/gsap/use-gsap").then(({ ScrollTrigger }) => {
-        ScrollTrigger.refresh();
-      });
+      if (hydrated) {
+        import("@/lib/gsap/use-gsap").then(({ ScrollTrigger }) => {
+          ScrollTrigger.refresh();
+        });
+      }
     }
     return () => {
       root.classList.remove("premiere-active");
       document.body.style.overflow = "";
       document.body.style.backgroundColor = "";
     };
-  }, [premiereActive]);
+  }, [premiereActive, hydrated]);
 
   const contextValue = useMemo(
     () => ({
@@ -61,24 +62,29 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
     [skipPremiere, handoffActive, premiereComplete]
   );
 
+  const contentVisible = !hydrated ? false : handoffActive || skipPremiere;
+
   return (
     <PremiereContext.Provider value={contextValue}>
       <SmoothScrollProvider enabled={premiereComplete}>
+        {!hydrated && (
+          <div
+            className="premiere-loader fixed inset-0 z-[99999] bg-black"
+            aria-hidden
+          />
+        )}
         {premiereActive && (
           <UniverseLoader onHandoff={onHandoff} onComplete={onComplete} />
         )}
-        <motion.div
-          className="transform-gpu will-change-transform"
-          initial={skipPremiere ? false : { opacity: 0, scale: 1.05 }}
-          animate={
-            handoffActive || skipPremiere
-              ? { opacity: 1, scale: 1 }
-              : { opacity: 0, scale: 1.05 }
-          }
-          transition={{ duration: 0.5, ease: EASE.silk, delay: handoffActive ? 0 : 0.05 }}
+        <div
+          className="transform-gpu will-change-transform transition-[opacity,transform] duration-500 ease-out"
+          style={{
+            opacity: contentVisible ? 1 : 0,
+            transform: contentVisible ? "scale(1)" : "scale(1.05)",
+          }}
         >
           <PageTransition>{children}</PageTransition>
-        </motion.div>
+        </div>
       </SmoothScrollProvider>
     </PremiereContext.Provider>
   );

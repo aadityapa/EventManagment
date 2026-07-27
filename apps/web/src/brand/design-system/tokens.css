@@ -52,7 +52,7 @@
   --card: #101b35;
   --text-primary: #f7f7f7;
   --text-secondary: #b6b8c6;
-  --text-muted: #7d8498;
+  --text-muted: #98a0b5; /* keep in sync with --lux-subtle (AA on dark bg) */
   --gold: #d8b26a;
   --gold-light: #f4d08d;
   --border: rgba(216, 178, 106, 0.18);

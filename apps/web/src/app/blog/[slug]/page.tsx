@@ -130,7 +130,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           <h1
-            className="v4-display mt-6 text-[clamp(2rem,1.2rem+4vw,3.5rem)] leading-tight"
+            className="v4-display mt-6 text-[clamp(2rem,1.2rem+4vw,3.5rem)] leading-tight [text-wrap:balance]"
             itemProp="headline"
           >
             {post.title}
@@ -186,7 +186,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             itemProp="articleBody"
           >
             {paragraphs.map((p, i) => (
-              <p key={i} className="text-[length:var(--v4-text-body)] text-muted leading-[var(--v4-leading-body,1.75)]">
+              <p key={i} className="text-[length:var(--v4-text-body)] text-secondary leading-[var(--v4-leading-body,1.75)]">
                 {p}
               </p>
             ))}

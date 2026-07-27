@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EASE, DUR } from "./easing";
@@ -16,7 +17,14 @@ function shouldAnimate(pathname: string) {
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const reduced = useReducedMotion();
-  const animate = shouldAnimate(pathname) && !reduced;
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  // SSR + first client paint stay identical; animate only after motion preference is known.
+  const animate = ready && shouldAnimate(pathname) && reduced !== true;
 
   if (!animate) {
     return <>{children}</>;

@@ -154,11 +154,8 @@ body {
     min-width: 44px;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="date"],
-  input[type="number"],
+  /* 16px floor on ALL text-entry fields prevents iOS Safari focus zoom */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
   textarea,
   select {
     font-size: 16px;
@@ -336,10 +333,12 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
-/* Gallery masonry — defer off-screen paint for smoother scroll */
+/* Gallery masonry — defer off-screen paint for smoother scroll.
+   `auto 480px` remembers the real rendered size after first paint, so cards
+   hug their image exactly (no empty band below landscapes, no cropped portraits). */
 .gallery-masonry-item {
   content-visibility: auto;
-  contain-intrinsic-size: 380px 480px;
+  contain-intrinsic-size: auto 480px;
 }
 
 /* -------------------------------------------------------------------------- */

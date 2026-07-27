@@ -720,8 +720,8 @@ html.premiere-active .brand-root {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1.25rem;
-    max-width: 420px;
+    gap: 1rem;
+    max-width: 480px; /* room for theme pill + phone + CTA without squeeze */
     justify-self: end;
   }
 }
@@ -763,7 +763,7 @@ html.premiere-active .brand-root {
 
 .brand-header-cta {
   display: inline-flex;
-  height: 2.875rem;
+  height: 2.75rem; /* matches theme pill for one clean action row */
   align-items: center;
   justify-content: center;
   border-radius: 0.875rem; /* 14px */

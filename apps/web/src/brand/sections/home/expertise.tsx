@@ -32,7 +32,7 @@ export function HomeExpertise() {
   return (
     <section id="expertise" className="lux-section" aria-labelledby="expertise-heading">
       <div className="brand-container">
-        <div className="lux-section__head flex-col gap-4">
+        <div className="lux-section__head flex-col items-center gap-4">
           <span className="lux-label">Our Expertise</span>
           <h2 id="expertise-heading" className="lux-heading">What We Create</h2>
         </div>

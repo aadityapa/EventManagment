@@ -197,11 +197,13 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
   }, [onSkip, onHandoff, finish]);
 
   useEffect(() => {
-    if (reducedMotion) {
+    // null = unresolved (SSR / first paint); only skip once we know preference.
+    if (reducedMotion === true) {
       persistSeen();
       onComplete();
       return;
     }
+    if (reducedMotion === null) return;
 
     const particlesTimer = window.setTimeout(() => setParticlesVisible(true), 250);
     const taglineTimer = window.setTimeout(() => setTaglineVisible(true), 400);
@@ -223,7 +225,8 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
     };
   }, [reducedMotion, onHandoff, onComplete, finish, persistSeen]);
 
-  if (reducedMotion) return null;
+  // Always render the same shell during hydration; preference is applied in effect.
+  if (reducedMotion === true) return null;
 
   return (
     <AnimatePresence mode="wait">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -16,6 +16,7 @@ import { Logo } from "@/components/branding/logo";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./mobile-menu";
 import { MobileNavbar } from "./mobile-navbar";
+import { ThemeToggle } from "./theme-toggle";
 import { isNavActive, MEGA_COLUMNS, MEGA_EXPLORE_LINKS } from "./nav-data";
 
 const MEGA_MOTION = {
@@ -23,6 +24,13 @@ const MEGA_MOTION = {
   animate: { opacity: 1, y: 0, scale: 1 },
   exit: { opacity: 0, y: 6, scale: 0.99 },
   transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const },
+};
+
+const MEGA_MOTION_REDUCED = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.12 },
 };
 
 function HeaderNavLink({
@@ -50,6 +58,8 @@ function HeaderNavLink({
 
 export function BrandHeader() {
   const pathname = usePathname();
+  const prefersReducedMotion = useReducedMotion();
+  const megaMotion = prefersReducedMotion ? MEGA_MOTION_REDUCED : MEGA_MOTION;
   const [servicesPath, setServicesPath] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const servicesOpen = servicesPath === pathname;
@@ -206,7 +216,7 @@ export function BrandHeader() {
                             onMouseLeave={() => {
                               if (hoverCapableRef.current) setServicesOpen(false);
                             }}
-                            {...MEGA_MOTION}
+                            {...megaMotion}
                           >
                             <div
                               id="services-mega-menu"
@@ -328,6 +338,7 @@ export function BrandHeader() {
             </nav>
 
             <div className="brand-header-actions">
+              <ThemeToggle />
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
                 className="brand-header-phone tap-target"

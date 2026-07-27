@@ -86,6 +86,52 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }
   }, [pathname, handleClose]);
 
+  // Focus management: move focus into the drawer on open, trap Tab inside
+  // the dialog, and restore focus to the trigger on close.
+  const panelRef = useRef<HTMLDivElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+
+    const panel = panelRef.current;
+    const focusables = () =>
+      panel
+        ? Array.from(
+            panel.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            )
+          ).filter((el) => el.offsetParent !== null)
+        : [];
+
+    // Initial focus — first link in the drawer
+    const raf = requestAnimationFrame(() => {
+      focusables()[0]?.focus();
+    });
+
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const current = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (current === first || !panel?.contains(current))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (current === last || !panel?.contains(current))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onTab);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("keydown", onTab);
+      lastFocusedRef.current?.focus?.();
+    };
+  }, [isOpen]);
+
   const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`;
   const phoneHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
 
@@ -105,6 +151,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           <motion.div
             id="mobile-nav-drawer"
+            ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"

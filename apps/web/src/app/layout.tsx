@@ -55,6 +55,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const globalSchema = globalGraphSchema();
+  // JSON-LD via HTML string — avoids React 19 client <script> render warning.
+  const jsonLdHtml = `<script type="application/ld+json">${JSON.stringify(globalSchema).replace(/</g, "\\u003c")}</script>`;
+
   return (
     <html lang="en-IN" className="dark" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
@@ -62,7 +65,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
         <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
       </head>
       <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
@@ -86,6 +88,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <ToastProvider />
           </CinematicProvider>
         </AdaptiveThemeProvider>
+        <div hidden suppressHydrationWarning dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
       </body>
     </html>
   );

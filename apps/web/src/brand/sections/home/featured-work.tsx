@@ -38,7 +38,10 @@ export function HomeFeaturedWork() {
     <section id="featured-work" className="lux-section" aria-labelledby="featured-heading">
       <div className="brand-container">
         <div className="lux-section__head lux-section__head--with-nav">
-          <span className="lux-label" id="featured-heading">Our Featured Work</span>
+          <div className="flex flex-col items-start gap-3 text-left">
+            <span className="lux-label" id="featured-heading">Our Featured Work</span>
+            <h2 className="lux-heading">Signature Celebrations</h2>
+          </div>
           <div className="lux-gallery-nav">
             <button type="button" className="lux-arrow" aria-label="Previous projects" onClick={() => scrollByCards(-1)}>
               <ChevronLeft className="h-5 w-5" aria-hidden />

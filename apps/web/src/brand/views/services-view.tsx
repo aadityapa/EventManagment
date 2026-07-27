@@ -95,7 +95,7 @@ export function ServicesView() {
             onClick={() => analytics.featureClick(FEATURED.slug, "services_featured")}
             className="group relative mt-6 block overflow-hidden rounded-[var(--v4-radius-xl)]"
           >
-            <div data-featured-media className="relative aspect-[21/9] min-h-[300px] sm:min-h-[380px]">
+            <div data-featured-media className="relative aspect-[21/9] min-h-[300px] bg-[var(--glitz-surface)] sm:min-h-[380px]">
               <BrandImage
                 src={FEATURED.image}
                 alt={FEATURED.title}
@@ -103,7 +103,8 @@ export function ServicesView() {
                 sizes="100vw"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+              {/* Softer wash — the old 80% left wall drowned the photo and read as empty space */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-black/10" />
             </div>
             <div className="absolute inset-0 flex flex-col justify-end p-8 sm:p-12 lg:p-16">
               <span className="v4-kicker mb-3 text-[var(--adaptive-accent,var(--glitz-gold))]">
