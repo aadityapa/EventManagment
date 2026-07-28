@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { HeroCarouselBackground } from "@/brand/sections/home/hero-carousel-bg";
-import { Logo } from "@/components/branding/logo";
+import { LogoCoin } from "@/components/three/logo-coin";
 
 type HeroStaticProps = {
   slides: string[];
@@ -54,7 +54,8 @@ export function HeroStatic({ slides }: HeroStaticProps) {
 
         <div className="luxury-hero__stage" aria-hidden>
           <div className="luxury-hero__logo-orbit">
-            <Logo variant="image" href={undefined} priority className="luxury-hero__logo" />
+            {/* True 3D rotating brand coin (three.js), CSS fallback inside */}
+            <LogoCoin />
           </div>
         </div>
       </div>

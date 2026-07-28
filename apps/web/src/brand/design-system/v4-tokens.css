@@ -29,8 +29,9 @@
   --v4-space-3xl: 9rem;
   --v4-space-4xl: 14rem;
   /* Section rhythm — more generous than V3 for "exclusive" pacing */
-  --v4-section: clamp(5rem, 12vw, 11rem);
-  --v4-section-lg: clamp(7rem, 16vw, 16rem);
+  /* Tightened — old max (11/16rem top+bottom) left dead viewports between sections */
+  --v4-section: clamp(4rem, 8vw, 6.5rem);
+  --v4-section-lg: clamp(5rem, 10vw, 8.5rem);
   --v4-measure: 62ch; /* readable body line length */
 
   /* --- Editorial type scale (fluid, cinematic) --- */

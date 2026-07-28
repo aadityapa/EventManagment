@@ -21,10 +21,16 @@ const CINEMATIC = EASE.silk;
 
 export function hasSeenPremiere() {
   if (typeof window === "undefined") return false;
-  return (
-    sessionStorage.getItem(LOADER_STORAGE_KEY) === "1" ||
-    sessionStorage.getItem(LEGACY_LOADER_KEY) === "1"
-  );
+  try {
+    // localStorage: play the premiere once per visitor, not once per session.
+    return (
+      localStorage.getItem(LOADER_STORAGE_KEY) === "1" ||
+      sessionStorage.getItem(LOADER_STORAGE_KEY) === "1" ||
+      sessionStorage.getItem(LEGACY_LOADER_KEY) === "1"
+    );
+  } catch {
+    return true; // storage blocked — never gate content behind the intro
+  }
 }
 
 type Props = {
@@ -177,8 +183,13 @@ export function UniverseLoader({ onHandoff, onComplete, onSkip }: Props) {
   const [glowVisible, setGlowVisible] = useState(false);
 
   const persistSeen = useCallback(() => {
-    sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
-    sessionStorage.setItem(LEGACY_LOADER_KEY, "1");
+    try {
+      localStorage.setItem(LOADER_STORAGE_KEY, "1");
+      sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
+      sessionStorage.setItem(LEGACY_LOADER_KEY, "1");
+    } catch {
+      /* storage blocked */
+    }
   }, []);
 
   const finish = useCallback(() => {

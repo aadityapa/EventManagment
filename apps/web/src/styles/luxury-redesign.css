@@ -1770,6 +1770,126 @@ html.light {
   --lux-border-gold: rgba(176, 74, 94, 0.35);
 }
 
+/* ----- 3D rotating hero logo — coin spin, transform-only (GPU cheap) ----- */
+.logo3d {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  perspective: 1100px;
+}
+
+.logo3d__spinner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  animation: logo3d-spin 14s linear infinite;
+  will-change: transform;
+}
+
+.logo3d__face {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.logo3d__face--back {
+  transform: rotateY(180deg);
+}
+
+/* three.js coin canvas fills the orbit */
+.logo3d-canvas {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.logo3d-canvas canvas {
+  display: block;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Soft metallic glint as the emblem turns */
+.logo3d::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 32% 28%, rgba(244, 208, 141, 0.14), transparent 58%);
+  pointer-events: none;
+  animation: logo3d-glint 14s linear infinite;
+}
+
+@keyframes logo3d-spin {
+  from {
+    transform: rotateX(5deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(5deg) rotateY(360deg);
+  }
+}
+
+@keyframes logo3d-glint {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  75% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo3d__spinner {
+    animation: none;
+  }
+  .logo3d__face--back {
+    display: none;
+  }
+  .logo3d::after {
+    animation: none;
+  }
+}
+
+/* Footer logo — one refined 3D turn on hover (not a constant spin) */
+.brand-logo--footer .brand-logo__img {
+  transform-style: preserve-3d;
+}
+
+.brand-logo--footer:hover .brand-logo__img {
+  animation: logo3d-hover-spin 1.4s var(--lux-ease);
+}
+
+@keyframes logo3d-hover-spin {
+  from {
+    transform: perspective(900px) rotateY(0deg);
+  }
+  to {
+    transform: perspective(900px) rotateY(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo--footer:hover .brand-logo__img {
+    animation: none;
+  }
+}
+
 /* ----- Toggle buttons ----- */
 .theme-toggle-wrap {
   position: relative;
@@ -1852,6 +1972,20 @@ html.light {
 .theme-toggle[data-mode="light"] .theme-toggle__icon--moon {
   opacity: 0;
   transform: rotate(90deg) scale(0.4);
+}
+
+/* Light-mode footer — .lux-footer has a hardcoded dark base, flip it to warm ivory */
+.light .lux-footer {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(139, 77, 255, 0.06), transparent 26rem),
+    radial-gradient(circle at 88% 10%, rgba(154, 115, 40, 0.08), transparent 24rem),
+    #ece5d4;
+  border-top-color: rgba(27, 29, 46, 0.12);
+}
+
+.light .lux-footer .lux-social {
+  border-color: rgba(27, 29, 46, 0.14);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 /* Light-mode mobile chrome — header bar + drawer flip to ivory */

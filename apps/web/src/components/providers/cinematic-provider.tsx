@@ -30,6 +30,17 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
 
   const premiereActive = hydrated && !skipPremiere && !premiereComplete;
 
+  // FAILSAFE: if the premiere stalls (slow device, blocked WebGL, dropped
+  // animation frame), force-reveal content — the site must never stay black.
+  useEffect(() => {
+    if (!hydrated || premiereComplete) return;
+    const t = window.setTimeout(() => {
+      setHandoffActive(true);
+      setPremiereComplete(true);
+    }, 3500);
+    return () => window.clearTimeout(t);
+  }, [hydrated, premiereComplete]);
+
   useEffect(() => {
     const root = document.documentElement;
     if (premiereActive) {

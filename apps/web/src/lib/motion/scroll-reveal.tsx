@@ -45,8 +45,10 @@ interface ScrollRevealProps {
   amount?: number;
 }
 
-const VIEWPORT_MARGIN = "0px 0px -80px 0px";
-const FALLBACK_MS = 2500;
+// Eager reveal: trigger slightly BEFORE the element enters the viewport so
+// fast scrollers never see blank sections; short fallback self-heals the rest.
+const VIEWPORT_MARGIN = "0px 0px 120px 0px";
+const FALLBACK_MS = 1200;
 
 /**
  * V4 scroll reveal wrapper. Plays a shared reveal preset when scrolled into

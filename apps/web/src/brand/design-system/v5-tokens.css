@@ -40,8 +40,9 @@
   --v5-space-2xl: 6rem;
   --v5-space-3xl: 10rem;
   --v5-space-4xl: 16rem;
-  --v5-section: clamp(6rem, 14vw, 12rem);
-  --v5-section-lg: clamp(8rem, 18vw, 18rem);
+  /* Tightened to match v4 rhythm — no dead viewports between sections */
+  --v5-section: clamp(4rem, 8vw, 6.5rem);
+  --v5-section-lg: clamp(5rem, 10vw, 8.5rem);
   --v5-measure: 62ch;
 
   --v4-section: var(--v5-section);
