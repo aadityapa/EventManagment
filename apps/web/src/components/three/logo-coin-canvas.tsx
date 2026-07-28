@@ -28,61 +28,29 @@ function CoinMesh() {
 
   return (
     <group ref={group}>
-      {/* Thick gold edge band — the visible "side" of the coin */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[1.62, 1.62, 0.3, 96, 1, true]} />
+      {/* Floating logo — fully transparent background, artwork only.
+          Standard material lets the gold key light glint across it as it turns. */}
+      <mesh position={[0, 0, 0.02]}>
+        <planeGeometry args={[2.6, 2.55]} />
         <meshStandardMaterial
-          color="#d8b26a"
-          metalness={1}
-          roughness={0.24}
-          emissive="#3a2600"
-          emissiveIntensity={0.3}
-          side={THREE.DoubleSide}
+          map={texture}
+          transparent
+          metalness={0.35}
+          roughness={0.45}
+          toneMapped={false}
         />
       </mesh>
 
-      {/* Beveled gold rings framing each face */}
-      <mesh position={[0, 0, 0.152]}>
-        <ringGeometry args={[1.36, 1.62, 96]} />
+      {/* Mirrored back so the logo reads correctly from both sides */}
+      <mesh position={[0, 0, -0.02]} rotation={[0, Math.PI, 0]}>
+        <planeGeometry args={[2.6, 2.55]} />
         <meshStandardMaterial
-          color="#f4d08d"
-          metalness={1}
-          roughness={0.2}
-          emissive="#3a2600"
-          emissiveIntensity={0.35}
+          map={texture}
+          transparent
+          metalness={0.35}
+          roughness={0.45}
+          toneMapped={false}
         />
-      </mesh>
-      <mesh position={[0, 0, -0.152]} rotation={[0, Math.PI, 0]}>
-        <ringGeometry args={[1.36, 1.62, 96]} />
-        <meshStandardMaterial
-          color="#f4d08d"
-          metalness={1}
-          roughness={0.2}
-          emissive="#3a2600"
-          emissiveIntensity={0.35}
-        />
-      </mesh>
-
-      {/* Navy enamel inlay faces */}
-      <mesh position={[0, 0, 0.149]}>
-        <circleGeometry args={[1.37, 96]} />
-        <meshStandardMaterial color="#111f42" metalness={0.45} roughness={0.5} />
-      </mesh>
-      <mesh position={[0, 0, -0.149]} rotation={[0, Math.PI, 0]}>
-        <circleGeometry args={[1.37, 96]} />
-        <meshStandardMaterial color="#111f42" metalness={0.45} roughness={0.5} />
-      </mesh>
-
-      {/* Logo — front face */}
-      <mesh position={[0, 0, 0.165]}>
-        <planeGeometry args={[2.05, 2.01]} />
-        <meshBasicMaterial map={texture} transparent toneMapped={false} />
-      </mesh>
-
-      {/* Logo — back face */}
-      <mesh position={[0, 0, -0.165]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[2.05, 2.01]} />
-        <meshBasicMaterial map={texture} transparent toneMapped={false} />
       </mesh>
     </group>
   );
