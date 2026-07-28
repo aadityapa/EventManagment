@@ -58,6 +58,10 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/experiences", destination: "/services", permanent: true },
+      // Legacy /home links (flagged 404 in Search Console) → homepage
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/index", destination: "/", permanent: true },
+      { source: "/index.html", destination: "/", permanent: true },
       // Apex + non-www → canonical www (single 301 hop; HTTP handled at platform edge)
       {
         source: "/:path*",
