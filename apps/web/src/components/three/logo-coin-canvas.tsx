@@ -5,7 +5,8 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
-const LOGO_SRC = "/brand/nexyyra-logo-dark.svg";
+// PNG texture — SVG textures decode unreliably across GPUs/browsers
+const LOGO_SRC = "/brand/android-chrome-512.png";
 
 /**
  * Real 3D brand coin — navy disc, metallic gold rim, logo on both faces.
@@ -29,7 +30,7 @@ function CoinMesh() {
       {/* Coin body */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[1.62, 1.62, 0.14, 72]} />
-        <meshStandardMaterial color="#0d1730" metalness={0.55} roughness={0.4} />
+        <meshStandardMaterial color="#1a2a55" metalness={0.5} roughness={0.35} />
       </mesh>
 
       {/* Metallic gold rim */}
@@ -66,9 +67,9 @@ export function LogoCoinCanvas() {
       camera={{ position: [0, 0, 4.2], fov: 42 }}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[3, 2, 4]} intensity={1.4} color="#ffe8bf" />
-      <directionalLight position={[-3, -1, 2]} intensity={0.5} color="#b47cff" />
+      <ambientLight intensity={0.85} />
+      <directionalLight position={[3, 2, 4]} intensity={1.9} color="#ffe8bf" />
+      <directionalLight position={[-3, -1, 2]} intensity={0.7} color="#b47cff" />
       <Suspense fallback={null}>
         <CoinMesh />
       </Suspense>

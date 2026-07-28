@@ -1805,17 +1805,17 @@ html.light {
   transform: rotateY(180deg);
 }
 
-/* three.js coin canvas fills the orbit */
+/* three.js coin canvas — locked to a centered square so the coin can never
+   stretch into a slab when the parent column is taller than it is wide */
 .logo3d-canvas {
   position: relative;
-  height: 100%;
-  width: 100%;
+  width: min(100%, 20rem);
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
 }
 
 .logo3d-canvas canvas {
   display: block;
-  height: 100% !important;
-  width: 100% !important;
 }
 
 /* Soft metallic glint as the emblem turns */
@@ -1972,6 +1972,17 @@ html.light {
 .theme-toggle[data-mode="light"] .theme-toggle__icon--moon {
   opacity: 0;
   transform: rotate(90deg) scale(0.4);
+}
+
+/* Photo heroes keep their dark veil in every theme — text must stay white.
+   Re-pin the dark-theme text vars inside the hero when day mode is active. */
+.light .luxury-hero {
+  --lux-white: #f7f7f7;
+  --lux-muted: #b6b8c6;
+  --lux-subtle: #98a0b5;
+  --text-primary: #f7f7f7;
+  --text-secondary: #b6b8c6;
+  --text-muted: #98a0b5;
 }
 
 /* Light-mode footer — .lux-footer has a hardcoded dark base, flip it to warm ivory */
