@@ -40,7 +40,7 @@ export function generateSEO({
   description = SITE_CONFIG.description,
   keywords = SEO_KEYWORDS,
   image = "/brand/nexyyra-og.png",
-  twitterImage = "/brand/nexyyra-twitter.png",
+  twitterImage = "/brand/nexyyra-og.png",
   path = "",
   type = "website",
   noIndex = false,

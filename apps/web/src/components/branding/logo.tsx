@@ -27,11 +27,11 @@ interface LogoProps {
  * checkerboard/opaque background.
  */
 export const BRAND_LOGO_ASSETS = {
-  full: "/brand/nexyyra-logo.svg",
+  full: "/brand/nexyyra-logo-dark.svg",
   dark: "/brand/nexyyra-logo-dark.svg",
   loader: "/brand/nexyyra-logo-dark.svg",
   og: "/brand/nexyyra-og.png",
-  twitter: "/brand/nexyyra-twitter.png",
+  twitter: "/brand/nexyyra-og.png",
   symbol: "/brand/nexyyra-monogram.svg",
   favicon: "/favicon.svg",
 } as const;

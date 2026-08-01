@@ -93,7 +93,6 @@ async function main() {
   const gh = goldMeta.height ?? mH;
 
   const goldSvg = buildEmbeddedSvg(goldEmbed, gw, gh, "Nexyyra Events");
-  fs.writeFileSync(path.join(brandDir, "nexyyra-logo.svg"), goldSvg);
   fs.writeFileSync(path.join(brandDir, "nexyyra-logo-dark.svg"), goldSvg);
 
   const monoCropH = Math.round(mH * 0.56);
@@ -149,8 +148,6 @@ async function main() {
   const fav16 = await squareIcon(16, 1);
   fs.writeFileSync(path.join(publicDir, "favicon-32x32.png"), fav32);
   fs.writeFileSync(path.join(publicDir, "favicon-16x16.png"), fav16);
-  fs.writeFileSync(path.join(publicDir, "favicon-32.png"), fav32);
-  fs.writeFileSync(path.join(publicDir, "favicon-16.png"), fav16);
 
   try {
     const toIco = (await import("to-ico")).default;
@@ -168,7 +165,6 @@ async function main() {
   }).composite([{ input: ogLogo, gravity: "center" }]);
 
   await ogCard.png().toFile(path.join(brandDir, "nexyyra-og.png"));
-  await ogCard.png().toFile(path.join(brandDir, "nexyyra-twitter.png"));
 
   const lightPath = path.join(brandDir, "nexyyra-logo-light.svg");
   if (fs.existsSync(lightPath)) fs.unlinkSync(lightPath);
