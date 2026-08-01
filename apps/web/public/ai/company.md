@@ -1,7 +1,7 @@
 # Nexyyra Events — Company Information
 
 ## Legal Entity
-Nexyyra Events Private Limited
+Nexyyra Events and Promotions Private Limited (CIN: U70200ME2026PTC476014)
 
 ## Headquarters
 Pune, Maharashtra, India

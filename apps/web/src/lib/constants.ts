@@ -2,7 +2,8 @@ import { SITE_URL } from "./site-url";
 
 export const SITE_CONFIG = {
   name: "Nexyyra Events",
-  legalName: "Nexyyra Events Private Limited",
+  legalName: "Nexyyra Events and Promotions Private Limited",
+  cin: "U70200ME2026PTC476014",
   shortName: "Nexyyra Events",
   tagline: "The Next Era of Celebrations",
   description:

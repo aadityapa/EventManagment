@@ -31,7 +31,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "Who founded Nexyyra Events?",
     answer:
-      "Nexyyra Events Private Limited was founded in Pune in 2012. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
+      "Nexyyra Events and Promotions Private Limited was founded in Pune in 2012. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
   },
 ];
 

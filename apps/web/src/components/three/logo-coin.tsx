@@ -36,7 +36,19 @@ export function LogoCoin() {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
     const memory = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     const cores = navigator.hardwareConcurrency ?? 4;
-    setEnabled(!reduced && (memory === undefined || memory >= 4) && cores >= 4);
+    const capable = !reduced && (memory === undefined || memory >= 4) && cores >= 4;
+    if (!capable) return;
+
+    // Defer WebGL until the main thread is idle — hero text/photo paint first,
+    // the CSS fallback spins in the meantime, then the 3D canvas takes over.
+    const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+      .requestIdleCallback;
+    if (idle) {
+      const id = idle(() => setEnabled(true), { timeout: 2500 });
+      return () => (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(() => setEnabled(true), 1200);
+    return () => window.clearTimeout(t);
   }, []);
 
   if (!enabled) return <LogoCoinFallback />;

@@ -5,7 +5,8 @@
 
 ## Entity: Nexyyra Events
 
-- **Legal name:** Nexyyra Events Private Limited
+- **Legal name:** Nexyyra Events and Promotions Private Limited
+- **CIN:** U70200ME2026PTC476014
 - **Brand name:** Nexyyra Events
 - **Type:** Luxury Event Planner · Wedding Planner · Corporate Event Management · Celebrity Event Management
 - **Founded:** 2012, Pune, Maharashtra, India

@@ -273,7 +273,11 @@ export function BrandFooter() {
         <div className="lux-footer__divider" aria-hidden />
 
         <div className="lux-footer__bottom">
-          <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.
+            <br />
+            CIN: {SITE_CONFIG.cin}
+          </p>
           <nav aria-label="Legal links" className="lux-footer__legal">
             {LEGAL_LINKS.map((l) => (
               <Link key={l.href} href={l.href} className="lux-footer__link">{l.label}</Link>

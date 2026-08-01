@@ -241,6 +241,11 @@ export function organizationSchema() {
     "@id": LOCAL_BUSINESS_ID,
     name: SITE_CONFIG.legalName,
     alternateName: SITE_CONFIG.name,
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "CIN",
+      value: SITE_CONFIG.cin,
+    },
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
@@ -278,6 +283,11 @@ export function entityDefinitionSchema() {
     "@id": ORG_ID,
     name: SITE_CONFIG.legalName,
     alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "CIN",
+      value: SITE_CONFIG.cin,
+    },
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     foundingDate: String(ENTITY_FACTS.foundingYear),
