@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Cormorant_Garamond, Inter, Manrope, Montserrat, Playfair_Display, Poppins } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Inter, Manrope, Playfair_Display } from "next/font/google";
 import { Suspense } from "react";
 import { AdaptiveThemeProvider } from "@/components/adaptive/adaptive-theme-provider";
 import { CacheVersionClear } from "@/components/providers/cache-version-clear";
@@ -21,8 +21,8 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "sw
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], display: "swap", preload: true });
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], display: "swap", preload: true });
 const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], display: "swap" });
-const montserrat = Montserrat({ variable: "--font-montserrat", subsets: ["latin"], display: "swap" });
-const poppins = Poppins({ variable: "--font-poppins", weight: ["300", "400", "500", "600", "700"], subsets: ["latin"], display: "swap" });
+// Montserrat + Poppins removed — Poppins had zero usages; Montserrat only backs the
+// legacy stitch theme, which declares a system-ui fallback.
 const cormorant = Cormorant_Garamond({ variable: "--font-cormorant", weight: ["400", "500", "600", "700"], subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
         <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
       </head>
-      <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${poppins.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
+      <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <CacheVersionClear />
         <SentryInit />
