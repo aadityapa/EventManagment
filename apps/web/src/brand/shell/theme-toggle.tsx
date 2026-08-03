@@ -29,15 +29,25 @@ const MODES: { id: Mode; label: string }[] = [
   { id: "dark", label: "Night" },
 ];
 
+/** Cached so useSyncExternalStore getSnapshot stays referentially stable. */
+let cachedThemeRaw: string | null | undefined;
+let cachedThemeValue = DEFAULT_THEME;
+
 function readStored(): { mode: Mode; palette: PaletteId } {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_THEME;
+    if (raw === cachedThemeRaw) return cachedThemeValue;
+    cachedThemeRaw = raw;
+    if (!raw) {
+      cachedThemeValue = DEFAULT_THEME;
+      return cachedThemeValue;
+    }
     const [mode, palette] = raw.split("|") as [Mode, PaletteId];
-    return {
+    cachedThemeValue = {
       mode: mode === "light" || mode === "dark" ? mode : DEFAULT_THEME.mode,
       palette: PALETTES.some((p) => p.id === palette) ? palette : DEFAULT_THEME.palette,
     };
+    return cachedThemeValue;
   } catch {
     return DEFAULT_THEME;
   }
@@ -55,8 +65,11 @@ function applyTheme(mode: Mode, palette: PaletteId) {
   el.classList.add(mode);
   if (palette === "champagne") el.removeAttribute("data-palette");
   else el.setAttribute("data-palette", palette);
+  const raw = `${mode}|${palette}`;
+  cachedThemeRaw = raw;
+  cachedThemeValue = { mode, palette };
   try {
-    window.localStorage.setItem(STORAGE_KEY, `${mode}|${palette}`);
+    window.localStorage.setItem(STORAGE_KEY, raw);
   } catch {
     /* private mode */
   }
