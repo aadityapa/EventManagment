@@ -1,9 +1,10 @@
 import { SITE_URL } from "./site-url";
 
 export const SITE_CONFIG = {
-  name: "Nexyyra Events",
-  legalName: "Nexyyra Events and Promotions Private Limited",
-  cin: "U70200ME2026PTC476014",
+  name: process.env.NEXT_PUBLIC_COMPANY_NAME || "Nexyyra Events and Promotions Private Limited",
+  legalName: process.env.NEXT_PUBLIC_COMPANY_LEGAL_NAME || "Nexyyra Events and Promotions Private Limited",
+  cin: process.env.NEXT_PUBLIC_COMPANY_CIN || "U70200ME2026PTC476014",
+  /** Short trade name — used where the full legal name would not fit (nav, chips). */
   shortName: "Nexyyra Events",
   tagline: "The Next Era of Celebrations",
   description:
