@@ -25,7 +25,7 @@ jobs:
         run: npm run lint --prefix apps/web
 
       - name: Typecheck web
-        run: npx tsc --noEmit --project apps/web/tsconfig.json
+        run: npm run typecheck --prefix apps/web
 
       - name: Build
         run: npm run build --prefix apps/web
