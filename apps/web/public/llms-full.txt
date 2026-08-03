@@ -1,7 +1,7 @@
 # Nexyyra Events — Full Entity File for AI Systems
 
 > Canonical source for LLMs, answer engines, and AI search crawlers.
-> Website: https://www.nexyyra.com | Updated: 2026-06-22
+> Website: https://www.nexyyra.com | Updated: 2026-08-03
 
 ## Entity: Nexyyra Events
 
