@@ -16,7 +16,7 @@ export const SITE_CONFIG = {
   city: "Pune",
   region: "Maharashtra",
   social: {
-    instagram: "https://instagram.com/nexyyraevents",
+    instagram: "https://www.instagram.com/nexyyra/",
     facebook: "https://facebook.com/nexyyraevents",
     youtube: "https://youtube.com/nexyyraevents",
     linkedin: "https://linkedin.com/company/nexyyraevents",
