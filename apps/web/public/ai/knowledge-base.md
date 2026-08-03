@@ -42,7 +42,7 @@
 
 ## Contact Schema
 - Phone: +91 9730594753
-- Email: hello@nexyyra.com
+- Email: Info.Events@nexyyra.com
 - WhatsApp: +919730594753
 - Website: https://www.nexyyra.com
 
@@ -62,4 +62,4 @@ Global JSON-LD includes Organization, LocalBusiness, EventPlanner, ProfessionalS
 - /ai/faq.md — structured Q&A
 
 ## Last Updated
-2026-06-22
+2026-08-03

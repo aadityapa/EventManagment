@@ -11,7 +11,7 @@ export const SITE_CONFIG = {
   url: SITE_URL,
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
-  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "hello@nexyyra.com",
+  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "Info.Events@nexyyra.com",
   address: "Pune, Maharashtra, India",
   city: "Pune",
   region: "Maharashtra",

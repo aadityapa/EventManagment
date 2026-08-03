@@ -22,7 +22,7 @@ Pune, Mumbai, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, and international 
 | Type | Contact |
 |------|---------|
 | Customer service | +91 9730594753 |
-| Email | hello@nexyyra.com |
+| Email | Info.Events@nexyyra.com |
 | WhatsApp | +91 9730594753 |
 | Consultation booking | https://www.nexyyra.com/book-event |
 

@@ -25,5 +25,5 @@ To architect extraordinary celebrations that become lifelong memories — combin
 
 - Website: https://www.nexyyra.com
 - Phone: +91 9730594753
-- Email: hello@nexyyra.com
+- Email: Info.Events@nexyyra.com
 - Book consultation: https://www.nexyyra.com/book-event

@@ -28,4 +28,4 @@ Allow: /
 # Full entity: /llms-full.txt
 # Knowledge base: /ai/knowledge-base.md
 # Canonical: https://www.nexyyra.com
-# Contact: hello@nexyyra.com
+# Contact: Info.Events@nexyyra.com
