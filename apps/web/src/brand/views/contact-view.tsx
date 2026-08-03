@@ -103,7 +103,11 @@ export function ContactView() {
                   <dl className="space-y-3 text-sm">
                     <div>
                       <dt className="font-semibold text-primary">Business</dt>
-                      <dd className="text-muted">{SITE_CONFIG.name}</dd>
+                      <dd className="text-muted">{SITE_CONFIG.legalName}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-primary">CIN</dt>
+                      <dd className="text-muted">{SITE_CONFIG.cin}</dd>
                     </div>
                     <div>
                       <dt className="font-semibold text-primary">Headquarters</dt>
