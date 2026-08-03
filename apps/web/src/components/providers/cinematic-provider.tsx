@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import {
   UniverseLoader,
   LOADER_STORAGE_KEY,
@@ -9,37 +9,37 @@ import {
 import { PremiereContext } from "@/components/providers/premiere-context";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/lib/motion/page-transition";
+import { useIsClient } from "@/hooks/use-is-client";
+
+function subscribeStorage(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+}
 
 export function CinematicProvider({ children }: { children: React.ReactNode }) {
-  // Keep SSR + first client paint identical; resolve premiere only after mount.
-  const [hydrated, setHydrated] = useState(false);
-  const [skipPremiere, setSkipPremiere] = useState(false);
+  // SSR + hydration use false; client then reads session/local storage without an effect.
+  const hydrated = useIsClient();
+  const skipPremiere = useSyncExternalStore(subscribeStorage, hasSeenPremiere, () => false);
+
   const [premiereComplete, setPremiereComplete] = useState(false);
   const [handoffActive, setHandoffActive] = useState(false);
-
-  useEffect(() => {
-    const seen = hasSeenPremiere();
-    setSkipPremiere(seen);
-    setPremiereComplete(seen);
-    setHandoffActive(seen);
-    setHydrated(true);
-  }, []);
 
   const onHandoff = useCallback(() => setHandoffActive(true), []);
   const onComplete = useCallback(() => setPremiereComplete(true), []);
 
+  const done = skipPremiere || premiereComplete;
+  const revealed = skipPremiere || handoffActive;
   const premiereActive = hydrated && !skipPremiere && !premiereComplete;
 
-  // FAILSAFE: if the premiere stalls (slow device, blocked WebGL, dropped
-  // animation frame), force-reveal content — the site must never stay black.
+  // FAILSAFE: if the premiere stalls, force-reveal content — never stay black.
   useEffect(() => {
-    if (!hydrated || premiereComplete) return;
+    if (!hydrated || done) return;
     const t = window.setTimeout(() => {
       setHandoffActive(true);
       setPremiereComplete(true);
     }, 3500);
     return () => window.clearTimeout(t);
-  }, [hydrated, premiereComplete]);
+  }, [hydrated, done]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -67,17 +67,17 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
   const contextValue = useMemo(
     () => ({
       skipPremiere,
-      handoffActive,
-      premiereComplete,
+      handoffActive: revealed,
+      premiereComplete: done,
     }),
-    [skipPremiere, handoffActive, premiereComplete]
+    [skipPremiere, revealed, done]
   );
 
-  const contentVisible = !hydrated ? false : handoffActive || skipPremiere;
+  const contentVisible = hydrated && revealed;
 
   return (
     <PremiereContext.Provider value={contextValue}>
-      <SmoothScrollProvider enabled={premiereComplete}>
+      <SmoothScrollProvider enabled={done}>
         {!hydrated && (
           <div
             className="premiere-loader fixed inset-0 z-[99999] bg-black"

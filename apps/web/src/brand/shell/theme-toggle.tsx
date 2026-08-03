@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Check, ChevronDown, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,8 @@ const STORAGE_KEY = "nexyyra-theme";
 
 type Mode = "dark" | "light";
 type PaletteId = "champagne" | "royal" | "emerald" | "rose";
+
+const DEFAULT_THEME = { mode: "dark" as Mode, palette: "champagne" as PaletteId };
 
 const PALETTES: { id: PaletteId; label: string; swatch: [string, string] }[] = [
   { id: "champagne", label: "Champagne Gold", swatch: ["#d8b26a", "#8b4dff"] },
@@ -29,18 +31,21 @@ const MODES: { id: Mode; label: string }[] = [
 
 function readStored(): { mode: Mode; palette: PaletteId } {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const [m, p] = raw.split("|");
-      return {
-        mode: m === "light" ? "light" : "dark",
-        palette: (PALETTES.some((x) => x.id === p) ? p : "champagne") as PaletteId,
-      };
-    }
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_THEME;
+    const [mode, palette] = raw.split("|") as [Mode, PaletteId];
+    return {
+      mode: mode === "light" || mode === "dark" ? mode : DEFAULT_THEME.mode,
+      palette: PALETTES.some((p) => p.id === palette) ? palette : DEFAULT_THEME.palette,
+    };
   } catch {
-    /* storage unavailable */
+    return DEFAULT_THEME;
   }
-  return { mode: "dark", palette: "champagne" };
+}
+
+function subscribeTheme(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
 }
 
 /** Apply theme to <html> synchronously. Never throws. */
@@ -107,20 +112,20 @@ function withSmoothTransition(change: () => void, origin?: HTMLElement | null) {
 }
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const [mode, setMode] = useState<Mode>("dark");
-  const [palette, setPalette] = useState<PaletteId>("champagne");
+  const stored = useSyncExternalStore(subscribeTheme, readStored, () => DEFAULT_THEME);
+  const [mode, setMode] = useState<Mode | null>(null);
+  const [palette, setPalette] = useState<PaletteId | null>(null);
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  // Sync with whatever the no-flash script applied — and re-apply defensively
-  // in case the inline bootstrap was stripped from the layout.
+  const activeMode = mode ?? stored.mode;
+  const activePalette = palette ?? stored.palette;
+
+  // Re-apply when the resolved theme changes (external DOM sync, no setState).
   useEffect(() => {
-    const stored = readStored();
-    setMode(stored.mode);
-    setPalette(stored.palette);
-    applyTheme(stored.mode, stored.palette);
-  }, []);
+    applyTheme(activeMode, activePalette);
+  }, [activeMode, activePalette]);
 
   // Outside click / Escape closes the menu.
   useEffect(() => {
@@ -144,22 +149,20 @@ export function ThemeToggle({ className }: { className?: string }) {
 
   const selectMode = useCallback(
     (next: Mode) => {
-      if (next === mode) return;
+      if (next === activeMode) return;
       setMode(next);
-      withSmoothTransition(() => applyTheme(next, palette), btnRef.current);
+      withSmoothTransition(() => applyTheme(next, activePalette), btnRef.current);
     },
-    [mode, palette]
+    [activeMode, activePalette]
   );
 
   const selectPalette = useCallback(
     (next: PaletteId) => {
       setPalette(next);
-      withSmoothTransition(() => applyTheme(mode, next), btnRef.current);
+      withSmoothTransition(() => applyTheme(activeMode, next), btnRef.current);
     },
-    [mode]
+    [activeMode]
   );
-
-  const isDark = mode === "dark";
 
   return (
     <div ref={wrapRef} className={cn("theme-toggle-wrap", className)}>
@@ -171,7 +174,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         aria-label="Theme settings"
         aria-expanded={open}
         aria-haspopup="true"
-        data-mode={mode}
+        data-mode={activeMode}
       >
         <span className="theme-toggle__stack" aria-hidden="true">
           <Sun className="theme-toggle__icon theme-toggle__icon--sun" />
@@ -191,9 +194,9 @@ export function ThemeToggle({ className }: { className?: string }) {
               key={m.id}
               type="button"
               role="menuitemradio"
-              aria-checked={mode === m.id}
+              aria-checked={activeMode === m.id}
               onClick={() => selectMode(m.id)}
-              className={cn("theme-pop__item tap-target", mode === m.id && "is-active")}
+              className={cn("theme-pop__item tap-target", activeMode === m.id && "is-active")}
             >
               {m.id === "light" ? (
                 <Sun className="theme-pop__mode-icon" aria-hidden="true" />
@@ -201,7 +204,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                 <Moon className="theme-pop__mode-icon" aria-hidden="true" />
               )}
               {m.label}
-              {mode === m.id && <Check className="theme-pop__check" aria-hidden="true" />}
+              {activeMode === m.id && <Check className="theme-pop__check" aria-hidden="true" />}
             </button>
           ))}
 
@@ -211,9 +214,9 @@ export function ThemeToggle({ className }: { className?: string }) {
               key={p.id}
               type="button"
               role="menuitemradio"
-              aria-checked={palette === p.id}
+              aria-checked={activePalette === p.id}
               onClick={() => selectPalette(p.id)}
-              className={cn("theme-pop__item tap-target", palette === p.id && "is-active")}
+              className={cn("theme-pop__item tap-target", activePalette === p.id && "is-active")}
             >
               <span
                 className="theme-pop__swatch"
@@ -223,7 +226,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                 aria-hidden="true"
               />
               {p.label}
-              {palette === p.id && <Check className="theme-pop__check" aria-hidden="true" />}
+              {activePalette === p.id && <Check className="theme-pop__check" aria-hidden="true" />}
             </button>
           ))}
         </div>

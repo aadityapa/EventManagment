@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { applyWorldPreset, clearWorldPreset, type WorldPresetId, WORLD_PRESETS } from "@/lib/adaptive-theme/world-presets";
+import { useIsClient } from "@/hooks/use-is-client";
 import { EASE, DUR } from "./easing";
 
 const VALID_WORLDS = new Set<string>(Object.keys(WORLD_PRESETS));
@@ -15,14 +16,10 @@ export function PortalTransition() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const reduced = useReducedMotion();
-  const [ready, setReady] = useState(false);
+  const ready = useIsClient();
   const worldParam = searchParams.get("world");
   const world =
     worldParam && VALID_WORLDS.has(worldParam) ? (worldParam as WorldPresetId) : null;
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
 
   useEffect(() => {
     if (!world) {

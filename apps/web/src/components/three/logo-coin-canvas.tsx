@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,9 +14,14 @@ const LOGO_SRC = "/brand/android-chrome-512.png";
  */
 function CoinMesh() {
   const group = useRef<THREE.Group>(null);
-  const texture = useLoader(THREE.TextureLoader, LOGO_SRC);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.anisotropy = 4;
+  const loaded = useLoader(THREE.TextureLoader, LOGO_SRC);
+  const texture = useMemo(() => {
+    const next = loaded.clone();
+    next.colorSpace = THREE.SRGBColorSpace;
+    next.anisotropy = 4;
+    next.needsUpdate = true;
+    return next;
+  }, [loaded]);
 
   useFrame((state, delta) => {
     const g = group.current;
