@@ -9,10 +9,16 @@ export function CallbackRequestForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) return;
+    const next: { name?: string; phone?: string } = {};
+    if (!name.trim()) next.name = "Please enter your name.";
+    if (!phone.trim()) next.phone = "Please enter your phone number.";
+    else if (!/^[+\d][\d\s()-]{7,16}$/.test(phone.trim())) next.phone = "Please enter a valid phone number.";
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
     setStatus("loading");
     await new Promise((r) => setTimeout(r, 900));
     setStatus("success");
@@ -40,9 +46,17 @@ export function CallbackRequestForm() {
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm"
+          aria-invalid={errors.name ? true : undefined}
+          aria-describedby={errors.name ? "callback-name-error" : undefined}
+          className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm aria-[invalid]:border-red-400"
           placeholder="Priya Sharma"
+          autoComplete="name"
         />
+        {errors.name && (
+          <p id="callback-name-error" role="alert" className="mt-1 text-xs text-red-400">
+            {errors.name}
+          </p>
+        )}
       </div>
       <div>
         <label htmlFor="callback-phone" className="mb-1 block text-sm font-medium text-primary">
@@ -54,9 +68,17 @@ export function CallbackRequestForm() {
           required
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm"
+          aria-invalid={errors.phone ? true : undefined}
+          aria-describedby={errors.phone ? "callback-phone-error" : undefined}
+          className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm aria-[invalid]:border-red-400"
           placeholder="+91 9730594753"
+          autoComplete="tel"
         />
+        {errors.phone && (
+          <p id="callback-phone-error" role="alert" className="mt-1 text-xs text-red-400">
+            {errors.phone}
+          </p>
+        )}
       </div>
       <button
         type="submit"

@@ -16,12 +16,13 @@ export function PageHero({ title, subtitle, className, children }: PageHeroProps
   return (
     <section
       className={cn(
-        "lux-inner-hero relative overflow-hidden border-b border-primary/10 bg-black py-14 sm:py-20 md:py-28",
+        // theme-aware background — was hardcoded bg-black, which broke day mode on legal pages
+        "lux-inner-hero relative overflow-hidden border-b border-primary/10 bg-[var(--lux-bg,#050816)] py-14 sm:py-20 md:py-28",
         className
       )}
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(216,178,106,0.18),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-[var(--lux-bg,#050816)]/40 to-[var(--lux-bg,#050816)]" />
       <div className="lux-inner-hero__aura" aria-hidden />
       <GoldParticles className="pointer-events-none absolute inset-0 opacity-60" />
 
@@ -51,7 +52,7 @@ export function PageHero({ title, subtitle, className, children }: PageHeroProps
             <motion.p
               variants={stitchVariants.fadeUp}
               transition={{ ...stitchTransition, delay: 0.1 }}
-              className="mt-4 text-lg text-neutral-300 md:text-xl"
+              className="mt-4 text-lg text-secondary md:text-xl"
             >
               {subtitle}
             </motion.p>

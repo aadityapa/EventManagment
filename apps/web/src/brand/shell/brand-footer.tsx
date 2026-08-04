@@ -110,41 +110,64 @@ function SocialIconLink({ href, label, icon: Icon }: { href: string; label: stri
 
 function FooterNewsletter() {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const value = email.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      toast.error("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
       return;
     }
+    setError(null);
+    setSubmitting(true);
     analytics.ctaClick("newsletter_subscribe", "footer");
-    void fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: value, source: "newsletter" }),
-    }).catch(() => {});
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: value, source: "newsletter" }),
+      });
+    } catch {
+      /* lead capture is best-effort */
+    }
+    setSubmitting(false);
     toast.success("You're on the list — welcome to Nexyyra.");
     setEmail("");
   };
 
   return (
-    <form className="lux-newsletter" onSubmit={onSubmit}>
-      <label htmlFor="footer-newsletter" className="sr-only">Email address</label>
-      <input
-        id="footer-newsletter"
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter your email"
-        className="lux-newsletter__input"
-        autoComplete="email"
-      />
-      <button type="submit" className="lux-newsletter__btn tap-target" aria-label="Subscribe to newsletter">
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </button>
-    </form>
+    <div>
+      <form className="lux-newsletter" onSubmit={onSubmit}>
+        <label htmlFor="footer-newsletter" className="sr-only">Email address</label>
+        <input
+          id="footer-newsletter"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          className="lux-newsletter__input"
+          autoComplete="email"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? "footer-newsletter-error" : undefined}
+        />
+        <button
+          type="submit"
+          disabled={submitting}
+          className="lux-newsletter__btn tap-target disabled:opacity-60"
+          aria-label="Subscribe to newsletter"
+        >
+          <ArrowRight className={submitting ? "h-4 w-4 animate-pulse" : "h-4 w-4"} aria-hidden="true" />
+        </button>
+      </form>
+      {error && (
+        <p id="footer-newsletter-error" role="alert" className="mt-2 text-xs text-red-400">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 
