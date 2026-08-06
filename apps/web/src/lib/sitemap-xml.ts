@@ -40,7 +40,7 @@ export function renderUrlset(entries: SitemapEntry[], includeImages = false): st
       const lastmod = formatLastMod(entry.lastModified);
       if (lastmod) parts.push(`    <lastmod>${lastmod}</lastmod>`);
       if (entry.changeFrequency) parts.push(`    <changefreq>${entry.changeFrequency}</changefreq>`);
-      if (entry.priority !== undefined) parts.push(`    <priority>${entry.priority.toFixed(1)}</priority>`);
+      if (entry.priority !== undefined) parts.push(`    <priority>${Number(entry.priority.toFixed(2))}</priority>`);
       if (includeImages && entry.images?.length) {
         for (const image of entry.images) {
           parts.push(`    <image:image>`, `      <image:loc>${escapeXml(image)}</image:loc>`, `    </image:image>`);

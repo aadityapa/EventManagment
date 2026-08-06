@@ -6,7 +6,7 @@ const LEGAL_DATE = "2025-06-01";
 
 const STATIC_LASTMOD: Record<string, string> = {
   "/": CONTENT_DATE,
-  "/about": "2026-03-01",
+  "/about": CONTENT_DATE, // founders, team section, address updated
   "/services": CONTENT_DATE,
   "/portfolio": CONTENT_DATE,
   "/venues": "2026-02-15",
@@ -19,7 +19,7 @@ const STATIC_LASTMOD: Record<string, string> = {
   "/contact": CONTENT_DATE,
   "/book-event": CONTENT_DATE,
   "/ai": CONTENT_DATE,
-  "/privacy": LEGAL_DATE,
+  "/privacy": CONTENT_DATE, // registered address updated
   "/terms": LEGAL_DATE,
   "/refund": LEGAL_DATE,
 };
@@ -27,9 +27,9 @@ const STATIC_LASTMOD: Record<string, string> = {
 const LOCAL_LASTMOD: Record<string, string> = {
   "event-management-company-pune": CONTENT_DATE,
   "wedding-planner-pune": CONTENT_DATE,
-  "corporate-event-management-pune": "2026-04-15",
+  "corporate-event-management-pune": CONTENT_DATE,
   "luxury-wedding-planner-maharashtra": CONTENT_DATE,
-  "exhibition-management-pune": "2026-03-20",
+  "exhibition-management-pune": CONTENT_DATE,
   "destination-wedding-planner-pune": CONTENT_DATE,
   "locations-delhi": CONTENT_DATE,
   "locations-jaipur": CONTENT_DATE,

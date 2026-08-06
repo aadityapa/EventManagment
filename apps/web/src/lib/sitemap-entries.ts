@@ -53,7 +53,7 @@ export function buildPagesSitemapEntries(): SitemapEntry[] {
     url: absUrl(path),
     lastModified: staticPageLastMod(path || "/"),
     changeFrequency: staticPageChangeFreq(path || "/"),
-    priority: path === "" ? 1 : path === "/blog" ? 0.7 : ["/privacy", "/terms", "/refund"].includes(path) ? 0.3 : 0.8,
+    priority: path === "" ? 1 : path === "/blog" ? 0.7 : ["/privacy", "/terms", "/refund", "/sitemap"].includes(path) ? 0.3 : 0.8,
   }));
 
   const localPages: SitemapEntry[] = LOCAL_SEO_PAGES.map((p) => ({
@@ -74,13 +74,7 @@ export function buildPagesSitemapEntries(): SitemapEntry[] {
 }
 
 export function buildBlogSitemapEntries(): SitemapEntry[] {
-  const listing: SitemapEntry = {
-    url: absUrl("/blog"),
-    lastModified: staticPageLastMod("/blog"),
-    changeFrequency: "weekly",
-    priority: 0.7,
-  };
-
+  // /blog listing lives in sitemap-pages.xml — only posts here (no duplicate URLs).
   const posts: SitemapEntry[] = blogPosts.map((p) => ({
     url: absUrl(`/blog/${p.slug}`),
     lastModified: blogPostLastMod(p.publishedAt),
@@ -88,17 +82,11 @@ export function buildBlogSitemapEntries(): SitemapEntry[] {
     priority: 0.6,
   }));
 
-  return [listing, ...posts];
+  return posts;
 }
 
 export function buildServicesSitemapEntries(): SitemapEntry[] {
-  const listing: SitemapEntry = {
-    url: absUrl("/services"),
-    lastModified: staticPageLastMod("/services"),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  };
-
+  // /services listing lives in sitemap-pages.xml — only detail pages here.
   const detailPages: SitemapEntry[] = services.map((s) => ({
     url: absUrl(`/services/${s.slug}`),
     lastModified: servicePageLastMod(s.slug),
@@ -106,17 +94,11 @@ export function buildServicesSitemapEntries(): SitemapEntry[] {
     priority: 0.7,
   }));
 
-  return [listing, ...detailPages];
+  return detailPages;
 }
 
 export function buildVenuesSitemapEntries(): SitemapEntry[] {
-  const venuesListing: SitemapEntry = {
-    url: absUrl("/venues"),
-    lastModified: staticPageLastMod("/venues"),
-    changeFrequency: "monthly",
-    priority: 0.75,
-  };
-
+  // /venues listing lives in sitemap-pages.xml — only location pages here.
   const locationPages: SitemapEntry[] = LOCATION_PAGES.map((p) => ({
     url: absUrl(`/locations/${p.slug}`),
     lastModified: localPageLastMod(`locations-${p.slug}`),
@@ -124,7 +106,7 @@ export function buildVenuesSitemapEntries(): SitemapEntry[] {
     priority: 0.82,
   }));
 
-  return [venuesListing, ...locationPages];
+  return locationPages;
 }
 
 export function buildImagesSitemapEntries(): SitemapEntry[] {
