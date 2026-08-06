@@ -11,6 +11,7 @@ import { MagneticButton } from "@/components/effects/magnetic-button";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
 import { BRAND_TIMELINE, BRAND_AWARDS, BRAND_MEDIA, BRAND_TRUST } from "@/brand/data/content";
 import { companyProfile } from "@/data/cms";
+import { TeamSection } from "@/brand/sections/about/team-section";
 import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
@@ -136,10 +137,11 @@ export function AboutView() {
             </ScrollReveal>
             <ScrollReveal preset="reveal" delay={0.14}>
               <p className="v4-body mt-5">
-                Founded by Priya Sharma in Pune in 2012, Nexyyra began as an intimate wedding studio
-                with a singular belief: every celebration carries the weight of memory. What started
-                with one family&apos;s dream wedding in Koregaon Park has grown into a luxury event
-                house trusted by 1,400+ clients across 35 cities.
+                Founded by Yash Bajaj in Amravati in 2012 — joined by co-founder Aaditya Padiya in
+                2026 — Nexyyra began as an intimate wedding studio with a singular belief: every
+                celebration carries the weight of memory. What started with one family&apos;s dream
+                wedding has grown into a luxury event house trusted by 1,400+ clients across 35
+                cities.
               </p>
               <p className="v4-body mt-4">{companyProfile.story}</p>
             </ScrollReveal>
@@ -285,7 +287,10 @@ export function AboutView() {
         </div>
       </section>
 
-      {/* Why premium brands trust Nexyyra (replaces team section) */}
+      {/* Meet Our Leadership */}
+      <TeamSection />
+
+      {/* Why premium brands trust Nexyyra */}
       <section className="v4-section v4-dune-glow bg-[var(--glitz-surface)]">
         <div className="brand-container">
           <ScrollReveal preset="reveal">

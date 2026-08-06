@@ -267,6 +267,9 @@ export function BrandFooter() {
               <li className="lux-footer__contact-item">
                 <MapPin className="h-4 w-4 shrink-0 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.address}
               </li>
+              <li className="lux-footer__contact-item">
+                <MapPin className="h-4 w-4 shrink-0 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.branchOffice}
+              </li>
             </ul>
           </div>
 

@@ -60,6 +60,10 @@ export function ContactView() {
                       <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
                       {SITE_CONFIG.address}
                     </li>
+                    <li className="flex gap-2">
+                      <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
+                      {SITE_CONFIG.branchOffice}
+                    </li>
                     <li>
                       <a
                         href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
@@ -112,6 +116,10 @@ export function ContactView() {
                     <div>
                       <dt className="font-semibold text-primary">Headquarters</dt>
                       <dd className="text-muted">{SITE_CONFIG.address}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-primary">Pune Office</dt>
+                      <dd className="text-muted">{SITE_CONFIG.branchOffice}</dd>
                     </div>
                     <div>
                       <dt className="font-semibold text-primary">Phone</dt>

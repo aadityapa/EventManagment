@@ -15,7 +15,7 @@ const CONTACT_FAQS = [
   },
   {
     question: "Where is Nexyyra Events located?",
-    answer: "Nexyyra Events is headquartered in Pune, Maharashtra, India, serving clients across Maharashtra, India, and international destinations.",
+    answer: "Nexyyra Events is headquartered at Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108, with a delivery and coordination office in Pune, serving clients across Maharashtra, India, and international destinations.",
   },
   {
     question: "What are Nexyyra Events' business hours?",

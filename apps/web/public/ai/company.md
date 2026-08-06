@@ -4,10 +4,16 @@
 Nexyyra Events and Promotions Private Limited (CIN: U70200ME2026PTC476014)
 
 ## Headquarters
+Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108, India
+
+## Delivery & Coordination Office
 Pune, Maharashtra, India
 
 ## Founded
-2012
+2012, Amravati, Maharashtra
+
+## Founders
+Yash Bajaj (Founder, 2012) and Aaditya Padiya (Co-Founder, 2026)
 
 ## Industry
 Event Management · Wedding Planning · Corporate Events · Entertainment Production

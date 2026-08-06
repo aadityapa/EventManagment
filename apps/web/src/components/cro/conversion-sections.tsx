@@ -49,7 +49,7 @@ export function CallbackRequestForm() {
           aria-invalid={errors.name ? true : undefined}
           aria-describedby={errors.name ? "callback-name-error" : undefined}
           className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm aria-[invalid]:border-red-400"
-          placeholder="Priya Sharma"
+          placeholder="Full Name"
           autoComplete="name"
         />
         {errors.name && (

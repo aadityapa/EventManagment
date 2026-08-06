@@ -1,6 +1,6 @@
 # About Nexyyra Events
 
-**Nexyyra Events** is a luxury event management company headquartered in Pune, Maharashtra, India. Founded in 2012, Nexyyra has evolved from a boutique wedding studio into a full-service experience house serving weddings, corporate events, celebrity celebrations, and destination productions across India and internationally.
+**Nexyyra Events** is a luxury event management company headquartered in Telhara, Maharashtra, India (Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, Gajanan Nagar, Telhara 444108), with a delivery and coordination office in Pune. Founded in Amravati in 2012 by Yash Bajaj, and joined by co-founder Aaditya Padiya in 2026, Nexyyra has evolved from a boutique wedding studio into a full-service experience house serving weddings, corporate events, celebrity celebrations, and destination productions across India and internationally.
 
 ## Mission
 

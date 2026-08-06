@@ -13,9 +13,14 @@ export const SITE_CONFIG = {
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "Info.Events@nexyyra.com",
-  address: "Pune, Maharashtra, India",
-  city: "Pune",
+  address:
+    "Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108, India",
+  streetAddress: "Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar",
+  city: "Telhara",
   region: "Maharashtra",
+  postalCode: "444108",
+  /** Delivery & coordination office. */
+  branchOffice: "Delivery & Coordination Office — Pune, Maharashtra, India",
   social: {
     instagram: "https://www.instagram.com/nexyyra/",
     facebook: "https://facebook.com/nexyyraevents",
