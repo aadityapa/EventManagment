@@ -59,7 +59,7 @@ export const ENTITY_FACTS = {
   consultation: "Complimentary, no obligation — in person, video, or at venue",
   bookingAdvance: "30% advance secures your date",
   responseTime: "Tailored proposal within 48 hours of consultation",
-  lastUpdated: "2026-06-21",
+  lastUpdated: "2026-08-06",
 } as const;
 
 export const SEO_KEYWORDS = [

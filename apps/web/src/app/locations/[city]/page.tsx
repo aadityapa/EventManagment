@@ -121,7 +121,7 @@ export default async function LocationPage({ params }: Props) {
         </div>
         <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted">
           <MapPin className="mb-1 inline h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />{" "}
-          Headquartered in Pune · Serving India and international destinations.{" "}
+          Headquartered in Telhara, Maharashtra · Delivery & coordination office in Pune · Serving India and international destinations.{" "}
           <Link href="/contact" className="text-[var(--glitz-gold)] hover:underline">Contact us</Link>.
         </p>
       </BrandSection>

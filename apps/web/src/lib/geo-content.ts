@@ -11,7 +11,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "What is Nexyyra Events' service area?",
     answer:
-      "Nexyyra Events is headquartered in Pune, Maharashtra, and serves clients across Mumbai, Nashik, Lonavala, Goa, Rajasthan, and international destinations. We have delivered 1,800+ events across 35+ cities since 2012.",
+      "Nexyyra Events is headquartered in Telhara, Maharashtra, with a delivery and coordination office in Pune, and serves clients across Mumbai, Nashik, Lonavala, Goa, Rajasthan, and international destinations. We have delivered 1,800+ events across 35+ cities since 2012.",
   },
   {
     question: "What languages does Nexyyra support?",
@@ -31,7 +31,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "Who founded Nexyyra Events?",
     answer:
-      "Nexyyra Events and Promotions Private Limited was founded in Pune in 2012. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
+      "Nexyyra Events and Promotions Private Limited was founded by Yash Bajaj in Amravati, Maharashtra, in 2012; Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders in 2026. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
   },
 ];
 

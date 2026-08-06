@@ -29,7 +29,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     ],
     serviceType: "EventManagementService",
     intro:
-      "Nexyyra Events is a full-service event management company headquartered in Pune, Maharashtra. We design and deliver luxury weddings, corporate conferences, product launches, concerts, and brand activations for clients across India and abroad.",
+      "Nexyyra Events is a full-service event management company headquartered in Telhara, Maharashtra, with a delivery and coordination office in Pune. We design and deliver luxury weddings, corporate conferences, product launches, concerts, and brand activations for clients across India and abroad.",
     highlights: [
       "1,000+ events delivered across 35+ cities",
       "Dedicated Pune-based planning team with on-ground execution crews",

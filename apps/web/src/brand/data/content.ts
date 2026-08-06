@@ -101,7 +101,7 @@ export const BRAND_INVESTMENTS = [
 ];
 
 export const BRAND_TIMELINE = [
-  { year: "2012", event: "Founded in Pune as a boutique luxury wedding studio." },
+  { year: "2012", event: "Founded in Amravati by Yash Bajaj as a boutique luxury wedding studio." },
   { year: "2015", event: "First major corporate gala — 800 guests, zero delays." },
   { year: "2018", event: "Destination wedding division launched across Rajasthan and Goa." },
   { year: "2020", event: "Hybrid and virtual event production studio — broadcast-quality live streams." },

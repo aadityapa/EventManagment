@@ -137,11 +137,11 @@ export function AboutView() {
             </ScrollReveal>
             <ScrollReveal preset="reveal" delay={0.14}>
               <p className="v4-body mt-5">
-                Founded by Yash Bajaj in Amravati in 2012 — joined by co-founder Aaditya Padiya in
-                2026 — Nexyyra began as an intimate wedding studio with a singular belief: every
-                celebration carries the weight of memory. What started with one family&apos;s dream
-                wedding has grown into a luxury event house trusted by 1,400+ clients across 35
-                cities.
+                Founded by Yash Bajaj in Amravati in 2012 — joined by co-founders Aaditya Padiya
+                and Amey Korde in 2026 — Nexyyra began as an intimate wedding studio with a
+                singular belief: every celebration carries the weight of memory. What started with
+                one family&apos;s dream wedding has grown into a luxury event house trusted by
+                1,400+ clients across 35 cities.
               </p>
               <p className="v4-body mt-4">{companyProfile.story}</p>
             </ScrollReveal>

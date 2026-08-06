@@ -13,7 +13,18 @@ Pune, Maharashtra, India
 2012, Amravati, Maharashtra
 
 ## Founders
-Yash Bajaj (Founder, 2012) and Aaditya Padiya (Co-Founder, 2026)
+Yash Bajaj (Founder & Managing Director, 2012), Aaditya Padiya (Co-Founder & CTO, 2026), and Amey Korde (Co-Founder & CMO, 2026)
+
+## Leadership Team
+
+| Name | Role |
+|------|------|
+| Yash Bajaj | Founder & Managing Director (since 2012) |
+| Aaditya Padiya | Co-Founder & Chief Technology Officer (since 2026) |
+| Amey Korde | Co-Founder & Chief Marketing Officer (since 2026) |
+| Shilpa Sharma | Finance & Accounts Manager |
+| Radhika Bajaj | Data & Administration Manager |
+| Bharti Jadhav | Head — Decoration Department |
 
 ## Industry
 Event Management · Wedding Planning · Corporate Events · Entertainment Production

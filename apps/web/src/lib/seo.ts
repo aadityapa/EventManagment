@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { SITE_CONFIG, SEO_KEYWORDS, ENTITY_FACTS } from "./constants";
+import { TEAM_MEMBERS } from "@/data/team";
 
 interface SEOProps {
   title?: string;
@@ -136,6 +137,7 @@ export function globalGraphSchema() {
         logo: `${SITE_CONFIG.url}/brand/nexyyra-logo-dark.svg`,
         slogan: SITE_CONFIG.tagline,
         foundingDate: String(ENTITY_FACTS.foundingYear),
+        foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
         sameAs: Object.values(SITE_CONFIG.social),
         knowsAbout: ENTITY_FACTS.knowsAbout,
         numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
@@ -158,20 +160,20 @@ export function globalGraphSchema() {
             areaServed: "IN",
           },
         ],
-        founder: [
-          {
-            "@type": "Person",
-            name: "Yash Bajaj",
-            jobTitle: "Founder (2012)",
-            worksFor: { "@id": ORG_ID },
-          },
-          {
-            "@type": "Person",
-            name: "Aaditya Padiya",
-            jobTitle: "Co-Founder (2026)",
-            worksFor: { "@id": ORG_ID },
-          },
-        ],
+        founder: TEAM_MEMBERS.filter((m) => m.founder).map((m) => ({
+          "@type": "Person",
+          name: m.name,
+          jobTitle: m.role,
+          description: m.bio,
+          worksFor: { "@id": ORG_ID },
+        })),
+        employee: TEAM_MEMBERS.filter((m) => !m.founder).map((m) => ({
+          "@type": "Person",
+          name: m.name,
+          jobTitle: m.role,
+          description: m.bio,
+          worksFor: { "@id": ORG_ID },
+        })),
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Luxury Event Services",
@@ -303,6 +305,7 @@ export function entityDefinitionSchema() {
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     foundingDate: String(ENTITY_FACTS.foundingYear),
+    foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
     knowsAbout: ENTITY_FACTS.knowsAbout,
     slogan: SITE_CONFIG.tagline,
     numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },

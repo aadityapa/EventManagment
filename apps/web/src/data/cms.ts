@@ -8,7 +8,7 @@ export const companyProfile = {
   mission:
     "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every celebration reflects our clients' unique story and exceeds every expectation.",
   story:
-    "Founded in Pune, Nexyyra Events began as a boutique wedding studio. What started with a single dream celebration has evolved into a luxury experience house, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
+    "Founded in Amravati, Nexyyra Events began as a boutique wedding studio. What started with a single dream celebration has evolved into a luxury experience house, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
   stats: {
     eventsManaged: 1800,
     happyClients: 1400,

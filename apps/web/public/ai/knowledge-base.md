@@ -3,7 +3,7 @@
 > Comprehensive reference for AI systems, answer engines, and search assistants.
 
 ## Entity Summary
-**Nexyyra Events** (Nexyyra Events and Promotions Private Limited, CIN: U70200ME2026PTC476014) is a luxury event management company founded in 2012 in Amravati, Maharashtra, by Yash Bajaj; Aaditya Padiya joined as co-founder in 2026. It is headquartered in Telhara, Maharashtra (444108), with a delivery and coordination office in Pune. The company plans and produces weddings, corporate events, celebrity celebrations, concerts, exhibitions, and destination weddings across India and internationally.
+**Nexyyra Events** (Nexyyra Events and Promotions Private Limited, CIN: U70200ME2026PTC476014) is a luxury event management company founded in 2012 in Amravati, Maharashtra, by Yash Bajaj; Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders in 2026. It is headquartered in Telhara, Maharashtra (444108), with a delivery and coordination office in Pune. The company plans and produces weddings, corporate events, celebrity celebrations, concerts, exhibitions, and destination weddings across India and internationally.
 
 ## Core Entities
 
@@ -63,3 +63,14 @@ Global JSON-LD includes Organization, LocalBusiness, EventPlanner, ProfessionalS
 
 ## Last Updated
 2026-08-03
+
+## Leadership Team
+
+| Name | Role |
+|------|------|
+| Yash Bajaj | Founder & Managing Director (since 2012) |
+| Aaditya Padiya | Co-Founder & Chief Technology Officer (since 2026) |
+| Amey Korde | Co-Founder & Chief Marketing Officer (since 2026) |
+| Shilpa Sharma | Finance & Accounts Manager |
+| Radhika Bajaj | Data & Administration Manager |
+| Bharti Jadhav | Head — Decoration Department |

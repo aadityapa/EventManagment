@@ -10,7 +10,7 @@
 - **Brand name:** Nexyyra Events
 - **Type:** Luxury Event Planner · Wedding Planner · Corporate Event Management · Celebrity Event Management
 - **Founded:** 2012, Amravati, Maharashtra, India
-- **Founders:** Yash Bajaj (Founder, 2012) and Aaditya Padiya (Co-Founder, 2026)
+- **Founders:** Yash Bajaj (Founder & Managing Director, 2012), Aaditya Padiya (Co-Founder & CTO, 2026), Amey Korde (Co-Founder & CMO, 2026)
 - **Headquarters:** Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108
 - **Delivery & Coordination Office:** Pune, Maharashtra, India
 - **Tagline:** The Next Era of Celebrations
@@ -107,3 +107,11 @@ A: Red-carpet premieres, private celebrations, fashion shows, concert production
 ## Crawler Policy
 
 See /ai.txt for AI crawler permissions. All public marketing pages are indexable. Admin and API routes are disallowed.
+
+## Leadership Team
+- Yash Bajaj — Founder & Managing Director (since 2012)
+- Aaditya Padiya — Co-Founder & Chief Technology Officer (since 2026)
+- Amey Korde — Co-Founder & Chief Marketing Officer (since 2026)
+- Shilpa Sharma — Finance & Accounts Manager
+- Radhika Bajaj — Data & Administration Manager
+- Bharti Jadhav — Head — Decoration Department

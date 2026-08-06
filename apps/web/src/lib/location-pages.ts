@@ -26,7 +26,7 @@ export const LOCATION_PAGES: LocationPage[] = [
       "Nexyyra Events — Pune's premier luxury event planner for weddings, corporate galas, exhibitions, and destination celebrations since 2012.",
     keywords: ["Event Planner Pune", "Wedding Planner Pune", "Luxury Events Pune"],
     intro:
-      "Headquartered in Pune, Nexyyra Events is Maharashtra's trusted luxury event management company — delivering 1,800+ weddings, corporate experiences, and entertainment productions with white-glove precision.",
+      "Headquartered in Telhara with a delivery and coordination office in Pune, Nexyyra Events is Maharashtra's trusted luxury event management company — delivering 1,800+ weddings, corporate experiences, and entertainment productions with white-glove precision.",
     highlights: [
       "Pune-based planning studio with on-ground execution crews",
       "Heritage venues, five-star hotels, and farmhouse partnerships across Pune",
