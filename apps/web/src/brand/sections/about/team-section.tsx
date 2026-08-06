@@ -8,6 +8,7 @@
  */
 
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   BookOpenCheck,
@@ -197,6 +198,72 @@ function TeamCard({ member, featured = false }: { member: TeamMember; featured?:
   );
 }
 
+/**
+ * Reveal-on-view that also fires when the element is ALREADY in the viewport
+ * on mount (e.g. landing directly on /about#team) — `whileInView` can miss
+ * that case when smooth-scroll libraries move the page before hydration.
+ */
+function useRevealOnView<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const isOnScreen = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight * 0.92 && r.bottom > 0;
+    };
+
+    if (isOnScreen()) {
+      setVisible(true);
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    io.observe(el);
+
+    // Fallback: anchor jumps driven by smooth-scroll can settle after mount.
+    const timer = window.setTimeout(() => {
+      if (isOnScreen()) setVisible(true);
+    }, 900);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  return { ref, visible };
+}
+
+function TeamGrid({ members, featured = false }: { members: TeamMember[]; featured?: boolean }) {
+  const { ref, visible } = useRevealOnView<HTMLUListElement>();
+
+  return (
+    <motion.ul
+      ref={ref}
+      variants={staggerParent}
+      initial="hidden"
+      animate={visible ? "visible" : "hidden"}
+      className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {members.map((member) => (
+        <TeamCard key={member.slug} member={member} featured={featured} />
+      ))}
+    </motion.ul>
+  );
+}
+
 function TierLabel({ children }: { children: string }) {
   return (
     <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-muted">
@@ -231,33 +298,13 @@ export function TeamSection() {
         {/* Founders — one line */}
         <div className="mx-auto mt-12 max-w-5xl">
           <TierLabel>Founders</TierLabel>
-          <motion.ul
-            variants={staggerParent}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3"
-          >
-            {founders.map((member) => (
-              <TeamCard key={member.slug} member={member} featured />
-            ))}
-          </motion.ul>
+          <TeamGrid members={founders} featured />
         </div>
 
         {/* Core team — one line */}
         <div className="mx-auto mt-10 max-w-5xl">
           <TierLabel>Core Team</TierLabel>
-          <motion.ul
-            variants={staggerParent}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3"
-          >
-            {coreTeam.map((member) => (
-              <TeamCard key={member.slug} member={member} />
-            ))}
-          </motion.ul>
+          <TeamGrid members={coreTeam} />
         </div>
       </div>
     </section>
