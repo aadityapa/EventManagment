@@ -2226,8 +2226,8 @@ html.theme-switching *::after {
   position: relative;
   display: grid;
   place-items: center;
-  width: 6rem;
-  height: 6rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 9999px;
   background:
     linear-gradient(var(--glitz-surface, #0f0f14), var(--glitz-surface, #0f0f14)) padding-box,

@@ -14,7 +14,7 @@ export const SITE_CONFIG = {
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "Info.Events@nexyyra.com",
   address:
-    "Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108, India",
+    "Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108",
   streetAddress: "Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar",
   city: "Telhara",
   region: "Maharashtra",

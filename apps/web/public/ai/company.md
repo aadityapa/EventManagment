@@ -4,7 +4,7 @@
 Nexyyra Events and Promotions Private Limited (CIN: U70200ME2026PTC476014)
 
 ## Headquarters
-Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108, India
+Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108
 
 ## Delivery & Coordination Office
 Pune, Maharashtra, India

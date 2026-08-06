@@ -93,7 +93,7 @@ function TeamCard({ member }: { member: TeamMember }) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="team-card list-none"
     >
-      <GlassPanel as="article" className="relative h-full overflow-hidden p-7 sm:p-8">
+      <GlassPanel as="article" className="relative h-full overflow-hidden p-4 sm:p-5">
         <span className="team-card__wash" aria-hidden="true" />
 
         <div className="relative flex h-full flex-col items-center text-center">
@@ -103,31 +103,31 @@ function TeamCard({ member }: { member: TeamMember }) {
               <Image
                 src={member.image}
                 alt={`Portrait of ${member.name}, ${member.role} at Nexyyra Events`}
-                width={96}
-                height={96}
+                width={64}
+                height={64}
                 loading="lazy"
-                sizes="96px"
+                sizes="64px"
                 className="h-full w-full rounded-full object-cover"
               />
             ) : (
-              <span className="font-[family-name:var(--font-playfair)] text-2xl font-semibold text-[var(--lux-gold)]">
+              <span className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-[var(--lux-gold)]">
                 {member.initials}
               </span>
             )}
           </div>
 
           {/* Identity */}
-          <h3 className="v4-title mt-5 text-xl text-[var(--text-primary)]">{member.name}</h3>
-          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--lux-gold)]">
+          <h3 className="v4-title mt-3 text-base text-[var(--text-primary)]">{member.name}</h3>
+          <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--lux-gold)]">
             {member.role}
           </p>
 
           {/* Bio */}
-          <p className="v4-body mt-4 text-sm leading-relaxed">{member.bio}</p>
+          <p className="v4-body mt-2.5 text-xs leading-relaxed">{member.bio}</p>
 
           {/* Responsibilities */}
           <ul
-            className="mt-5 flex flex-wrap justify-center gap-2"
+            className="mt-3 flex flex-wrap justify-center gap-1.5"
             aria-label={`${member.name}'s key responsibilities`}
           >
             {member.responsibilities.map((item) => {
@@ -135,9 +135,9 @@ function TeamCard({ member }: { member: TeamMember }) {
               return (
                 <li
                   key={item}
-                  className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-muted"
+                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 text-[10px] text-muted"
                 >
-                  <Icon className="h-3.5 w-3.5 shrink-0 text-[var(--lux-gold)]" aria-hidden="true" />
+                  <Icon className="h-3 w-3 shrink-0 text-[var(--lux-gold)]" aria-hidden="true" />
                   {item}
                 </li>
               );
@@ -145,25 +145,25 @@ function TeamCard({ member }: { member: TeamMember }) {
           </ul>
 
           {/* Social */}
-          <div className="mt-auto flex items-center gap-3 pt-6">
+          <div className="mt-auto flex items-center gap-2 pt-4">
             {member.linkedin && (
               <a
                 href={member.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on LinkedIn`}
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
               >
-                <LinkedinIcon className="h-4 w-4" />
+                <LinkedinIcon className="h-3.5 w-3.5" />
               </a>
             )}
             {member.email && (
               <a
                 href={`mailto:${member.email}`}
                 aria-label={`Email ${member.name}`}
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
               >
-                <Mail className="h-4 w-4" aria-hidden="true" />
+                <Mail className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             )}
           </div>
@@ -197,7 +197,7 @@ export function TeamSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+          className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
         >
           {TEAM_MEMBERS.map((member) => (
             <TeamCard key={member.slug} member={member} />
