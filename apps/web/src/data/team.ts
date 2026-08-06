@@ -8,6 +8,10 @@ export interface TeamMember {
   name: string;
   /** Public designation shown on the card and in schema. */
   role: string;
+  /** Founders render in the featured top row. */
+  founder?: boolean;
+  /** Short leadership statement — shown on founder cards only. */
+  leadership?: string;
   bio: string;
   responsibilities: string[];
   /** Monogram fallback when no photo is provided. */
@@ -23,6 +27,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "yash-bajaj",
     name: "Yash Bajaj",
     role: "Founder & Managing Director",
+    founder: true,
+    leadership: "Visionary leadership — strategy, growth, and flawless delivery on every celebration.",
     bio: "Yash Bajaj leads Nexyyra Events with a vision to create unforgettable celebrations through exceptional planning, operational excellence, and customer satisfaction.",
     responsibilities: ["Business Strategy", "Event Operations", "Client Relations", "Overall Management"],
     initials: "YB",
@@ -33,6 +39,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "aaditya-padiya",
     name: "Aaditya Padiya",
     role: "Founder & Chief Technology Officer",
+    founder: true,
+    leadership: "Technology leadership — AI, automation, and seamless digital experiences.",
     bio: "Aaditya Padiya drives the company's technology ecosystem, digital transformation, AI-powered solutions, and innovative event management systems.",
     responsibilities: ["Technology Strategy", "Website Development", "Automation", "Digital Innovation", "Technical Operations"],
     initials: "AP",
@@ -43,6 +51,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "amey-korde",
     name: "Amey Korde",
     role: "Founder & Chief Marketing Officer",
+    founder: true,
+    leadership: "Brand leadership — marketing, growth, and lasting partnerships.",
     bio: "Amey Korde leads branding, marketing campaigns, and business development while building lasting relationships with clients and partners.",
     responsibilities: ["Marketing Strategy", "Brand Development", "Business Growth", "Client Acquisition", "Digital Marketing"],
     initials: "AK",

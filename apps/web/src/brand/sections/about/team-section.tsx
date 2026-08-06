@@ -2,6 +2,7 @@
 
 /**
  * Meet Our Leadership — premium team section for the About page.
+ * Two tiers: featured founder cards on top, core team in one line below.
  * Follows the house V4/V5 design grammar: GlassPanel surfaces, ScrollReveal,
  * staggered Framer Motion reveals, and existing gold/purple theme tokens.
  */
@@ -83,13 +84,38 @@ const RESPONSIBILITY_ICONS: Record<string, LucideIcon> = {
   Compliance: ShieldCheck,
 };
 
-function TeamCard({ member }: { member: TeamMember }) {
+function SocialLinks({ member }: { member: TeamMember }) {
+  const linkClass =
+    "grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]";
+  return (
+    <div className="mt-auto flex items-center justify-center gap-2 pt-4">
+      {member.linkedin && (
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${member.name} on LinkedIn`}
+          className={linkClass}
+        >
+          <LinkedinIcon className="h-3.5 w-3.5" />
+        </a>
+      )}
+      {member.email && (
+        <a href={`mailto:${member.email}`} aria-label={`Email ${member.name}`} className={linkClass}>
+          <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  );
+}
+
+function TeamCard({ member, featured = false }: { member: TeamMember; featured?: boolean }) {
   const reducedMotion = useReducedMotion();
 
   return (
     <motion.li
       variants={staggerItem}
-      whileHover={reducedMotion ? undefined : { y: -8 }}
+      whileHover={reducedMotion ? undefined : { y: -6 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="team-card list-none"
     >
@@ -116,14 +142,34 @@ function TeamCard({ member }: { member: TeamMember }) {
             )}
           </div>
 
+          {/* Founder badge */}
+          {featured && (
+            <span className="mt-3 flex items-center gap-1 rounded-full border border-[var(--lux-gold)]/35 bg-[var(--lux-gold)]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--lux-gold)]">
+              <Crown className="h-3 w-3" aria-hidden="true" /> Founder
+            </span>
+          )}
+
           {/* Identity */}
-          <h3 className="v4-title mt-3 text-base text-[var(--text-primary)]">{member.name}</h3>
+          <h3
+            className={`v4-title ${featured ? "mt-2" : "mt-3"} whitespace-nowrap text-base text-[var(--text-primary)]`}
+          >
+            {member.name}
+          </h3>
           <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--lux-gold)]">
             {member.role}
           </p>
 
+          {/* Leadership statement — founders only */}
+          {featured && member.leadership && (
+            <p className="mt-2 text-xs italic leading-relaxed text-[var(--lux-gold-metal,var(--lux-gold))]/90">
+              {member.leadership}
+            </p>
+          )}
+
           {/* Bio */}
-          <p className="v4-body mt-2.5 text-xs leading-relaxed">{member.bio}</p>
+          <p className={`v4-body mt-2.5 text-xs leading-relaxed ${featured ? "" : "line-clamp-3"}`}>
+            {member.bio}
+          </p>
 
           {/* Responsibilities */}
           <ul
@@ -144,36 +190,26 @@ function TeamCard({ member }: { member: TeamMember }) {
             })}
           </ul>
 
-          {/* Social */}
-          <div className="mt-auto flex items-center gap-2 pt-4">
-            {member.linkedin && (
-              <a
-                href={member.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${member.name} on LinkedIn`}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
-              >
-                <LinkedinIcon className="h-3.5 w-3.5" />
-              </a>
-            )}
-            {member.email && (
-              <a
-                href={`mailto:${member.email}`}
-                aria-label={`Email ${member.name}`}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-muted transition-colors duration-300 hover:border-[var(--lux-gold)] hover:text-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)] focus-visible:text-[var(--lux-gold)]"
-              >
-                <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-            )}
-          </div>
+          <SocialLinks member={member} />
         </div>
       </GlassPanel>
     </motion.li>
   );
 }
 
+function TierLabel({ children }: { children: string }) {
+  return (
+    <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-muted">
+      <span className="text-[var(--lux-gold)]">—</span> {children}{" "}
+      <span className="text-[var(--lux-gold)]">—</span>
+    </p>
+  );
+}
+
 export function TeamSection() {
+  const founders = TEAM_MEMBERS.filter((m) => m.founder);
+  const coreTeam = TEAM_MEMBERS.filter((m) => !m.founder);
+
   return (
     <section
       id="team"
@@ -192,17 +228,37 @@ export function TeamSection() {
           </p>
         </ScrollReveal>
 
-        <motion.ul
-          variants={staggerParent}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
-        >
-          {TEAM_MEMBERS.map((member) => (
-            <TeamCard key={member.slug} member={member} />
-          ))}
-        </motion.ul>
+        {/* Founders — one line */}
+        <div className="mx-auto mt-12 max-w-5xl">
+          <TierLabel>Founders</TierLabel>
+          <motion.ul
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3"
+          >
+            {founders.map((member) => (
+              <TeamCard key={member.slug} member={member} featured />
+            ))}
+          </motion.ul>
+        </div>
+
+        {/* Core team — one line */}
+        <div className="mx-auto mt-10 max-w-5xl">
+          <TierLabel>Core Team</TierLabel>
+          <motion.ul
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3"
+          >
+            {coreTeam.map((member) => (
+              <TeamCard key={member.slug} member={member} />
+            ))}
+          </motion.ul>
+        </div>
       </div>
     </section>
   );
