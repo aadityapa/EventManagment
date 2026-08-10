@@ -200,8 +200,11 @@ function TeamCard({ member, featured = false }: { member: TeamMember; featured?:
 
 /**
  * Reveal-on-view that also fires when the element is ALREADY in the viewport
- * on mount (e.g. landing directly on /about#team) — `whileInView` can miss
- * that case when smooth-scroll libraries move the page before hydration.
+ * on mount (e.g. landing directly on /about#team). Deliberately avoids
+ * IntersectionObserver: the page's smooth-scroll setup can stall observer
+ * callbacks until first user scroll, so we check geometry directly on mount,
+ * on scroll/resize events, and on a short polling window for anchor jumps
+ * that settle after hydration.
  */
 function useRevealOnView<T extends HTMLElement>() {
   const ref = useRef<T>(null);
@@ -211,35 +214,45 @@ function useRevealOnView<T extends HTMLElement>() {
     const el = ref.current;
     if (!el) return;
 
+    let done = false;
+
     const isOnScreen = () => {
       const r = el.getBoundingClientRect();
       return r.top < window.innerHeight * 0.92 && r.bottom > 0;
     };
 
-    if (isOnScreen()) {
+    const show = () => {
+      done = true;
       setVisible(true);
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+
+    const check = () => {
+      if (!done && isOnScreen()) show();
+    };
+
+    // Landing directly on the team anchor, or section already on screen.
+    if (window.location.hash === "#team" || isOnScreen()) {
+      show();
       return;
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    io.observe(el);
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
 
-    // Fallback: anchor jumps driven by smooth-scroll can settle after mount.
-    const timer = window.setTimeout(() => {
-      if (isOnScreen()) setVisible(true);
-    }, 900);
+    // Poll briefly to catch late anchor jumps / layout shifts after load.
+    const interval = window.setInterval(() => {
+      check();
+      if (done) window.clearInterval(interval);
+    }, 500);
+    const stopPolling = window.setTimeout(() => window.clearInterval(interval), 6000);
 
     return () => {
-      io.disconnect();
-      window.clearTimeout(timer);
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+      window.clearInterval(interval);
+      window.clearTimeout(stopPolling);
     };
   }, []);
 
