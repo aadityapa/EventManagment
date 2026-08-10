@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { services } from "@/data/cms";
 import { getServiceFaqs } from "@/data/service-faqs";
@@ -58,16 +57,14 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(svcSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <Suspense fallback={null}>
-        <ServiceChapter
-          service={service}
-          faqs={serviceFaqs}
-          related={related}
-          contextualLinks={contextualLinks}
-          pageIntro={pageIntro}
-          galleryAssets={galleryAssets}
-        />
-      </Suspense>
+      <ServiceChapter
+        service={service}
+        faqs={serviceFaqs}
+        related={related}
+        contextualLinks={contextualLinks}
+        pageIntro={pageIntro}
+        galleryAssets={galleryAssets}
+      />
     </>
   );
 }

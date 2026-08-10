@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
@@ -17,6 +17,8 @@ import type { ServiceFaq } from "@/data/service-faqs";
 import type { ContextualLink } from "@/lib/wedding-internal-links";
 import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
 import type { MediaAsset } from "@/lib/media/types";
+
+const emptySubscribe = () => () => {};
 
 export type ServiceChapterProps = {
   service: {
@@ -37,7 +39,14 @@ export type ServiceChapterProps = {
 
 /** V5 cinematic service chapter template. */
 export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, galleryAssets = [] }: ServiceChapterProps) {
-  const world = useSearchParams().get("world");
+  // Read ?world= on the client instead of useSearchParams: the hook forces a
+  // CSR bailout that strips the whole chapter (h1, features, FAQs) from the
+  // prerendered HTML, hiding the page content from search engines.
+  const world = useSyncExternalStore(
+    emptySubscribe,
+    () => new URLSearchParams(window.location.search).get("world"),
+    () => null,
+  );
   const bookHref = world ? `/book-event?world=${world}&service=${service.slug}` : `/book-event?service=${service.slug}`;
   const galleryMoments = galleryAssets.length
     ? galleryAssets.slice(0, 3).map((asset) => ({
