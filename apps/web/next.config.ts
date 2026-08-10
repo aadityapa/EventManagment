@@ -97,6 +97,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Build assets (JS/CSS/fonts) stay crawlable for rendering but out of the search index.
+        source: "/_next/static/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
+        source: "/:file(sitemap.*\\.xml)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
     ];
   },
   poweredByHeader: false,

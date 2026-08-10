@@ -11,6 +11,8 @@ export type SitemapEntry = {
 export const SITEMAP_XML_HEADERS = {
   "Content-Type": "application/xml; charset=utf-8",
   "Cache-Control": "public, max-age=3600, s-maxage=3600",
+  // Sitemaps should be crawled but never appear in the index / GSC "not indexed" reports.
+  "X-Robots-Tag": "noindex",
 } as const;
 
 function escapeXml(value: string): string {

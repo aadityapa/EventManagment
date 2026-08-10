@@ -1,6 +1,6 @@
 # Nexyyra Web (Frontend)
 
-Next.js 16 frontend for [Nexyyra Events](https://nexyyra.com). See the [root README](../../README.md) for monorepo layout, backend API, and deployment.
+Next.js 16 frontend for [Nexyyra Events](https://www.nexyyra.com). See the [root README](../../README.md) for monorepo layout, backend API, and deployment.
 
 ## Development
 
