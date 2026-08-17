@@ -1,25 +1,25 @@
 import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
-import { SITEMAP_CHILDREN } from "@/lib/sitemap-entries";
 
 export default function robots(): MetadataRoute.Robots {
   const sitemapIndex = `${SITE_CONFIG.url}/sitemap.xml`;
-  const childSitemaps = SITEMAP_CHILDREN.map((child) => `${SITE_CONFIG.url}${child.path}`);
+  const blocked = ["/admin", "/dashboard", "/api/", "/_next/"];
 
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/dashboard", "/api/"],
+        disallow: blocked,
       },
       {
         userAgent: ["GPTBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"],
         allow: "/",
-        disallow: ["/admin", "/dashboard", "/api/"],
+        disallow: blocked,
       },
     ],
-    sitemap: [sitemapIndex, ...childSitemaps],
+    // Child sitemaps are linked from the index — listing only the index avoids duplicate discovery noise.
+    sitemap: sitemapIndex,
     host: SITE_CONFIG.url,
   };
 }
