@@ -26,29 +26,56 @@ const LogoCoinCanvas = dynamic(
 );
 
 /**
- * 3D rotating brand logo. Uses a real three.js coin on capable devices,
- * falls back to the CSS coin spin on low-end hardware / reduced motion.
+ * 3D rotating brand logo. Uses a real three.js coin on capable DESKTOP devices,
+ * falls back to the CSS coin spin on mobile / low-end hardware / reduced motion.
+ *
+ * Perf: three.js (~500 KiB) is only fetched on desktop-width viewports, and only
+ * after the window `load` event + an idle callback — it never competes with the
+ * initial render or contributes to mobile TBT/LCP.
  */
 export function LogoCoin() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    const desktop = window.matchMedia?.("(min-width: 1024px)")?.matches ?? false;
     const memory = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     const cores = navigator.hardwareConcurrency ?? 4;
-    const capable = !reduced && (memory === undefined || memory >= 4) && cores >= 4;
+    const saveData =
+      (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData ?? false;
+    const capable =
+      !reduced && desktop && !saveData && (memory === undefined || memory >= 4) && cores >= 4;
     if (!capable) return;
 
-    // Defer WebGL until the main thread is idle — hero text/photo paint first,
-    // the CSS fallback spins in the meantime, then the 3D canvas takes over.
-    const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
-      .requestIdleCallback;
-    if (idle) {
-      const id = idle(() => setEnabled(true), { timeout: 2500 });
-      return () => (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    const schedule = () => {
+      // Defer WebGL until the main thread is idle — hero text/photo paint first,
+      // the CSS fallback spins in the meantime, then the 3D canvas takes over.
+      if (w.requestIdleCallback) {
+        idleId = w.requestIdleCallback(() => setEnabled(true), { timeout: 4000 });
+      } else {
+        timeoutId = window.setTimeout(() => setEnabled(true), 2500);
+      }
+    };
+
+    // Wait for full page load so three.js never contends with LCP resources.
+    if (document.readyState === "complete") {
+      schedule();
+    } else {
+      window.addEventListener("load", schedule, { once: true });
     }
-    const t = window.setTimeout(() => setEnabled(true), 1200);
-    return () => window.clearTimeout(t);
+
+    return () => {
+      window.removeEventListener("load", schedule);
+      if (idleId !== undefined) w.cancelIdleCallback?.(idleId);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
   }, []);
 
   if (!enabled) return <LogoCoinFallback />;

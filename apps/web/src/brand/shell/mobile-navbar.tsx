@@ -39,6 +39,8 @@ export function MobileNavbar({ isOpen, onToggle }: MobileNavbarProps) {
           <img
             src={BRAND_LOGO_ASSETS.dark}
             alt={SITE_CONFIG.name}
+            width={520}
+            height={499}
             decoding="async"
             fetchPriority="high"
             className="mobile-nav-header__logo-img"

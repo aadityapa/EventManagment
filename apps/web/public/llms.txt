@@ -2,84 +2,53 @@
 
 > Luxury event management company headquartered in Telhara, Maharashtra, India — weddings, corporate events, destination celebrations, and celebrity experiences across Pune and all of India since 2012. Founded by Yash Bajaj in Amravati in 2012; Aaditya Padiya and Amey Korde joined as co-founders in 2026.
 
-Legal name: Nexyyra Events and Promotions Private Limited
-CIN: U70200ME2026PTC476014
-Website: https://www.nexyyra.com
-Email: Info.Events@nexyyra.com
-Founders: Yash Bajaj (Founder & Managing Director, 2012), Aaditya Padiya (Co-Founder & CTO, 2026), Amey Korde (Co-Founder & CMO, 2026)
-Instagram: https://www.instagram.com/nexyyra/
+Legal name: Nexyyra Events and Promotions Private Limited. CIN: U70200ME2026PTC476014. Nexyyra Events is a premium event planning and production company serving clients across India, specializing in end-to-end luxury experiences — from intimate weddings to large-scale corporate galas and destination celebrations. Services include luxury wedding planning, destination weddings, corporate events and brand activations, celebrity and VIP event management, concert and exhibition management, fashion shows, cultural events, venue curation, and event production. Tagline: The Next Era of Celebrations.
 
-## About
-
-Nexyyra Events is a premium event planning and production company serving clients across India. We specialize in end-to-end luxury experiences — from intimate weddings to large-scale corporate galas and destination celebrations.
-
-## Services
-
-- Luxury Wedding Planning
-- Destination Weddings
-- Corporate Events & Brand Activations
-- Celebrity & VIP Event Management
-- Concert & Exhibition Management
-- Fashion Shows & Cultural Events
-- Venue Curation & Event Production
+Contact: Phone/WhatsApp +91 9730594753 (https://wa.me/919730594753), email Info.Events@nexyyra.com. Registered office: Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108. Delivery and coordination office: Pune, Maharashtra, India. Leadership: Yash Bajaj (Founder & Managing Director, since 2012), Aaditya Padiya (Co-Founder & CTO, since 2026), Amey Korde (Co-Founder & CMO, since 2026), Shilpa Sharma (Finance & Accounts Manager), Radhika Bajaj (Data & Administration Manager), Bharti Jadhav (Head, Decoration Department).
 
 ## Key Pages
 
-- Home: https://www.nexyyra.com/
-- Services: https://www.nexyyra.com/services
-- Portfolio: https://www.nexyyra.com/portfolio
-- Venues: https://www.nexyyra.com/venues
-- Gallery: https://www.nexyyra.com/gallery
-- Book Consultation: https://www.nexyyra.com/book-event
-- Contact: https://www.nexyyra.com/contact
-- About: https://www.nexyyra.com/about
-- FAQs: https://www.nexyyra.com/faqs
+- [Home](https://www.nexyyra.com/): Homepage — luxury event planner in Pune, India
+- [Services](https://www.nexyyra.com/services): Wedding planning, corporate events, destination celebrations, celebrity management
+- [Portfolio](https://www.nexyyra.com/portfolio): Featured events and past work
+- [Venues](https://www.nexyyra.com/venues): Curated venue directory across India
+- [Gallery](https://www.nexyyra.com/gallery): Photo gallery of live events
+- [Book Consultation](https://www.nexyyra.com/book-event): Book an event consultation
+- [Contact](https://www.nexyyra.com/contact): Phone, WhatsApp, email, and enquiry form
+- [About](https://www.nexyyra.com/about): Company story, founders, and team
+- [FAQs](https://www.nexyyra.com/faqs): Frequently asked questions
 
 ## Locations
 
-- Pune: https://www.nexyyra.com/locations/pune
-- Mumbai: https://www.nexyyra.com/locations/mumbai
-- Delhi: https://www.nexyyra.com/locations/delhi
-- Bangalore: https://www.nexyyra.com/locations/bangalore
-- Hyderabad: https://www.nexyyra.com/locations/hyderabad
-- Jaipur: https://www.nexyyra.com/locations/jaipur
-- Indore: https://www.nexyyra.com/locations/indore
-- Nashik: https://www.nexyyra.com/locations/nashik
-- Nagpur: https://www.nexyyra.com/locations/nagpur
-- Ahmedabad: https://www.nexyyra.com/locations/ahmedabad
-- Surat: https://www.nexyyra.com/locations/surat
-- Goa: https://www.nexyyra.com/locations/goa
-- Udaipur: https://www.nexyyra.com/locations/udaipur
+- [Pune](https://www.nexyyra.com/locations/pune): Event management in Pune
+- [Mumbai](https://www.nexyyra.com/locations/mumbai): Event management in Mumbai
+- [Delhi](https://www.nexyyra.com/locations/delhi): Event management in Delhi
+- [Bangalore](https://www.nexyyra.com/locations/bangalore): Event management in Bangalore
+- [Hyderabad](https://www.nexyyra.com/locations/hyderabad): Event management in Hyderabad
+- [Jaipur](https://www.nexyyra.com/locations/jaipur): Event management in Jaipur
+- [Indore](https://www.nexyyra.com/locations/indore): Event management in Indore
+- [Nashik](https://www.nexyyra.com/locations/nashik): Event management in Nashik
+- [Nagpur](https://www.nexyyra.com/locations/nagpur): Event management in Nagpur
+- [Ahmedabad](https://www.nexyyra.com/locations/ahmedabad): Event management in Ahmedabad
+- [Surat](https://www.nexyyra.com/locations/surat): Event management in Surat
+- [Goa](https://www.nexyyra.com/locations/goa): Destination events in Goa
+- [Udaipur](https://www.nexyyra.com/locations/udaipur): Destination weddings in Udaipur
 
-## AI Discoverability Layer
+## AI Discoverability
 
-- Full entity file: https://www.nexyyra.com/llms-full.txt
-- About: https://www.nexyyra.com/ai/about.md
-- Brand: https://www.nexyyra.com/ai/brand.md
-- Services: https://www.nexyyra.com/ai/services.md
-- Company: https://www.nexyyra.com/ai/company.md
-- Capabilities: https://www.nexyyra.com/ai/capabilities.md
-- Events: https://www.nexyyra.com/ai/events.md
-- FAQ: https://www.nexyyra.com/ai/faq.md
-- Knowledge base: https://www.nexyyra.com/ai/knowledge-base.md
+- [Full entity file](https://www.nexyyra.com/llms-full.txt): Complete structured company information
+- [About](https://www.nexyyra.com/ai/about.md): Company overview for AI agents
+- [Brand](https://www.nexyyra.com/ai/brand.md): Brand identity and positioning
+- [Services](https://www.nexyyra.com/ai/services.md): Detailed service descriptions
+- [Company](https://www.nexyyra.com/ai/company.md): Legal and corporate details
+- [Capabilities](https://www.nexyyra.com/ai/capabilities.md): Production and planning capabilities
+- [Events](https://www.nexyyra.com/ai/events.md): Event types and formats
+- [FAQ](https://www.nexyyra.com/ai/faq.md): Frequently asked questions
+- [Knowledge base](https://www.nexyyra.com/ai/knowledge-base.md): Extended knowledge base
 
-## Contact
+## Optional
 
-- Phone: +91 9730594753
-- WhatsApp: https://wa.me/919730594753
-- Email: Info.Events@nexyyra.com
-- Location: Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108
-- Delivery & Coordination Office: Pune, Maharashtra, India
-
-## Brand
-
-- Tagline: The Next Era of Celebrations
-- Focus: Luxury, precision, unforgettable experiences
-
-## Leadership Team
-- Yash Bajaj — Founder & Managing Director (since 2012)
-- Aaditya Padiya — Co-Founder & Chief Technology Officer (since 2026)
-- Amey Korde — Co-Founder & Chief Marketing Officer (since 2026)
-- Shilpa Sharma — Finance & Accounts Manager
-- Radhika Bajaj — Data & Administration Manager
-- Bharti Jadhav — Head — Decoration Department
+- [Instagram](https://www.instagram.com/nexyyra/): Official Instagram profile
+- [Pricing](https://www.nexyyra.com/pricing): Packages and pricing guidance
+- [Blog](https://www.nexyyra.com/blog): Articles and event planning guides
+- [Testimonials](https://www.nexyyra.com/testimonials): Client reviews

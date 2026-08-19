@@ -71,28 +71,54 @@ export function SmoothScrollProvider({ children, enabled = true }: Props) {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
 
-    const instance = new Lenis({
-      duration: 0.85,
-      lerp: 0.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.1,
-    });
-    lenisRef.current = instance;
+    // Touch devices scroll natively — Lenis + the permanent rAF loop only add
+    // main-thread cost (TBT) on mobile with zero UX benefit. Desktop only.
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!finePointer) return;
 
-    const teardownScrollTrigger = wireLenisScrollTrigger(instance);
-
+    let disposed = false;
+    let teardownScrollTrigger: (() => void) | undefined;
     let raf = 0;
-    const loop = (time: number) => {
-      instance.raf(time);
+    let idleId: number | undefined;
+
+    const init = () => {
+      if (disposed) return;
+      const instance = new Lenis({
+        duration: 0.85,
+        lerp: 0.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 1.1,
+      });
+      lenisRef.current = instance;
+
+      teardownScrollTrigger = wireLenisScrollTrigger(instance);
+
+      const loop = (time: number) => {
+        instance.raf(time);
+        raf = requestAnimationFrame(loop);
+      };
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+
+    // Initialize during idle time so Lenis/ScrollTrigger wiring (and its
+    // forced-reflow layout reads) never blocks first paint or input.
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      idleId = w.requestIdleCallback(init, { timeout: 2000 });
+    } else {
+      init();
+    }
 
     return () => {
+      disposed = true;
+      if (idleId !== undefined) w.cancelIdleCallback?.(idleId);
       cancelAnimationFrame(raf);
-      teardownScrollTrigger();
-      instance.destroy();
+      teardownScrollTrigger?.();
+      lenisRef.current?.destroy();
       lenisRef.current = null;
     };
   }, [enabled]);

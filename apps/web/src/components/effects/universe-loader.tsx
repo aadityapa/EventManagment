@@ -7,8 +7,8 @@ import { trackEvent } from "@/lib/analytics";
 import { SITE_CONFIG } from "@/lib/constants";
 import { EASE } from "@/lib/motion";
 
-export const LOADER_STORAGE_KEY = "glitz-v7-luxury-premiere-seen";
-const LEGACY_LOADER_KEY = "glitz-loader-seen";
+export { LOADER_STORAGE_KEY, hasSeenPremiere } from "@/components/effects/premiere-storage";
+import { LOADER_STORAGE_KEY, LEGACY_LOADER_KEY } from "@/components/effects/premiere-storage";
 
 /** First-visit cinematic intro — 2s luxury brand reveal */
 export const LOADER_DURATION_MS = 2000;
@@ -18,20 +18,6 @@ export const LOADER_CROSSFADE_MS = 500;
 
 const TAGLINE = "THE NEXT ERA OF CELEBRATIONS";
 const CINEMATIC = EASE.silk;
-
-export function hasSeenPremiere() {
-  if (typeof window === "undefined") return false;
-  try {
-    // localStorage: play the premiere once per visitor, not once per session.
-    return (
-      localStorage.getItem(LOADER_STORAGE_KEY) === "1" ||
-      sessionStorage.getItem(LOADER_STORAGE_KEY) === "1" ||
-      sessionStorage.getItem(LEGACY_LOADER_KEY) === "1"
-    );
-  } catch {
-    return true; // storage blocked — never gate content behind the intro
-  }
-}
 
 type Props = {
   onHandoff: () => void;

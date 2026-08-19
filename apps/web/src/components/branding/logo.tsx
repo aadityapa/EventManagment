@@ -56,6 +56,8 @@ export function ThemeLogoImage({
       <img
         src={BRAND_LOGO_ASSETS.dark}
         alt={SITE_CONFIG.name}
+        width={520}
+        height={499}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
         className="brand-logo__img"
@@ -81,6 +83,8 @@ export function Logo({
       <img
         src={BRAND_LOGO_ASSETS.symbol}
         alt={SITE_CONFIG.name}
+        width={256}
+        height={256}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
         className={cn("brand-logo__mark", className)}
@@ -91,6 +95,8 @@ export function Logo({
       <img
         src={BRAND_LOGO_ASSETS.loader}
         alt={SITE_CONFIG.name}
+        width={520}
+        height={499}
         fetchPriority="high"
         className={cn("brand-logo__img brand-logo__img--loader", className)}
       />

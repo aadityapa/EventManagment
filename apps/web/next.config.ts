@@ -47,6 +47,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "pixabay.com" },
     ],
     formats: ["image/avif", "image/webp"],
+    // Optimized images (/_next/image) default to a 60s cache — bump to 31 days
+    // so repeat views and CDN hits stop re-fetching (Lighthouse "efficient cache lifetimes").
+    minimumCacheTTL: 2678400,
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
@@ -103,12 +106,25 @@ const nextConfig: NextConfig = {
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
       {
+        // Static media — long-lived cache (non-Vercel deploys; vercel.json covers Vercel edge).
+        source: "/images/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/brand/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=31536000" },
+        ],
+      },
+      {
         source: "/:file(sitemap.*\\.xml)",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
     ];
   },
   poweredByHeader: false,
+  // Optional alternate build dir (e.g. CI/agents building alongside a running dev server).
+  ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
   ...(isDockerBuild ? { output: "standalone" as const } : {}),
 };
 
