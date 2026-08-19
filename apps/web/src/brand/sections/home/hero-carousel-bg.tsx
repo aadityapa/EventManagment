@@ -49,7 +49,10 @@ function HeroCarouselSlides({
 
   return (
     <div className="absolute inset-0 bg-[var(--glitz-bg,#050505)]">
-      <AnimatePresence mode="sync">
+      {/* initial={false}: first slide SSRs at opacity 1 — the LCP image is visible
+          immediately instead of waiting for hydration + a 0.9s fade. Only slide
+          CHANGES animate. */}
+      <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={`${active}-${resolved}`}
           className="absolute inset-0"

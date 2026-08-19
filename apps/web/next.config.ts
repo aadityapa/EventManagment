@@ -57,6 +57,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    // Inline CSS into the HTML — removes the render-blocking stylesheet request
+    // (Lighthouse "Render-blocking requests", ~340 ms on slow 4G).
+    inlineCss: true,
   },
   async redirects() {
     return [
@@ -122,6 +125,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Fixes Lighthouse "Missing source maps for large first-party JavaScript".
+  productionBrowserSourceMaps: true,
   poweredByHeader: false,
   // Optional alternate build dir (e.g. CI/agents building alongside a running dev server).
   ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
