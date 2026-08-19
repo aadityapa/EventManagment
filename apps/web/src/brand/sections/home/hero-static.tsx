@@ -50,6 +50,13 @@ export function HeroStatic({ slides }: HeroStaticProps) {
               View Our Work
             </Link>
           </div>
+
+          {/* Entity signal — exact legal name in visible homepage HTML (SEO). */}
+          <p className="mt-7 text-[0.7rem] uppercase tracking-[0.18em] text-white/45 sm:mt-8">
+            Nexyyra Events and Promotions Private Limited
+            <span className="mx-2 text-white/25" aria-hidden>•</span>
+            Luxury Event Management Company, Pune · Maharashtra
+          </p>
         </div>
 
         <div className="luxury-hero__stage" aria-hidden>

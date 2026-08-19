@@ -19,8 +19,8 @@ interface SEOProps {
   blogPost?: boolean;
 }
 
-const SEO_BRAND = "Nexyyra";
-const SEO_BLOG_BRAND = "Nexyyra Blog";
+const SEO_BRAND = "Nexyyra Events";
+const SEO_BLOG_BRAND = "Nexyyra Events Blog";
 
 function trimDescription(text: string, max = 160): string {
   if (text.length <= max) return text;
@@ -128,7 +128,13 @@ export function globalGraphSchema() {
         "@type": "Organization",
         "@id": ORG_ID,
         name: SITE_CONFIG.legalName,
-        alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
+        legalName: SITE_CONFIG.legalName,
+        alternateName: [SITE_CONFIG.shortName, "Nexyyra"],
+        identifier: {
+          "@type": "PropertyValue",
+          propertyID: "CIN",
+          value: SITE_CONFIG.cin,
+        },
         description: SITE_CONFIG.description,
         url: SITE_CONFIG.url,
         telephone: SITE_CONFIG.phone,
@@ -215,7 +221,8 @@ export function globalGraphSchema() {
       {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
-        name: SITE_CONFIG.name,
+        name: SITE_CONFIG.legalName,
+        alternateName: [SITE_CONFIG.shortName, "Nexyyra"],
         url: SITE_CONFIG.url,
         description: SITE_CONFIG.description,
         inLanguage: "en-IN",

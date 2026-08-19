@@ -2,12 +2,15 @@ import { generateSEO, faqSchema, speakableWebPageSchema, breadcrumbSchema } from
 import { HomeView } from "@/brand";
 import { HOME_FAQ_ITEMS } from "@/brand/data/faq";
 
-export const metadata = generateSEO({
-  title: "Luxury Event Planner Pune",
-  description:
-    "Nexyyra — luxury experience architects in Pune. Weddings, corporate galas, destination celebrations, and concerts across India since 2012.",
-  path: "/",
-});
+export const metadata = {
+  ...generateSEO({
+    description:
+      "Nexyyra Events is a luxury event management company in Pune by Nexyyra Events and Promotions Private Limited — weddings, corporate events, celebrations, brand activations and destination events across India.",
+    path: "/",
+  }),
+  // Exact brand-first homepage title — strongest entity/site-name signal for Google.
+  title: "Nexyyra Events | Luxury Event Management Company in Pune",
+};
 
 export default function HomePage() {
   const homeFaqs = faqSchema(HOME_FAQ_ITEMS.map((f) => ({ question: f.question, answer: f.answer })));

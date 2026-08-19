@@ -17,6 +17,7 @@ import type { SitemapEntry } from "./sitemap-xml";
 const STATIC_PATHS = [
   "",
   "/about",
+  "/company",
   "/services",
   "/portfolio",
   "/venues",

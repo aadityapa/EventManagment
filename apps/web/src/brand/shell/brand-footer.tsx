@@ -16,6 +16,7 @@ import { analytics } from "@/lib/analytics";
 const QUICK_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
+  { href: "/company", label: "Company Information" },
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/blog", label: "Blog" },
