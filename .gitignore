@@ -27,6 +27,8 @@ apps/web/public/images/**/*.PNG
 apps/web/public/images/**/*.webp
 !apps/web/public/images/placeholders/**
 !apps/web/public/images/**/.gitkeep
+# LCP hero poster — must be committed (served locally, never via the Drive proxy)
+!apps/web/public/images/hero/hero-poster.webp
 .turbo/
 coverage/
 *.tsbuildinfo
