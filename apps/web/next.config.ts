@@ -57,9 +57,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
-    // Inline CSS into the HTML — removes the render-blocking stylesheet request
-    // (Lighthouse "Render-blocking requests", ~340 ms on slow 4G).
-    inlineCss: true,
+    // NOTE: do NOT enable experimental.inlineCss here — the CSS bundle is ~200 KiB,
+    // so inlining it makes every HTML response heavier than the render-blocking
+    // request it saves (measured: mobile Lighthouse dropped 76 → 63 with it on).
   },
   async redirects() {
     return [

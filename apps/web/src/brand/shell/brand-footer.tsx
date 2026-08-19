@@ -172,7 +172,7 @@ function FooterNewsletter() {
 }
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
-  return <h3 className="lux-footer__heading">{children}</h3>;
+  return <h2 className="lux-footer__heading">{children}</h2>;
 }
 
 /**
@@ -196,7 +196,7 @@ function FooterSection({
       className={cn("lux-footer-acc", open && "is-open")}
       aria-label={ariaLabel ?? title}
     >
-      <h3 className="lux-footer__heading lux-footer-acc__heading">
+      <h2 className="lux-footer__heading lux-footer-acc__heading">
         <button
           type="button"
           className="lux-footer-acc__trigger tap-target"
@@ -207,7 +207,7 @@ function FooterSection({
           {title}
           <ChevronDown className="lux-footer-acc__chevron" aria-hidden="true" />
         </button>
-      </h3>
+      </h2>
       <div id={bodyId} className="lux-footer-acc__body">
         <div className="lux-footer-acc__inner">{children}</div>
       </div>
