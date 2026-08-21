@@ -1,5 +1,5 @@
 /** Bump when deploy should invalidate browser session/local caches */
-export const NEXYYRA_CACHE_VERSION = "2026-06-21-brand-v1";
+export const NEXYYRA_CACHE_VERSION = "2026-08-21-phone-v2";
 
 export const LEGACY_SESSION_KEYS = [
   "glitz-v5-premiere-seen",

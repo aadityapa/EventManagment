@@ -23,8 +23,12 @@ const HomeCtaBand = dynamic(
   () => import("@/brand/sections/home/cta-band").then((m) => m.HomeCtaBand),
   { ssr: false }
 );
+const HomeTestimonialsStrip = dynamic(
+  () => import("@/brand/sections/home/testimonials-strip").then((m) => m.HomeTestimonialsStrip),
+  { ssr: false }
+);
 
-/** Below-fold homepage — luxury reference layout: Expertise → About → Featured Work → Counters → CTA. */
+/** Below-fold homepage — luxury reference layout: Expertise → About → Featured Work → Counters → Client Stories → CTA. */
 export function HomeBelowFold() {
   return (
     <>
@@ -39,6 +43,9 @@ export function HomeBelowFold() {
       </LazySection>
       <LazySection minHeight="28vh" label="By the Numbers">
         <HomeCounters />
+      </LazySection>
+      <LazySection minHeight="48vh" label="Client Stories">
+        <HomeTestimonialsStrip />
       </LazySection>
       <LazySection minHeight="24vh" label="Plan Together">
         <HomeCtaBand />

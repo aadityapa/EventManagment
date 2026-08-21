@@ -41,9 +41,9 @@
 | Udaipur | /locations/udaipur |
 
 ## Contact Schema
-- Phone: +91 7020640257
+- Phone: +91 7020640157
 - Email: Info.Events@nexyyra.com
-- WhatsApp: +917020640257
+- WhatsApp: +917020640157
 - Website: https://www.nexyyra.com
 
 ## Structured Data

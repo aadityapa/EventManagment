@@ -71,7 +71,7 @@ export function CallbackRequestForm() {
           aria-invalid={errors.phone ? true : undefined}
           aria-describedby={errors.phone ? "callback-phone-error" : undefined}
           className="w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-card)] px-4 py-3 text-sm aria-[invalid]:border-red-400"
-          placeholder="+91 7020640257"
+          placeholder="+91 7020640157"
           autoComplete="tel"
         />
         {errors.phone && (

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
+import { MotionConfig } from "framer-motion";
 import {
   LOADER_STORAGE_KEY,
   hasSeenPremiere,
@@ -118,17 +119,20 @@ export function CinematicProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <PremiereContext.Provider value={contextValue}>
-      <SmoothScrollProvider enabled={done}>
-        {premiereActive && (
-          <UniverseLoader onHandoff={onHandoff} onComplete={onComplete} />
-        )}
-        <div
-          className="transform-gpu transition-opacity duration-500 ease-out"
-          style={{ opacity: revealed ? 1 : 0 }}
-        >
-          <PageTransition>{children}</PageTransition>
-        </div>
-      </SmoothScrollProvider>
+      {/* All framer-motion animations honour the visitor's reduced-motion setting. */}
+      <MotionConfig reducedMotion="user">
+        <SmoothScrollProvider enabled={done}>
+          {premiereActive && (
+            <UniverseLoader onHandoff={onHandoff} onComplete={onComplete} />
+          )}
+          <div
+            className="transform-gpu transition-opacity duration-500 ease-out"
+            style={{ opacity: revealed ? 1 : 0 }}
+          >
+            <PageTransition>{children}</PageTransition>
+          </div>
+        </SmoothScrollProvider>
+      </MotionConfig>
     </PremiereContext.Provider>
   );
 }

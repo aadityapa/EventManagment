@@ -2,7 +2,7 @@
 
 Luxury event experience platform for **Nexyyra Events**, Pune.
 
-**Contact:** +91 7020640257 · Info.Events@nexyyra.com · https://nexyyra.com
+**Contact:** +91 7020640157 · Info.Events@nexyyra.com · https://nexyyra.com
 
 ## Repository layout
 

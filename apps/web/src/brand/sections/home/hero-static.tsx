@@ -40,16 +40,36 @@ export function HeroStatic({ slides }: HeroStaticProps) {
             creativity, precision and perfection.
           </p>
 
-          <div className="mt-8 flex w-full max-w-md flex-col gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap">
-            <Link href="/services" className="luxury-button luxury-button--purple tap-target">
-              Explore Services
+          <div className="mt-8 flex w-full max-w-md flex-col gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center">
+            <Link href="/book-event" className="luxury-button luxury-button--purple tap-target">
+              Plan Your Event
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <Link href="/portfolio" className="luxury-button luxury-button--ghost tap-target">
               <Play className="h-4 w-4" aria-hidden="true" />
               View Our Work
             </Link>
+            <Link href="/services" className="luxury-button luxury-button--text tap-target">
+              Explore Services
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
+
+          {/* Trust metrics — server-rendered social proof above the fold. */}
+          <dl className="luxury-hero__metrics">
+            <div>
+              <dt>100+</dt>
+              <dd>Events Delivered</dd>
+            </div>
+            <div>
+              <dt>150+</dt>
+              <dd>Happy Clients</dd>
+            </div>
+            <div>
+              <dt>5+</dt>
+              <dd>Years of Excellence</dd>
+            </div>
+          </dl>
 
           {/* Entity signal — exact legal name in visible homepage HTML (SEO). */}
           <p className="mt-7 text-[0.7rem] uppercase tracking-[0.18em] text-white/45 sm:mt-8">

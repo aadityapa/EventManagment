@@ -7,10 +7,16 @@ import type { LucideIcon } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-type FabItem =
-  | { id: string; kind: "external"; href: string; label: string; icon: LucideIcon; accent?: "whatsapp" }
-  | { id: string; kind: "tel"; href: string; label: string; icon: LucideIcon }
-  | { id: string; kind: "link"; href: string; label: string; icon: LucideIcon };
+type FabItem = {
+  id: string;
+  kind: "external" | "tel" | "link";
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  accent?: "whatsapp";
+  /** Hidden on phones — small screens keep only the two direct-contact actions. */
+  desktopOnly?: boolean;
+};
 
 const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
   "Hello Nexyyra Events, I'd like to discuss an event.",
@@ -19,8 +25,8 @@ const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}?t
 const FAB_ITEMS: FabItem[] = [
   { id: "whatsapp", kind: "external", href: whatsappHref, label: "WhatsApp", icon: MessageCircle, accent: "whatsapp" },
   { id: "call", kind: "tel", href: `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`, label: "Call", icon: Phone },
-  { id: "book", kind: "link", href: "/book-event", label: "Book Consultation", icon: Calendar },
-  { id: "quote", kind: "link", href: "/book-event?intent=quote", label: "Quick Quote", icon: FileText },
+  { id: "book", kind: "link", href: "/book-event", label: "Book Consultation", icon: Calendar, desktopOnly: true },
+  { id: "quote", kind: "link", href: "/book-event?intent=quote", label: "Quick Quote", icon: FileText, desktopOnly: true },
 ];
 
 function FabTooltip({ label }: { label: string }) {
@@ -37,8 +43,9 @@ function FabTooltip({ label }: { label: string }) {
 function FabButton({ item }: { item: FabItem }) {
   const Icon = item.icon;
   const className = cn(
-    "quick-actions__btn relative flex items-center justify-center rounded-full shadow-lg transition-transform transition-colors hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glitz-gold)]",
-    "accent" in item && item.accent === "whatsapp"
+    "quick-actions__btn relative items-center justify-center rounded-full shadow-lg transition-transform transition-colors hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glitz-gold)]",
+    item.desktopOnly ? "hidden md:flex" : "flex",
+    item.accent === "whatsapp"
       ? "bg-[#25D366] text-white"
       : item.kind === "link" && item.id === "book"
         ? "bg-[var(--glitz-gold)] text-[#0A0A0A]"

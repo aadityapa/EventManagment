@@ -25,7 +25,7 @@ const PAGES = [
   {
     route: "/",
     name: "Home",
-    prompt: `Luxury black and gold event management homepage for "Glitz Events & Promotions" Pune. Fullscreen cinematic hero with logo, headline "Creating Extraordinary Experiences", subheadline luxury event management, gold particles on black. CTAs: Book Event, Free Consultation, WhatsApp +91 7020640257. Sections: stats counters, premium service cards grid, portfolio masonry, testimonials carousel, gold CTA band. Playfair Display + gold #D4AF37 accents. Desktop 1280px.`,
+    prompt: `Luxury black and gold event management homepage for "Glitz Events & Promotions" Pune. Fullscreen cinematic hero with logo, headline "Creating Extraordinary Experiences", subheadline luxury event management, gold particles on black. CTAs: Book Event, Free Consultation, WhatsApp +91 7020640157. Sections: stats counters, premium service cards grid, portfolio masonry, testimonials carousel, gold CTA band. Playfair Display + gold #D4AF37 accents. Desktop 1280px.`,
   },
   {
     route: "/about",
@@ -40,7 +40,7 @@ const PAGES = [
   {
     route: "/contact",
     name: "Contact",
-    prompt: `Contact page Glitz Events & Promotions. Logo display, contact form, phone +91 7020640257, WhatsApp, Pune address. Black gold luxury design with glass cards.`,
+    prompt: `Contact page Glitz Events & Promotions. Logo display, contact form, phone +91 7020640157, WhatsApp, Pune address. Black gold luxury design with glass cards.`,
   },
   {
     route: "/book-event",

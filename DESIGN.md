@@ -1,131 +1,90 @@
-# Glitz Events & Promotions — Stitch Design System
+# Nexyyra Events — Design System
 
-> Agent-readable design spec for [Google Stitch](https://stitch.withgoogle.com) + production code.
-> Brand: Luxury Black & Gold | Location: Pune, India
+> Agent-readable design spec for the live production site.
+> Brand: Nexyyra Events and Promotions Private Limited
+> Language: Royal navy + champagne gold + royal purple, editorial glassmorphism | Pune, India
 
 ## Brand Identity
 
-- **Name:** Glitz Events & Promotions
-- **Tagline:** Creating Extraordinary Experiences
+- **Name:** Nexyyra Events (legal: Nexyyra Events and Promotions Private Limited)
+- **Tagline:** Creating Experiences That Last Forever
 - **Voice:** Premium, cinematic, confident, warm
 - **Inspiration:** Rolls Royce, Louis Vuitton, Apple product launches
 
-## Color Palette
+## Color Palette (source of truth: `apps/web/src/styles/luxury-redesign.css`)
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `color-bg-primary` | `#000000` | Page background |
-| `color-bg-elevated` | `#0D0D0D` | Cards, nav |
-| `color-bg-surface` | `#121212` | Sections |
-| `color-gold-primary` | `#D4AF37` | Primary accent, CTAs |
-| `color-gold-bright` | `#FFD700` | Highlights, hover |
-| `color-gold-soft` | `#F5D76E` | Gradients, subtitles |
-| `color-text-primary` | `#FAFAFA` | Headings, body |
-| `color-text-muted` | `#A3A3A3` | Secondary text |
-| `color-glass` | `rgba(13,13,13,0.65)` | Glass panels |
-| `color-glass-border` | `rgba(212,175,55,0.2)` | Borders |
+| `--lux-bg` | `#050816` | Primary background |
+| `--lux-bg-secondary` | `#081226` | Secondary background |
+| `--lux-section` | `#0d1730` | Section surfaces |
+| `--lux-card-solid` | `#101b35` | Solid card surface |
+| `--lux-gold` | `#d8b26a` | Champagne gold — accents, labels, borders |
+| `--lux-gold-metal` | `#f4d08d` | Metal gold — highlights |
+| `--lux-rose` | `#d9a47b` | Rose gold — gradients |
+| `--lux-purple` | `#8b4dff` | Accent purple — primary CTAs |
+| `--lux-purple-bright` | `#b47cff` | Light purple — gradient text |
+| `--lux-violet` | `#6f42ff` | Royal violet — CTA gradients |
+| `--lux-white` | `#f7f7f7` | Headings, primary text |
+| `--lux-muted` | `#b6b8c6` | Paragraph text |
+| `--lux-subtle` | `#98a0b5` | Muted text (AA on `#050816`) |
+| `--lux-card` | `rgba(16,27,53,0.55)` | Navy glass panels |
+| `--lux-border` | `rgba(255,255,255,0.08)` | Hairline borders |
+| `--lux-border-gold` | `rgba(216,178,106,0.28)` | Gold borders |
 
-## Typography
+## Typography (loaded in `apps/web/src/app/layout.tsx`)
 
-| Role | Font | Weight | Size (desktop) |
-|------|------|--------|----------------|
-| Display H1 | Playfair Display | 700 | 48–72px |
-| Brand Accent | Cinzel | 600 | 24–36px |
-| Heading H2 | Playfair Display | 600 | 36–48px |
-| Heading H3 | Montserrat | 600 | 20–24px |
-| Body | Poppins | 400 | 16–18px |
-| Eyebrow | Montserrat | 500 | 12px, tracking 0.35em, uppercase |
-| CTA | Montserrat | 600 | 14–16px |
+| Role | Font | Notes |
+|------|------|-------|
+| Display / Headings | Cormorant Garamond (`--font-cormorant`) | Serif, 600–700, tight leading, `clamp()` fluid sizes |
+| Display fallback | Playfair Display (`--font-playfair`) | |
+| Brand accent | Cinzel (`--font-cinzel`) | Sparing use |
+| Body | Manrope (`--font-manrope`) | 400–600, 1.7+ line-height |
+| UI fallback | Inter (`--font-inter`) | |
 
-## Spacing Scale
+Eyebrow/labels: `.lux-label` — 0.72rem, 700, tracking 0.32em, uppercase, gold, gradient rule on both sides.
 
-`4, 8, 12, 16, 24, 32, 48, 64, 96, 128` (px)
+## Spacing & Radius
 
-## Border Radius
-
-- `sm`: 8px — inputs
-- `md`: 12px — buttons
-- `lg`: 16px — cards
-- `xl`: 24px — sections
-- `full`: 9999px — pills
-
-## Shadows & Glow
-
-- `shadow-glow`: `0 0 50px rgba(212,175,55,0.2)`
-- `shadow-glow-lg`: `0 0 80px rgba(255,215,0,0.15)`
+- Section rhythm: `.lux-section` (tight variant `.lux-section--tight`); `section-y` = 5rem → 7.5rem → 10rem
+- Container: `.brand-container` / `.container-page`, max-width 90rem, fluid inline padding
+- Radius: `--lux-radius-lg` 1.5rem, `--lux-radius-xl` 2rem, pills 999px
+- Anchor targets: `scroll-margin-top: 5.5rem` (global)
 
 ## Component Patterns
 
-### Button Primary
-- Gold gradient background, black text
-- Magnetic hover (scale 1.02, translateY -2px)
-- Glow shadow on hover
+- **Buttons** — `.luxury-button` pill, uppercase, letterspaced; variants: `--purple` (primary CTA), `--gold`, `--ghost` (glass + gold border), `--text`, `--compact`, `--full`. Shine sweep on hover, translateY(-2px).
+- **Cards** — `.lux-card` navy glass, hairline border, gold-tinged glow (`--lux-glow`); hover lift on `.luxury-card`.
+- **Hero** — `.luxury-hero`: carousel backdrop + veil + aurora orbs + masked grid; eyebrow, Cormorant display title with purple gradient accent word, trust metrics `dl` (`.luxury-hero__metrics`), 3D logo coin (three.js).
+- **CTA band** — `.lux-cta-band`: heading + supporting copy, purple primary + WhatsApp ghost, trust microcopy.
+- **Section label** — `.lux-label` gold editorial caps.
 
-### Button Outline
-- Gold border 40% opacity, transparent bg
-- Hover: gold tint background
+## Motion
 
-### Card (Glow)
-- Glass background, gold border 15% opacity
-- Hover: lift -4px, gold glow, image scale 1.08
+- Easing: `--lux-ease` `cubic-bezier(0.22,1,0.36,1)`; reveals 0.6–0.9s, stagger 0.07–0.08s, inView once
+- Transform-only animations (no layout thrash); marquee pauses on hover
+- **Reduced motion:** global CSS collapse + `<MotionConfig reducedMotion="user">` for framer-motion
+- First-visit premiere overlay: desktop only, fine pointer, skipped for reduced motion, 3.5s failsafe
 
-### Page Hero
-- Full-width cinematic band
-- Radial gold spotlight top
-- Text reveal animation (stagger children)
-- Optional gold particle overlay
+## Mobile
 
-### Section
-- Vertical padding: 80–112px desktop, 56–80px mobile
-- Staggered scroll reveal for children
+- Fixed glass top bar (`mobile-nav.css`), portaled drawer, safe-area padded
+- FAB (bottom-right): WhatsApp + Call on phones; + Book Consultation & Quick Quote from `md` up
+- 44px tap targets (`.tap-target` / `.touch-target`); 16px input floor prevents iOS zoom
 
-## Motion (Stitch Animation Spec)
+## Conversion Standards
 
-| Name | Duration | Easing | Trigger |
-|------|----------|--------|---------|
-| `fade-up` | 0.7s | cubic-bezier(0.22,1,0.36,1) | inView once |
-| `fade-scale` | 0.8s | cubic-bezier(0.22,1,0.36,1) | inView once |
-| `text-reveal` | 0.9s | cubic-bezier(0.22,1,0.36,1) | mount / inView |
-| `magnetic` | 0.35s | ease-out | hover |
-| `shimmer` | 3s | linear infinite | ambient |
-| `page-loader` | 2.2s | ease | route load |
+- Primary CTA site-wide: **Plan Your Event / Let's Plan Together → `/book-event`** (purple)
+- WhatsApp always one tap away (FAB + CTA band), prefilled message
+- Trust signals: hero metrics, counters, client stories strip, entity line under hero copy
+- All CTAs report via `analytics.ctaClick(id, location)`
 
-**Stagger delay:** 0.08s between sibling items
+## Accessibility
 
-**Reduced motion:** All animations collapse to instant when `prefers-reduced-motion: reduce`
-
-## Layout
-
-- Max content width: `80rem` (1280px)
-- Grid: 12-column mental model, 1/2/3/4 col responsive
-- Mobile bottom CTA bar: fixed, glass, safe-area
+- Skip link, `:focus-visible` gold ring, `aria-labelledby` on sections, semantic `dl`/`blockquote`
+- Text contrast AA on navy (`--lux-subtle` verified)
 
 ## Logo
 
-- Asset: `/logo.jpg`
-- Min height navbar: 40px
-- Hero: 80–96px
-- Contact featured: 112px
-
-## Pages
-
-All pages use `PageHero` + `StitchSection` + `StitchReveal` for consistency.
-
-## Stitch MCP (Cursor)
-
-Pull exact screen layouts from [stitch.withgoogle.com](https://stitch.withgoogle.com):
-
-```bash
-# One-time setup (opens browser for Google login)
-npx @_davideast/stitch-mcp init -c cursor -y
-
-# Verify connection
-npx @_davideast/stitch-mcp doctor
-
-# List screens in your Stitch project
-npx @_davideast/stitch-mcp screens --project YOUR_PROJECT_ID
-```
-
-Project MCP config: `.cursor/mcp.json` — restart Cursor after `init` completes.
-
-Then ask Cursor: *"Pull Home, Services, and Contact screens from Stitch project X and implement them."*
+- SVG assets under `/public/brand/` (`nexyyra-logo-dark.svg` preloaded)
+- Navbar min height 40px; hero uses 3D logo coin with CSS fallback
