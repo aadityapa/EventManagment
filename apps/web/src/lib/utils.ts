@@ -26,7 +26,7 @@ export function slugify(text: string): string {
 }
 
 export function getWhatsAppUrl(message: string): string {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753";
+  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+917020640257";
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 }
 

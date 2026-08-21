@@ -40,7 +40,7 @@ export function ContactForm() {
         <FormInput id="email" name="email" label="Email" type="email" required placeholder="you@example.com" autoComplete="email" error={errors.email} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormInput id="phone" name="phone" label="Phone" type="tel" required placeholder="+91 9730594753" autoComplete="tel" error={errors.phone} />
+        <FormInput id="phone" name="phone" label="Phone" type="tel" required placeholder="+91 7020640257" autoComplete="tel" error={errors.phone} />
         <div className="space-y-1.5">
           <label htmlFor="eventType" className="block text-sm font-medium text-primary">
             Event Type <span className="text-[var(--color-error,#ef4444)]" aria-hidden="true">*</span>

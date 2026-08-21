@@ -10,8 +10,8 @@ export const SITE_CONFIG = {
   description:
     "Experience architects, celebration designers, and memory creators — crafting extraordinary weddings, corporate experiences, celebrity events, and destination celebrations across India.",
   url: SITE_URL,
-  phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 9730594753",
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919730594753",
+  phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || "+91 7020640257",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+917020640257",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "Info.Events@nexyyra.com",
   address:
     "Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108",

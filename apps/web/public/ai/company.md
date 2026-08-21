@@ -38,9 +38,9 @@ Pune, Mumbai, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, and international 
 ## Contact Points
 | Type | Contact |
 |------|---------|
-| Customer service | +91 9730594753 |
+| Customer service | +91 7020640257 |
 | Email | Info.Events@nexyyra.com |
-| WhatsApp | +91 9730594753 |
+| WhatsApp | +91 7020640257 |
 | Consultation booking | https://www.nexyyra.com/book-event |
 
 ## Business Hours

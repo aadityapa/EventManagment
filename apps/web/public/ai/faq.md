@@ -16,7 +16,7 @@ Conferences, AGMs, product launches, award ceremonies, dealer meets, brand activ
 Red-carpet premieres, private celebrations, fashion shows, concert production, security coordination, media management, and white-glove VIP guest hospitality.
 
 ## How do I book Nexyyra Events?
-Visit https://www.nexyyra.com/book-event, call +91 9730594753, or WhatsApp https://wa.me/919730594753. Complimentary consultations available in person, via video, or at your venue.
+Visit https://www.nexyyra.com/book-event, call +91 7020640257, or WhatsApp https://wa.me/917020640257. Complimentary consultations available in person, via video, or at your venue.
 
 ## What cities does Nexyyra serve?
 Pune, Mumbai, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, and international destinations. Location pages: https://www.nexyyra.com/locations/pune

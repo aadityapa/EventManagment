@@ -1,13 +1,13 @@
 /** Senior UI/UX prompts — consistent Glitz design system across all Stitch screens */
 
-const BRAND = `Brand: "Glitz Events & Promotions" Pune India. Luxury black (#0A0A0A) & gold (#D4AF37) cinematic aesthetic. Playfair Display headings, Montserrat body. Glassmorphism cards, gold glow CTAs, scroll-reveal animations. Phone +91 9730594753, WhatsApp CTA. Desktop 1280px. Do NOT include site header/nav/footer — main content only.`;
+const BRAND = `Brand: "Glitz Events & Promotions" Pune India. Luxury black (#0A0A0A) & gold (#D4AF37) cinematic aesthetic. Playfair Display headings, Montserrat body. Glassmorphism cards, gold glow CTAs, scroll-reveal animations. Phone +91 7020640257, WhatsApp CTA. Desktop 1280px. Do NOT include site header/nav/footer — main content only.`;
 
 export const STITCH_PROMPTS = {
   services: `${BRAND}
 Services hub page. Hero eyebrow "What We Do", H1 "Curated Event Experiences". Grid of 8 luxury service cards: Weddings, Corporate Events, Concerts, Exhibitions, Celebrity Management, Product Launches, Award Functions, Destination Weddings. Each card: Material icon, title, 2-line description, "Explore" link, hover lift + gold border glow. Secondary section: 3-step process (Consult → Plan → Execute). Bottom gold CTA band "Book Free Consultation".`,
 
   contact: `${BRAND}
-Contact page. Split layout: left column — H1 "Let's Create Something Extraordinary", contact cards (Phone +91 9730594753, Email hello@glitzevents.in, Pune address, business hours). Right column — glass contact form (Name, Email, Phone, Event Type dropdown, Message, gold submit button). Embedded map placeholder. WhatsApp floating hint.`,
+Contact page. Split layout: left column — H1 "Let's Create Something Extraordinary", contact cards (Phone +91 7020640257, Email hello@glitzevents.in, Pune address, business hours). Right column — glass contact form (Name, Email, Phone, Event Type dropdown, Message, gold submit button). Embedded map placeholder. WhatsApp floating hint.`,
 
   "book-event": `${BRAND}
 Event booking wizard. Top: progress stepper (5 steps). Step 1 visible: Event Type grid (Wedding, Corporate, Concert, Exhibition, Other) as selectable gold-bordered cards. Sidebar summary panel. Navigation: Back (ghost) + Continue (gold). Form fields with gold focus rings. Premium, calm, confidence-inspiring UX.`,
