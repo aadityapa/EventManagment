@@ -16,7 +16,6 @@ import { Logo } from "@/components/branding/logo";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./mobile-menu";
 import { MobileNavbar } from "./mobile-navbar";
-import { ThemeToggle } from "./theme-toggle";
 import { isNavActive, MEGA_COLUMNS, MEGA_EXPLORE_LINKS } from "./nav-data";
 
 const MEGA_MOTION = {
@@ -338,7 +337,6 @@ export function BrandHeader() {
             </nav>
 
             <div className="brand-header-actions">
-              <ThemeToggle />
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
                 className="brand-header-phone tap-target"

@@ -24,10 +24,22 @@ jobs:
       - name: Build
         run: npm run build --prefix apps/web
         env:
-          NEXT_PUBLIC_APP_URL: https://nexyyra.com
-          NEXT_PUBLIC_API_URL: https://nexyyra.com/api
+          NEXT_PUBLIC_APP_URL: https://www.nexyyra.com
+          NEXT_PUBLIC_API_URL: https://www.nexyyra.com/api
           MEDIA_PROVIDER: google-drive
           GOOGLE_DRIVE_FOLDER_ID: 1UZR_UhiZfVvcLUNvDJi3Rvw8udkfKgYM
+
+      # Start the production server explicitly — Lighthouse previously failed with
+      # chrome-error://chromewebdata/ because no server was listening on :3000.
+      - name: Start production server
+        run: |
+          nohup npm run start --prefix apps/web > server.log 2>&1 &
+          echo $! > server.pid
+
+      - name: Wait for server
+        run: |
+          curl --retry 30 --retry-delay 2 --retry-connrefused --fail --silent --output /dev/null http://localhost:3000/
+          echo "Server is responding with HTTP 200"
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
@@ -35,4 +47,9 @@ jobs:
           configPath: ./apps/web/lighthouse-budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 1
+
+      - name: Stop server
+        if: always()
+        run: |
+          kill "$(cat server.pid)" 2>/dev/null || true
+          tail -20 server.log || true

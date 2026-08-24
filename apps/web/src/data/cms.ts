@@ -27,14 +27,8 @@ export const services = [
   { slug: "event-production", title: "Event Production", description: "Complete technical production — lighting, sound, staging, and more.", icon: "Clapperboard", image: EVENT_IMAGES.concert, features: ["Stage Design", "Lighting", "Sound Engineering", "Special Effects"], basePrice: 500000 },
 ];
 
-/** Demo testimonials removed (Phase-2). Add only authentic, attributable client reviews. */
-export const testimonials: { id: string; name: string; role: string; content: string; rating: number; image: string; eventType: string }[] = [];
 
-/** Unverified award claims removed (Phase-2). Restore only with public proof URLs. */
-export const awards: { title: string; organization: string; year: number }[] = [];
 
-/** Demo partner-brand names removed (Phase-2) — displaying brands as partners requires a real, authorized relationship. */
-export const partners: string[] = [];
 
 export const venues = [
   { id: "1", name: "The Grand Ballroom", slug: "grand-ballroom-mumbai", city: "Mumbai", capacity: 800, pricePerDay: 500000, rating: 4.9, images: [EVENT_IMAGES.venue1], amenities: ["AC", "Parking", "Catering Kitchen", "AV Equipment"], description: "Luxurious ballroom in the heart of Mumbai with crystal chandeliers and premium amenities." },

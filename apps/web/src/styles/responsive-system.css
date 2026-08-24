@@ -899,7 +899,6 @@ html.premiere-active .brand-root {
   isolation: isolate;
 }
 
-.light .site-footer,
 .dark .site-footer {
   --footer-bg: #050505;
   --footer-text: #ffffff;

@@ -454,9 +454,13 @@ function StoryCaseCard({
               <p className="mt-2 text-sm text-[var(--text-secondary)]">{cs.result}</p>
             </GlassPanel>
           </div>
-          <blockquote className="mt-6 border-l-2 border-[var(--glitz-gold)]/35 pl-4 text-sm italic text-[var(--text-secondary)]">
-            &ldquo;{cs.testimonial}&rdquo; — {cs.client}
-          </blockquote>
+          {cs.testimonial ? (
+            <blockquote className="mt-6 border-l-2 border-[var(--glitz-gold)]/35 pl-4 text-sm italic text-[var(--text-secondary)]">
+              &ldquo;{cs.testimonial}&rdquo; — {cs.client}
+            </blockquote>
+          ) : (
+            <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">{cs.client}</p>
+          )}
         </div>
       </div>
     </motion.article>

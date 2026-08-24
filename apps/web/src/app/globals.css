@@ -9,8 +9,7 @@
 @import "../styles/luxury-redesign.css";
 @import "../styles/mobile-nav.css";
 
-:root,
-.light {
+:root {
   --background: #fdfbf5;
   --foreground: var(--text-primary);
   --card: var(--glitz-card);
@@ -191,10 +190,17 @@ body {
 }
 
 .gradient-text {
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--gold); /* fallback — never invisible text */
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gradient-text {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .gradient-gold {

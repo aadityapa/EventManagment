@@ -6,17 +6,6 @@ import { BRAND_IMAGES } from "./imagery";
    relationships that are not evidenced. Restore only with verified facts
    and written authorization to display client logos/names. */
 
-export const BRAND_SERVICES = [
-  { slug: "wedding-planning", title: "Luxury Weddings", narrative: "Bespoke ceremonies where every floral arrangement, every candlelit moment, and every guest experience is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0] },
-  { slug: "corporate-events", title: "Corporate Galas", narrative: "Black-tie excellence for brands that demand nothing less than flawless — from C-suite galas to product launches that generate global buzz.", image: BRAND_IMAGES.corporate[0] },
-  { slug: "destination-weddings", title: "Destination Weddings", narrative: "From Udaipur palaces to Goa sunsets — we transport your dream across continents with seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0] },
-  { slug: "concert-management", title: "Concerts & Festivals", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management that sets industry benchmarks.", image: BRAND_IMAGES.gallery[3] },
-  { slug: "product-launches", title: "Product Launches", narrative: "Immersive brand experiences with holographic displays, influencer seeding, and media strategies that create viral moments.", image: BRAND_IMAGES.corporate[1] },
-  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates through sensory-rich, memorable touchpoints.", image: BRAND_IMAGES.gallery[11] },
-  { slug: "celebrity-management", title: "Celebrity Management", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences curated for India's most discerning hosts.", image: BRAND_IMAGES.hero.palace },
-  { slug: "birthday-events", title: "Luxury Celebrations", narrative: "Milestone moments designed with the same artistry we bring to royal weddings — intimate, personal, unforgettable.", image: BRAND_IMAGES.weddings[3] },
-];
-
 export const BRAND_CASE_STUDIES = [
   {
     id: "cs-1",

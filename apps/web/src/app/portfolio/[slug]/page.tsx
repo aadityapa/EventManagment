@@ -85,9 +85,13 @@ export default async function PortfolioCasePage({ params }: PortfolioCasePagePro
             <div className="lg:col-span-2">
               <h2 className="v4-display text-xl">Result</h2>
               <p className="mt-4 text-[var(--text-secondary)]">{cs.result}</p>
-              <blockquote className="mt-8 border-l-2 border-[var(--glitz-gold)] pl-6 font-[family-name:var(--font-cormorant)] text-2xl italic">
-                &ldquo;{cs.testimonial}&rdquo; — {cs.client}
-              </blockquote>
+              {cs.testimonial ? (
+                <blockquote className="mt-8 border-l-2 border-[var(--glitz-gold)] pl-6 font-[family-name:var(--font-cormorant)] text-2xl italic">
+                  &ldquo;{cs.testimonial}&rdquo; — {cs.client}
+                </blockquote>
+              ) : (
+                <p className="mt-8 text-sm uppercase tracking-[0.2em] text-[var(--text-muted)]">{cs.client}</p>
+              )}
             </div>
           </div>
         </section>

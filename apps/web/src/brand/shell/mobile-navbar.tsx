@@ -6,7 +6,6 @@ import Link from "next/link";
 import { BRAND_LOGO_ASSETS } from "@/components/branding/logo";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./theme-toggle";
 
 type MobileNavbarProps = {
   isOpen: boolean;
@@ -48,7 +47,6 @@ export function MobileNavbar({ isOpen, onToggle }: MobileNavbarProps) {
         </Link>
 
         <div className="flex items-center gap-1.5">
-          <ThemeToggle />
           <button
             type="button"
             className="mobile-nav-header__menu-btn tap-target"

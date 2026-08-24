@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { generateSEO, breadcrumbSchema } from "@/lib/seo";
-import { SITE_CONFIG, ENTITY_FACTS } from "@/lib/constants";
+import { SITE_CONFIG } from "@/lib/constants";
 import { TEAM_MEMBERS } from "@/data/team";
 import { PageHero } from "@/components/shared/page-hero";
 

@@ -1,10 +1,10 @@
-/* ============================================================================
+﻿/* ============================================================================
    Nexyyra Luxury Redesign Layer
    Editorial, royal, glassmorphism-first system. Keep animations transform-only.
    ============================================================================ */
 
 :root {
-  /* Canonical luxury palette — single source of truth */
+  /* Canonical luxury palette â€” single source of truth */
   --lux-bg: #050816;            /* primary background */
   --lux-bg-secondary: #081226;  /* secondary background */
   --lux-section: #0d1730;       /* section surfaces */
@@ -20,7 +20,7 @@
 
   --lux-white: #f7f7f7;
   --lux-muted: #b6b8c6;         /* paragraph text */
-  --lux-subtle: #98a0b5;        /* muted text — AA on #050816 even at small sizes */
+  --lux-subtle: #98a0b5;        /* muted text â€” AA on #050816 even at small sizes */
 
   --lux-card: rgba(16, 27, 53, 0.55);   /* navy glass derived from #101b35 */
   --lux-border: rgba(255, 255, 255, 0.08);
@@ -32,7 +32,7 @@
   --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Gold section label — "— OUR EXPERTISE —" editorial caps */
+/* Gold section label â€” "â€” OUR EXPERTISE â€”" editorial caps */
 .lux-label {
   display: inline-flex;
   align-items: center;
@@ -54,13 +54,19 @@
 
 .lux-accent-purple {
   display: inline;
-  background-image: linear-gradient(120deg, var(--lux-purple-bright), #c79bff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--lux-purple-bright); /* fallback â€” text always visible */
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .lux-accent-purple {
+    background-image: linear-gradient(120deg, var(--lux-purple-bright), #c79bff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 html {
@@ -98,15 +104,6 @@ body.brand-body {
   --footer-accent: var(--lux-gold);
 }
 
-.light {
-  --glitz-bg: #fbf8f0;
-  --glitz-surface: rgba(255, 255, 255, 0.76);
-  --glitz-card: rgba(255, 255, 255, 0.82);
-  --glitz-border: rgba(61, 36, 108, 0.12);
-  --text-primary: #111019;
-  --text-secondary: rgba(17, 16, 25, 0.72);
-  --text-muted: rgba(17, 16, 25, 0.52);
-}
 
 .brand-site-header {
   --header-scale: 1;
@@ -128,7 +125,7 @@ body.brand-body {
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34), 0 0 22px rgba(216, 178, 106, 0.08) !important;
 }
 
-/* Header CTA — purple luxury pill (reference design language) */
+/* Header CTA â€” purple luxury pill (reference design language) */
 .brand-header-cta {
   border-radius: 999px !important;
   border: 1px solid rgba(180, 124, 255, 0.5) !important;
@@ -254,10 +251,20 @@ body.brand-body {
 }
 
 .luxury-hero__accent {
-  background: linear-gradient(120deg, var(--lux-purple-bright) 0%, #c79bff 60%, #e7d2ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  /* Fallback FIRST: if gradient text clipping is unsupported or fails, the
+     word stays visible in solid purple â€” never an empty gold/purple box. */
+  color: var(--lux-purple-bright);
+  padding-inline-end: 0.04em; /* protect serif overhang from clipping */
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .luxury-hero__accent {
+    background: linear-gradient(120deg, var(--lux-purple-bright) 0%, #c79bff 60%, #e7d2ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .luxury-hero__copy {
@@ -606,12 +613,12 @@ body.brand-body {
 }
 
 /* ==========================================================================
-   Homepage reference sections — Expertise / About / Featured / Counters / CTA
+   Homepage reference sections â€” Expertise / About / Featured / Counters / CTA
    ========================================================================== */
 
 .lux-section {
   position: relative;
-  padding-block: clamp(3.25rem, 6vw, 5.5rem); /* tightened — was 8rem max, left dead zones between sections */
+  padding-block: clamp(3.25rem, 6vw, 5.5rem); /* tightened â€” was 8rem max, left dead zones between sections */
 }
 
 .lux-section--tight {
@@ -993,7 +1000,7 @@ body.brand-body {
 }
 
 /* ==========================================================================
-   Footer — reference luxury layout
+   Footer â€” reference luxury layout
    ========================================================================== */
 
 .lux-footer {
@@ -1034,7 +1041,7 @@ body.brand-body {
 
 .lux-social {
   display: inline-flex;
-  height: 2.75rem; /* 44px — WCAG touch target */
+  height: 2.75rem; /* 44px â€” WCAG touch target */
   width: 2.75rem;
   align-items: center;
   justify-content: center;
@@ -1188,7 +1195,7 @@ body.brand-body {
   transform: rotate(180deg);
 }
 
-/* Animated collapse via grid rows — no JS measuring, SSR-safe (expanded by default) */
+/* Animated collapse via grid rows â€” no JS measuring, SSR-safe (expanded by default) */
 .lux-footer-acc__body {
   display: grid;
   grid-template-rows: 1fr;
@@ -1264,10 +1271,10 @@ body.brand-body {
 }
 
 /* ==========================================================================
-   Inner-page inheritance — lift shared section classes to the luxury system
+   Inner-page inheritance â€” lift shared section classes to the luxury system
    ========================================================================== */
 
-/* Mega menu — dark luxury glass panel with gradient border */
+/* Mega menu â€” dark luxury glass panel with gradient border */
 .brand-mega-menu {
   width: min(94vw, 90rem) !important;
   max-width: 90rem !important;
@@ -1406,7 +1413,7 @@ body.brand-body {
   font-size: 0.68rem;
 }
 
-/* Portfolio masonry — luxury hover lift */
+/* Portfolio masonry â€” luxury hover lift */
 .gallery-masonry-item {
   border-radius: var(--lux-radius-lg);
   transition: transform 0.45s var(--lux-ease), box-shadow 0.45s ease;
@@ -1429,7 +1436,7 @@ body.brand-body {
   }
 }
 
-/* Venues — filter bar & map luxury shell */
+/* Venues â€” filter bar & map luxury shell */
 .venue-lux-filter {
   background: rgba(5, 8, 22, 0.92) !important;
   border-bottom-color: var(--lux-border-gold) !important;
@@ -1454,7 +1461,7 @@ body.brand-body {
   color: #100b03;
 }
 
-/* Testimonials — carousel glass cards */
+/* Testimonials â€” carousel glass cards */
 .testimonial-lux-card {
   border: 1px solid var(--lux-border);
   border-radius: var(--lux-radius-lg);
@@ -1512,7 +1519,7 @@ body.brand-body {
 }
 
 /* ==========================================================================
-   Inner-page luxury polish — shared heroes, glass panels, cards, forms
+   Inner-page luxury polish â€” shared heroes, glass panels, cards, forms
    ========================================================================== */
 
 .lux-inner-hero {
@@ -1572,7 +1579,7 @@ body.brand-body {
   backdrop-filter: blur(24px) saturate(150%);
 }
 
-/* Hero / headline panels — backdrop-filter breaks gradient text clipping */
+/* Hero / headline panels â€” backdrop-filter breaks gradient text clipping */
 .lux-panel--text-safe {
   overflow: visible !important;
   backdrop-filter: none !important;
@@ -1640,7 +1647,7 @@ body.brand-body {
 
 .brand-root input::placeholder,
 .brand-root textarea::placeholder {
-  color: rgba(246, 246, 246, 0.58); /* was 0.45 — too faint on dark glass */
+  color: rgba(246, 246, 246, 0.58); /* was 0.45 â€” too faint on dark glass */
 }
 
 @media (max-width: 640px) {
@@ -1650,127 +1657,10 @@ body.brand-body {
   }
 }
 
-/* ============================================================================
-   THEME SYSTEM — day/night mode + curated accent palettes
-   Order matters: .light block first, then [data-palette] accents, then
-   .light[data-palette] contrast corrections.
-   ============================================================================ */
+/* Theme system removed â€” Nexyyra ships ONE permanent dark luxury theme.
+   (Light mode + curated palettes deleted; html.dark is hardcoded in layout.) */
 
-/* ----- Light (day) mode — warm ivory luxury ----- */
-html.light {
-  background: #f7f4ec;
-}
-
-.light {
-  --lux-bg: #f7f4ec;
-  --lux-bg-secondary: #f1ece0;
-  --lux-section: #efe8d9;
-  --lux-card-solid: #ffffff;
-
-  /* In light mode the "white" text slot becomes deep ink navy */
-  --lux-white: #1b1d2e;
-  --lux-muted: #3e4257;
-  --lux-subtle: #5d6278;
-
-  /* Darker gold for AA contrast on ivory */
-  --lux-gold: #9a7328;
-  --lux-gold-metal: #b8903a;
-  --lux-rose: #b07a4e;
-
-  --lux-card: rgba(255, 255, 255, 0.72);
-  --lux-border: rgba(27, 29, 46, 0.12);
-  --lux-border-gold: rgba(154, 115, 40, 0.35);
-  --lux-glow: 0 24px 70px rgba(96, 78, 34, 0.14), 0 0 34px rgba(154, 115, 40, 0.1);
-
-  --footer-bg: #efe8d9;
-  --footer-card: rgba(255, 255, 255, 0.72);
-  --footer-border: rgba(27, 29, 46, 0.12);
-}
-
-.light body.brand-body {
-  background:
-    radial-gradient(circle at 84% 8%, rgba(139, 77, 255, 0.08), transparent 30rem),
-    radial-gradient(circle at 12% 88%, rgba(154, 115, 40, 0.1), transparent 28rem),
-    linear-gradient(180deg, #f1ece0 0%, #f7f4ec 48%, #f7f4ec 100%);
-}
-
-.light .brand-site-header.is-scrolled {
-  background: rgba(247, 244, 236, 0.82) !important;
-  border-color: rgba(27, 29, 46, 0.1) !important;
-  box-shadow: 0 18px 48px rgba(96, 78, 34, 0.12), 0 0 22px rgba(154, 115, 40, 0.08) !important;
-}
-
-.light .brand-root input,
-.light .brand-root textarea,
-.light .brand-root select {
-  background-color: rgba(27, 29, 46, 0.04);
-  color: var(--lux-white);
-}
-
-.light .brand-root input::placeholder,
-.light .brand-root textarea::placeholder {
-  color: rgba(27, 29, 46, 0.45);
-}
-
-/* ----- Curated accent palettes (dark-mode values) ----- */
-[data-palette="royal"] {
-  --lux-gold: #b998ff;
-  --lux-gold-metal: #d9c5ff;
-  --lux-rose: #c9a6ff;
-  --lux-border-gold: rgba(185, 152, 255, 0.3);
-  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(185, 152, 255, 0.16);
-}
-
-[data-palette="emerald"] {
-  --lux-gold: #57d6a4;
-  --lux-gold-metal: #93efc9;
-  --lux-rose: #7fe0b8;
-  --lux-purple: #0ea777;
-  --lux-purple-bright: #2ecf9a;
-  --lux-violet: #0b8a63;
-  --lux-border-gold: rgba(87, 214, 164, 0.3);
-  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(87, 214, 164, 0.15);
-  --lux-glow-purple: 0 18px 50px rgba(16, 185, 129, 0.38);
-}
-
-[data-palette="rose"] {
-  --lux-gold: #e8a7a2;
-  --lux-gold-metal: #f7cfc9;
-  --lux-rose: #f0b9ae;
-  --lux-purple: #d96e8f;
-  --lux-purple-bright: #ef91ad;
-  --lux-violet: #c25577;
-  --lux-border-gold: rgba(232, 167, 162, 0.32);
-  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(232, 167, 162, 0.15);
-  --lux-glow-purple: 0 18px 50px rgba(217, 110, 143, 0.38);
-}
-
-/* ----- Palette accents darkened for light backgrounds (AA contrast) ----- */
-.light[data-palette="royal"] {
-  --lux-gold: #6d3fd6;
-  --lux-gold-metal: #8a5ee8;
-  --lux-border-gold: rgba(109, 63, 214, 0.35);
-}
-
-.light[data-palette="emerald"] {
-  --lux-gold: #0d7a58;
-  --lux-gold-metal: #159c72;
-  --lux-purple: #0d7a58;
-  --lux-purple-bright: #159c72;
-  --lux-violet: #0a6448;
-  --lux-border-gold: rgba(13, 122, 88, 0.35);
-}
-
-.light[data-palette="rose"] {
-  --lux-gold: #b04a5e;
-  --lux-gold-metal: #c96477;
-  --lux-purple: #b04a5e;
-  --lux-purple-bright: #c96477;
-  --lux-violet: #963c50;
-  --lux-border-gold: rgba(176, 74, 94, 0.35);
-}
-
-/* ----- 3D rotating hero logo — coin spin, transform-only (GPU cheap) ----- */
+/* ----- 3D rotating hero logo â€” coin spin, transform-only (GPU cheap) ----- */
 .logo3d {
   position: relative;
   display: grid;
@@ -1805,7 +1695,7 @@ html.light {
   transform: rotateY(180deg);
 }
 
-/* three.js coin canvas — locked to a centered square so the coin can never
+/* three.js coin canvas â€” locked to a centered square so the coin can never
    stretch into a slab when the parent column is taller than it is wide */
 .logo3d-canvas {
   position: relative;
@@ -1866,7 +1756,7 @@ html.light {
   }
 }
 
-/* Footer logo — one refined 3D turn on hover (not a constant spin) */
+/* Footer logo â€” one refined 3D turn on hover (not a constant spin) */
 .brand-logo--footer .brand-logo__img {
   transform-style: preserve-3d;
 }
@@ -1890,255 +1780,8 @@ html.light {
   }
 }
 
-/* ----- Toggle buttons ----- */
-.theme-toggle-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.theme-toggle {
-  position: relative;
-  display: inline-flex;
-  height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  padding-inline: 0.8rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid var(--lux-border);
-  background: var(--lux-card);
-  color: var(--lux-gold);
-  cursor: pointer;
-  transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--lux-ease);
-}
-
-.theme-toggle__stack {
-  position: relative;
-  display: inline-block;
-  height: 1.05rem;
-  width: 1.05rem;
-  flex-shrink: 0;
-}
-
-.theme-toggle:hover {
-  border-color: var(--lux-border-gold);
-  box-shadow: 0 0 22px rgba(216, 178, 106, 0.16);
-  transform: translateY(-1px);
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid var(--lux-gold);
-  outline-offset: 3px;
-}
-
-/* Sun/moon crossfade + rotation — stacked inside a fixed slot */
-.theme-toggle__icon {
-  position: absolute;
-  inset: 0;
-  height: 1.05rem;
-  width: 1.05rem;
-  transition: transform 0.55s var(--lux-ease), opacity 0.35s ease;
-}
-
-.theme-toggle__chevron {
-  height: 0.7rem;
-  width: 0.7rem;
-  flex-shrink: 0;
-  opacity: 0.7;
-  transition: transform 0.3s var(--lux-ease);
-}
-
-.theme-toggle__chevron.is-open {
-  transform: rotate(180deg);
-}
-
-.theme-toggle[data-mode="dark"] .theme-toggle__icon--sun {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.4);
-}
-
-.theme-toggle[data-mode="dark"] .theme-toggle__icon--moon {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-.theme-toggle[data-mode="light"] .theme-toggle__icon--sun {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-.theme-toggle[data-mode="light"] .theme-toggle__icon--moon {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.4);
-}
-
-/* Photo heroes keep their dark veil in every theme — text must stay white.
-   Re-pin the dark-theme text vars inside the hero when day mode is active. */
-.light .luxury-hero {
-  --lux-white: #f7f7f7;
-  --lux-muted: #b6b8c6;
-  --lux-subtle: #98a0b5;
-  --text-primary: #f7f7f7;
-  --text-secondary: #b6b8c6;
-  --text-muted: #98a0b5;
-}
-
-/* Light-mode footer — .lux-footer has a hardcoded dark base, flip it to warm ivory */
-.light .lux-footer {
-  background:
-    radial-gradient(circle at 12% 0%, rgba(139, 77, 255, 0.06), transparent 26rem),
-    radial-gradient(circle at 88% 10%, rgba(154, 115, 40, 0.08), transparent 24rem),
-    #ece5d4;
-  border-top-color: rgba(27, 29, 46, 0.12);
-}
-
-.light .lux-footer .lux-social {
-  border-color: rgba(27, 29, 46, 0.14);
-  background: rgba(255, 255, 255, 0.7);
-}
-
-/* Light-mode mobile chrome — header bar + drawer flip to ivory */
-.light .mobile-nav-header {
-  background: rgba(247, 244, 236, 0.94);
-  border-bottom-color: rgba(27, 29, 46, 0.1);
-}
-
-.light .mobile-nav__panel {
-  background: rgba(247, 244, 236, 0.97);
-}
-
-.light .mobile-nav__overlay {
-  background: rgba(27, 29, 46, 0.35);
-}
-
-.light .mobile-nav__link,
-.light .mobile-nav__contact {
-  color: var(--lux-white, #1b1d2e);
-}
-
-/* Smooth cross-fade fallback for browsers without the View Transitions API */
-html.theme-switching,
-html.theme-switching body,
-html.theme-switching *,
-html.theme-switching *::before,
-html.theme-switching *::after {
-  transition:
-    background-color 0.4s ease,
-    color 0.4s ease,
-    border-color 0.4s ease,
-    fill 0.4s ease,
-    box-shadow 0.4s ease !important;
-}
-
-/* ----- Palette popover ----- */
-.theme-pop {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.6rem);
-  z-index: 60;
-  display: flex;
-  min-width: 13.5rem;
-  flex-direction: column;
-  gap: 0.15rem;
-  border: 1px solid var(--lux-border);
-  border-radius: 1rem;
-  background: var(--lux-card-solid);
-  box-shadow: var(--lux-glow);
-  padding: 0.45rem;
-}
-
-.theme-pop__label {
-  margin: 0.35rem 0.65rem 0.15rem;
-  color: var(--lux-gold);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-.theme-pop__label + .theme-pop__label,
-.theme-pop__item + .theme-pop__label {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--lux-border);
-}
-
-.theme-pop__mode-icon {
-  height: 1rem;
-  width: 1rem;
-  flex-shrink: 0;
-  color: var(--lux-gold);
-}
-
-.theme-pop__check {
-  margin-left: auto;
-  height: 0.9rem;
-  width: 0.9rem;
-  flex-shrink: 0;
-  color: var(--lux-gold);
-}
-
-.theme-pop__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  border: 1px solid transparent;
-  border-radius: 0.7rem;
-  background: none;
-  padding: 0.5rem 0.65rem;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: left;
-  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
-}
-
-.theme-pop__item:hover {
-  color: var(--lux-white);
-  background: var(--lux-card);
-}
-
-.theme-pop__item.is-active {
-  color: var(--lux-white);
-  border-color: var(--lux-border-gold);
-}
-
-.theme-pop__swatch {
-  display: inline-block;
-  height: 1.15rem;
-  width: 1.15rem;
-  flex-shrink: 0;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-/* ----- Day/night circular reveal (View Transitions API) ----- */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-toggle__icon {
-    transition: opacity 0.15s ease;
-    transform: none !important;
-  }
-}
-
 /* ============================================================
-   Leadership team cards — gold/purple rotating border + glow.
+   Leadership team cards â€” gold/purple rotating border + glow.
    Uses existing theme tokens only (--lux-gold, --lux-purple).
    ============================================================ */
 @property --team-angle {
@@ -2198,7 +1841,7 @@ html.theme-switching *::after {
   }
 }
 
-/* Hover glow — champagne gold + purple atmosphere */
+/* Hover glow â€” champagne gold + purple atmosphere */
 .team-card:hover,
 .team-card:focus-within {
   box-shadow:

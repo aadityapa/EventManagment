@@ -1,55 +1,29 @@
-"use client";
+import { HomeExpertise } from "@/brand/sections/home/expertise";
+import { HomeAboutLuxe } from "@/brand/sections/home/about-luxe";
+import { HomeFeaturedWork } from "@/brand/sections/home/featured-work";
+import { HomeCounters } from "@/brand/sections/home/counters";
+import { HomeCtaBand } from "@/brand/sections/home/cta-band";
+import { HomeTestimonialsStrip } from "@/brand/sections/home/testimonials-strip";
 
-import dynamic from "next/dynamic";
-import { LazySection } from "@/components/shared/lazy-section";
-
-const HomeExpertise = dynamic(
-  () => import("@/brand/sections/home/expertise").then((m) => m.HomeExpertise),
-  { ssr: false }
-);
-const HomeAboutLuxe = dynamic(
-  () => import("@/brand/sections/home/about-luxe").then((m) => m.HomeAboutLuxe),
-  { ssr: false }
-);
-const HomeFeaturedWork = dynamic(
-  () => import("@/brand/sections/home/featured-work").then((m) => m.HomeFeaturedWork),
-  { ssr: false }
-);
-const HomeCounters = dynamic(
-  () => import("@/brand/sections/home/counters").then((m) => m.HomeCounters),
-  { ssr: false }
-);
-const HomeCtaBand = dynamic(
-  () => import("@/brand/sections/home/cta-band").then((m) => m.HomeCtaBand),
-  { ssr: false }
-);
-const HomeTestimonialsStrip = dynamic(
-  () => import("@/brand/sections/home/testimonials-strip").then((m) => m.HomeTestimonialsStrip),
-  { ssr: false }
-);
-
-/** Below-fold homepage — luxury reference layout: Expertise → About → Featured Work → Counters → Client Stories → CTA. */
+/**
+ * Below-fold homepage — Expertise → About → Featured Work → Pillars → Why Nexyyra → CTA.
+ *
+ * Server-rendered (production repair): the previous implementation used
+ * `dynamic(..., { ssr: false })` inside IntersectionObserver-gated wrappers, so the initial HTML contained only skeletons ("Loading Our
+ * Expertise", …) — hiding all of this content from crawlers and causing large
+ * CLS as sections mounted. Sections are client components with their own
+ * in-view reveal animations; rendering them on the server puts the real
+ * content in the initial HTML with zero layout shift.
+ */
 export function HomeBelowFold() {
   return (
     <>
-      <LazySection minHeight="48vh" label="Our Expertise">
-        <HomeExpertise />
-      </LazySection>
-      <LazySection minHeight="60vh" label="About">
-        <HomeAboutLuxe />
-      </LazySection>
-      <LazySection minHeight="52vh" label="Featured Work">
-        <HomeFeaturedWork />
-      </LazySection>
-      <LazySection minHeight="28vh" label="By the Numbers">
-        <HomeCounters />
-      </LazySection>
-      <LazySection minHeight="48vh" label="Client Stories">
-        <HomeTestimonialsStrip />
-      </LazySection>
-      <LazySection minHeight="24vh" label="Plan Together">
-        <HomeCtaBand />
-      </LazySection>
+      <HomeExpertise />
+      <HomeAboutLuxe />
+      <HomeFeaturedWork />
+      <HomeCounters />
+      <HomeTestimonialsStrip />
+      <HomeCtaBand />
     </>
   );
 }
