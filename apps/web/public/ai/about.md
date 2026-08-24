@@ -19,7 +19,6 @@ To architect extraordinary celebrations that become lifelong memories — combin
 - 1,800+ events delivered
 - 1,400+ happy clients
 - 35+ cities served
-- 4.9-star average rating
 
 ## Contact
 

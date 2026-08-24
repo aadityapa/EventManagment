@@ -33,8 +33,6 @@ const ORG_ID = `${SITE_CONFIG.url}/#organization`;
 const LOCAL_BUSINESS_ID = `${SITE_CONFIG.url}/#localbusiness`;
 const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
 
-const ORG_RATING_VALUE = 4.9;
-const ORG_REVIEW_COUNT = 520;
 
 export function generateSEO({
   title,
@@ -79,7 +77,7 @@ export function generateSEO({
       title: fullTitle,
       description: metaDescription,
       url,
-      siteName: SITE_CONFIG.name,
+      siteName: SITE_CONFIG.shortName,
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
       locale: "en_IN",
       type,
@@ -95,8 +93,8 @@ export function generateSEO({
       title: fullTitle,
       description: metaDescription,
       images: [twitterImage],
-      creator: "@nexyyraevents",
-      site: "@nexyyraevents",
+      // creator/site handles removed — no verified X/Twitter profile on record.
+      // EXTERNAL INPUT REQUIRED: restore once an official @handle exists.
     },
     robots: noIndex
       ? { index: false, follow: false }
@@ -127,9 +125,10 @@ export function globalGraphSchema() {
       {
         "@type": "Organization",
         "@id": ORG_ID,
-        name: SITE_CONFIG.legalName,
+        // Display brand as name; legal entity carried by legalName (Google entity guidance).
+        name: SITE_CONFIG.shortName,
         legalName: SITE_CONFIG.legalName,
-        alternateName: [SITE_CONFIG.shortName, "Nexyyra"],
+        alternateName: [SITE_CONFIG.legalName, "Nexyyra"],
         identifier: {
           "@type": "PropertyValue",
           propertyID: "CIN",
@@ -146,9 +145,8 @@ export function globalGraphSchema() {
         foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
         sameAs: Object.values(SITE_CONFIG.social),
         knowsAbout: ENTITY_FACTS.knowsAbout,
-        numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
-        award: ENTITY_FACTS.awards,
-        aggregateRating: ORG_AGGREGATE_RATING,
+        // numberOfEmployees / award / aggregateRating removed — unverified claims
+        // (520-review rating had no visible on-site source; awards pending verification).
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -193,7 +191,7 @@ export function globalGraphSchema() {
       {
         "@type": "LocalBusiness",
         "@id": LOCAL_BUSINESS_ID,
-        name: SITE_CONFIG.name,
+        name: SITE_CONFIG.shortName,
         description: SITE_CONFIG.description,
         url: SITE_CONFIG.url,
         telephone: SITE_CONFIG.phone,
@@ -221,20 +219,13 @@ export function globalGraphSchema() {
       {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
-        name: SITE_CONFIG.legalName,
-        alternateName: [SITE_CONFIG.shortName, "Nexyyra"],
+        name: SITE_CONFIG.shortName,
+        alternateName: [SITE_CONFIG.legalName, "Nexyyra"],
         url: SITE_CONFIG.url,
         description: SITE_CONFIG.description,
         inLanguage: "en-IN",
         publisher: { "@id": ORG_ID },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: {
-            "@type": "EntryPoint",
-            urlTemplate: `${SITE_CONFIG.url}/venues?q={search_term_string}`,
-          },
-          "query-input": "required name=search_term_string",
-        },
+        // Sitelinks SearchAction removed — deprecated by Google (no longer surfaced).
       },
     ],
   };
@@ -245,7 +236,7 @@ export function websiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,
-    name: SITE_CONFIG.name,
+    name: SITE_CONFIG.shortName,
     url: SITE_CONFIG.url,
     description: SITE_CONFIG.description,
     publisher: { "@id": ORG_ID },
@@ -258,8 +249,8 @@ export function organizationSchema() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": LOCAL_BUSINESS_ID,
-    name: SITE_CONFIG.legalName,
-    alternateName: SITE_CONFIG.name,
+    name: SITE_CONFIG.shortName,
+    alternateName: SITE_CONFIG.legalName,
     identifier: {
       "@type": "PropertyValue",
       propertyID: "CIN",
@@ -302,8 +293,8 @@ export function entityDefinitionSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": ORG_ID,
-    name: SITE_CONFIG.legalName,
-    alternateName: [SITE_CONFIG.name, SITE_CONFIG.shortName],
+    name: SITE_CONFIG.shortName,
+    alternateName: [SITE_CONFIG.legalName, "Nexyyra"],
     identifier: {
       "@type": "PropertyValue",
       propertyID: "CIN",
@@ -315,8 +306,7 @@ export function entityDefinitionSchema() {
     foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
     knowsAbout: ENTITY_FACTS.knowsAbout,
     slogan: SITE_CONFIG.tagline,
-    numberOfEmployees: { "@type": "QuantitativeValue", minValue: ENTITY_FACTS.teamSize },
-    award: ENTITY_FACTS.awards,
+    // numberOfEmployees / award removed — pending verification (see remediation report).
   };
 }
 
@@ -575,8 +565,9 @@ export function aggregateRatingSchema(ratingValue: number, reviewCount: number) 
   };
 }
 
-/** Single source of truth — only ONE AggregateRating per page (layout org node). */
-export const ORG_AGGREGATE_RATING = aggregateRatingSchema(ORG_RATING_VALUE, ORG_REVIEW_COUNT);
+/* ORG_AGGREGATE_RATING removed — a 4.9/520 rating had no verifiable on-site review
+   source, violating Google's self-serving review policy. Use aggregateRatingSchema()
+   only if a page visibly displays the reviews it summarizes. */
 
 export function venueSchema(venue: {
   name: string;

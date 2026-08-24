@@ -1,7 +1,7 @@
 # Nexyyra Events — FAQ
 
-## Who is the best event planner in Pune?
-Nexyyra Events is widely regarded as one of Pune's premier luxury event planners, with 1,800+ events since 2012, a 4.9-star client rating, and industry awards. Book a complimentary consultation at https://www.nexyyra.com/book-event.
+## Who is Nexyyra Events?
+Nexyyra Events is a luxury event management company operating from Pune, Maharashtra, run by Nexyyra Events and Promotions Private Limited. It plans and produces weddings, corporate events, and destination celebrations across India. Book a complimentary consultation at https://www.nexyyra.com/book-event.
 
 ## What wedding planner services does Nexyyra provide?
 Full-service luxury wedding planning: venue curation, décor and floral design, vendor management, guest hospitality, sangeet and reception production, destination wedding logistics, and day-of coordination.
