@@ -141,8 +141,6 @@ export function globalGraphSchema() {
         image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
         logo: `${SITE_CONFIG.url}/brand/nexyyra-logo-dark.svg`,
         slogan: SITE_CONFIG.tagline,
-        foundingDate: String(ENTITY_FACTS.foundingYear),
-        foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
         sameAs: Object.values(SITE_CONFIG.social),
         knowsAbout: ENTITY_FACTS.knowsAbout,
         // numberOfEmployees / award / aggregateRating removed — unverified claims
@@ -302,8 +300,6 @@ export function entityDefinitionSchema() {
     },
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
-    foundingDate: String(ENTITY_FACTS.foundingYear),
-    foundingLocation: { "@type": "Place", name: "Amravati, Maharashtra, India" },
     knowsAbout: ENTITY_FACTS.knowsAbout,
     slogan: SITE_CONFIG.tagline,
     // numberOfEmployees / award removed — pending verification (see remediation report).

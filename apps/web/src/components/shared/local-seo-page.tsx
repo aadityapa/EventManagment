@@ -64,7 +64,7 @@ export function LocalSeoPageContent({ page }: LocalSeoPageContentProps) {
         <BrandHeader
           label="Why Nexyyra"
           title={`${page.title} — What Sets Us Apart`}
-          subtitle="Entity definition: Nexyyra Events is a luxury event management company based in Pune, Maharashtra, serving clients across India since 2012."
+          subtitle="Entity definition: Nexyyra Events is a luxury event management company serving Pune, Maharashtra and clients across India, operated by Nexyyra Events and Promotions Private Limited."
         />
         <ul className="grid gap-4 sm:grid-cols-2">
           {page.highlights.map((item) => (

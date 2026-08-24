@@ -33,7 +33,6 @@ export default function CompanyPage() {
     { label: "Legal name", value: SITE_CONFIG.legalName },
     { label: "Brand name", value: SITE_CONFIG.shortName },
     { label: "CIN", value: SITE_CONFIG.cin },
-    { label: "Brand founded", value: `${ENTITY_FACTS.foundingYear}, Amravati, Maharashtra` },
     { label: "Incorporated", value: "2026 — private limited company (Ministry of Corporate Affairs, India)" },
     { label: "Official domain", value: "www.nexyyra.com" },
     { label: "Email", value: SITE_CONFIG.email },
@@ -78,13 +77,11 @@ export default function CompanyPage() {
             <div className="glass-card p-6">
               <h2 className="font-display text-xl font-semibold">Brand History &amp; Incorporation</h2>
               <p className="mt-3 text-muted leading-relaxed">
-                The Nexyyra Events brand was founded by <strong>Yash Bajaj</strong> in Amravati,
-                Maharashtra in {ENTITY_FACTS.foundingYear}, and has planned and produced weddings,
-                corporate events, concerts and destination celebrations across India since then. In
-                2026 the business was incorporated as {SITE_CONFIG.legalName}, when co-founders{" "}
-                <strong>Aaditya Padiya</strong> and <strong>Amey Korde</strong> joined the company.
-                The brand&apos;s operating history ({ENTITY_FACTS.foundingYear}) and the legal
-                entity&apos;s incorporation date (2026) therefore refer to the same continuous
+                The Nexyyra Events brand was founded by <strong>Yash Bajaj</strong> and plans and
+                produces weddings, corporate events, concerts and destination celebrations across
+                India. In 2026 the business was incorporated as {SITE_CONFIG.legalName}, when
+                co-founders <strong>Aaditya Padiya</strong> and <strong>Amey Korde</strong> joined
+                the company. The operating brand and the legal entity refer to the same continuous
                 business.
               </p>
             </div>

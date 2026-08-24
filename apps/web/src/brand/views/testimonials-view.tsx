@@ -1,51 +1,59 @@
 "use client";
 
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
-import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import Link from "next/link";
+import { CalendarCheck, ClipboardList, Handshake, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { BrandPageHero } from "@/brand/primitives/brand-hero";
 import { BrandSection, BrandHeader } from "@/brand/primitives/brand-section";
-import { BrandImage } from "@/brand/primitives/brand-image";
+import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { testimonials } from "@/data/cms";
-import { cn } from "@/lib/utils";
+
+/* Phase-2 entity trust remediation: the previous carousel showed template/demo
+   testimonials and a fabricated "4.9 Star / Google Reviews" claim. Until real,
+   attributable client reviews exist, this page presents factual reasons to
+   choose Nexyyra Events instead. Add genuine testimonials here when available. */
+
+type Reason = { icon: LucideIcon; title: string; copy: string };
+
+const REASONS: Reason[] = [
+  { icon: ClipboardList, title: "End-to-End Planning", copy: "One team owns your event from concept and venue curation to vendor management and day-of execution." },
+  { icon: Sparkles, title: "In-House Design & Production", copy: "Décor, staging, lighting and AV are designed and produced in-house — no hand-offs, no surprises." },
+  { icon: Wallet, title: "Transparent Budgeting", copy: "Clear proposals with itemized costs and no hidden margins, agreed before work begins." },
+  { icon: CalendarCheck, title: "Dedicated Event Director", copy: "A single accountable point of contact runs your timeline, vendors and on-ground team." },
+  { icon: ShieldCheck, title: "Discretion by Default", copy: "Private celebrations stay private — NDA-bound teams and careful media handling." },
+  { icon: Handshake, title: "Pan-India Delivery", copy: "Weddings, corporate events and destination celebrations delivered across India from our Pune coordination office." },
+];
 
 export function TestimonialsView() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const [sel, setSel] = useState(0);
-  const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    const fn = () => setSel(emblaApi.selectedScrollSnap());
-    emblaApi.on("select", fn); fn();
-    const t = setInterval(() => emblaApi.scrollNext(), 7000);
-    return () => { clearInterval(t); emblaApi.off("select", fn); };
-  }, [emblaApi]);
-
   return (
     <div className="brand-root">
-      <BrandPageHero label="Client Stories" title="Voices of Excellence" subtitle="Trusted by India's most discerning clients." image={BRAND_IMAGES.testimonials[0]} />
+      <BrandPageHero
+        label="Why Nexyyra"
+        title="Why Clients Choose Us"
+        subtitle="Factual, verifiable reasons — not borrowed praise."
+        image={BRAND_IMAGES.testimonials[0]}
+      />
       <BrandSection>
-        <div className="mb-6 flex justify-end gap-2">
-          <button type="button" onClick={prev} className="lux-arrow" aria-label="Previous"><ChevronLeft className="h-5 w-5" /></button>
-          <button type="button" onClick={next} className="lux-arrow" aria-label="Next"><ChevronRight className="h-5 w-5" /></button>
+        <BrandHeader label="The Nexyyra Standard" title="What working with us looks like" center />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {REASONS.map((r) => {
+            const Icon = r.icon;
+            return (
+              <GlassPanel key={r.title} className="h-full p-6 transition-transform duration-500 hover:-translate-y-1">
+                <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--glitz-gold)]/35 bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)]">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <h3 className="font-[family-name:var(--font-cormorant)] text-xl font-semibold text-[var(--text-primary)]">{r.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{r.copy}</p>
+              </GlassPanel>
+            );
+          })}
         </div>
-        <div ref={emblaRef} className="overflow-hidden"><div className="flex gap-6">{testimonials.map((t, i) => (
-          <div key={t.id} className="min-w-0 flex-[0_0_100%] lg:flex-[0_0_70%]">
-            <div className={cn("testimonial-lux-card flex flex-col gap-6 p-8 sm:flex-row sm:items-center", sel === i ? "is-active" : "opacity-60")}>
-              <BrandImage src={t.image} alt={t.name} width={80} height={80} className="h-20 w-20 shrink-0 rounded-full border-2 border-[var(--glitz-gold)]/40" />
-              <div><Quote className="mb-2 h-5 w-5 text-[var(--glitz-gold)]/50" /><div className="mb-2 flex gap-1">{Array.from({ length: t.rating }).map((_, j) => <Star key={j} className="h-4 w-4 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div><blockquote className="brand-display text-lg">&ldquo;{t.content}&rdquo;</blockquote><p className="mt-3 font-semibold">{t.name}</p><p className="text-sm text-muted">{t.role}</p></div>
-            </div>
-          </div>
-        ))}</div></div>
-      </BrandSection>
-      <BrandSection alt>
-        <BrandHeader label="Google Reviews" title="4.9 Star Excellence" center />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{testimonials.map((t) => (
-          <article key={t.id} className="testimonial-lux-card p-6"><div className="flex gap-1">{Array.from({ length: t.rating }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-[var(--glitz-gold)] text-[var(--glitz-gold)]" />)}</div><p className="mt-3 text-sm text-muted line-clamp-4">&ldquo;{t.content}&rdquo;</p><div className="mt-4 flex items-center gap-3"><BrandImage src={t.image} alt={t.name} width={40} height={40} className="h-10 w-10 rounded-full" /><div><p className="text-sm font-medium">{t.name}</p><p className="text-xs text-muted">{t.role}</p></div></div></article>
-        ))}</div>
+        <div className="mt-12 flex justify-center">
+          <Link href="/book-event" className="luxury-button luxury-button--purple tap-target">
+            Plan Your Event
+          </Link>
+        </div>
       </BrandSection>
     </div>
   );

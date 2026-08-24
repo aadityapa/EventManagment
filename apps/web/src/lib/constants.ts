@@ -33,18 +33,12 @@ export const SITE_CONFIG = {
 
 /** Single source of truth for entity facts — SEO, GEO, AEO, llms.txt */
 export const ENTITY_FACTS = {
-  foundingYear: 2012,
-  eventsManaged: 1800,
-  happyClients: 1400,
-  citiesCovered: 35,
-  teamSize: 50,
+  /* foundingYear / eventsManaged / happyClients / citiesCovered / teamSize
+     removed (Phase-2): no verified source. Only the 2026 incorporation
+     (CIN) is documented. Restore with audited figures only. */
   languages: ["English", "Hindi", "Marathi"],
   serviceAreas: ["Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Jaipur", "Indore", "Nashik", "Nagpur", "Ahmedabad", "Surat", "Goa", "Udaipur", "Maharashtra", "India", "International destinations"],
-  awards: [
-    "Best Event Management Company — Event Industry Awards India 2025",
-    "Luxury Wedding Planner of the Year — Wedding Sutra 2024",
-    "Excellence in Corporate Events — MICE India 2024",
-  ],
+  /* awards removed (Phase-2) — no public proof URLs; restore with citations. */
   knowsAbout: [
     "Luxury Wedding Planning",
     "Corporate Experience Design",

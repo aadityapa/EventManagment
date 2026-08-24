@@ -3,19 +3,17 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { Award, ArrowRight, Eye, Target, Gem, Crown, ShieldCheck, Globe, Sparkles } from "lucide-react";
+import { ArrowRight, Eye, Target, Gem, Crown, ShieldCheck, Globe, Sparkles } from "lucide-react";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import { BrandButton } from "@/brand/primitives/brand-button";
 import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { BRAND_TIMELINE, BRAND_AWARDS, BRAND_MEDIA, BRAND_TRUST } from "@/brand/data/content";
 import { companyProfile } from "@/data/cms";
 import { TeamSection } from "@/brand/sections/about/team-section";
 import { ScrollReveal, Parallax, staggerParent, staggerItem } from "@/lib/motion";
 import { useGsapContext, gsap } from "@/lib/gsap/use-gsap";
 import { analytics } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
 
 const MANIFESTO =
   "We believe luxury is intention — every candle, every cue, every guest experience deliberately crafted so the celebration feels effortless and eternal.";
@@ -23,7 +21,7 @@ const MANIFESTO =
 const TRUST_PILLARS = [
   { icon: Crown, title: "Uncompromising Craft", copy: "Every detail engineered to museum standards — nothing is left to chance." },
   { icon: ShieldCheck, title: "Absolute Discretion", copy: "NDA-bound teams and airtight privacy for high-profile clients and brands." },
-  { icon: Globe, title: "Pan-India Production", copy: "35+ cities, palace to penthouse — fully in-house, fully owned execution." },
+  { icon: Globe, title: "Pan-India Production", copy: "Palace to penthouse, across India — fully in-house, fully owned execution." },
   { icon: Sparkles, title: "Cinematic Execution", copy: "Broadcast-grade AV, lighting and stagecraft on every single production." },
 ] as const;
 
@@ -103,7 +101,7 @@ export function AboutView() {
             </h1>
             <p className="v4-standfirst mt-4 text-white/80">
               Experience architects, celebration designers, and memory creators — crafting
-              extraordinary moments since 2012.
+              extraordinary moments across India.
             </p>
           </GlassPanel>
         </div>
@@ -137,11 +135,11 @@ export function AboutView() {
             </ScrollReveal>
             <ScrollReveal preset="reveal" delay={0.14}>
               <p className="v4-body mt-5">
-                Founded by Yash Bajaj in Amravati in 2012 — joined by co-founders Aaditya Padiya
-                and Amey Korde in 2026 — Nexyyra began as an intimate wedding studio with a
-                singular belief: every celebration carries the weight of memory. What started with
-                one family&apos;s dream wedding has grown into a luxury event house trusted by
-                1,400+ clients across 35 cities.
+                Founded by Yash Bajaj — joined by co-founders Aaditya Padiya and Amey Korde —
+                Nexyyra began as an intimate wedding studio with a singular belief: every
+                celebration carries the weight of memory. Today the team operates as Nexyyra
+                Events and Promotions Private Limited, planning and producing weddings,
+                corporate events and destination celebrations across India.
               </p>
               <p className="v4-body mt-4">{companyProfile.story}</p>
             </ScrollReveal>
@@ -196,63 +194,6 @@ export function AboutView() {
         </div>
       </section>
 
-      {/* Sticky-scroll timeline */}
-      <section
-        ref={timelineRef}
-        className="v4-section relative bg-[var(--glitz-surface)]"
-        aria-labelledby="timeline-heading"
-      >
-        <div className="brand-container">
-          <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-4">Journey</span>
-            <h2 id="timeline-heading" className="v4-display max-w-xl">
-              Milestones that <span className="v4-gold-text">shaped us</span>
-            </h2>
-          </ScrollReveal>
-
-          <div className="relative mx-auto mt-16 max-w-3xl">
-            <div
-              data-timeline-track
-              className="absolute bottom-0 left-4 top-0 w-px origin-top bg-gradient-to-b from-[var(--glitz-gold)]/20 via-[var(--glitz-gold)]/50 to-[var(--glitz-gold)]/20 sm:left-1/2 sm:-ml-px"
-              aria-hidden="true"
-            />
-            <ol className="space-y-16 sm:space-y-20">
-              {BRAND_TIMELINE.map((item, i) => (
-                <li
-                  key={item.year}
-                  data-milestone
-                  className={cn(
-                    "relative grid sm:grid-cols-2 sm:gap-12",
-                    i % 2 === 0 ? "sm:text-right" : "sm:[direction:rtl]"
-                  )}
-                >
-                  <div className={cn("sm:px-8", i % 2 === 1 && "sm:[direction:ltr]")}>
-                    <span
-                      data-year-pin
-                      className="absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border-2 border-[var(--glitz-gold)]/50 bg-[var(--glitz-bg)] text-xs font-bold text-[var(--glitz-gold)] sm:left-1/2 sm:-translate-x-1/2"
-                    >
-                      {item.year.slice(2)}
-                    </span>
-                    <time
-                      dateTime={item.year}
-                      className="ml-12 block font-[family-name:var(--font-cinzel)] text-2xl font-bold text-[var(--glitz-gold)] sm:ml-0"
-                    >
-                      {item.year}
-                    </time>
-                  </div>
-                  <div className={cn("mt-2 sm:mt-0 sm:px-8", i % 2 === 1 && "sm:[direction:ltr]")}>
-                    <GlassPanel liquid={false} className="ml-12 p-5 sm:ml-0">
-                      <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-                        {item.event}
-                      </p>
-                    </GlassPanel>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
 
       {/* Behind-the-scenes storytelling */}
       <section className="v4-section bg-[var(--glitz-bg)]">
@@ -301,8 +242,8 @@ export function AboutView() {
           </ScrollReveal>
           <ScrollReveal preset="fade" delay={0.12}>
             <p className="v4-standfirst mt-5 max-w-2xl">
-              A dozen years of flawless, discreet, cinematic celebrations — engineered in-house and
-              delivered across 35+ cities for India&apos;s most discerning families and brands.
+              Flawless, discreet, cinematic celebrations — engineered in-house and delivered
+              across India for families and brands that expect precision.
             </p>
           </ScrollReveal>
 
@@ -325,57 +266,9 @@ export function AboutView() {
             })}
           </div>
 
-          <ScrollReveal preset="fade" delay={0.16} className="mt-14">
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.28em] text-[var(--text-muted)]">
-              Trusted by visionaries
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              {BRAND_TRUST.slice(0, 10).map((name) => (
-                <span key={name} className="font-[family-name:var(--font-cormorant)] text-lg text-[var(--text-secondary)]">
-                  {name}
-                </span>
-              ))}
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
-      {/* Achievements + press */}
-      <section className="v4-section bg-[var(--glitz-bg)]">
-        <div className="brand-container">
-          <ScrollReveal preset="reveal">
-            <span className="v4-kicker mb-4">Recognition</span>
-            <h2 className="v4-display">Awards &amp; achievements</h2>
-          </ScrollReveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {BRAND_AWARDS.map((a, i) => (
-              <ScrollReveal key={a.title} preset="reveal" delay={i * 0.05}>
-                <GlassPanel liquid={false} className="flex gap-4 p-6">
-                  <Award className="h-8 w-8 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
-                  <div>
-                    <h3 className="font-semibold">{a.title}</h3>
-                    <p className="text-sm text-[var(--text-secondary)]">
-                      {a.org} · {a.year}
-                    </p>
-                  </div>
-                </GlassPanel>
-              </ScrollReveal>
-            ))}
-          </div>
-          <ScrollReveal preset="fade" delay={0.1} className="mt-10">
-            <div className="flex flex-wrap justify-center gap-3">
-              {BRAND_MEDIA.map((m) => (
-                <span
-                  key={m}
-                  className="rounded-full border border-[var(--glitz-border)] px-5 py-2 text-sm text-[var(--text-secondary)]"
-                >
-                  {m}
-                </span>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="v4-section-lg v4-dune-glow bg-[var(--glitz-surface)]">

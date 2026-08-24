@@ -4,7 +4,7 @@ import { AboutView } from "@/brand";
 
 export const metadata = generateSEO({
   title: "About — Luxury Event Management",
-  description: "Discover Nexyyra Events — 12+ years, 1800+ events, India's premier luxury event house.",
+  description: "Discover Nexyyra Events — the team, philosophy and process behind a full-service luxury event management company serving Pune and all of India.",
   path: "/about",
 });
 

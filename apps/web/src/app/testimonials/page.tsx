@@ -1,26 +1,18 @@
-import { generateSEO, reviewSchema } from "@/lib/seo";
+import { generateSEO } from "@/lib/seo";
 import { TestimonialsView } from "@/brand";
-import { testimonials } from "@/data/cms";
+
+/* Review JSON-LD removed (Phase-2 entity trust remediation): the previous
+   reviews were template/demo data. Fabricated Review markup violates Google's
+   spam policies. Reinstate reviewSchema() only with authentic, on-page,
+   attributable client reviews. */
 
 export const metadata = generateSEO({
-  title: "Client Testimonials",
-  description: "Stories from Nexyyra Events clients — luxury weddings, corporate galas, and product launches across India.",
+  title: "Why Clients Choose Us",
+  description:
+    "Why clients choose Nexyyra Events — in-house planning, transparent budgeting, and end-to-end production for weddings and corporate events across India.",
   path: "/testimonials",
 });
 
 export default function TestimonialsPage() {
-  const reviewsLd = reviewSchema(
-    testimonials.map((t) => ({
-      author: t.name,
-      reviewBody: t.content,
-      ratingValue: t.rating,
-    })),
-  );
-
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }} />
-      <TestimonialsView />
-    </>
-  );
+  return <TestimonialsView />;
 }

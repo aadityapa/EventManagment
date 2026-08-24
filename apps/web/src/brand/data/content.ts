@@ -1,17 +1,10 @@
 import { BRAND_IMAGES } from "./imagery";
 
-export const BRAND_STATS = [
-  { value: 1000, suffix: "+", label: "Events Managed" },
-  { value: 500, suffix: "+", label: "Happy Clients" },
-  { value: 10, suffix: "+", label: "Years Experience" },
-  { value: 50, suffix: "+", label: "Premium Venues" },
-] as const;
-
-export const BRAND_TRUST = [
-  "Taj Hotels", "Marriott", "Oberoi", "ITC Hotels", "Hyatt",
-  "Tata Group", "Reliance", "Sony Music", "Zee Entertainment", "Netflix India",
-  "Four Seasons", "JW Marriott", "Aditya Birla Group", "Mahindra",
-];
+/* BRAND_STATS and BRAND_TRUST removed (Phase-2 entity trust remediation):
+   the statistics had no verified source and the "trusted by" brand names
+   (Taj, Netflix, Reliance, …) were template data implying client
+   relationships that are not evidenced. Restore only with verified facts
+   and written authorization to display client logos/names. */
 
 export const BRAND_SERVICES = [
   { slug: "wedding-planning", title: "Luxury Weddings", narrative: "Bespoke ceremonies where every floral arrangement, every candlelit moment, and every guest experience is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0] },
@@ -36,10 +29,10 @@ export const BRAND_CASE_STUDIES = [
     story: "A five-day destination celebration spanning mehendi, sangeet, ceremony, and reception across three palace venues.",
     challenge: "Coordinating 800 international guests across multiple heritage venues with strict cultural protocols.",
     solution: "Dedicated cultural liaison, multi-venue command center, and 120-person on-ground team.",
-    result: "Featured in Vogue India. Generated 3 destination wedding referrals.",
+    result: "Representative showcase — multi-venue heritage production with full guest hospitality.",
     image: BRAND_IMAGES.destinations[1],
-    testimonial: "Nexyyra made our palace wedding absolutely magical. Every detail was perfect.",
-    client: "Aisha & Rahul",
+    testimonial: "",
+    client: "Representative destination wedding concept",
   },
   {
     id: "cs-2",
@@ -52,10 +45,10 @@ export const BRAND_CASE_STUDIES = [
     story: "Black-tie gala celebrating 25 years of innovation with holographic brand timeline and live orchestra.",
     challenge: "1,500 C-suite executives requiring zero-delay precision and broadcast-quality production.",
     solution: "Military-precision timeline, 200-person service team, and redundant AV systems.",
-    result: "98% guest satisfaction. Featured in 12 media outlets.",
+    result: "Representative showcase — broadcast-quality gala production with zero-delay show calling.",
     image: BRAND_IMAGES.corporate[0],
-    testimonial: "Flawlessly executed. Nexyyra's team handled everything with military precision.",
-    client: "Vikram Malhotra, CEO",
+    testimonial: "",
+    client: "Representative corporate gala concept",
   },
   {
     id: "cs-3",
@@ -68,10 +61,10 @@ export const BRAND_CASE_STUDIES = [
     story: "Intimate beachfront ceremony at golden hour with live streaming for 2,000 virtual guests.",
     challenge: "Weather contingency and tide scheduling for perfect sunset timing.",
     solution: "Dual indoor backup, meteorological monitoring, and precision sunset choreography.",
-    result: "8M social media impressions. Perfect golden-hour ceremony.",
+    result: "Representative showcase — golden-hour beachfront ceremony with hybrid live-stream production.",
     image: BRAND_IMAGES.destinations[2],
-    testimonial: "The most beautiful day of our lives, executed flawlessly.",
-    client: "The Kapoor Family",
+    testimonial: "",
+    client: "Representative beach wedding concept",
   },
 ];
 
@@ -100,14 +93,11 @@ export const BRAND_INVESTMENTS = [
   },
 ];
 
-export const BRAND_TIMELINE = [
-  { year: "2012", event: "Founded in Amravati by Yash Bajaj as a boutique luxury wedding studio." },
-  { year: "2015", event: "First major corporate gala — 800 guests, zero delays." },
-  { year: "2018", event: "Destination wedding division launched across Rajasthan and Goa." },
-  { year: "2020", event: "Hybrid and virtual event production studio — broadcast-quality live streams." },
-  { year: "2023", event: "Expanded to 35 cities — celebrity partnerships and broadcast division." },
-  { year: "2025", event: "1,800+ events delivered across 35 cities — India's premier luxury event house." },
-];
+/* BRAND_TIMELINE removed (Phase-2): every milestone before 2026 was
+   unverified template data. The one verifiable fact — incorporation as
+   Nexyyra Events and Promotions Private Limited in 2026 (CIN
+   U70200ME2026PTC476014) — lives on the /company page. Restore a timeline
+   only with verified dates. */
 
 export const BRAND_PROCESS_STEPS = [
   { step: "01", title: "Discovery", desc: "Private consultation to understand your vision, culture, and guest experience goals." },
@@ -117,34 +107,30 @@ export const BRAND_PROCESS_STEPS = [
   { step: "05", title: "Legacy", desc: "Post-event analytics, media deliverables, and referral concierge." },
 ] as const;
 
+/** Qualitative proof points — no unverified statistics (Phase-2 remediation). */
 export const BRAND_SERVICE_STATS = [
-  { value: 1800, suffix: "+", label: "Events Delivered" },
-  { value: 98, suffix: "%", label: "Client Satisfaction" },
-  { value: 35, suffix: "+", label: "Cities Served" },
-  { value: 120, suffix: "+", label: "On-Ground Team" },
+  { value: "End-to-End", suffix: "", label: "Planning & Execution" },
+  { value: "In-House", suffix: "", label: "Design & Production" },
+  { value: "Pan-India", suffix: "", label: "Service Coverage" },
+  { value: "Dedicated", suffix: "", label: "Event Directors" },
 ] as const;
 
 /** Nine core service categories for the services page */
 export const BRAND_SERVICE_CATEGORIES = [
-  { slug: "wedding-planning", title: "Luxury Weddings", narrative: "Bespoke ceremonies where every floral arrangement and candlelit moment is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0], caseStudy: "Royal Udaipur Wedding — 800 guests, 5 days, Vogue India feature." },
-  { slug: "destination-weddings", title: "Destination Weddings", narrative: "From Udaipur palaces to Goa sunsets — seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0], caseStudy: "Sunset Beach Wedding — 8M social impressions, perfect golden hour." },
-  { slug: "corporate-events", title: "Corporate Experiences", narrative: "Black-tie excellence for brands that demand flawless C-suite galas and product launches.", image: BRAND_IMAGES.corporate[0], caseStudy: "TechCorp Annual Gala — 1,500 executives, broadcast-quality production." },
-  { slug: "celebrity-management", title: "Celebrity Events", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences.", image: BRAND_IMAGES.hero.palace, caseStudy: "Brand ambassador launch — 12 media outlets, 50M impressions." },
+  { slug: "wedding-planning", title: "Luxury Weddings", narrative: "Bespoke ceremonies where every floral arrangement and candlelit moment is orchestrated with obsessive precision.", image: BRAND_IMAGES.weddings[0], caseStudy: "Multi-day palace wedding productions with décor, hospitality and show flow." },
+  { slug: "destination-weddings", title: "Destination Weddings", narrative: "From Udaipur palaces to Goa sunsets — seamless logistics and royal execution.", image: BRAND_IMAGES.destinations[0], caseStudy: "Beachfront and palace destination ceremonies with full guest logistics." },
+  { slug: "corporate-events", title: "Corporate Experiences", narrative: "Black-tie excellence for brands that demand flawless C-suite galas and product launches.", image: BRAND_IMAGES.corporate[0], caseStudy: "Black-tie galas and executive events with broadcast-quality production." },
+  { slug: "celebrity-management", title: "Celebrity Events", narrative: "Exclusive celebrity appearances, red carpet events, and VIP experiences.", image: BRAND_IMAGES.hero.palace, caseStudy: "Red-carpet appearances and VIP hospitality, managed end to end." },
   { slug: "birthday-events", title: "Birthday Events", narrative: "Milestone birthdays and private celebrations shaped with luxury styling, entertainment, and guest hospitality.", image: BRAND_IMAGES.weddings[3], caseStudy: "Luxury birthday soirée — themed production, celebrity entertainment, and concierge hospitality." },
-  { slug: "conferences", title: "Conferences", narrative: "Conference planning with speaker logistics, registration, AV production, and executive guest flow.", image: BRAND_IMAGES.corporate[1], caseStudy: "Finance summit — 5,000 delegates, multi-track programming, zero-delay execution." },
-  { slug: "fashion-shows", title: "Fashion Shows", narrative: "Runway productions with lighting design, styling, and front-row experiences.", image: BRAND_IMAGES.gallery[7], caseStudy: "Fashion Week finale — 500 front-row guests, global press." },
-  { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Music Fest 2025 — 10,000 attendees, 50+ artists, zero incidents." },
-  { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[11], caseStudy: "Auto expo pavilion — 40% lead capture increase." },
-  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[11], caseStudy: "Product activation — 3x footfall vs. previous year." },
-  { slug: "product-launches", title: "Product Launches", narrative: "Launch experiences with media management, influencer outreach, immersive staging, and live streaming.", image: BRAND_IMAGES.corporate[1], caseStudy: "Product X launch — holographic reveal, 50M social impressions, national media pickup." },
-  { slug: "event-production", title: "Event Production", narrative: "Technical production across lighting, sound, staging, special effects, and show calling.", image: BRAND_IMAGES.gallery[3], caseStudy: "Stadium production — redundant AV, artist hospitality, and show control for 10,000 guests." },
+  { slug: "conferences", title: "Conferences", narrative: "Conference planning with speaker logistics, registration, AV production, and executive guest flow.", image: BRAND_IMAGES.corporate[1], caseStudy: "Multi-track conference programming with speaker and delegate logistics." },
+  { slug: "fashion-shows", title: "Fashion Shows", narrative: "Runway productions with lighting design, styling, and front-row experiences.", image: BRAND_IMAGES.gallery[7], caseStudy: "Runway productions with lighting design and front-row experiences." },
+  { slug: "concert-management", title: "Concerts", narrative: "Stadium-scale production with artist hospitality, stage design, and crowd management.", image: BRAND_IMAGES.gallery[3], caseStudy: "Stage, sound and crowd-safety production for live music events." },
+  { slug: "exhibitions", title: "Exhibitions", narrative: "Trade shows and brand exhibitions with immersive booth design and guest flow.", image: BRAND_IMAGES.gallery[11], caseStudy: "Exhibition pavilions engineered for footfall and lead capture." },
+  { slug: "brand-promotions", title: "Brand Activations", narrative: "Experiential marketing that transforms audiences into loyal advocates.", image: BRAND_IMAGES.gallery[11], caseStudy: "Experiential activations designed for engagement and recall." },
+  { slug: "product-launches", title: "Product Launches", narrative: "Launch experiences with media management, influencer outreach, immersive staging, and live streaming.", image: BRAND_IMAGES.corporate[1], caseStudy: "Launch reveals with immersive staging and live-stream production." },
+  { slug: "event-production", title: "Event Production", narrative: "Technical production across lighting, sound, staging, special effects, and show calling.", image: BRAND_IMAGES.gallery[3], caseStudy: "Redundant AV, staging and show control for large-format events." },
 ] as const;
 
-export const BRAND_AWARDS = [
-  { title: "Best Event Management Company", org: "Event Industry Awards India", year: 2025 },
-  { title: "Luxury Wedding Planner of the Year", org: "Wedding Sutra", year: 2024 },
-  { title: "Excellence in Corporate Events", org: "MICE India", year: 2024 },
-  { title: "Innovation in Event Technology", org: "Event Tech Summit", year: 2023 },
-];
-
-export const BRAND_MEDIA = ["Forbes India", "Economic Times", "Vogue India", "Wedding Sutra", "Event Industry Awards"];
+/* BRAND_AWARDS and BRAND_MEDIA removed (Phase-2): no public proof URLs
+   exist for these award and press claims. Restore individual entries only
+   with a verifiable citation for each. */

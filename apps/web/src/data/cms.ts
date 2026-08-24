@@ -2,19 +2,14 @@ import { EVENT_IMAGES } from "@/lib/images";
 
 export const companyProfile = {
   introduction:
-    "Nexyyra Events are experience architects, celebration designers, and memory creators — transforming visions into unforgettable black-tie experiences. With over 12 years of excellence, we've orchestrated 1,800+ events across India — from intimate destination weddings to grand corporate galas, celebrity appearances, and stadium concerts.",
+    "Nexyyra Events are experience architects, celebration designers, and memory creators — transforming visions into unforgettable experiences. The team plans and produces events across India — from intimate destination weddings to corporate galas, celebrity appearances, and concerts.",
   vision:
     "To usher in the next era of celebrations — setting new standards in creativity, precision, and guest experience across India.",
   mission:
     "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every celebration reflects our clients' unique story and exceeds every expectation.",
   story:
-    "Founded in Amravati, Nexyyra Events began as a boutique wedding studio. What started with a single dream celebration has evolved into a luxury experience house, trusted by leading brands, celebrities, and discerning families across Maharashtra and beyond.",
-  stats: {
-    eventsManaged: 1800,
-    happyClients: 1400,
-    yearsExperience: 12,
-    citiesCovered: 35,
-  },
+    "Nexyyra Events began as a boutique wedding studio and has grown into a full-service experience house, operating today as Nexyyra Events and Promotions Private Limited and serving clients across Maharashtra and beyond.",
+  /* stats removed — no verified source (Phase-2 remediation) */
 };
 
 export const services = [
@@ -32,26 +27,14 @@ export const services = [
   { slug: "event-production", title: "Event Production", description: "Complete technical production — lighting, sound, staging, and more.", icon: "Clapperboard", image: EVENT_IMAGES.concert, features: ["Stage Design", "Lighting", "Sound Engineering", "Special Effects"], basePrice: 500000 },
 ];
 
-export const testimonials = [
-  { id: "1", name: "Aisha & Rahul", role: "Wedding Clients", content: "Nexyyra Events made our destination wedding in Udaipur absolutely magical. Every detail was perfect — from the floral arrangements to the surprise fireworks finale.", rating: 5, image: EVENT_IMAGES.wedding, eventType: "WEDDING" },
-  { id: "2", name: "Vikram Malhotra", role: "CEO, TechCorp India", content: "Our annual conference for 2,000 attendees was flawlessly executed. Nexyyra's team handled everything with military precision.", rating: 5, image: EVENT_IMAGES.corporate, eventType: "CORPORATE" },
-  { id: "3", name: "Natasha Fernandes", role: "Marketing Director", content: "The product launch event generated 50M+ social media impressions. Nexyyra understands how to create buzz.", rating: 5, image: EVENT_IMAGES.productLaunch, eventType: "PRODUCT_LAUNCH" },
-  { id: "4", name: "The Kapoor Family", role: "Birthday Celebration", content: "Our daughter's 18th birthday was the talk of the town. The theme, entertainment, and food were all extraordinary.", rating: 5, image: EVENT_IMAGES.gallery[1], eventType: "BIRTHDAY" },
-  { id: "5", name: "Global Finance Summit", role: "Conference Organizer", content: "Managing 5,000 delegates across 3 days with zero hiccups. Nexyyra Events is simply the best in the business.", rating: 5, image: EVENT_IMAGES.conference, eventType: "CONFERENCE" },
-];
+/** Demo testimonials removed (Phase-2). Add only authentic, attributable client reviews. */
+export const testimonials: { id: string; name: string; role: string; content: string; rating: number; image: string; eventType: string }[] = [];
 
-export const awards = [
-  { title: "Best Event Management Company", organization: "Event Industry Awards India", year: 2025 },
-  { title: "Luxury Wedding Planner of the Year", organization: "Wedding Sutra", year: 2024 },
-  { title: "Excellence in Corporate Events", organization: "MICE India", year: 2024 },
-  { title: "Innovation in Event Technology", organization: "Event Tech Summit", year: 2023 },
-];
+/** Unverified award claims removed (Phase-2). Restore only with public proof URLs. */
+export const awards: { title: string; organization: string; year: number }[] = [];
 
-export const partners = [
-  "Taj Hotels", "Marriott", "ITC Hotels", "Oberoi", "Hyatt",
-  "Sony Music", "Zee Entertainment", "Star India", "Netflix India",
-  "Tata Group", "Reliance", "Aditya Birla Group", "Mahindra",
-];
+/** Demo partner-brand names removed (Phase-2) — displaying brands as partners requires a real, authorized relationship. */
+export const partners: string[] = [];
 
 export const venues = [
   { id: "1", name: "The Grand Ballroom", slug: "grand-ballroom-mumbai", city: "Mumbai", capacity: 800, pricePerDay: 500000, rating: 4.9, images: [EVENT_IMAGES.venue1], amenities: ["AC", "Parking", "Catering Kitchen", "AV Equipment"], description: "Luxurious ballroom in the heart of Mumbai with crystal chandeliers and premium amenities." },

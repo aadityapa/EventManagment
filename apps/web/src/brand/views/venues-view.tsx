@@ -257,7 +257,7 @@ export function VenuesView() {
           <ScrollReveal preset="fade" delay={0.14} className="lg:col-span-4">
             <GeoFactsBlock
               facts={[
-                { label: "Cities", value: "35+ across India" },
+                { label: "Coverage", value: "Pan-India" },
                 { label: "Capacity range", value: "50 – 2,500 guests" },
                 { label: "360° tours", value: "Available on request" },
                 { label: "Concierge", value: "+91 7020640157" },

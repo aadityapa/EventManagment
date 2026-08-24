@@ -42,8 +42,8 @@ export function HomeAboutLuxe() {
             />
           </div>
           <div className="lux-about__badge" aria-hidden>
-            <span className="lux-about__badge-value">100+</span>
-            <span className="lux-about__badge-label">Events Delivered</span>
+            <span className="lux-about__badge-value">End-to-End</span>
+            <span className="lux-about__badge-label">Event Management</span>
           </div>
         </motion.div>
 

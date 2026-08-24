@@ -55,19 +55,19 @@ export function HeroStatic({ slides }: HeroStaticProps) {
             </Link>
           </div>
 
-          {/* Trust metrics — server-rendered social proof above the fold. */}
+          {/* Trust pillars — qualitative, verifiable claims only (Phase-2 remediation). */}
           <dl className="luxury-hero__metrics">
             <div>
-              <dt>100+</dt>
-              <dd>Events Delivered</dd>
+              <dt>End-to-End</dt>
+              <dd>Planning &amp; Production</dd>
             </div>
             <div>
-              <dt>150+</dt>
-              <dd>Happy Clients</dd>
+              <dt>In-House</dt>
+              <dd>Design &amp; Execution</dd>
             </div>
             <div>
-              <dt>5+</dt>
-              <dd>Years of Excellence</dd>
+              <dt>Pan-India</dt>
+              <dd>Service Coverage</dd>
             </div>
           </dl>
 

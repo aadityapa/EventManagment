@@ -40,7 +40,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
       {
         question: "Why choose Nexyyra as your experience architects in Pune?",
         answer:
-          "Nexyyra Events combines luxury design sensibility with military-precision operations. Our Pune team offers local venue knowledge, vetted vendor networks, and a 4.9-star client rating across 500+ reviews.",
+          "Nexyyra Events combines luxury design sensibility with military-precision operations. Our Pune team offers local venue knowledge, vetted vendor networks, and dedicated event directors.",
       },
       {
         question: "What types of events does Nexyyra manage in Pune?",
@@ -60,7 +60,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     title: "Luxury Wedding Planner Pune",
     h1: "Luxury Wedding Planner in Pune",
     description:
-      "Award-winning luxury wedding planner in Pune — full-service planning, destination weddings, and bespoke celebrations from mehendi to reception by Nexyyra Events.",
+      "Luxury wedding planner in Pune — full-service planning, destination weddings, and bespoke celebrations from mehendi to reception by Nexyyra Events.",
     keywords: [
       "Wedding Planner Pune",
       "Luxury Wedding Planner Pune",
@@ -100,7 +100,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     title: "Corporate Event Management Pune",
     h1: "Corporate Event Management in Pune",
     description:
-      "Pune's premier corporate event management company — conferences, annual days, product launches, award ceremonies, and team-building events for leading brands.",
+      "Corporate event management in Pune — conferences, annual days, product launches, award ceremonies, and team-building events for leading brands.",
     keywords: [
       "Corporate Event Management Pune",
       "Corporate Event Planner Pune",
@@ -140,7 +140,7 @@ export const LOCAL_SEO_PAGES: LocalSeoPage[] = [
     title: "Luxury Wedding Planner Maharashtra",
     h1: "Luxury Wedding Planner in Maharashtra",
     description:
-      "Maharashtra's premier luxury wedding planner — palace weddings in Udaipur, beach celebrations in Goa, and grand Pune ceremonies with white-glove service.",
+      "Luxury wedding planning across Maharashtra — palace weddings in Udaipur, beach celebrations in Goa, and grand Pune ceremonies with white-glove service.",
     keywords: [
       "Luxury Wedding Planner Maharashtra",
       "Premium Wedding Planner India",

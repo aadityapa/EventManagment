@@ -23,21 +23,20 @@ export const LOCATION_PAGES: LocationPage[] = [
     title: "Luxury Event Planner Pune",
     h1: "Luxury Event Planner in Pune",
     description:
-      "Nexyyra Events — Pune's premier luxury event planner for weddings, corporate galas, exhibitions, and destination celebrations since 2012.",
+      "Nexyyra Events — luxury event planning in Pune for weddings, corporate galas, exhibitions, and destination celebrations.",
     keywords: ["Event Planner Pune", "Wedding Planner Pune", "Luxury Events Pune"],
     intro:
-      "Headquartered in Telhara with a delivery and coordination office in Pune, Nexyyra Events is Maharashtra's trusted luxury event management company — delivering 1,800+ weddings, corporate experiences, and entertainment productions with white-glove precision.",
+      "Headquartered in Telhara with a delivery and coordination office in Pune, Nexyyra Events plans and produces weddings, corporate experiences, and entertainment productions across Maharashtra with white-glove precision.",
     highlights: [
       "Pune-based planning studio with on-ground execution crews",
       "Heritage venues, five-star hotels, and farmhouse partnerships across Pune",
       "Wedding, corporate, concert, and exhibition specialists",
-      "4.9-star rating across 500+ client reviews",
     ],
     faqs: [
       {
         question: "Why is Nexyyra considered a top event planner in Pune?",
         answer:
-          "Nexyyra combines luxury design, vetted vendor networks, and military-precision operations — with local venue expertise and awards including Best Event Management Company India 2025.",
+          "Nexyyra combines luxury design, vetted vendor networks, and military-precision operations — with local venue expertise and in-house production.",
       },
     ],
     geo: { latitude: 18.5204, longitude: 73.8567 },

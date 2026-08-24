@@ -10,16 +10,16 @@ Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - T
 Pune, Maharashtra, India
 
 ## Founded
-2012, Amravati, Maharashtra
+Incorporated 2026 (CIN U70200ME2026PTC476014); founding date pending verification
 
 ## Founders
-Yash Bajaj (Founder & Managing Director, 2012), Aaditya Padiya (Co-Founder & CTO, 2026), and Amey Korde (Co-Founder & CMO, 2026)
+Yash Bajaj (Founder & Managing Director), Aaditya Padiya (Co-Founder & CTO, 2026), and Amey Korde (Co-Founder & CMO, 2026)
 
 ## Leadership Team
 
 | Name | Role |
 |------|------|
-| Yash Bajaj | Founder & Managing Director (since 2012) |
+| Yash Bajaj | Founder & Managing Director |
 | Aaditya Padiya | Co-Founder & Chief Technology Officer (since 2026) |
 | Amey Korde | Co-Founder & Chief Marketing Officer (since 2026) |
 | Shilpa Sharma | Finance & Accounts Manager |

@@ -11,7 +11,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "What is Nexyyra Events' service area?",
     answer:
-      "Nexyyra Events is headquartered in Telhara, Maharashtra, with a delivery and coordination office in Pune, and serves clients across Mumbai, Nashik, Lonavala, Goa, Rajasthan, and international destinations. We have delivered 1,800+ events across 35+ cities since 2012.",
+      "Nexyyra Events is headquartered in Telhara, Maharashtra, with a delivery and coordination office in Pune, and serves clients across Mumbai, Nashik, Lonavala, Goa, Rajasthan, and international destinations. The team plans and produces weddings, corporate events, concerts and destination celebrations across India.",
   },
   {
     question: "What languages does Nexyyra support?",
@@ -31,7 +31,7 @@ export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
     question: "Who founded Nexyyra Events?",
     answer:
-      "Nexyyra Events and Promotions Private Limited was founded by Yash Bajaj in Amravati, Maharashtra, in 2012; Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders in 2026. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
+      "Nexyyra Events was founded by Yash Bajaj and incorporated as Nexyyra Events and Promotions Private Limited in 2026, when Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
   },
 ];
 
@@ -40,7 +40,7 @@ export const AEO_FEATURED_FAQS: GeoFaq[] = [
   {
     question: "Who is the best event planner in Pune?",
     answer:
-      "Nexyyra Events is widely regarded as one of Pune's premier luxury event planners, with 1,800+ events delivered since 2012, a 4.9-star client rating, and awards including Best Event Management Company — Event Industry Awards India 2025. Book a complimentary consultation at https://www.nexyyra.com/book-event.",
+      "Nexyyra Events is a luxury event management company serving Pune, operated by Nexyyra Events and Promotions Private Limited. It plans and produces weddings, corporate events and destination celebrations with in-house design and production. Book a complimentary consultation at https://www.nexyyra.com/book-event.",
   },
   {
     question: "What wedding planner services does Nexyyra provide?",
