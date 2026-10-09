@@ -1,0 +1,135 @@
+/* ==========================================================================
+   Nexyyra V6 — the ONE token file (DESIGN.md §3).
+   Imported first in globals.css (after `@import "tailwindcss"`). All V6 CSS
+   uses --lux-* only (the legacy glitz, v4 and v5 aliases were removed
+   at the close-out once nothing referenced them).
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ── Colour: base palette (unchanged hexes) ───────────────────────── */
+  --lux-bg: #050816;
+  --lux-bg-secondary: #081226;      /* legacy band colour; V6 uses --lux-surface-* */
+  --lux-section: #0d1730;           /* legacy; kept for unmigrated CSS */
+  --lux-card-solid: #101b35;        /* legacy; kept for unmigrated CSS */
+  --lux-gold: #d8b26a;
+  --lux-gold-metal: #f4d08d;        /* ≤2px highlights only */
+  --lux-rose: #d9a47b;              /* legacy alias target only; unused in V6 */
+  --lux-purple: #8b4dff;
+  --lux-purple-bright: #b47cff;
+  --lux-violet: #6f42ff;
+  --lux-white: #f7f7f7;
+  --lux-muted: #b6b8c6;             /* running copy, 10.1:1 on navy */
+  --lux-subtle: #98a0b5;            /* meta/captions, 6.6:1 — the minimum text tone */
+  --lux-danger: #ff9b9b;            /* 7.4:1 */
+  --lux-success: #9fd8b4;
+  --lux-whatsapp: #25d366;          /* icon stroke only — never a fill behind white text */
+
+  /* ── Colour: surfaces (three levels, derived — no new hexes) ─────── */
+  --lux-surface-1: color-mix(in oklab, var(--lux-bg), white 3.5%);  /* plates, ledgers, action bar, scrolled header */
+  --lux-surface-2: color-mix(in oklab, var(--lux-bg), white 7%);    /* inputs, mobile menu, popover panel, lightbox chrome */
+  --lux-surface-3: color-mix(in oklab, var(--lux-bg), white 11%);   /* toasts, row hover tint */
+  --lux-card: rgba(16, 27, 53, 0.55);  /* glass — allowed only over photography (header over cover, lightbox counter, action bar) */
+  --lux-border: rgba(255, 255, 255, 0.08);
+  --lux-border-strong: rgba(255, 255, 255, 0.14);
+  --lux-border-gold: rgba(216, 178, 106, 0.28);
+  --lux-gold-12: color-mix(in srgb, var(--lux-gold) 12%, transparent);
+  --lux-gold-55: color-mix(in srgb, var(--lux-gold) 55%, transparent);   /* oversized numerals */
+  --lux-scrim: linear-gradient(to top, rgb(5 8 22 / .94) 0%, rgb(5 8 22 / .55) 45%, transparent 75%); /* lightbox counter only */
+  /* Primary CTA fill. Every point stays >= 5:1 against #f7f7f7/#fff labels (violet 5.0:1,
+     the darkened purple end 5.6:1); a lighter end stop (#8b4dff, #b47cff) fails 4.5:1. */
+  --lux-gradient-purple: linear-gradient(135deg, var(--lux-violet) 0%, color-mix(in oklab, var(--lux-purple) 85%, var(--lux-bg)) 100%);
+  --lux-gradient-accent: linear-gradient(120deg, var(--lux-purple-bright), #c79bff); /* .lux-accent-purple text */
+  --lux-gradient-gold-line: linear-gradient(90deg, transparent, var(--lux-gold), transparent);
+
+  /* ── Shadows / glows ─────────────────────────────────────────────── */
+  --lux-glow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 42px rgba(216, 178, 106, 0.14);
+  --lux-glow-purple: 0 18px 50px rgba(139, 77, 255, 0.4);
+  --lux-shadow-plate: 0 30px 90px -30px rgba(0, 0, 0, 0.9);   /* dialogs, popover panel */
+  --lux-ring: 0 0 0 2px var(--lux-gold);                       /* focus */
+
+  /* ── Typography ──────────────────────────────────────────────────── */
+  --lux-font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --lux-font-body: var(--font-manrope), Manrope, system-ui, sans-serif;
+  --lux-font-accent: var(--font-playfair), "Playfair Display", Georgia, serif;   /* drop cap + <em> inside Cormorant headings only */
+  --lux-font-folio: var(--font-cinzel), Cinzel, serif;                           /* folio numerals + 404 numeral only */
+
+  --lux-text-display-xl: clamp(2.875rem, 1.9rem + 4.9vw, 7.5rem);   /* home H1, 404 numeral */
+  --lux-text-display: clamp(2.5rem, 1.75rem + 3.4vw, 5.25rem);      /* page H1 */
+  --lux-text-h2: clamp(2rem, 1.45rem + 2.1vw, 3.5rem);
+  --lux-text-h3: clamp(1.5rem, 1.25rem + 0.95vw, 2.125rem);         /* index-row titles, ledger terms, case titles */
+  --lux-text-deck: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);           /* one deck per page, roman */
+  --lux-text-lead: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);       /* standfirst */
+  --lux-text-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --lux-text-small: 0.8125rem;                                       /* captions, meta, ledger cells, action-bar labels */
+  --lux-text-label: 0.72rem;                                         /* .lux-label eyebrow */
+  --lux-text-folio: 0.75rem;                                         /* Cinzel chapter numeral */
+  --lux-text-numeral: clamp(3rem, 2rem + 4vw, 6rem);                 /* oversized ledger numerals */
+  --lux-text-price: clamp(1.375rem, 1.2rem + 0.8vw, 2rem);           /* "From ₹8,00,000" in ledgers */
+  --lux-text-ui: 0.78rem;                                            /* buttons, nav */
+
+  --lux-leading-display: 0.94;
+  --lux-leading-heading: 1.04;
+  --lux-leading-h3: 1.12;
+  --lux-leading-deck: 1.22;
+  --lux-leading-lead: 1.55;
+  --lux-leading-body: 1.72;
+  --lux-tracking-display: -0.015em;
+  --lux-tracking-label: 0.32em;
+  --lux-tracking-folio: 0.24em;
+  --lux-tracking-ui: 0.16em;
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --lux-container: 90rem;           /* .brand-container / content rail */
+  --lux-wide: 72rem;                /* ledgers, indexes, forms, price table */
+  --lux-measure: 44rem;             /* articles, legal, FAQs (≈62ch body) */
+  --lux-gutter: clamp(1rem, 4vw, 2.5rem);   /* 16px floor at phone width */
+  --lux-grid-gap: clamp(1rem, 2vw, 2rem);
+  --lux-nav-h: 4.25rem;             /* desktop header 68px */
+  --lux-nav-h-mobile: 4rem;         /* 64px */
+  --lux-actionbar-h: 4rem;          /* 64px + safe-area */
+
+  /* ── Spacing ─────────────────────────────────────────────────────── */
+  --lux-space-1: 0.25rem;  --lux-space-2: 0.5rem;  --lux-space-3: 0.75rem;
+  --lux-space-4: 1rem;     --lux-space-5: 1.5rem;  --lux-space-6: 2rem;
+  --lux-space-7: 3rem;     --lux-space-8: 4rem;    --lux-space-9: 6rem;
+  --lux-space-tight: clamp(1.25rem, 3vw, 2rem);
+  --lux-space-block: clamp(2rem, 5vw, 4rem);
+  --lux-space-section: clamp(4.5rem, 10vw, 10rem);
+  --lux-space-cover: clamp(3rem, 8vw, 7rem);      /* cover top padding under the header */
+
+  /* ── Radii ───────────────────────────────────────────────────────── */
+  --lux-radius-xs: 0.25rem;   /* inline frames, thumbnails */
+  --lux-radius-sm: 0.5rem;    /* inputs, chips */
+  --lux-radius-md: 1rem;      /* plates, popover panel, dialogs */
+  --lux-radius-lg: 1.5rem;    /* legacy; mobile menu sheet */
+  --lux-radius-xl: 2rem;      /* legacy */
+  --lux-radius-pill: 999px;   /* buttons */
+  /* spreads, covers, diptychs, gallery tiles: radius 0 */
+
+  /* ── Motion ──────────────────────────────────────────────────────── */
+  --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lux-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --lux-dur-fast: 160ms;     /* chips, checks, underline */
+  --lux-dur-ui: 240ms;       /* hover lift, popover, details */
+  --lux-dur-open: 280ms;     /* dialog, mobile menu, action bar */
+  --lux-dur-morph: 320ms;    /* view-transition shared elements */
+  --lux-dur-image: 900ms;    /* hover scale on photos */
+  --lux-reveal-rise: 24px;
+
+  /* ── Z-index (top-layer elements need none) ──────────────────────── */
+  --lux-z-content: 1;
+  --lux-z-sticky: 10;        /* on-page contents, sticky photo frame */
+  --lux-z-actionbar: 800;
+  --lux-z-consent: 850;      /* consent sheet sits above the action bar in stacking AND in position (bottom offset) */
+  --lux-z-header: 900;
+  --lux-z-toast: 950;
+
+  /* ── Icons ───────────────────────────────────────────────────────── */
+  --icon-stroke: 1.5;
+  --icon-jewel: var(--lux-gold);
+}
+
+@media (min-width: 1024px) { :root { --lux-nav-h-current: var(--lux-nav-h); } }
+@media (max-width: 1023.98px) { :root { --lux-nav-h-current: var(--lux-nav-h-mobile); } }

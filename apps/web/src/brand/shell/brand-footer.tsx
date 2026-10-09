@@ -1,316 +1,151 @@
-"use client";
-
-import { useId, useState } from "react";
+/* eslint-disable @next/next/no-img-element -- pre-sized WebP wordmark with its own srcset; nothing to optimise */
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ArrowRight, ChevronDown, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { Logo } from "@/components/branding/logo";
-import { SITE_CONFIG } from "@/lib/constants";
-import { services, blogPosts } from "@/data/cms";
+import { UiIcon } from "@/components/icons";
+import { DetailsOpenAtDesktop } from "@/components/ui";
+import { blogPosts, services } from "@/data/cms";
+import { ENTITY_FACTS, FOOTER_LEGAL, SITE_CONFIG } from "@/lib/constants";
 import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
 import { LOCATION_PAGES } from "@/lib/location-pages";
-import { analytics } from "@/lib/analytics";
+import { MAIL_HREF, TEL_HREF, WHATSAPP_HREF, WORDMARK } from "./nav-data";
 
-const QUICK_LINKS = [
+type FooterLink = { href: string; label: string };
+
+const QUICK_LINKS: FooterLink[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/company", label: "Company Information" },
+  { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/why-nexyyra", label: "Why Nexyyra" },
+  { href: "/faqs", label: "FAQs" },
   { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact Us" },
-] as const;
+  { href: "/contact", label: "Contact" },
+  { href: "/book-event", label: "Get a Free Proposal" },
+];
 
-const LEGAL_LINKS = [
-  { href: "/privacy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms & Conditions" },
-  { href: "/refund", label: "Refund Policy" },
-] as const;
-
-const FOOTER_DISCOVERY_GROUPS = [
-  {
-    title: "Services",
-    links: services.map((service) => ({ href: `/services/${service.slug}`, label: service.title })),
-  },
+// The six Pune/Maharashtra landing pages sit with the city pages: same geographic intent.
+const GROUPS: { title: string; links: FooterLink[] }[] = [
+  { title: "Quick links", links: QUICK_LINKS },
+  { title: "Services", links: services.map((s) => ({ href: `/services/${s.slug}`, label: s.title })) },
   {
     title: "Locations",
-    links: LOCATION_PAGES.map((location) => ({
-      href: `/locations/${location.slug}`,
-      label: location.city,
-    })),
-  },
-  {
-    title: "Planning Guides",
-    links: blogPosts.slice(-6).map((post) => ({ href: `/blog/${post.slug}`, label: post.title })),
-  },
-  {
-    title: "Popular Pages",
     links: [
-      ...LOCAL_SEO_PAGES.map((page) => ({ href: `/${page.slug}`, label: page.title })),
-      { href: "/gallery", label: "Gallery" },
-      { href: "/portfolio/cs-2", label: "TechCorp Annual Gala" },
+      ...LOCATION_PAGES.map((p) => ({ href: `/locations/${p.slug}`, label: p.city })),
+      ...LOCAL_SEO_PAGES.map((p) => ({ href: `/${p.slug}`, label: p.title })),
     ],
   },
-] as const;
+  { title: "Guides", links: blogPosts.slice(-6).map((p) => ({ href: `/blog/${p.slug}`, label: p.title })) },
+];
 
-function LinkedinIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M6.5 8.5h3v11h-3v-11zM8 6.5a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM11 8.5h2.9v1.5h.04c.4-.75 1.38-1.55 2.84-1.55 3.04 0 3.6 2 3.6 4.6V19.5h-3v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.74v5.3H11V8.5z" />
-    </svg>
-  );
-}
-
-function PinterestIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.58 7.88 6.26 9.41-.09-.79-.17-2.01.04-2.87l1.15-4.88s-.29-.58-.29-1.44c0-1.35.78-2.36 1.76-2.36.83 0 1.23.62 1.23 1.37 0 .83-.53 2.08-.81 3.23-.23.97.49 1.76 1.45 1.76 1.74 0 3.08-1.83 3.08-4.48 0-2.34-1.68-3.98-4.08-3.98-2.78 0-4.41 2.09-4.41 4.25 0 .84.32 1.74.72 2.23.08.1.09.18.07.28l-.27 1.08c-.04.18-.14.22-.33.13-1.24-.58-2.02-2.4-2.02-3.86 0-3.15 2.29-6.04 6.61-6.04 3.47 0 6.17 2.47 6.17 5.77 0 3.45-2.17 6.22-5.19 6.22-1.01 0-1.97-.53-2.29-1.15l-.62 2.37c-.23.88-.85 1.98-1.27 2.65 0 .96.01 1.92.03 2.88C18.42 20.88 22 16.84 22 12c0-5.52-4.48-10-10-10z" />
-    </svg>
-  );
-}
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" />
-    </svg>
-  );
-}
-
-function YoutubeIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M21.8 8.4a2.5 2.5 0 0 0-1.76-1.77C18.36 6.2 12 6.2 12 6.2s-6.36 0-8.04.43A2.5 2.5 0 0 0 2.2 8.4 26 26 0 0 0 2 12a26 26 0 0 0 .2 3.6 2.5 2.5 0 0 0 1.76 1.77C5.64 17.8 12 17.8 12 17.8s6.36 0 8.04-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.2-3.6zM10 15.5v-7l6 3.5-6 3.5z" />
-    </svg>
-  );
-}
-
-const SOCIAL_LINKS = [
-  { href: SITE_CONFIG.social.instagram, label: "Instagram", icon: InstagramIcon },
-  { href: "https://pinterest.com/nexyyraevents", label: "Pinterest", icon: PinterestIcon },
-  { href: SITE_CONFIG.social.linkedin, label: "LinkedIn", icon: LinkedinIcon },
-  { href: SITE_CONFIG.social.youtube, label: "YouTube", icon: YoutubeIcon },
-  { href: `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`, label: "WhatsApp", icon: MessageCircle },
-] as const;
-
-function SocialIconLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Follow Nexyyra on ${label}`}
-      className="lux-social transition-transform hover:-translate-y-0.5 hover:scale-105 active:scale-95"
-    >
-      <Icon className="h-5 w-5" />
-    </a>
-  );
-}
-
-function FooterNewsletter() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const value = email.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    setError(null);
-    setSubmitting(true);
-    analytics.ctaClick("newsletter_subscribe", "footer");
-    try {
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: value, source: "newsletter" }),
-      });
-    } catch {
-      /* lead capture is best-effort */
-    }
-    setSubmitting(false);
-    toast.success("You're on the list — welcome to Nexyyra.");
-    setEmail("");
-  };
-
-  return (
-    <div>
-      <form className="lux-newsletter" onSubmit={onSubmit}>
-        <label htmlFor="footer-newsletter" className="sr-only">Email address</label>
-        <input
-          id="footer-newsletter"
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="lux-newsletter__input"
-          autoComplete="email"
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? "footer-newsletter-error" : undefined}
-        />
-        <button
-          type="submit"
-          disabled={submitting}
-          className="lux-newsletter__btn tap-target disabled:opacity-60"
-          aria-label="Subscribe to newsletter"
-        >
-          <ArrowRight className={submitting ? "h-4 w-4 animate-pulse" : "h-4 w-4"} aria-hidden="true" />
-        </button>
-      </form>
-      {error && (
-        <p id="footer-newsletter-error" role="alert" className="mt-2 text-xs text-red-400">
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function FooterHeading({ children }: { children: React.ReactNode }) {
-  return <h2 className="lux-footer__heading">{children}</h2>;
-}
+const AREA_SUMMARY = new Set(["Maharashtra", "India", "International destinations"]);
+const CITIES = ENTITY_FACTS.serviceAreas.filter((a) => !AREA_SUMMARY.has(a));
 
 /**
- * Collapsible footer section — dropdown-style link groups.
- * Collapsed by default on every viewport; links remain in the DOM for SEO.
+ * Footer colophon (DESIGN.md §10.0) — a server component; its only client code
+ * is DetailsOpenAtDesktop, which collapses the link groups into an exclusive
+ * `<details name="footer">` accordion on phones. The groups are server-rendered
+ * open (without `name`, so parsing does not close all but one) so crawlers and
+ * desktop first paint see every link. Every discovery link skips prefetch.
+ * "Cookie settings" re-opens the consent banner (see CookieConsent).
+ * Social: Instagram only — the other profiles are unverified.
  */
-function FooterSection({
-  title,
-  ariaLabel,
-  children,
-}: {
-  title: string;
-  ariaLabel?: string;
-  children: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  const bodyId = useId();
-
-  return (
-    <nav
-      className={cn("lux-footer-acc", open && "is-open")}
-      aria-label={ariaLabel ?? title}
-    >
-      <h2 className="lux-footer__heading lux-footer-acc__heading">
-        <button
-          type="button"
-          className="lux-footer-acc__trigger tap-target"
-          aria-expanded={open}
-          aria-controls={bodyId}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {title}
-          <ChevronDown className="lux-footer-acc__chevron" aria-hidden="true" />
-        </button>
-      </h2>
-      <div id={bodyId} className="lux-footer-acc__body">
-        <div className="lux-footer-acc__inner">{children}</div>
-      </div>
-    </nav>
-  );
-}
-
 export function BrandFooter() {
-  const pathname = usePathname();
-
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) return null;
-
-  const telHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
-  const mailHref = `mailto:${SITE_CONFIG.email}`;
-
+  const year = new Date().getFullYear();
   return (
-    <footer className="lux-footer" role="contentinfo">
-      <div className="brand-container">
-        <div className="lux-footer__grid">
-          <div className="lux-footer__brand">
-            <Logo variant="footer" href="/" />
-            <p className="lux-footer__tagline">
-              Crafting experiences that inspire, celebrate and become unforgettable.
-            </p>
-            <div className="lux-footer__socials">
-              {SOCIAL_LINKS.map((s) => (
-                <SocialIconLink key={s.label} {...s} />
-              ))}
+    <footer className="pg-shell-footer">
+      <div className="pg-shell-footer__inner">
+        <div className="pg-shell-colophon">
+          <div className="pg-shell-colophon__brand">
+            <Link href="/" prefetch={false} className="pg-shell-wordmark" aria-label={`${SITE_CONFIG.shortName} — Home`}>
+              <img src={WORDMARK.src} srcSet={WORDMARK.srcSet} sizes="72px" alt="" width={WORDMARK.width} height={WORDMARK.height} loading="lazy" decoding="async" />
+            </Link>
+            <p className="pg-shell-colophon__tagline">{SITE_CONFIG.tagline}</p>
+            <a href={SITE_CONFIG.social.instagram} target="_blank" rel="noopener noreferrer" className="pg-shell-footer__social" data-cta="footer_instagram" data-cta-location="footer">
+              <UiIcon name="instagram" size={20} />
+              Instagram
+            </a>
+          </div>
+
+          <dl className="pg-shell-colophon__facts">
+            <div>
+              <dt>Company</dt>
+              <dd>
+                {SITE_CONFIG.legalName}
+                <br />
+                CIN {SITE_CONFIG.cin}
+              </dd>
             </div>
-          </div>
+            <div>
+              <dt>Registered office</dt>
+              <dd>
+                {SITE_CONFIG.streetAddress}, {SITE_CONFIG.city}, {SITE_CONFIG.region} {SITE_CONFIG.postalCode}
+              </dd>
+            </div>
+            <div>
+              <dt>Operations</dt>
+              <dd>Delivery &amp; Coordination Office — Pune</dd>
+            </div>
+            <div>
+              <dt>Contact</dt>
+              <dd className="pg-shell-colophon__contact">
+                <a href={TEL_HREF} data-cta="footer_call" data-cta-location="footer">{SITE_CONFIG.phone}</a>
+                <a href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" data-cta="footer_whatsapp" data-cta-location="footer">WhatsApp a planner</a>
+                <a href={MAIL_HREF} data-cta="footer_email" data-cta-location="footer">{SITE_CONFIG.email}</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Languages</dt>
+              <dd>{ENTITY_FACTS.languages.join(", ")}</dd>
+            </div>
+          </dl>
 
-          <div className="lux-footer__col">
-            <FooterSection title="Quick Links" ariaLabel="Quick links">
-              <ul className="lux-footer__list">
-                {QUICK_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="lux-footer__link">{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </FooterSection>
-          </div>
-
-          <div className="lux-footer__col">
-            <FooterHeading>Contact Us</FooterHeading>
-            <ul className="lux-footer__contact">
-              <li>
-                <a href={telHref} className="lux-footer__link">
-                  <Phone className="h-4 w-4 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.phone}
-                </a>
-              </li>
-              <li>
-                <a href={mailHref} className="lux-footer__link">
-                  <Mail className="h-4 w-4 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.email}
-                </a>
-              </li>
-              <li className="lux-footer__contact-item">
-                <MapPin className="h-4 w-4 shrink-0 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.address}
-              </li>
-              <li className="lux-footer__contact-item">
-                <MapPin className="h-4 w-4 shrink-0 text-[var(--lux-gold)]" aria-hidden /> {SITE_CONFIG.branchOffice}
-              </li>
-            </ul>
-          </div>
-
-          <div className="lux-footer__col">
-            <FooterHeading>Newsletter</FooterHeading>
-            <p className="lux-footer__tagline">Stay updated with our latest events and offers.</p>
-            <FooterNewsletter />
-          </div>
+          <p className="pg-shell-colophon__areas">
+            We plan events in {CITIES.join(", ")} — across India and at international destinations.
+          </p>
         </div>
 
-        <div className="mt-10 border-t border-[var(--lux-border)] pt-8">
-          <div className="grid gap-x-8 gap-y-4 md:grid-cols-2 xl:grid-cols-4">
-            {FOOTER_DISCOVERY_GROUPS.map((group) => (
-              <FooterSection key={group.title} title={group.title}>
-                <ul className="lux-footer__list">
+        <DetailsOpenAtDesktop>
+          <nav aria-label="Footer" className="pg-shell-fgroups">
+            {GROUPS.map((group) => (
+              <details key={group.title} open data-group="footer" className="pg-shell-fgroup">
+                <summary>
+                  {group.title}
+                  <UiIcon name="plus" size={20} />
+                </summary>
+                <ul role="list">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link href={link.href} className="lux-footer__link">{link.label}</Link>
+                      <Link href={link.href} prefetch={false}>{link.label}</Link>
                     </li>
                   ))}
                 </ul>
-              </FooterSection>
-            ))}
-          </div>
-        </div>
-
-        <div className="lux-footer__divider" aria-hidden />
-
-        <div className="lux-footer__bottom">
-          <p>
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.
-            <br />
-            CIN: {SITE_CONFIG.cin}
-          </p>
-          <nav aria-label="Legal links" className="lux-footer__legal">
-            {LEGAL_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="lux-footer__link">{l.label}</Link>
+              </details>
             ))}
           </nav>
-          <a href={SITE_CONFIG.url} className="lux-footer__url">www.nexyyra.com</a>
+        </DetailsOpenAtDesktop>
+
+        <div className="pg-shell-legal">
+          <p>
+            © {year} {SITE_CONFIG.legalName}
+          </p>
+          <ul role="list" aria-label="Legal">
+            {FOOTER_LEGAL.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} prefetch={false}>{link.label}</Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/company" prefetch={false}>Company information</Link>
+            </li>
+            <li>
+              <Link href="/sitemap" prefetch={false}>Sitemap</Link>
+            </li>
+            <li>
+              {/* Plain anchor, not Link: CookieConsent's delegated [data-consent-open] handler re-opens the banner; without JS it lands on the cookie section of the privacy policy. */}
+              <a href="/privacy#cookies" data-consent-open="">Cookie settings</a>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

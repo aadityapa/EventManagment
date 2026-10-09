@@ -1,0 +1,74 @@
+/* V6 field restyle for the existing InquiryForm
+   (src/components/inquiry/inquiry-form.tsx — classes only, the component is untouched).
+   Unlayered on purpose: lux-conversion.css declares these form classes outside any
+   @layer, and unlayered rules beat every layer regardless of order. Import this
+   AFTER lux-conversion.css. Scoped to .lux-form so nothing else is affected. */
+
+.lux-form { gap: var(--lux-space-tight); }
+.lux-form__grid { gap: 1.4rem 1.5rem; }
+.lux-form .lux-field { gap: 0.4rem; }
+
+/* Labels always visible, above the field. */
+.lux-form .lux-field__label {
+  font: 600 var(--lux-text-label)/1.4 var(--lux-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lux-subtle);
+}
+
+/* Bottom-hairline fields: 16px floor (no iOS zoom), 48px min-height, gold on focus.
+   The hairline is the field's only boundary, so it must reach 3:1 (WCAG 1.4.11):
+   --lux-subtle at 65% is about 3.7:1 on --lux-bg and 3.5:1 on --lux-surface-2. */
+.lux-form .lux-input {
+  min-height: 48px;
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--lux-subtle) 65%, transparent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--lux-white);
+  font: 400 1rem/1.4 var(--lux-font-body);
+  transition: border-color var(--lux-dur-ui) var(--lux-ease), box-shadow var(--lux-dur-ui) var(--lux-ease);
+}
+/* Placeholders carry format hints, so they keep full text contrast (7.6:1 on --lux-bg). */
+.lux-form .lux-input::placeholder { color: var(--lux-subtle); opacity: 1; }
+.lux-form .lux-input:focus-visible {
+  outline: none;
+  border-bottom-color: var(--lux-gold);
+  box-shadow: 0 1px 0 0 var(--lux-gold);
+}
+.lux-form select.lux-input {
+  padding-right: 1.75rem;
+  background-position: calc(100% - 0.7rem) 50%, calc(100% - 0.35rem) 50%;
+}
+.lux-form select.lux-input option { background: var(--lux-surface-2); color: var(--lux-white); }
+.lux-form .lux-input--area { min-height: 6rem; field-sizing: content; resize: vertical; }
+
+/* Invalid: the browser's own post-interaction state, plus the aria flag the form sets after submit. */
+.lux-form .lux-field:has(:user-invalid) .lux-input,
+.lux-form .lux-input[aria-invalid="true"] { border-bottom-color: var(--lux-danger); box-shadow: 0 1px 0 0 var(--lux-danger); }
+.lux-form .lux-field:has(:user-invalid) .lux-field__label { color: var(--lux-danger); }
+.lux-form .lux-field__error { font: 500 var(--lux-text-small)/1.4 var(--lux-font-body); color: var(--lux-danger); }
+/* A hint for fields the browser flags before submit; the form's own message replaces it once it renders. */
+.lux-form .lux-field:has(:user-invalid):not(:has(.lux-field__error))::after {
+  content: "Please check this field.";
+  font: 500 var(--lux-text-small)/1.4 var(--lux-font-body);
+  color: var(--lux-danger);
+}
+
+.lux-form__actions { gap: 1rem; }
+.lux-form__fine { font: 500 var(--lux-text-small)/1.5 var(--lux-font-body); color: var(--lux-subtle); }
+.lux-form__alert {
+  border: 1px solid color-mix(in srgb, var(--lux-danger) 40%, transparent);
+  border-radius: var(--lux-radius-md);
+  background: color-mix(in srgb, var(--lux-danger) 8%, transparent);
+  font: 400 var(--lux-text-body)/var(--lux-leading-body) var(--lux-font-body);
+}
+.lux-form--done { gap: 1rem; padding-block: var(--lux-space-block); }
+.lux-form__done-title { font: 500 var(--lux-text-h3)/var(--lux-leading-h3) var(--lux-font-display); text-wrap: balance; }
+.lux-form__done-copy { max-width: 34rem; font: 400 var(--lux-text-body)/var(--lux-leading-body) var(--lux-font-body); text-wrap: pretty; }
+.lux-form__link { text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lux-form .lux-input { transition: none; }
+}

@@ -14,12 +14,9 @@ export async function GET(request: NextRequest) {
     const categoryParam = searchParams.get("category");
     const limitParam = searchParams.get("limit");
     const typeParam = searchParams.get("type");
-    const force = searchParams.get("force") === "1";
-
+    // Public endpoint: no ?force=1 reindex here (it let anyone trigger a full
+    // Drive crawl). Admins reindex via /api/admin/media/reindex.
     const provider = getMediaProvider();
-    if (force) {
-      await provider.reindex();
-    }
 
     const query: MediaQuery = {};
 
@@ -58,7 +55,8 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Failed to load media";
-    return NextResponse.json({ error: message }, { status: 500 });
+    // Log details server-side; never echo internal error text to the public.
+    console.error("[api/media]", err);
+    return NextResponse.json({ error: "Failed to load media" }, { status: 500 });
   }
 }

@@ -36,7 +36,7 @@ export function AdminDashboard() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="font-display text-2xl font-bold md:text-3xl">Admin Dashboard</h1>
-      <p className="text-muted">Nexyyra Events management overview</p>
+      <p className="text-lux-subtle">Nexyyra Events management overview</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
@@ -47,10 +47,10 @@ export function AdminDashboard() {
         ].map((stat) => (
           <div key={stat.label} className="glass-card p-5">
             <div className="flex items-center justify-between">
-              <stat.icon className="h-5 w-5 text-primary" />
+              <stat.icon className="h-5 w-5 text-lux-white" />
               <span className="text-xs font-medium text-green-600">{stat.change}</span>
             </div>
-            <p className="mt-2 text-sm text-muted">{stat.label}</p>
+            <p className="mt-2 text-sm text-lux-subtle">{stat.label}</p>
             <p className="font-display text-2xl font-bold">{stat.value}</p>
           </div>
         ))}
@@ -63,13 +63,13 @@ export function AdminDashboard() {
 
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         <div className="glass-card overflow-hidden">
-          <h2 className="border-b border-border p-4 font-display text-lg font-semibold">
+          <h2 className="border-b border-lux-border-gold p-4 font-display text-lg font-semibold">
             Recent Bookings
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border text-left text-muted">
+                <tr className="border-b border-lux-border-gold text-left text-lux-subtle">
                   <th className="p-4 font-medium">ID</th>
                   <th className="p-4 font-medium">Client</th>
                   <th className="p-4 font-medium">Amount</th>
@@ -78,12 +78,12 @@ export function AdminDashboard() {
               </thead>
               <tbody>
                 {recentBookings.map((b) => (
-                  <tr key={b.id} className="border-b border-border/50">
+                  <tr key={b.id} className="border-b border-lux-border-gold/50">
                     <td className="p-4 font-mono text-xs">{b.id}</td>
                     <td className="p-4">{b.client}</td>
-                    <td className="p-4 text-primary">{b.amount}</td>
+                    <td className="p-4 text-lux-white">{b.amount}</td>
                     <td className="p-4">
-                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs">
+                      <span className="rounded-full bg-lux-gold/10 px-2 py-0.5 text-xs">
                         {b.status}
                       </span>
                     </td>
@@ -95,13 +95,13 @@ export function AdminDashboard() {
         </div>
 
         <div className="glass-card overflow-hidden">
-          <h2 className="border-b border-border p-4 font-display text-lg font-semibold">
+          <h2 className="border-b border-lux-border-gold p-4 font-display text-lg font-semibold">
             Recent Leads
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border text-left text-muted">
+                <tr className="border-b border-lux-border-gold text-left text-lux-subtle">
                   <th className="p-4 font-medium">ID</th>
                   <th className="p-4 font-medium">Name</th>
                   <th className="p-4 font-medium">Event</th>
@@ -110,11 +110,11 @@ export function AdminDashboard() {
               </thead>
               <tbody>
                 {recentLeads.map((l) => (
-                  <tr key={l.id} className="border-b border-border/50">
+                  <tr key={l.id} className="border-b border-lux-border-gold/50">
                     <td className="p-4 font-mono text-xs">{l.id}</td>
                     <td className="p-4">{l.name}</td>
                     <td className="p-4">{l.event}</td>
-                    <td className="p-4 text-muted">{l.date}</td>
+                    <td className="p-4 text-lux-subtle">{l.date}</td>
                   </tr>
                 ))}
               </tbody>

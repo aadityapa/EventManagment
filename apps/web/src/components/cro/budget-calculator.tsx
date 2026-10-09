@@ -1,104 +1,113 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Wallet, ArrowUpRight } from "lucide-react";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { ScrollReveal } from "@/lib/motion";
-import { cn } from "@/lib/utils";
+import { useId, useState } from "react";
+import { Button } from "@/components/ui/lux-button";
+import { BUDGET_RANGES, EVENT_TYPES } from "@/lib/constants";
 
-const BUDGETS = ["₹1L – 5L", "₹5L – 20L", "₹20L – 50L", "₹50L+"];
-const GUESTS = ["Under 100", "100 – 300", "300 – 500", "500+"];
+/** One published collection, pre-shaped on the server so content.ts never ships to the client. */
+export type CalculatorCollection = { name: string; slug: string; from: string; guests: string };
 
-function estimatePackage(budget: string, guests: string): string {
-  if (budget.includes("50L") || guests.includes("500")) return "The Grand Masterpiece";
-  if (budget.includes("20L") || guests.includes("300")) return "The Signature Gala";
-  return "The Boutique Experience";
-}
+type InlineBudgetCalculatorProps = {
+  collections: CalculatorCollection[];
+  /** Lowest single-service starting price, e.g. "₹2,00,000". */
+  singleFrom: string;
+};
 
-export function InlineBudgetCalculator() {
-  const [budget, setBudget] = useState("");
+const UNDER = "under";
+
+/**
+ * "Which collection fits": guests + event type → the published collection and
+ * its budget band. Only published numbers (BRAND_INVESTMENTS, BUDGET_RANGES);
+ * no add-on prices are invented. Collection i maps to budget band i + 1
+ * (Boutique from ₹10L → ₹10–35L, Signature from ₹35L → ₹35L–1Cr, Grand → ₹1Cr+).
+ */
+export function InlineBudgetCalculator({ collections, singleFrom }: InlineBudgetCalculatorProps) {
+  const uid = useId();
   const [guests, setGuests] = useState("");
+  const [eventType, setEventType] = useState("");
 
-  const recommendation = budget && guests ? estimatePackage(budget, guests) : null;
+  const guestOptions = [
+    { value: UNDER, label: "Fewer than 50" },
+    ...collections.map((c, i) => ({ value: String(i), label: c.guests })),
+  ];
+
+  const pick = guests === "" ? undefined : guests === UNDER ? -1 : Number(guests);
+  const collection = pick !== undefined && pick >= 0 ? collections[pick] : undefined;
+  const band = pick === undefined ? undefined : BUDGET_RANGES[Math.min(pick + 1, BUDGET_RANGES.length - 1)];
+  // The "Something else" catch-all names no event, so it adds nothing to the result line.
+  const typeLabel = eventType === "OTHER" ? undefined : EVENT_TYPES.find((t) => t.id === eventType)?.label;
+  const ready = pick !== undefined && eventType !== "";
+
+  const params = new URLSearchParams();
+  if (collection) params.set("collection", collection.slug);
+  if (eventType) params.set("type", eventType);
+  const query = params.toString();
+  const href = query ? `/book-event?${query}` : "/book-event";
 
   return (
-    <section className="v4-section border-y border-[var(--glitz-border)] bg-[var(--glitz-surface)]/30">
-      <div className="brand-container">
-        <ScrollReveal preset="reveal" className="text-center">
-          <span className="v4-kicker mb-4">Quick Estimate</span>
-          <h2 className="v4-title">Budget Calculator</h2>
-          <p className="v4-body mx-auto mt-3 max-w-xl text-muted">
-            Select your budget and guest count for an instant collection recommendation.
-          </p>
-        </ScrollReveal>
+    <form className="pg-conv-calc" aria-label="Which collection fits" onSubmit={(e) => e.preventDefault()}>
+      <div className="lux-form pg-conv-calc__fields">
+        <fieldset className="pg-conv-calc__set">
+          <legend id={`${uid}-legend`} className="lux-field__label">
+            Guests
+          </legend>
+          <div className="pg-conv-calc__chips">
+            {guestOptions.map((o) => (
+              <label key={o.value} className="pg-conv-calc__chip">
+                <input
+                  type="radio"
+                  name={`${uid}-guests`}
+                  value={o.value}
+                  checked={guests === o.value}
+                  onChange={() => setGuests(o.value)}
+                />
+                <span>{o.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
-        <ScrollReveal preset="scale" delay={0.1} className="mx-auto mt-10 max-w-2xl">
-          <GlassPanel glow className="p-6 sm:p-8">
-            <div className="space-y-6">
-              <div>
-                <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-muted">
-                  <Wallet className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-                  Budget range
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {BUDGETS.map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      aria-pressed={budget === b}
-                      onClick={() => setBudget(b)}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm transition-all",
-                        budget === b
-                          ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)]"
-                          : "border-[var(--glitz-border)] text-muted hover:border-[var(--glitz-gold)]/40"
-                      )}
-                    >
-                      {b}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-3 text-sm font-semibold text-muted">Guest count</p>
-                <div className="flex flex-wrap gap-2">
-                  {GUESTS.map((g) => (
-                    <button
-                      key={g}
-                      type="button"
-                      aria-pressed={guests === g}
-                      onClick={() => setGuests(g)}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm transition-all",
-                        guests === g
-                          ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/10 text-[var(--glitz-gold)] shadow-[var(--v4-glow-gold)]"
-                          : "border-[var(--glitz-border)] text-muted hover:border-[var(--glitz-gold)]/40"
-                      )}
-                    >
-                      {g}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {recommendation && (
-              <div className="mt-8 rounded-[var(--v4-radius)] border border-[var(--glitz-gold)]/30 bg-[var(--glitz-gold)]/5 p-5 text-center">
-                <p className="text-sm text-muted">Recommended collection</p>
-                <p className="mt-1 v4-title text-xl text-[var(--glitz-gold)]">{recommendation}</p>
-                <Link
-                  href="/book-event"
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--glitz-gold)] hover:underline"
-                >
-                  Book consultation with this package
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            )}
-          </GlassPanel>
-        </ScrollReveal>
+        <div className="lux-field">
+          <label htmlFor={`${uid}-type`} className="lux-field__label">
+            Event type
+          </label>
+          <select id={`${uid}-type`} className="lux-input" value={eventType} onChange={(e) => setEventType(e.target.value)}>
+            <option value="">Choose an event type</option>
+            {EVENT_TYPES.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-    </section>
+
+      <div className="pg-conv-calc__result" aria-live="polite">
+        {ready && band ? (
+          <>
+            <dl className="lux-ledger lux-ledger--jewel">
+              <div className="lux-ledger__row" data-marker="jewel">
+                <dt className="lux-ledger__term">{collection ? collection.name : "Single services"}</dt>
+                <dd className="lux-ledger__body">
+                  {collection
+                    ? `From ${collection.from} · ${collection.guests} guests${typeLabel ? ` · ${typeLabel}` : ""}`
+                    : `From ${singleFrom} per service, or ${collections[0]?.name ?? "a collection"} for a fully planned event`}
+                </dd>
+              </div>
+              <div className="lux-ledger__row" data-marker="jewel">
+                <dt className="lux-ledger__term">Budget band</dt>
+                <dd className="lux-ledger__body">{band.label}</dd>
+              </div>
+            </dl>
+            <p className="lux-small pg-conv-calc__fine">A guide from published starting prices. Your proposal prices every line for your brief.</p>
+            <Button variant="ghost" href={href} cta="pricing_calculator" location="calculator" arrow>
+              Get a Free Proposal
+            </Button>
+          </>
+        ) : (
+          <p className="lux-small pg-conv-calc__fine">Choose a guest count and an event type to see the collection that fits.</p>
+        )}
+      </div>
+    </form>
   );
 }

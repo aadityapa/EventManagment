@@ -84,13 +84,6 @@ export async function getGalleryMedia(): Promise<MediaAsset[]> {
   return sortGalleryAssets(dedupeAssets(real));
 }
 
-export async function getPortfolioMedia(): Promise<MediaAsset[]> {
-  const portfolio = await getMediaAssets(JSON.stringify({ folder: "portfolio" }));
-  if (portfolio.length) return portfolio;
-  const realFallback = await getGalleryMedia();
-  return realFallback.slice(0, 12);
-}
-
 export async function getVenueMedia(): Promise<MediaAsset[]> {
   return getMediaAssets(JSON.stringify({ folder: "venues" }));
 }
@@ -125,33 +118,6 @@ export async function getServiceMedia(serviceSlug: string, limit = 8): Promise<M
 
 export async function getCategoryMedia(category: MediaQuery["category"]): Promise<MediaAsset[]> {
   return getMediaAssets(JSON.stringify({ category }));
-}
-
-/** Homepage hero carousel — live Drive images, mixed folders. */
-export async function getHeroCarouselSlides(limit = 9): Promise<string[]> {
-  const [hero, gallery, weddings, venues] = await Promise.all([
-    getMediaAssets(JSON.stringify({ folder: "hero", limit })),
-    getMediaAssets(JSON.stringify({ folder: "gallery", limit })),
-    getMediaAssets(JSON.stringify({ folder: "weddings", limit })),
-    getMediaAssets(JSON.stringify({ folder: "venues", limit })),
-  ]);
-
-  const seen = new Set<string>();
-  const slides: string[] = [];
-  for (const asset of [...hero, ...venues, ...gallery, ...weddings]) {
-    if (!asset.src || isComingSoonImage(asset.src) || seen.has(asset.src)) continue;
-    seen.add(asset.src);
-    slides.push(asset.src);
-    if (slides.length >= limit) break;
-  }
-
-  if (slides.length > 0) return slides;
-
-  const { HERO_CATEGORIES, HERO_FALLBACK } = await import(
-    "@/components/home/hero-carousel-data"
-  );
-  const fallback = HERO_CATEGORIES.map((s) => s.src).filter(Boolean);
-  return fallback.length ? fallback : [HERO_FALLBACK];
 }
 
 export { CACHE_TAG as MEDIA_CACHE_TAG, LIVE_DRIVE_CACHE_TAG };

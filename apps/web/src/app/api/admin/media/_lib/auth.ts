@@ -1,51 +1,41 @@
 import { NextResponse } from "next/server";
-import { getAuthToken } from "../../../_lib/auth";
-import { getApiBase } from "../../../_lib/env";
+import { getSession, getSessionSecret, type Session } from "../../../_lib/auth";
 
+/**
+ * Admin gate for the media routes. The role comes from the signed session
+ * cookie (verified locally with jose), so these routes keep working on Vercel
+ * where the Express API is not deployed. A role change takes effect when the
+ * token is re-issued (7-day lifetime).
+ */
 export async function requireAdminSession(): Promise<
-  { ok: true; user: Record<string, unknown> } | { ok: false; response: NextResponse }
+  { ok: true; user: Session } | { ok: false; response: NextResponse }
 > {
-  const token = await getAuthToken();
-  if (!token) {
+  if (!getSessionSecret()) {
+    // Fail closed: nothing can be verified without the signing key.
+    console.error("[admin/media] NEXTAUTH_SECRET (min 32 chars) is not set");
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Authentication is not configured" }, { status: 503 }),
+    };
+  }
+
+  const session = await getSession();
+  if (!session) {
     return {
       ok: false,
       response: NextResponse.json({ error: "Authentication required" }, { status: 401 }),
     };
   }
-
-  try {
-    const base = getApiBase();
-    const res = await fetch(`${base}/auth/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      return {
-        ok: false,
-        response: NextResponse.json({ error: "Invalid session" }, { status: 401 }),
-      };
-    }
-    const user = await res.json();
-    const role = user?.role as string | undefined;
-    if (role !== "ADMIN" && role !== "STAFF") {
-      return {
-        ok: false,
-        response: NextResponse.json({ error: "Admin access required" }, { status: 403 }),
-      };
-    }
-    return { ok: true, user };
-  } catch {
+  if (session.role !== "ADMIN" && session.role !== "STAFF") {
     return {
       ok: false,
-      response: NextResponse.json({ error: "Auth service unavailable" }, { status: 503 }),
+      response: NextResponse.json({ error: "Admin access required" }, { status: 403 }),
     };
   }
+  return { ok: true, user: session };
 }
 
-/** Dev-only bypass when MEDIA_ADMIN_BYPASS=1 (local uploads without API) */
+/** Dev-only bypass when MEDIA_ADMIN_BYPASS=1 (local uploads without an account). */
 export function isDevAdminBypass(): boolean {
-  return (
-    process.env.NODE_ENV === "development" &&
-    process.env.MEDIA_ADMIN_BYPASS === "1"
-  );
+  return process.env.NODE_ENV === "development" && process.env.MEDIA_ADMIN_BYPASS === "1";
 }

@@ -1,284 +1,66 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, Mail, MessageCircle, Phone } from "lucide-react";
-import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
-import { EXPERIENCE_CATEGORIES, isNavActive } from "./nav-data";
+import { useEffect, useRef, type ReactNode } from "react";
 
 type MobileMenuProps = {
-  isOpen: boolean;
-  onClose: () => void;
+  /** Server-rendered menu body (links, contact lines, CTA). */
+  children: ReactNode;
+  /** Glyphs come from the server so the icon module stays out of this island. */
+  menuIcon: ReactNode;
+  closeIcon: ReactNode;
 };
 
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" />
-    </svg>
-  );
-}
-
-const PANEL_MOTION = {
-  initial: { opacity: 0, x: "100%" },
-  animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: "100%" },
-  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
-};
-
-const OVERLAY_MOTION = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.35, ease: "easeOut" as const },
-};
-
-const REDUCED_PANEL = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.15 },
-};
-
-export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+/**
+ * Phone menu (DESIGN.md §10.0): a native modal <dialog closedby="any"> —
+ * showModal() gives the focus trap, inert background, ESC and focus return,
+ * so nothing is hand-rolled. Closes on route change, on any link tap (same-route
+ * links do not change the pathname) and when the viewport grows to desktop.
+ */
+export function MobileMenu({ children, menuIcon, closeIcon }: MobileMenuProps) {
+  const ref = useRef<HTMLDialogElement>(null);
   const pathname = usePathname();
-  const prefersReducedMotion = useReducedMotion();
-  const [experiencesOpen, setExperiencesOpen] = useState(false);
-  const isClient = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-  const panelMotion = prefersReducedMotion ? REDUCED_PANEL : PANEL_MOTION;
-
-  const handleClose = useCallback(() => {
-    setExperiencesOpen(false);
-    onClose();
-  }, [onClose]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [isOpen, handleClose]);
+    ref.current?.close();
+  }, [pathname]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const dialog = ref.current;
+    if (!dialog) return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onWide = () => mq.matches && dialog.close();
+    const onClick = (e: MouseEvent) => (e.target as Element).closest("a[href]") && dialog.close();
+    mq.addEventListener("change", onWide);
+    dialog.addEventListener("click", onClick);
     return () => {
-      document.body.style.overflow = prev;
+      mq.removeEventListener("change", onWide);
+      dialog.removeEventListener("click", onClick);
     };
-  }, [isOpen]);
+  }, []);
 
-  const prevPathRef = useRef(pathname);
-  useEffect(() => {
-    if (prevPathRef.current !== pathname) {
-      handleClose();
-      prevPathRef.current = pathname;
-    }
-  }, [pathname, handleClose]);
-
-  // Focus management: move focus into the drawer on open, trap Tab inside
-  // the dialog, and restore focus to the trigger on close.
-  const panelRef = useRef<HTMLDivElement>(null);
-  const lastFocusedRef = useRef<HTMLElement | null>(null);
-  useEffect(() => {
-    if (!isOpen) return;
-    lastFocusedRef.current = document.activeElement as HTMLElement | null;
-
-    const panel = panelRef.current;
-    const focusables = () =>
-      panel
-        ? Array.from(
-            panel.querySelectorAll<HTMLElement>(
-              'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            )
-          ).filter((el) => el.offsetParent !== null)
-        : [];
-
-    // Initial focus — first link in the drawer
-    const raf = requestAnimationFrame(() => {
-      focusables()[0]?.focus();
-    });
-
-    const onTab = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
-      const items = focusables();
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      const current = document.activeElement as HTMLElement | null;
-      if (e.shiftKey && (current === first || !panel?.contains(current))) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && (current === last || !panel?.contains(current))) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", onTab);
-    return () => {
-      cancelAnimationFrame(raf);
-      document.removeEventListener("keydown", onTab);
-      lastFocusedRef.current?.focus?.();
-    };
-  }, [isOpen]);
-
-  const whatsappHref = `https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`;
-  const phoneHref = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
-
-  if (!isClient) return null;
-
-  return createPortal(
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.button
-            type="button"
-            className="mobile-nav__overlay lg:hidden"
-            aria-label="Close menu"
-            onClick={handleClose}
-            {...OVERLAY_MOTION}
-          />
-
-          <motion.div
-            id="mobile-nav-drawer"
-            ref={panelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-            className="mobile-nav__panel lg:hidden"
-            {...panelMotion}
-          >
-            <nav className="mobile-nav__links" aria-label="Mobile navigation">
-              {NAV_LINKS.map((link) => {
-                if (link.href === "/services") {
-                  const servicesActive = pathname.startsWith("/services");
-                  return (
-                    <div key={link.href} className="mobile-nav__accordion">
-                      <button
-                        type="button"
-                        className={cn(
-                          "mobile-nav__link mobile-nav__accordion-trigger tap-target",
-                          servicesActive && "is-active"
-                        )}
-                        onClick={() => setExperiencesOpen((v) => !v)}
-                        aria-expanded={experiencesOpen}
-                        aria-controls="mobile-experience-accordion"
-                      >
-                        {link.label}
-                        <ChevronDown
-                          className={cn("mobile-nav__chevron", experiencesOpen && "is-open")}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {experiencesOpen && (
-                          <motion.div
-                            id="mobile-experience-accordion"
-                            className="mobile-nav__accordion-panel"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={
-                              prefersReducedMotion
-                                ? { duration: 0.01 }
-                                : { duration: 0.28, ease: [0.22, 1, 0.36, 1] }
-                            }
-                          >
-                            <div className="mobile-nav__accordion-inner">
-                              {EXPERIENCE_CATEGORIES.map((item) => {
-                                const active = isNavActive(pathname, item.href);
-                                return (
-                                  <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    onClick={handleClose}
-                                    aria-current={active ? "page" : undefined}
-                                    className={cn("mobile-nav__sub-link tap-target", active && "is-active")}
-                                  >
-                                    {item.label}
-                                  </Link>
-                                );
-                              })}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                }
-
-                const active = isNavActive(pathname, link.href);
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={handleClose}
-                    aria-current={active ? "page" : undefined}
-                    className={cn("mobile-nav__link tap-target", active && "is-active")}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-
-              <Link
-                href="/book-event"
-                onClick={handleClose}
-                aria-current={pathname === "/book-event" ? "page" : undefined}
-                className={cn(
-                  "mobile-nav__link tap-target",
-                  pathname === "/book-event" && "is-active"
-                )}
-              >
-                Book Consultation
-              </Link>
-            </nav>
-
-            <footer className="mobile-nav__footer">
-              <a href={phoneHref} className="mobile-nav__contact tap-target">
-                <Phone className="mobile-nav__contact-icon" aria-hidden="true" />
-                {SITE_CONFIG.phone}
-              </a>
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mobile-nav__contact tap-target"
-              >
-                <MessageCircle className="mobile-nav__contact-icon" aria-hidden="true" />
-                WhatsApp
-              </a>
-              <a
-                href={SITE_CONFIG.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mobile-nav__contact tap-target"
-              >
-                <InstagramIcon className="mobile-nav__contact-icon" />
-                Instagram
-              </a>
-              <a href={`mailto:${SITE_CONFIG.email}`} className="mobile-nav__contact tap-target">
-                <Mail className="mobile-nav__contact-icon" aria-hidden="true" />
-                {SITE_CONFIG.email}
-              </a>
-              <Link href="/book-event" onClick={handleClose} className="mobile-nav__cta tap-target">
-                Book Consultation
-              </Link>
-            </footer>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>,
-    document.body
+  return (
+    <>
+      <button
+        type="button"
+        className="pg-shell-menubtn"
+        aria-haspopup="dialog"
+        aria-controls="site-menu"
+        onClick={() => ref.current?.showModal()}
+      >
+        {menuIcon}
+        Menu
+      </button>
+      <dialog id="site-menu" ref={ref} closedby="any" className="pg-shell-menu" aria-label="Menu">
+        <div className="pg-shell-menu__head">
+          <p className="lux-label lux-label--rule-none">Menu</p>
+          <button type="button" className="pg-shell-menubtn" onClick={() => ref.current?.close()}>
+            {closeIcon}
+            Close
+          </button>
+        </div>
+        {children}
+      </dialog>
+    </>
   );
 }

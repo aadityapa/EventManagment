@@ -1,155 +1,174 @@
 @import "tailwindcss";
-@import "../lib/stitch/stitch-theme.css";
-@import "../brand/design-system/tokens.css";
-@import "../brand/design-system/v5-tokens.css";
-@import "../brand/design-system/v4-tokens.css";
-@import "../styles/design-system.css";
-@import "../styles/responsive.css";
-@import "../styles/responsive-system.css";
+
+/* V6 — the one token file, then the shared layers. */
+@import "../styles/tokens.css";
 @import "../styles/luxury-redesign.css";
-@import "../styles/mobile-nav.css";
+@import "../styles/primitives.css";
+@import "../styles/primitives-complex.css";
+@import "../styles/lux-conversion.css";
+@import "../styles/pages/inquiry.css";
+/* Page layers (pg-* classes, @layer components) */
+@import "../styles/pages/shell.css";
+@import "../styles/pages/home.css";
+@import "../styles/pages/about.css";
+@import "../styles/pages/services.css";
+@import "../styles/pages/portfolio.css";
+@import "../styles/pages/conversion.css";
+@import "../styles/pages/blog.css";
+@import "../styles/pages/local.css";
+@import "../styles/pages/legal.css";
 
-:root {
-  --background: #fdfbf5;
-  --foreground: var(--text-primary);
-  --card: var(--glitz-card);
-  --surface: var(--glitz-surface);
-  --card-border: rgba(184, 134, 11, 0.2);
-  --muted: var(--text-muted);
-  --muted-foreground: var(--text-secondary);
-  --primary: var(--glitz-gold);
-  --primary-foreground: #111111;
-  --secondary: #f7f3eb;
-  --accent: #e6c67a;
-  --gold: var(--gold);
-  --gold-light: var(--gold-light);
-  --destructive: #ef4444;
-  --border: rgba(184, 134, 11, 0.18);
-  --ring: #b8860b;
-  --glass: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(184, 134, 11, 0.22);
-  --gradient-gold: linear-gradient(135deg, #b8860b 0%, #e6c67a 45%, #c9a227 100%);
-  --gradient-dark: linear-gradient(180deg, #fdfbf5 0%, #f7f3eb 50%, #fdfbf5 100%);
-  --gradient-hero: linear-gradient(90deg, rgba(253, 251, 245, 0.55) 0%, transparent 70%);
-  --shadow-glow: 0 0 32px rgba(201, 162, 39, 0.22);
-  --shadow-glow-lg: 0 0 56px rgba(212, 175, 55, 0.28);
-  --radius: 0.75rem;
-}
-
-.dark {
-  --background: #050816;
-  --foreground: var(--text-primary);
-  --card: var(--glitz-card);
-  --surface: var(--glitz-surface);
-  --card-border: rgba(216, 178, 106, 0.18);
-  --muted: var(--text-muted);
-  --muted-foreground: var(--text-secondary);
-  --primary: var(--glitz-gold);
-  --primary-foreground: #050816;
-  --secondary: #081226;
-  --accent: var(--lux-gold-metal);
-  --gold: var(--lux-gold);
-  --gold-light: var(--lux-gold-metal);
-  --destructive: #ef4444;
-  --border: rgba(216, 178, 106, 0.14);
-  --ring: var(--lux-gold);
-  --glass: rgba(16, 27, 53, 0.6);
-  --glass-border: rgba(216, 178, 106, 0.2);
-  --gradient-gold: linear-gradient(135deg, #d8b26a 0%, #f4d08d 45%, #d9a47b 100%);
-  --gradient-dark: linear-gradient(180deg, #050816 0%, #081226 50%, #050816 100%);
-  --gradient-hero: linear-gradient(90deg, rgba(5, 8, 22, 0.35) 0%, transparent 68%);
-  --shadow-glow: 0 0 40px rgba(216, 178, 106, 0.25);
-  --shadow-glow-lg: 0 0 64px rgba(244, 208, 141, 0.2);
-}
-
+/* Tailwind utilities from the one token file (text-lux-gold, bg-lux-surface-1,
+   font-display, text-display-xl …). Page packages never add @theme entries. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-bg-primary: var(--background);
-  --color-bg-elevated: var(--surface);
-  --color-bg-surface: var(--card);
-  --color-gold-soft: #e0d8bf;
-  --color-sand: var(--v5-warm-sand);
-  --color-obsidian: var(--v5-obsidian);
-  --color-primary-container: #c2b280;
-  --color-on-primary-container: #1a1400;
-  --color-glass-border: rgba(194, 178, 128, 0.22);
-  --color-glass-bg: rgba(18, 18, 18, 0.72);
-  --color-surface-container-low: #1a1a1a;
-  --color-surface-container-lowest: #121212;
-  --color-surface-variant: #2a2a2a;
-  --font-sans: var(--font-inter);
-  --font-body: var(--font-manrope);
-  --font-display: var(--font-playfair);
-  --font-heading: var(--font-cormorant);
+  /* Colour — base palette */
+  --color-lux-bg: var(--lux-bg);
+  --color-lux-bg-secondary: var(--lux-bg-secondary);
+  --color-lux-section: var(--lux-section);
+  --color-lux-card-solid: var(--lux-card-solid);
+  --color-lux-gold: var(--lux-gold);
+  --color-lux-gold-metal: var(--lux-gold-metal);
+  --color-lux-rose: var(--lux-rose);
+  --color-lux-purple: var(--lux-purple);
+  --color-lux-purple-bright: var(--lux-purple-bright);
+  --color-lux-violet: var(--lux-violet);
+  --color-lux-white: var(--lux-white);
+  --color-lux-muted: var(--lux-muted);
+  --color-lux-subtle: var(--lux-subtle);
+  --color-lux-danger: var(--lux-danger);
+  --color-lux-success: var(--lux-success);
+  --color-lux-whatsapp: var(--lux-whatsapp);
+
+  /* Colour — surfaces and lines */
+  --color-lux-surface-1: var(--lux-surface-1);
+  --color-lux-surface-2: var(--lux-surface-2);
+  --color-lux-surface-3: var(--lux-surface-3);
+  --color-lux-card: var(--lux-card);
+  --color-lux-border: var(--lux-border);
+  --color-lux-border-strong: var(--lux-border-strong);
+  --color-lux-border-gold: var(--lux-border-gold);
+  --color-lux-gold-12: var(--lux-gold-12);
+  --color-lux-gold-55: var(--lux-gold-55);
+
+  /* Fonts — font-display / font-body / font-accent / font-folio */
+  --font-sans: var(--lux-font-body);
+  --font-display: var(--lux-font-display);
+  --font-body: var(--lux-font-body);
+  --font-accent: var(--lux-font-accent);
+  --font-folio: var(--lux-font-folio);
+
+  /* Type scale — text-display-xl, text-display, text-h2, text-h3, text-deck … */
+  --text-display-xl: var(--lux-text-display-xl);
+  --text-display-xl--line-height: var(--lux-leading-display);
+  --text-display: var(--lux-text-display);
+  --text-display--line-height: var(--lux-leading-display);
+  --text-h2: var(--lux-text-h2);
+  --text-h2--line-height: var(--lux-leading-heading);
+  --text-h3: var(--lux-text-h3);
+  --text-h3--line-height: var(--lux-leading-h3);
+  --text-deck: var(--lux-text-deck);
+  --text-deck--line-height: var(--lux-leading-deck);
+  --text-lead: var(--lux-text-lead);
+  --text-lead--line-height: var(--lux-leading-lead);
+  --text-body: var(--lux-text-body);
+  --text-body--line-height: var(--lux-leading-body);
+  --text-small: var(--lux-text-small);
+  --text-small--line-height: 1.5;
+  --text-label: var(--lux-text-label);
+  --text-label--line-height: 1.4;
+  --text-folio: var(--lux-text-folio);
+  --text-folio--line-height: 1;
+  --text-numeral: var(--lux-text-numeral);
+  --text-numeral--line-height: 1;
+  --text-price: var(--lux-text-price);
+  --text-price--line-height: 1.1;
+  --text-ui: var(--lux-text-ui);
+  --text-ui--line-height: 1.2;
 }
+
+/* ── Global resets ─────────────────────────────────────────────────────── */
 
 * {
   box-sizing: border-box;
 }
 
+/* No scroll-behavior: smooth here — Next 16 no longer neutralises it during
+   route transitions, and a smooth scroll-to-top under the view-transition
+   crossfade reads as jank. */
+/* scroll-padding keeps anchor jumps AND keyboard focus clear of the fixed
+   header (and, on phones, the fixed action bar) — WCAG 2.4.11. It replaces a
+   per-[id] scroll-margin, which would stack on top of it. */
 html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+  background: var(--lux-bg);
+  overflow-x: clip;
+  scroll-padding-top: calc(var(--lux-nav-h-current) + 1rem);
 }
 
-/* Anchor targets land below the fixed header instead of underneath it. */
-[id] {
-  scroll-margin-top: 5.5rem;
+@media (max-width: 767.98px) {
+  html {
+    scroll-padding-bottom: calc(var(--lux-actionbar-h) + env(safe-area-inset-bottom) + 1rem);
+  }
+}
+
+/* body carries .brand-root: clip (not hidden) so sticky children keep working. */
+.brand-root {
+  overflow-x: clip;
+  min-width: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-manrope), var(--font-inter), system-ui, sans-serif;
-  overflow-x: hidden;
+  background: var(--lux-bg);
+  color: var(--lux-white);
+  font-family: var(--lux-font-body);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
-.app-main > *:first-child:not([class*="min-h-"]) {
-  padding-top: 4.25rem;
+/* clip, not hidden — hidden would turn main into a scroll container and break
+   position: sticky (index frame, on-page contents). No transform on main. */
+main {
+  overflow-x: clip;
 }
 
-.container-page {
-  width: 100%;
-  max-width: 90rem;
-  margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 2rem);
+/* Legacy pages rely on this header offset; V6 covers pad themselves (.lux-cover). */
+.app-main > *:first-child:not([class*="min-h-"]):not(.lux-page) {
+  padding-top: var(--lux-nav-h-current);
 }
 
-.section-y {
-  padding-block: 5rem;
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--lux-gold);
+  outline-offset: 3px;
 }
 
-@media (min-width: 768px) {
-  .section-y {
-    padding-block: 7.5rem;
-  }
+/* 44px minimum hit area (WCAG 2.5.8) for small inline controls. */
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
 }
 
-@media (min-width: 1024px) {
-  .section-y {
-    padding-block: 10rem;
-  }
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: var(--lux-gutter);
+  z-index: var(--lux-z-toast);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 var(--lux-radius-sm) var(--lux-radius-sm);
+  background: var(--lux-gold);
+  color: var(--lux-bg);
+  font: 700 var(--lux-text-ui) / 1.2 var(--lux-font-body);
+  letter-spacing: var(--lux-tracking-ui);
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform var(--lux-dur-fast) var(--lux-ease);
 }
 
-.safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-.safe-top {
-  padding-top: env(safe-area-inset-top, 0px);
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-offset: 0;
 }
 
 @media (max-width: 768px) {
@@ -166,128 +185,36 @@ body {
   }
 }
 
-.font-display {
-  font-family: var(--font-playfair), Georgia, serif;
-}
-
-.font-heading {
-  font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
-}
-
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border);
-}
-
-.glass-card {
-  background: var(--card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-}
-
-.gradient-text {
-  color: var(--gold); /* fallback — never invisible text */
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .gradient-text {
-    background: var(--gradient-gold);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-}
-
-.gradient-gold {
-  background: var(--gradient-gold);
-}
-
-.gradient-dark {
-  background: var(--gradient-dark);
-}
-
-.shadow-glow {
-  box-shadow: var(--shadow-glow);
-}
-
-.shadow-glow-lg {
-  box-shadow: var(--shadow-glow-lg);
-}
-
-.luxury-border {
-  border: 1px solid transparent;
-  background: linear-gradient(var(--card), var(--card)) padding-box,
-    var(--gradient-gold) border-box;
-}
-
-.luxury-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
-}
-
-.luxury-card:hover {
-  border-color: rgba(212, 175, 55, 0.45);
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: var(--shadow-glow);
-}
-
-.gold-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.magnetic-hover {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.magnetic-hover:hover {
-  transform: translateY(-2px) scale(1.02);
-}
-
-.text-balance {
-  text-wrap: balance;
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 40s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+::selection {
+  background: var(--lux-gold);
+  color: var(--lux-bg);
 }
 
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--lux-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: var(--lux-gold);
   border-radius: 3px;
 }
 
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+/* ── View Transitions (React <ViewTransition default="lux-crossfade">) ──── */
+
+::view-transition-old(.lux-crossfade),
+::view-transition-new(.lux-crossfade) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--lux-ease);
 }
 
+/* ── Motion safety ─────────────────────────────────────────────────────── */
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -295,79 +222,27 @@ body {
   html {
     scroll-behavior: auto;
   }
-  .marquee-track {
-    animation: none;
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 
-@keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
-}
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
-}
-.animate-accordion-down {
-  animation: accordion-down 0.2s ease-out;
-}
-.animate-accordion-up {
-  animation: accordion-up 0.2s ease-out;
-}
+/* ── Legacy helpers for the private auth/admin/dashboard screens ───────── */
 
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.shimmer-gold {
-  background: linear-gradient(90deg, #a6966c 0%, #e0d8bf 50%, #c2b280 100%);
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
-}
-
-::selection {
-  background: var(--primary);
-  color: var(--primary-foreground);
-}
-
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-/* Gallery masonry — defer off-screen paint for smoother scroll.
-   `auto 480px` remembers the real rendered size after first paint, so cards
-   hug their image exactly (no empty band below landscapes, no cropped portraits). */
-.gallery-masonry-item {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 480px;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Aspect-ratio system — consistent image framing sitewide                    */
-/* -------------------------------------------------------------------------- */
-.aspect-hero { aspect-ratio: 16 / 9; }
-.aspect-card { aspect-ratio: 4 / 3; }
-.aspect-venue { aspect-ratio: 3 / 2; }
-.aspect-blog { aspect-ratio: 16 / 10; }
-.aspect-square { aspect-ratio: 1 / 1; }
-.aspect-portrait { aspect-ratio: 3 / 4; }
-
-.aspect-hero > img,
-.aspect-card > img,
-.aspect-venue > img,
-.aspect-blog > img {
-  object-fit: cover;
+.container-page {
+  position: relative;
   width: 100%;
-  height: 100%;
+  max-width: var(--lux-container);
+  margin-inline: auto;
+  padding-inline: var(--lux-gutter);
 }
 
+.glass-card {
+  border: 1px solid var(--lux-border);
+  border-radius: var(--lux-radius-md);
+  background: var(--lux-card);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(22px);
+}

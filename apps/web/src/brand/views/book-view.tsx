@@ -1,104 +1,88 @@
-"use client";
+import { BRAND_COMMITMENTS, BRAND_REPLY_HOURS } from "@/brand/data/content";
+import { UiIcon } from "@/components/icons";
+import { Button, Commitments, Cover, Eyebrow, Heading, InquiryPanel, Ledger, Section } from "@/components/ui";
+import { getWhatsAppUrl } from "@/lib/utils";
 
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { BrandImage } from "@/brand/primitives/brand-image";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { HomeAiPlanner } from "@/brand/sections/home/ai-planner";
-import { LeadMagnetsSection, CallbackRequestForm } from "@/components/cro/conversion-sections";
-import { InlineBudgetCalculator } from "@/components/cro/budget-calculator";
-import { ScrollReveal } from "@/lib/motion";
-import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { Shield, Star, Lock } from "lucide-react";
+export type BookCollection = { name: string; from: string; guests: string };
 
-const BookingWizard = dynamic(
-  () => import("@/components/booking/event-architect").then((m) => m.EventArchitect),
-  { loading: () => <div className="min-h-[420px] animate-pulse rounded-[var(--v4-radius-xl)] v4-glass-liquid" /> }
-);
+type BookViewProps = {
+  defaultEventType?: string;
+  /** The collection named by `?collection=` — shown read-only above the form. */
+  collection?: BookCollection;
+};
 
-const TRUST_STRIP = [
-  { icon: Star, label: "1,000+ events delivered" },
-  { icon: Shield, label: "Licensed & insured" },
-  { icon: Lock, label: "Secure Razorpay checkout" },
+const detail = (id: (typeof BRAND_COMMITMENTS)[number]["id"]) => BRAND_COMMITMENTS.find((c) => c.id === id)?.detail;
+
+const NEXT_STEPS = [
+  { term: "Same-day reply", body: detail("reply") ?? BRAND_REPLY_HOURS },
+  { term: "Free consultation", body: "In person, on video or at your venue. No obligation, no payment." },
+  { term: "Itemised proposal in 48 hours", body: detail("proposal") ?? "Every line priced after your free consultation." },
 ];
 
-export function BookView() {
+/**
+ * /book-event (DESIGN.md §10.13). A conversation comes before any payment:
+ * the page collects a brief and starts one. The budget estimator lives on
+ * /pricing and is not repeated here.
+ */
+export function BookView({ defaultEventType, collection }: BookViewProps) {
   return (
-    <div className="brand-root">
-      {/* V4 hero */}
-      <section className="relative flex min-h-[56svh] items-end overflow-hidden">
-        <BrandImage
-          src={BRAND_IMAGES.hero.wedding}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
-        <div className="brand-container relative w-full pb-12 pt-32 sm:pb-16">
-          <GlassPanel textSafe className="max-w-2xl px-8 py-9 sm:px-10">
-            <span className="v4-kicker mb-3">Consultation</span>
-            <h1 className="v4-display text-white">
-              Book Your <span className="v4-gold-text">Extraordinary</span> Event
-            </h1>
-            <p className="v4-standfirst mt-4 text-white/80">
-              Our luxury planning wizard guides you from vision to celebration — one decision at a
-              time.
-            </p>
-          </GlassPanel>
-        </div>
-      </section>
+    <div className="lux-page pg-conv">
+      <Cover
+        size="text"
+        eyebrow="Free consultation"
+        title="Tell us about your event"
+        lead={`${BRAND_REPLY_HOURS} Then a free consultation, and your itemised proposal within 48 hours of it.`}
+        primary={{ href: "#inquire", cta: "book_cover_proposal" }}
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Book an event", href: "/book-event" },
+        ]}
+      />
 
-      {/* Trust strip */}
-      <div className="border-b border-[var(--glitz-border)] bg-[var(--glitz-surface)]">
-        <div className="brand-container flex flex-wrap items-center justify-center gap-6 py-4 sm:gap-10">
-          {TRUST_STRIP.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-2 text-xs text-[var(--text-secondary)] sm:text-sm">
-              <Icon className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-              {label}
-            </div>
-          ))}
+      <div className="pg-conv-split pg-conv-split--book">
+        <div className="pg-conv-split__main">
+          {collection ? (
+            <p className="pg-conv-note" role="note">
+              You are asking about <strong>{collection.name}</strong> — from {collection.from}, {collection.guests} guests.
+              Your planner starts from this collection; add anything else in your message.
+            </p>
+          ) : null}
+          <InquiryPanel
+            source="book_event"
+            variant="full"
+            defaultEventType={defaultEventType}
+            collection={collection?.name}
+            defaultGuests={collection?.guests}
+            eyebrow="Your brief"
+            title="Share the brief"
+            lead="Two minutes is enough: the occasion, the date, the guest count and a budget band. We take it from there."
+          />
         </div>
+
+        <section className="pg-conv-split__aside pg-conv-next" aria-labelledby="next-steps-title">
+          <Eyebrow>What happens next</Eyebrow>
+          <Heading as="h2" size="h3" id="next-steps-title">
+            Three steps to your proposal
+          </Heading>
+          <Ledger as="ol" numerals rows={NEXT_STEPS} />
+        </section>
       </div>
 
-      <section className="v4-section bg-[var(--glitz-bg)]">
-        <div className="brand-container">
-          <ScrollReveal preset="reveal">
-            <BookingWizard />
-          </ScrollReveal>
-          <p className="mt-8 text-center text-sm text-[var(--text-secondary)]">
-            Prefer AI-assisted planning?{" "}
-            <Link href="/ai" className="font-semibold text-[var(--glitz-gold)] underline-offset-4 hover:underline">
-              Visit the AI Experience Hub
-            </Link>
-            .
-          </p>
-        </div>
-      </section>
-
-      <InlineBudgetCalculator />
-      <HomeAiPlanner />
-      <LeadMagnetsSection />
-
-      <section id="callback" className="v4-section bg-[var(--glitz-surface)]">
-        <div className="brand-container">
-          <ScrollReveal preset="scale">
-            <GlassPanel glow className="mx-auto max-w-md p-6 sm:p-8">
-              <span className="v4-kicker mb-3 justify-center">Speak With Us</span>
-              <h2 className="text-center font-[family-name:var(--font-playfair)] text-2xl font-semibold">
-                Request a Callback
-              </h2>
-              <p className="mt-3 text-center text-sm text-[var(--text-secondary)]">
-                Leave your details — a luxury specialist will reach out within 2 hours.
-              </p>
-              <div className="mt-6">
-                <CallbackRequestForm />
-              </div>
-            </GlassPanel>
-          </ScrollReveal>
-        </div>
-      </section>
+      <Section id="commitments" number="01" eyebrow="Commitments" title="What you can expect" lazy>
+        <Commitments variant="grid" />
+        <p className="pg-conv-after">
+          <Button
+            variant="text"
+            href={getWhatsAppUrl("Hello Nexyyra Events, I would like a free proposal for my event.")}
+            external
+            cta="book_whatsapp"
+            location="book-commitments"
+            icon={<UiIcon name="whatsapp" size={20} />}
+          >
+            Prefer WhatsApp? Message a planner
+          </Button>
+        </p>
+      </Section>
     </div>
   );
 }

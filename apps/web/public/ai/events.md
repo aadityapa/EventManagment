@@ -1,36 +1,36 @@
 # Nexyyra Events — Event Types
 
-## Wedding World
-Luxury weddings, multi-day celebrations, mehendi/sangeet/reception production, palace and resort ceremonies.
+## Weddings
+Multi-day weddings: haldi, mehendi, sangeet, ceremony and reception, at palace, resort, hotel and garden venues.
 
-## Corporate World
-Conferences, summits, AGMs, leadership retreats, team-building events, dealer meets.
+## Destination weddings
+Heritage palaces in Udaipur and Jaipur, beachfront resorts in Goa, hill-station resorts and lakeside venues, and international destinations on request.
 
-## Celebrity World
-Red-carpet premieres, private VIP celebrations, fashion shows, media-managed events.
+## Corporate events
+Conferences, summits, AGMs, leadership offsites, team events, dealer meets and black-tie galas.
 
-## Destination Weddings
-Udaipur palace weddings, Goa beach celebrations, hill-station retreats, international destinations.
+## Celebrity and VIP events
+Talent and artist booking coordination, red-carpet arrivals, media management and VIP hospitality.
 
-## Birthday Events
-Milestone birthdays, themed parties, intimate gatherings, large-scale social celebrations.
+## Birthday and private celebrations
+Milestone birthdays, themed parties and intimate dinners.
 
-## Product Launches
-Brand launches, press conferences, experiential activations, dealer unveilings.
+## Product launches and brand promotions
+Launch reveals, press events, experiential activations and roadshows.
 
 ## Exhibitions
-Trade shows, industry expos, booth design, lead capture, floor management.
+Trade shows, industry expos, booth and pavilion design, lead capture and floor management.
 
 ## Conferences
-Keynote productions, breakout sessions, hybrid streaming, delegate management up to 5,000.
+Keynotes, breakout sessions, hybrid streaming and delegate management, from 50 to several thousand delegates.
 
-## Concert Management
-Live concerts, cultural festivals, artist booking, stage and crowd management.
+## Concerts and fashion shows
+Live music, cultural festivals and runway shows: artist logistics, staging, sound, lighting and crowd management.
 
 ## Scale
-- Intimate gatherings: 50–200 guests
-- Mid-scale events: 200–1,000 guests
-- Large productions: 1,000–5,000+ delegates
+- Intimate: 50–150 guests
+- Mid-scale: 150–500 guests
+- Large: 500 guests and more
 
 ## Booking
 https://www.nexyyra.com/book-event

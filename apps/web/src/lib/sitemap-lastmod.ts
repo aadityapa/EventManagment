@@ -2,26 +2,33 @@ import { ENTITY_FACTS } from "./constants";
 
 /** Per-URL lastmod from content updatedAt — not build clock */
 const CONTENT_DATE = ENTITY_FACTS.lastUpdated;
-const LEGAL_DATE = "2025-06-01";
+
+/**
+ * "Last updated" of each legal document — the pages print these dates, so the
+ * sitemap and the visible line can never disagree. Bump on any wording change.
+ */
+export const LEGAL_UPDATED = {
+  privacy: "2026-10-08", // payment processors corrected, cookies section added
+  terms: "2026-10-08", // payment methods corrected, cancellations defer to the Refund Policy
+  refund: "2026-06-07",
+} as const;
 
 const STATIC_LASTMOD: Record<string, string> = {
   "/": CONTENT_DATE,
-  "/about": CONTENT_DATE, // founders, team section, address updated
+  "/about": CONTENT_DATE,
+  "/company": CONTENT_DATE,
   "/services": CONTENT_DATE,
   "/portfolio": CONTENT_DATE,
-  "/venues": "2026-02-15",
-  "/vendors": "2026-02-15",
   "/gallery": CONTENT_DATE,
-  "/testimonials": "2026-01-20",
+  "/why-nexyyra": CONTENT_DATE,
   "/pricing": "2026-04-01",
   "/blog": CONTENT_DATE,
   "/faqs": "2026-05-01",
   "/contact": CONTENT_DATE,
   "/book-event": CONTENT_DATE,
-  "/ai": CONTENT_DATE,
-  "/privacy": CONTENT_DATE, // registered address updated
-  "/terms": LEGAL_DATE,
-  "/refund": LEGAL_DATE,
+  "/privacy": LEGAL_UPDATED.privacy,
+  "/terms": LEGAL_UPDATED.terms,
+  "/refund": LEGAL_UPDATED.refund,
 };
 
 const LOCAL_LASTMOD: Record<string, string> = {

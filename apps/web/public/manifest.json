@@ -1,11 +1,13 @@
 {
+  "id": "/",
   "name": "Nexyyra Events",
   "short_name": "Nexyyra",
-  "description": "The Next Era of Celebrations — experience architects and celebration designers",
+  "description": "Luxury weddings and corporate events, planned end-to-end - Pune, India",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0A0A0A",
-  "theme_color": "#C9A227",
+  "background_color": "#050816",
+  "theme_color": "#050816",
   "icons": [
     {
       "src": "/brand/android-chrome-192.png",

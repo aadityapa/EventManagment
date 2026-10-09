@@ -1,37 +1,59 @@
-import Link from "next/link";
-import { GLITZ_FAQS } from "@/brand/data/faq";
-import { AEO_FEATURED_FAQS } from "@/lib/geo-content";
+import { BRAND_REPLY_HOURS } from "@/brand/data/content";
+import { FAQ_CATEGORIES, faqSlug, faqsInCategory, toAccordionItems } from "@/brand/data/faq";
+import { Accordion, Cover, InquiryPanel, JsonLd, OnThisPage, Section } from "@/components/ui";
 import { faqSchema } from "@/lib/seo";
-import { BrandPageHero } from "@/brand/primitives/brand-hero";
-import { BrandSection } from "@/brand/primitives/brand-section";
-import { BrandFaqAccordion } from "@/brand/primitives/brand-faq-accordion";
-import { BRAND_IMAGES } from "@/brand/data/imagery";
 
-const AEO_FAQ_ITEMS = AEO_FEATURED_FAQS.map((f) => ({ ...f, category: "Popular Questions" }));
-const ALL_FAQS = [...AEO_FAQ_ITEMS, ...GLITZ_FAQS];
+const GROUPS = FAQ_CATEGORIES.map((category, i) => {
+  const slug = faqSlug(category);
+  return {
+    category,
+    id: `faq-${slug}`,
+    number: String(i + 1).padStart(2, "0"),
+    items: toAccordionItems(faqsInCategory(category), `faq-${slug}`),
+  };
+}).filter((g) => g.items.length > 0);
 
+/**
+ * /faqs (DESIGN.md §10.10): contents list beside one accordion per category.
+ * One FAQPage JSON-LD covers every rendered question — a FAQPage per group
+ * would be flagged as duplicate FAQPage markup by search engines.
+ */
 export function FaqsView() {
-  const schema = faqSchema(ALL_FAQS);
-  const categories = Array.from(new Set(ALL_FAQS.map((f) => f.category)));
+  const rendered = GROUPS.flatMap((g) => g.items);
 
   return (
-    <div className="brand-root">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <BrandPageHero label="Support" title="Frequently Asked Questions" subtitle="Everything about planning with Nexyyra Events." image={BRAND_IMAGES.corporate[1]} />
-      <BrandSection>
-        <div className="mx-auto max-w-3xl">
-          {categories.map((cat) => (
-            <div key={cat} className="mb-12">
-              <h2 className="mb-4 brand-display text-xl font-semibold text-[var(--glitz-gold)]">{cat}</h2>
-              <BrandFaqAccordion items={ALL_FAQS.filter((f) => f.category === cat)} location="faqs_page" />
-            </div>
+    <div className="lux-page pg-conv">
+      <JsonLd data={faqSchema(rendered.map((item) => ({ question: item.question, answer: item.answer })))} />
+      <Cover
+        size="text"
+        eyebrow="Questions"
+        title="Before you inquire"
+        lead={`Straight answers on consultations, prices, payment and how we plan. If yours is not here, ask us. ${BRAND_REPLY_HOURS}`}
+        primary={{ href: "#inquire", cta: "faqs_cover_proposal" }}
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "FAQs", href: "/faqs" },
+        ]}
+      />
+
+      <div className="lux-grid pg-conv-faqs">
+        <OnThisPage items={GROUPS.map((g) => ({ href: `#${g.id}`, label: g.category }))} className="pg-conv-faqs__nav" />
+        <div className="pg-conv-faqs__groups">
+          {GROUPS.map((g, i) => (
+            <Section key={g.id} id={g.id} number={g.number} title={g.category} space="block" lazy={i > 1}>
+              <Accordion name={g.id} items={g.items} />
+            </Section>
           ))}
-          <div className="lux-card lux-panel p-8 text-center">
-            <h3 className="brand-display text-xl font-bold">Still have questions?</h3>
-            <Link href="/contact" className="luxury-button luxury-button--gold mt-5">Contact Us</Link>
-          </div>
         </div>
-      </BrandSection>
+      </div>
+
+      <InquiryPanel
+        source="contact"
+        variant="compact"
+        eyebrow="Still deciding"
+        title="Ask us directly"
+        className="pg-conv-inquiry"
+      />
     </div>
   );
 }

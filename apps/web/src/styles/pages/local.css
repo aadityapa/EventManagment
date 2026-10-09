@@ -1,0 +1,60 @@
+/* Locations (/locations/[city]) and the six local-SEO pages — src/brand/templates/local-page.tsx.
+   Page-local additions only; every lux-* class comes from primitives.css. */
+
+@layer components {
+  /* Editorial band: one 3:2 photographic moment between the text cover and chapter 01,
+     on the wide reading rail so it lines up with the ledgers below. */
+  .pg-local-band {
+    width: 100%;
+    max-width: var(--lux-wide);
+    margin-block: var(--lux-space-block) var(--lux-space-section);
+  }
+
+  /* Related pages (local-SEO): small type on a hairline, never a card grid. */
+  .pg-local-links {
+    display: grid;
+    gap: var(--lux-space-3);
+    padding-block: var(--lux-space-block);
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .pg-local-links__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--lux-space-2) var(--lux-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-local-links__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--lux-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  .pg-local-links__link:focus-visible {
+    outline: none;
+    box-shadow: var(--lux-ring);
+    border-radius: var(--lux-radius-xs);
+  }
+
+  @media (hover: hover) {
+    .pg-local-links__link:hover { color: var(--lux-white); }
+  }
+
+  /* The band follows a text cover: keep it close on phones so chapter 01 is not pushed far down. */
+  @media (max-width: 767.98px) {
+    .pg-local-band { margin-block: var(--lux-space-tight) var(--lux-space-block); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pg-local-links__link { transition: none; }
+  }
+}

@@ -1,0 +1,56 @@
+/* Home page (DESIGN.md §10.1) — page-local layout only; every structural class
+   comes from primitives.css. --lux-* tokens only, no hex. */
+
+@layer components {
+  /* Chapter 02: copy cols 1–6, portrait cols 8–12 (offset at ≥ 1024); photo after the copy on phones. */
+  .pg-home-about { row-gap: var(--lux-space-block); align-items: start; }
+  .pg-home-about__copy,
+  .pg-home-about__media { grid-column: 1 / -1; min-width: 0; }
+  .pg-home-about__copy { display: grid; gap: var(--lux-space-5); justify-items: start; }
+  .pg-home-about__media { max-width: 32rem; }
+
+  @media (min-width: 768px) {
+    .pg-home-about__copy { grid-column: 1 / span 6; }
+    .pg-home-about__media { grid-column: 8 / span 5; max-width: none; }
+  }
+
+  /* Chapter 04: the honesty line stands above the cards. */
+  .pg-home-concepts__banner { margin-bottom: var(--lux-space-6); }
+
+  /* Chapter 05: one price line under the commitments. */
+  .pg-home-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--lux-space-2) var(--lux-space-5);
+    margin: var(--lux-space-block) 0 0;
+    padding-top: var(--lux-space-5);
+    border-top: 1px solid var(--lux-border);
+    font: 600 var(--lux-text-lead)/1.4 var(--lux-font-body);
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--lux-white);
+  }
+
+  .pg-home-price__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font: 700 var(--lux-text-ui)/1 var(--lux-font-body);
+    letter-spacing: var(--lux-tracking-ui);
+    text-transform: uppercase;
+    color: var(--lux-gold);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold-55);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    transition: text-decoration-color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  .pg-home-price__link:hover { text-decoration-color: var(--lux-gold); }
+
+  .pg-home-price__link:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+    border-radius: var(--lux-radius-xs);
+  }
+}

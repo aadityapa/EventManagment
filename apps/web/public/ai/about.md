@@ -1,27 +1,31 @@
 # About Nexyyra Events
 
-**Nexyyra Events** is a luxury event management company headquartered in Telhara, Maharashtra, India (Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, Gajanan Nagar, Telhara 444108), with a delivery and coordination office in Pune. Founded by Yash Bajaj — joined by co-founders Aaditya Padiya (CTO) and Amey Korde (CMO) in 2026, when the business was incorporated as Nexyyra Events and Promotions Private Limited — Nexyyra has evolved from a boutique wedding studio into a full-service experience house serving weddings, corporate events, celebrity celebrations, and destination productions across India and internationally.
+**Nexyyra Events** is the trade name of Nexyyra Events and Promotions Private Limited (CIN U70200ME2026PTC476014), incorporated in 2026. Its registered office is at Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108, and it runs a Delivery & Coordination Office in Pune.
 
-## Mission
+Tagline: Creating Experiences That Last Forever.
 
-To architect extraordinary celebrations that become lifelong memories — combining luxury design sensibility with military-precision operations.
+## What we do
 
-## What We Do
+Nexyyra Events plans, designs and produces events end to end, with design and production in-house:
 
-- Luxury wedding planning and destination weddings
-- Corporate conferences, galas, and product launches
-- Celebrity and VIP event management
-- Concert, exhibition, and entertainment production
-- Venue curation and end-to-end event production
+- Wedding planning and destination weddings
+- Corporate events, conferences and product launches
+- Celebrity management and talent coordination
+- Birthday and private celebrations
+- Fashion shows, concerts and exhibitions
+- Brand promotions and technical event production
 
-## Track Record
+## How we work
 
-- End-to-end planning, design and production in-house
-- Pan-India service coverage
+1. Discovery — a free, no-obligation consultation
+2. Design — a creative concept and an itemised proposal within 48 hours of the consultation
+3. Production — vendor contracts, one run-of-show and rehearsals
+4. Execution — one dedicated event director and an on-ground team on the day
+5. Wrap — a post-event debrief, vendor settlement and media hand-over
 
 ## Contact
 
 - Website: https://www.nexyyra.com
-- Phone: +91 7020640157
+- Phone / WhatsApp: +91 7020640157
 - Email: Info.Events@nexyyra.com
-- Book consultation: https://www.nexyyra.com/book-event
+- Book a consultation: https://www.nexyyra.com/book-event

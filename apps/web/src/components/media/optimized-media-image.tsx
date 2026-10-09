@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image, { type ImageProps } from "next/image";
 import type { MediaAsset } from "@/lib/media/types";
 import { pickBestVariantSrc } from "@/lib/media/utils";
-import { BRAND_BLUR, BRAND_FALLBACK } from "@/brand/data/imagery";
+import { BRAND_BLUR, LOCAL_IMAGE_FALLBACK as BRAND_FALLBACK } from "@/brand/data/image-placeholders";
 import { cn } from "@/lib/utils";
 
 type Props = Omit<ImageProps, "src" | "blurDataURL" | "placeholder" | "alt"> & {

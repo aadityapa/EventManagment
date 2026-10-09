@@ -1,46 +1,37 @@
 import { Router } from "express";
 import { z } from "zod";
-import type { Prisma } from "@prisma/client";
+import { EventType, type Prisma } from "@prisma/client";
 import prisma from "../lib/prisma";
+import { emailSchema, longText, parseBody, phoneSchema, sendServerError, shortText } from "../lib/http";
 
 const router = Router();
 
+/* Extra keys (utm tags, page, guest count…) are kept in `metadata`, but each
+   must be a small scalar so a form cannot stuff megabytes into the JSON column. */
+const metadataValue = z.union([z.string().max(500), z.number(), z.boolean()]);
+
 const leadSchema = z
   .object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  eventType: z.string().optional(),
-  budget: z.number().optional(),
-  message: z.string().optional(),
-  source: z.string().optional(),
-})
-  .passthrough();
+    name: shortText(120).min(2),
+    email: emailSchema,
+    phone: phoneSchema.optional(),
+    eventType: z.string().trim().max(60).optional(),
+    budget: z.number().min(0).max(1_000_000_000).optional(),
+    message: longText(5000).optional(),
+    source: z.string().trim().max(60).optional(),
+  })
+  .catchall(metadataValue)
+  .refine((v) => Object.keys(v).length <= 30, { message: "Too many fields" });
 
-const EVENT_TYPE_ENUM = new Set([
-  "CORPORATE",
-  "WEDDING",
-  "DESTINATION_WEDDING",
-  "BIRTHDAY",
-  "PRODUCT_LAUNCH",
-  "CONFERENCE",
-  "EXHIBITION",
-  "CONCERT",
-  "CELEBRITY",
-  "BRAND_PROMOTION",
-  "FASHION_SHOW",
-  "MUSIC_FESTIVAL",
-  "AWARD_FUNCTION",
-  "OTHER",
-]);
+const EVENT_TYPE_ENUM = new Set<string>(Object.values(EventType));
 
-function normalizeEventType(input?: string): string | undefined {
+function normalizeEventType(input?: string): EventType | undefined {
   if (!input) return undefined;
   const raw = input.trim();
   if (!raw) return undefined;
 
   const upper = raw.toUpperCase().replace(/[\s-]+/g, "_");
-  if (EVENT_TYPE_ENUM.has(upper)) return upper;
+  if (EVENT_TYPE_ENUM.has(upper)) return upper as EventType;
 
   const lower = raw.toLowerCase();
   if (lower.includes("destination")) return "DESTINATION_WEDDING";
@@ -59,64 +50,60 @@ function normalizeEventType(input?: string): string | undefined {
   return "OTHER";
 }
 
+async function createLead(data: z.infer<typeof leadSchema>, fallbackSource: string) {
+  const { name, email, phone, eventType, budget, message, source, ...rest } = data;
+  return prisma.lead.create({
+    data: {
+      name,
+      email,
+      phone,
+      eventType: normalizeEventType(eventType),
+      budget,
+      message,
+      source: source || fallbackSource,
+      status: "NEW",
+      metadata: Object.keys(rest).length ? (rest as Prisma.InputJsonValue) : undefined,
+    },
+    select: { id: true },
+  });
+}
+
 router.post("/", async (req, res) => {
+  const data = parseBody(leadSchema, req, res);
+  if (!data) return;
   try {
-    const data = leadSchema.parse(req.body);
-    const { name, email, phone, eventType, budget, message, source, ...rest } = data;
-    const lead = await prisma.lead.create({
-      data: {
-        name,
-        email,
-        phone,
-        eventType: normalizeEventType(eventType) as never,
-        budget,
-        message,
-        source,
-        metadata: Object.keys(rest).length ? (rest as Prisma.InputJsonValue) : undefined,
-      },
-    });
-    res.status(201).json({ message: "Thank you! We'll contact you within 24 hours.", leadId: lead.id });
+    const lead = await createLead(data, "website");
+    res.status(201).json({ message: "Thank you! A planner will reply within the same day (9am–9pm IST).", leadId: lead.id });
   } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
-    res.status(500).json({ error: "Failed to submit lead" });
+    sendServerError(res, "leads.create", err, "Failed to submit your enquiry");
   }
 });
 
+const newsletterSchema = z.object({ email: emailSchema });
+
 router.post("/newsletter", async (req, res) => {
+  const data = parseBody(newsletterSchema, req, res);
+  if (!data) return;
   try {
-    const { email } = req.body;
     await prisma.newsletterSubscriber.upsert({
-      where: { email },
-      create: { email },
+      where: { email: data.email },
+      create: { email: data.email },
       update: { active: true },
     });
     res.json({ message: "Successfully subscribed!" });
-  } catch {
-    res.status(500).json({ error: "Subscription failed" });
+  } catch (err) {
+    sendServerError(res, "leads.newsletter", err, "Subscription failed");
   }
 });
 
 router.post("/consultation", async (req, res) => {
+  const data = parseBody(leadSchema, req, res);
+  if (!data) return;
   try {
-    const data = leadSchema.parse({ ...req.body, source: "consultation_form" });
-    const { name, email, phone, eventType, budget, message, source, ...rest } = data;
-    const lead = await prisma.lead.create({
-      data: {
-        name,
-        email,
-        phone,
-        eventType: normalizeEventType(eventType) as never,
-        budget,
-        message,
-        source,
-        status: "NEW",
-        metadata: Object.keys(rest).length ? (rest as Prisma.InputJsonValue) : undefined,
-      },
-    });
+    const lead = await createLead({ ...data, source: "consultation_form" }, "consultation_form");
     res.status(201).json({ message: "Consultation request received!", leadId: lead.id });
   } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
-    res.status(500).json({ error: "Failed to submit consultation request" });
+    sendServerError(res, "leads.consultation", err, "Failed to submit consultation request");
   }
 });
 

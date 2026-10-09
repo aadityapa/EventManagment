@@ -1,0 +1,1337 @@
+/* ==========================================================================
+   Nexyyra V6 — structural primitives (DESIGN.md §4–§6.1, §9, §11.6).
+   Every rule sits in @layer components so Tailwind utilities and the layered
+   page CSS (imported after this file) still win; @property, @keyframes and the
+   view-transition pseudo-elements are global by nature. Values come from
+   tokens.css only — no hex in this file. Page packages extend with pg-* only.
+   ========================================================================== */
+
+@property --lux-rule {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@keyframes lux-rise {
+  from { opacity: 0; translate: 0 var(--lux-reveal-rise); }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes lux-settle {
+  from { scale: 1.06; }
+  to { scale: 1; }
+}
+
+@keyframes lux-draw {
+  to { --lux-rule: 100%; }
+}
+
+@keyframes lux-draw-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* View transitions (§9.4): 320ms shared-element morphs, 200ms root crossfade. */
+::view-transition-group(.lux-morph) {
+  animation-duration: var(--lux-dur-morph);
+  animation-timing-function: var(--lux-ease);
+}
+
+::view-transition-old(.lux-crossfade),
+::view-transition-new(.lux-crossfade) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--lux-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
+
+@layer components {
+  /* ── Page frame (§5.1) ───────────────────────────────────────────── */
+  main {
+    overflow-x: clip; /* clip, not hidden — keeps sticky working */
+  }
+
+  .lux-page {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--lux-gutter), 1fr)
+      [content-start] min(100% - 2 * var(--lux-gutter), var(--lux-container))
+      [content-end] minmax(var(--lux-gutter), 1fr)
+      [full-end];
+  }
+
+  .lux-page > * { grid-column: content; }
+  .lux-page > .lux-bleed { grid-column: full; }
+
+  .lux-measure { max-width: var(--lux-measure); }
+  .lux-wide { max-width: var(--lux-wide); }
+
+  /* Anchor offset under the fixed header: html scroll-padding (globals.css). */
+
+  /* ── Grid (§5.2) ─────────────────────────────────────────────────── */
+  .lux-grid {
+    --lux-cols: 6;
+    display: grid;
+    grid-template-columns: repeat(var(--lux-cols), minmax(0, 1fr));
+    gap: var(--lux-grid-gap);
+  }
+
+  .lux-col-text,
+  .lux-col-media,
+  .lux-col-wide,
+  .lux-col-measure,
+  .lux-col-aside {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .lux-grid { --lux-cols: 12; }
+    .lux-col-text { grid-column: 1 / span 6; }
+    .lux-col-media { grid-column: 7 / span 6; }
+    .lux-col-wide { grid-column: 2 / span 10; }
+    .lux-col-measure { grid-column: 3 / span 8; }
+    .lux-col-aside { grid-column: 9 / span 4; }
+  }
+
+  @media (min-width: 1024px) {
+    .lux-col-offset { margin-top: clamp(2rem, 8vw, 7rem); }
+    .lux-grid--ruled > * + * {
+      border-left: 1px solid var(--lux-border);
+      padding-left: 2rem;
+    }
+  }
+
+  /* ── Typography (§4) ─────────────────────────────────────────────── */
+  .lux-heading {
+    margin: 0;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 500;
+    font-size: var(--lux-text-h2);
+    line-height: var(--lux-leading-heading);
+    letter-spacing: 0;
+    text-wrap: balance;
+    font-feature-settings: "liga", "dlig", "kern";
+  }
+
+  .lux-heading--display-xl {
+    font-size: var(--lux-text-display-xl);
+    line-height: var(--lux-leading-display);
+    letter-spacing: var(--lux-tracking-display);
+  }
+
+  .lux-heading--display {
+    font-size: var(--lux-text-display);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+  }
+
+  .lux-heading--h2 {
+    font-size: var(--lux-text-h2);
+    line-height: var(--lux-leading-heading);
+  }
+
+  .lux-heading--h3 {
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+  }
+
+  em.lux-em {
+    font-family: var(--lux-font-accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .lux-deck {
+    margin: 0;
+    max-width: 26ch;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-style: normal; /* roman — never a pull-quote */
+    font-weight: 400;
+    font-size: var(--lux-text-deck);
+    line-height: var(--lux-leading-deck);
+    text-wrap: balance;
+    hanging-punctuation: first;
+    font-feature-settings: "liga", "dlig", "kern";
+  }
+
+  .lux-lead {
+    margin: 0;
+    max-width: 54ch;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 400;
+    font-size: var(--lux-text-lead);
+    line-height: var(--lux-leading-lead);
+    text-wrap: pretty;
+  }
+
+  .lux-prose {
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 400;
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+    counter-reset: lux-chapter;
+  }
+
+  .lux-prose--lead {
+    font-size: var(--lux-text-lead);
+    line-height: var(--lux-leading-lead);
+  }
+
+  .lux-prose > * { margin: 0; }
+  .lux-prose > * + * { margin-block-start: 1.72em; margin-block-start: 1lh; }
+
+  .lux-prose :is(h2, h3) {
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-wrap: balance;
+    font-feature-settings: "liga", "dlig", "kern";
+  }
+
+  .lux-prose h2 {
+    font-size: var(--lux-text-h2);
+    line-height: var(--lux-leading-heading);
+    margin-block-start: 2em;
+    counter-increment: lux-chapter;
+  }
+
+  /* Numbered chapters inside articles: gold Manrope numeral, no Cinzel. */
+  .lux-prose h2::before {
+    content: counter(lux-chapter, decimal-leading-zero);
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-label);
+    line-height: 1;
+    letter-spacing: var(--lux-tracking-label);
+  }
+
+  .lux-prose h3 {
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+    margin-block-start: 1.5em;
+  }
+
+  .lux-prose :is(h2, h3) + * { margin-block-start: 0.75em; margin-block-start: 0.75lh; }
+
+  .lux-prose a {
+    color: var(--lux-white);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .lux-prose strong { color: var(--lux-white); font-weight: 600; }
+  .lux-prose :is(ul, ol) { padding-inline-start: 1.25rem; }
+  .lux-prose li + li { margin-block-start: 0.35em; }
+  .lux-prose li::marker { color: var(--lux-gold); }
+  .lux-prose figure { margin: 0; }
+  .lux-prose .lux-deck { margin-block: 2em; margin-block: 2lh; }
+
+  .lux-dropcap > p:first-of-type::first-letter {
+    float: left;
+    margin-top: 0.08em;
+    padding-right: 0.12em;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-accent);
+    font-weight: 500;
+    font-size: 3.2em;
+    line-height: 0.8;
+  }
+
+  .lux-small {
+    color: var(--lux-subtle);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+  }
+
+  /* Eyebrow: gold Manrope caps; leading rule on phones, both rules from md. */
+  .lux-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 0;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-label);
+    line-height: 1.3;
+    letter-spacing: var(--lux-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .lux-label::before,
+  .lux-label::after {
+    content: "";
+    flex-shrink: 0;
+    width: clamp(1.5rem, 4vw, 2.75rem);
+    height: 1px;
+    background: var(--lux-gradient-gold-line);
+  }
+
+  .lux-label::after { display: none; }
+
+  @media (min-width: 768px) {
+    .lux-label::after { display: block; }
+  }
+
+  .lux-label--rule-leading::after { display: none; }
+  .lux-label--rule-none::before,
+  .lux-label--rule-none::after { display: none; }
+
+  /* Folio numeral: the only Cinzel on a page (404 numeral aside); sits on the chapter rule. */
+  .lux-folio {
+    position: absolute;
+    top: -0.5em;
+    right: 0;
+    padding-inline: 0.5rem;
+    background: var(--lux-bg);
+    color: var(--lux-gold);
+    font-family: var(--lux-font-folio);
+    font-weight: 400;
+    font-size: var(--lux-text-folio);
+    line-height: 1;
+    letter-spacing: var(--lux-tracking-folio);
+    text-transform: uppercase;
+  }
+
+  .lux-section--plate .lux-folio { background: var(--lux-surface-1); }
+
+  @media (max-width: 1023.98px) {
+    .lux-folio {
+      position: static;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .lux-cover .lux-folio {
+    position: static;
+    display: block;
+    width: fit-content;
+    padding-inline: 0;
+    margin: 0;
+  }
+
+  /* Oversized numeral: sits beside text, never behind it. */
+  .lux-numeral {
+    color: var(--lux-gold-55);
+    font-family: var(--lux-font-display);
+    font-weight: 300;
+    font-size: var(--lux-text-numeral);
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .lux-price {
+    margin: 0;
+    color: var(--lux-white);
+    font-family: var(--lux-font-body);
+    font-weight: 600;
+    font-size: var(--lux-text-price);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Text links (chapter actions): gold underline that draws on hover.
+     Pill buttons placed in an actions row keep their own look (no hairline). */
+  .lux-link,
+  .lux-section__actions a:not(.luxury-button) {
+    color: var(--lux-white);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-ui);
+    line-height: 1.4;
+    letter-spacing: var(--lux-tracking-ui);
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.2em;
+    background-image:
+      linear-gradient(var(--lux-gold), var(--lux-gold)),
+      linear-gradient(var(--lux-border-gold), var(--lux-border-gold));
+    background-size: 0% 1px, 100% 1px;
+    background-position: 0 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--lux-dur-ui) var(--lux-ease);
+  }
+
+  /* ── Chapter (§5.3, §6.1) ────────────────────────────────────────── */
+  .lux-section {
+    position: relative;
+    padding-block: var(--lux-space-section);
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .lux-section--tight { padding-block: var(--lux-space-block); }
+  .lux-section--tighter { padding-block: var(--lux-space-tight); }
+  .lux-section--plate { background: var(--lux-surface-1); }
+
+  .lux-section--lazy {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 48rem;
+  }
+
+  .lux-section:has(> .lux-spread:first-child) { padding-top: 0; }
+
+  /* Bleed sections keep the page rails for their content (and anchor the folio to them). */
+  .lux-section__inner {
+    position: relative;
+    width: min(100% - 2 * var(--lux-gutter), var(--lux-container));
+    margin-inline: auto;
+  }
+
+  .lux-section__head {
+    display: grid;
+    gap: 1.2em;
+    gap: 0.75lh;
+    max-width: 38rem;
+    margin-bottom: var(--lux-space-block);
+  }
+
+  /* Gold rule under the head; --lux-rule is driven by the scroll timeline where supported. */
+  .lux-section__head::after {
+    content: "";
+    height: 1px;
+    --lux-rule: 100%;
+    background: linear-gradient(90deg, var(--lux-gold) var(--lux-rule), transparent 0);
+  }
+
+  .lux-section__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  /* ── Cover: its own rails + 12 columns; text never overlays the photo (§5.2, §6) ── */
+  .lux-cover {
+    display: grid;
+    gap: var(--lux-space-block);
+    padding-top: calc(var(--lux-nav-h-current) + var(--lux-space-cover));
+    padding-bottom: var(--lux-space-block);
+  }
+
+  .lux-cover__text {
+    display: grid;
+    gap: 1.1em;
+    gap: 1lh;
+    align-content: center;
+    min-width: 0;
+  }
+
+  .lux-cover__crumbs { margin-bottom: 0.25rem; }
+  .lux-cover__icon { display: inline-flex; color: var(--lux-white); }
+  .lux-cover__price { margin-top: -0.25em; }
+
+  .lux-cover__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.25em;
+  }
+
+  .lux-cover__media { min-width: 0; }
+  .lux-cover__entity { margin: 0; }
+
+  @media (max-width: 1023.98px) {
+    .lux-cover__text,
+    .lux-cover__entity,
+    .lux-cover__media .lux-caption {
+      padding-inline: var(--lux-gutter);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lux-cover {
+      /* Rails shrink by one gap so the first/last column lines sit exactly on the page gutter. */
+      grid-template-columns:
+        [full-start] minmax(calc(var(--lux-gutter) - var(--lux-grid-gap)), 1fr)
+        [content-start] repeat(12, [col-start] minmax(0, calc((min(100% - 2 * var(--lux-gutter), var(--lux-container)) - 11 * var(--lux-grid-gap)) / 12)) [col-end])
+        [content-end] minmax(calc(var(--lux-gutter) - var(--lux-grid-gap)), 1fr)
+        [full-end];
+      column-gap: var(--lux-grid-gap);
+      row-gap: var(--lux-space-block);
+      min-height: 72svh;
+    }
+
+    .lux-cover__text { grid-column: content-start / span 6; grid-row: 1; }
+    .lux-cover--text .lux-cover__text { grid-column: content-start / span 8; }
+    .lux-cover__media { grid-column: col-start 7 / full-end; grid-row: 1; }
+    .lux-cover__media .lux-frame__box { min-height: 72svh; }
+    .lux-cover__entity { grid-column: content; }
+  }
+
+  /* Services index (§6.1): the whole component lives in primitives-complex.css. */
+
+  /* ── Media frame + caption beneath (§6, §8.4) ────────────────────── */
+  .lux-frame { margin: 0; display: grid; }
+
+  .lux-frame__box {
+    position: relative;
+    overflow: hidden;
+    background: var(--lux-surface-2); /* reserved space reads as a plate, never a flash */
+  }
+
+  .lux-frame--3-2 .lux-frame__box { aspect-ratio: 3 / 2; }
+  .lux-frame--4-5 .lux-frame__box { aspect-ratio: 4 / 5; }
+  .lux-frame--3-4 .lux-frame__box { aspect-ratio: 3 / 4; }
+  .lux-frame--1-1 .lux-frame__box { aspect-ratio: 1 / 1; }
+  .lux-frame--21-9 .lux-frame__box { aspect-ratio: 21 / 9; }
+  .lux-frame--16-10 .lux-frame__box { aspect-ratio: 16 / 10; }
+  .lux-frame--4-3 .lux-frame__box { aspect-ratio: 4 / 3; }
+
+  .lux-frame--gilt .lux-frame__box { box-shadow: inset 0 0 0 1px var(--lux-border-gold); }
+
+  .lux-frame--gilt .lux-frame__box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px var(--lux-border-gold);
+    pointer-events: none;
+  }
+
+  .lux-frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lux-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--lux-border);
+    color: var(--lux-subtle);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .lux-caption__index {
+    flex-shrink: 0;
+    color: var(--lux-gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Spread / diptych (§6) ───────────────────────────────────────── */
+  .lux-spread { display: grid; }
+  .lux-spread .lux-frame__box { aspect-ratio: 3 / 2; }
+
+  @media (min-width: 1024px) {
+    .lux-spread .lux-frame__box { aspect-ratio: 21 / 9; }
+  }
+
+  /* Full-bleed spread: its caption returns to the content rail. */
+  .lux-page > .lux-spread .lux-caption {
+    width: min(100% - 2 * var(--lux-gutter), var(--lux-container));
+    margin-inline: auto;
+  }
+
+  .lux-diptych { display: grid; gap: var(--lux-grid-gap); }
+  .lux-diptych .lux-frame__box { aspect-ratio: 4 / 5; }
+
+  @media (min-width: 768px) {
+    .lux-diptych { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lux-diptych .lux-frame__box { aspect-ratio: 3 / 4; }
+  }
+
+  /* ── Ledger (§6.1) ───────────────────────────────────────────────── */
+  .lux-ledger {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    column-gap: var(--lux-grid-gap);
+  }
+
+  .lux-ledger__caption { margin: 0 0 0.75rem; }
+
+  .lux-ledger__row {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0.35rem 1rem;
+    align-items: baseline;
+    margin: 0;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .lux-ledger--jewel .lux-ledger__row { grid-template-columns: 1.25rem 1fr; }
+
+  /* The marker sits in row 1 only: term and body/cells auto-place down column 2.
+     (A `span 9` here left 7 empty implicit rows whose gaps padded every row.)
+     dl rows draw it as ::before — a <div> in a <dl> may hold only dt/dd. */
+  .lux-ledger__num,
+  .lux-ledger__row[data-numeral]::before {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-display);
+    font-weight: 500;
+    font-size: var(--lux-text-h3);
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .lux-ledger__row[data-numeral]::before {
+    content: attr(data-numeral);
+    content: attr(data-numeral) / "";
+  }
+
+  .lux-ledger__jewel,
+  .lux-ledger__row[data-marker="jewel"]::before {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.55em;
+    border-radius: 50%;
+    background: var(--lux-gold);
+  }
+
+  .lux-ledger__row[data-marker="jewel"]::before { content: ""; }
+
+  .lux-ledger__term {
+    grid-column: 2;
+    margin: 0;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+    text-wrap: balance;
+  }
+
+  .lux-ledger__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lux-ledger__body,
+  .lux-ledger__cell {
+    grid-column: 2;
+    margin: 0;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 400;
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+  }
+
+  .lux-ledger__cell { font-size: var(--lux-text-small); line-height: 1.5; }
+
+  @media (min-width: 640px) {
+    .lux-ledger--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 768px) {
+    .lux-ledger--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lux-ledger--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  .lux-ledger--table { display: table; border-collapse: collapse; }
+
+  .lux-ledger--table caption {
+    caption-side: top;
+    padding-bottom: 0.75rem;
+    color: var(--lux-subtle);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  .lux-ledger--table :is(th, td) {
+    padding: 1rem 1rem 1rem 0;
+    border-top: 1px solid var(--lux-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .lux-ledger--table thead th {
+    border-top: 0;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-label);
+    letter-spacing: var(--lux-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .lux-ledger--table .lux-ledger__row { display: table-row; }
+  .lux-ledger--table .lux-ledger__num { display: table-cell; width: 3.5rem; }
+  .lux-ledger--table .lux-ledger__term { display: table-cell; }
+  .lux-ledger--table :is(.lux-ledger__body, .lux-ledger__cell) { display: table-cell; font-size: var(--lux-text-body); line-height: var(--lux-leading-body); }
+
+  /* ── Action bar (phones, §6.1) ───────────────────────────────────── */
+  .lux-actionbar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: var(--lux-z-actionbar);
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.5rem;
+    padding: 0.6rem var(--lux-gutter) calc(0.6rem + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--lux-surface-1) 92%, transparent);
+    border-top: 1px solid var(--lux-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: translate var(--lux-dur-open) var(--lux-ease), visibility var(--lux-dur-open);
+  }
+
+  /* visibility (not just translate) so the off-screen links leave the tab order and the a11y tree. */
+  body[data-inquiry-visible="true"] .lux-actionbar,
+  html:has(dialog[open]) .lux-actionbar {
+    translate: 0 110%;
+    visibility: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .lux-actionbar { display: none; }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .lux-actionbar,
+    .lux-header.is-scrolled {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: var(--lux-surface-1);
+    }
+  }
+
+  /* Desktop services panel: full-width fixed popover under the nav (§11.6 (3)). */
+  #services-panel:popover-open {
+    position: fixed;
+    inset: var(--lux-nav-h) 0 auto 0;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid var(--lux-border);
+    background: var(--lux-surface-2);
+  }
+
+  /* ── FAQ (§6.1) ──────────────────────────────────────────────────── */
+  .lux-faq { display: grid; }
+
+  .lux-faq__item {
+    border-top: 1px solid var(--lux-border);
+    interpolate-size: allow-keywords;
+  }
+
+  .lux-faq__item:last-child { border-bottom: 1px solid var(--lux-border); }
+
+  .lux-faq__item > summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 44px;
+    padding-block: 1rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+    text-wrap: balance;
+  }
+
+  .lux-faq__item > summary::-webkit-details-marker { display: none; }
+  .lux-faq__item > summary > :is(h2, h3, h4) { margin: 0; font: inherit; }
+
+  .lux-faq__item > summary .lux-icon-plus {
+    flex-shrink: 0;
+    color: var(--lux-gold);
+    transition: rotate var(--lux-dur-ui) var(--lux-ease);
+  }
+
+  .lux-faq__item[open] > summary .lux-icon-plus { rotate: 45deg; }
+
+  .lux-faq__body {
+    padding-bottom: 1.25rem;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 400;
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+  }
+
+  .lux-faq__body > * { margin: 0; }
+  .lux-faq__body > * + * { margin-block-start: 1em; margin-block-start: 1lh; }
+
+  @supports (interpolate-size: allow-keywords) {
+    .lux-faq__item::details-content {
+      height: 0;
+      overflow: clip;
+      transition:
+        height var(--lux-dur-ui) var(--lux-ease),
+        content-visibility var(--lux-dur-ui) allow-discrete;
+    }
+
+    .lux-faq__item[open]::details-content { height: auto; }
+  }
+
+  /* ── Card (§6): solid levels; glass only over photography ────────── */
+  .lux-card--l1,
+  .lux-card--l2,
+  .lux-card--l3,
+  .lux-card--glass {
+    border: 1px solid var(--lux-border);
+    border-radius: var(--lux-radius-md);
+  }
+
+  .lux-card--l1 { background: var(--lux-surface-1); }
+  .lux-card--l2 { background: var(--lux-surface-2); }
+  .lux-card--l3 { background: var(--lux-surface-3); }
+
+  .lux-card--glass {
+    background: var(--lux-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .lux-card--interactive {
+    transition:
+      border-color var(--lux-dur-ui) var(--lux-ease),
+      translate var(--lux-dur-ui) var(--lux-ease);
+  }
+
+  .lux-card--pad-sm { padding: var(--lux-space-3) var(--lux-space-4); }
+  .lux-card--pad-md { padding: var(--lux-space-5); }
+  .lux-card--pad-lg { padding: var(--lux-space-6); }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .lux-card--glass {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: var(--lux-surface-2);
+    }
+  }
+
+  /* ── Badge ───────────────────────────────────────────────────────── */
+  .lux-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--lux-border-strong);
+    border-radius: var(--lux-radius-pill);
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-label);
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .lux-badge--gold {
+    border-color: var(--lux-border-gold);
+    color: var(--lux-gold);
+  }
+
+  /* ── Tabs (link tabs + radio filter) ─────────────────────────────── */
+  .lux-tabs ul {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--lux-border);
+  }
+
+  .lux-tabs ul::-webkit-scrollbar { display: none; }
+
+  .lux-tabs--radio {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--lux-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .lux-tabs a,
+  .lux-tabs label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    margin-bottom: -1px;
+    padding-block: 0.5rem;
+    border-bottom: 2px solid transparent;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-ui);
+    line-height: 1;
+    letter-spacing: var(--lux-tracking-ui);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .lux-tabs a[aria-current="page"],
+  .lux-tabs__radio:checked + label {
+    color: var(--lux-white);
+    border-bottom-color: var(--lux-gold);
+  }
+
+  .lux-tabs__count {
+    color: var(--lux-subtle);
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visually hidden but focusable, so :has(#f-x:checked) filters keep working. */
+  .lux-tabs__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lux-tabs__radio:focus-visible + label {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  /* ── Commitments (§6): the trust block, jewel dots, no icons ─────── */
+  .lux-commit {
+    display: grid;
+    gap: 1.25rem var(--lux-grid-gap);
+    margin: 0;
+  }
+
+  .lux-commit__cell {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .lux-commit dt {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+    text-wrap: balance;
+  }
+
+  .lux-commit dt::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lux-gold);
+  }
+
+  .lux-commit dd {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .lux-commit--expanded dd {
+    font-weight: 400;
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+  }
+
+  @media (min-width: 640px) {
+    .lux-commit--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .lux-commit--grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 768px) {
+    .lux-commit--row {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0 var(--lux-grid-gap);
+      padding-top: 1rem;
+      border-top: 1px solid var(--lux-border);
+    }
+
+    .lux-commit--row .lux-commit__cell { padding-top: 0; border-top: 0; }
+  }
+
+  .lux-commit--cover {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .lux-commit--cover .lux-commit__cell { padding-top: 0; border-top: 0; }
+  .lux-commit--cover dt { font-size: 1.375rem; } /* Cormorant floor */
+
+  @media (max-width: 639.98px) {
+    .lux-commit--cover dd { display: none; } /* keeps the offer inside the first phone screen */
+  }
+
+  /* ── Breadcrumbs (§6) ────────────────────────────────────────────── */
+  .lux-crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--lux-subtle);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-ui);
+    line-height: 1.4;
+  }
+
+  .lux-crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+  }
+
+  .lux-crumbs li + li::before {
+    content: "·";
+    color: var(--lux-gold);
+  }
+
+  .lux-crumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lux-crumbs a[aria-current="page"] { color: var(--lux-muted); }
+
+  @media (max-width: 639.98px) {
+    .lux-crumbs li:not(:first-child):not(:last-child) a {
+      display: inline-block;
+      max-width: 9ch;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
+  }
+
+  /* ── Pagination (§6) ─────────────────────────────────────────────── */
+  .lux-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lux-pagination :is(a, span) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--lux-border);
+    border-radius: var(--lux-radius-sm);
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 700;
+    font-size: var(--lux-text-ui);
+    line-height: 1;
+    letter-spacing: var(--lux-tracking-ui);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lux-pagination a[aria-current="page"] {
+    color: var(--lux-white);
+    border-color: var(--lux-gold);
+  }
+
+  .lux-pagination [aria-disabled="true"] { opacity: 0.4; }
+  .lux-pagination__gap { border-color: transparent; }
+
+  /* ── On this page (§6): plain sticky list, <details> on phones ───── */
+  .lux-contents {
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+  }
+
+  .lux-contents summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.5rem;
+    border-block: 1px solid var(--lux-border);
+    cursor: pointer;
+    list-style: none;
+    color: var(--lux-gold);
+    font-weight: 700;
+    font-size: var(--lux-text-label);
+    letter-spacing: var(--lux-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .lux-contents summary::-webkit-details-marker { display: none; }
+
+  .lux-contents ol {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lux-contents a {
+    display: block;
+    padding-block: 0.55rem;
+    border-bottom: 1px solid var(--lux-border);
+    color: var(--lux-muted);
+    text-decoration: none;
+  }
+
+  .lux-contents a:is(:hover, :focus-visible) { color: var(--lux-white); }
+
+  @media (min-width: 1024px) {
+    .lux-contents {
+      position: sticky;
+      top: calc(var(--lux-nav-h) + 1.5rem);
+      z-index: var(--lux-z-sticky);
+      align-self: start;
+    }
+
+    .lux-contents summary { border-bottom: 0; }
+  }
+
+  /* ── Concept card + banner (§6) ──────────────────────────────────── */
+  .lux-concept {
+    display: grid;
+    gap: 1rem;
+    container-type: inline-size;
+  }
+
+  .lux-concept__media { display: block; color: inherit; text-decoration: none; }
+  .lux-concept__body { display: grid; gap: 0.5rem; }
+
+  .lux-concept__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .lux-concept__title { margin: 0; }
+  .lux-concept__title a { color: inherit; text-decoration: none; }
+
+  .lux-concept__title a:is(:hover, :focus-visible) {
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  .lux-concept__story {
+    margin: 0;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 400;
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+  }
+
+  .lux-concept__specs { margin: 0; }
+
+  .lux-concept-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin: 0;
+    padding-block: 1rem;
+    border-block: 1px solid var(--lux-border);
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-weight: 500;
+    font-size: var(--lux-text-small);
+    line-height: 1.5;
+  }
+
+  /* ── Button extras (the family itself lives in luxury-redesign.css) ── */
+  .luxury-button--arrow .lux-icon-arrow { flex-shrink: 0; }
+
+  /* ── Motion: scroll-driven, CSS only (§9.1) ──────────────────────── */
+  @supports (animation-timeline: view()) {
+    .lux-reveal {
+      animation: lux-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+
+    /* Per-row ranges keep the stagger scroll-linked. */
+    .lux-reveal[style*="--i"] {
+      animation-range: entry calc(var(--i) * 4%) entry calc(35% + var(--i) * 4%);
+    }
+
+    .lux-reveal--cover { animation-range: cover 0% cover 25%; }
+
+    .lux-spread img,
+    .lux-cover__media img {
+      animation: lux-settle linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* The head is the timeline subject so the 1px rule draws over the head's own entry. */
+    .lux-section__head { view-timeline-name: --lux-head; }
+
+    .lux-section__head::after {
+      --lux-rule: 0%;
+      animation: lux-draw linear both;
+      animation-timeline: --lux-head;
+      animation-range: entry 0% entry 40%;
+    }
+
+    .lux-process::before {
+      transform-origin: top;
+      animation: lux-draw-y linear both;
+      animation-timeline: view();
+      animation-range: entry 20% exit 80%;
+    }
+  }
+
+  /* ── Hover and state, hover-capable devices only (§9.2) ──────────── */
+  @media (hover: hover) {
+    .lux-link:hover,
+    .lux-section__actions a:not(.luxury-button):hover { background-size: 100% 1px, 100% 1px; }
+
+    .lux-frame__box img { transition: scale var(--lux-dur-image) var(--lux-ease); }
+
+    a:is(:hover, :focus-visible) > .lux-frame .lux-frame__box img,
+    .lux-concept:is(:hover, :focus-within) .lux-frame__box img {
+      scale: 1.03;
+    }
+
+    .luxury-button--arrow .lux-icon-arrow {
+      transition: translate var(--lux-dur-ui) var(--lux-ease);
+    }
+
+    .luxury-button--arrow:hover .lux-icon-arrow {
+      translate: 6px 0;
+    }
+
+    .lux-card--interactive:hover {
+      border-color: var(--lux-gold);
+      translate: 0 -2px;
+    }
+
+    .lux-crumbs a:hover {
+      color: var(--lux-white);
+      text-decoration: underline;
+      text-decoration-color: var(--lux-gold);
+      text-underline-offset: 0.2em;
+    }
+
+    .lux-pagination a:hover {
+      color: var(--lux-white);
+      border-color: var(--lux-border-gold);
+    }
+
+    .lux-tabs :is(a, label):hover { color: var(--lux-white); }
+    .lux-ledger__link:hover { color: var(--lux-gold); }
+  }
+
+  /* ── Reduced motion (§9.5): final states, opacity-only hovers ────── */
+  @media (prefers-reduced-motion: reduce) {
+    .lux-reveal,
+    .lux-section__head::after,
+    .lux-process::before,
+    .lux-spread img,
+    .lux-cover__media img {
+      animation: none;
+    }
+
+    .lux-section__head::after { --lux-rule: 100%; }
+    .lux-process::before { transform: none; }
+
+    .lux-frame__box img { transition: opacity var(--lux-dur-fast) linear; }
+
+    a:is(:hover, :focus-visible) > .lux-frame .lux-frame__box img,
+    .lux-concept:is(:hover, :focus-within) .lux-frame__box img {
+      scale: 1;
+    }
+
+    .lux-icon-arrow,
+    .lux-card--interactive,
+    .lux-link,
+    .lux-section__actions a:not(.luxury-button),
+    .lux-faq__item > summary .lux-icon-plus,
+    .lux-index__frame img,
+    .lux-actionbar {
+      transition: none;
+    }
+
+    /* Own rule: browsers without ::details-content would drop a whole list containing it. */
+    .lux-faq__item::details-content { transition: none; }
+
+    .lux-card--interactive:hover { translate: 0 0; }
+  }
+}

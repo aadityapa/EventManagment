@@ -1,27 +1,22 @@
-import { generateSEO, breadcrumbSchema, aboutPageSchema } from "@/lib/seo";
-import { TEAM_MEMBERS } from "@/data/team";
-import { AboutView } from "@/brand";
+import { AboutView } from "@/brand/views/about-view";
+import { JsonLd } from "@/components/ui";
+import { companyProfile } from "@/data/cms";
+import { aboutPageSchema, generateSEO } from "@/lib/seo";
 
 export const metadata = generateSEO({
-  title: "About — Luxury Event Management",
-  description: "Discover Nexyyra Events — the team, philosophy and process behind a full-service luxury event management company serving Pune and all of India.",
+  title: "About — Weddings and Events Planned In-House",
+  description:
+    "Nexyyra Events and Promotions Private Limited (2026) designs and produces weddings, corporate events and celebrations in-house, from Pune across India.",
   path: "/about",
 });
 
-export default function AboutPage() {
-  const schema = breadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "About", url: "/about" },
-  ]);
-  const teamSchema = aboutPageSchema(
-    TEAM_MEMBERS.map(({ name, role, bio, image }) => ({ name, role, bio, image })),
-    "Yash Bajaj",
-  );
+// Facts-only AboutPage; the breadcrumb JSON-LD comes from the cover's Breadcrumbs.
+const aboutSchema = aboutPageSchema({ description: companyProfile.introduction });
 
+export default function AboutPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(teamSchema) }} />
+      <JsonLd data={aboutSchema} />
       <AboutView />
     </>
   );

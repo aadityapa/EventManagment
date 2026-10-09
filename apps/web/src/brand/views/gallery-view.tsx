@@ -1,53 +1,68 @@
-"use client";
+import type { CurationAsset } from "@/brand/data/image-curation";
+import { Cover, Gallery, InquiryPanel, Pagination, Section, Tabs } from "@/components/ui";
+import { ARCHIVE_FILTERS, type ArchiveFilter } from "@/lib/media/query-readonly";
 
-import type { MediaAsset } from "@/lib/media/types";
-import { BrandImage } from "@/brand/primitives/brand-image";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { LuxuryMasonryGallery } from "@/components/media";
-import { ScrollReveal } from "@/lib/motion";
-
-type Props = {
-  assets: MediaAsset[];
-  heroSrc: string;
+type GalleryViewProps = {
+  /** This page's tiles, already filtered, paginated and packed. */
+  items: CurationAsset[];
+  filter: ArchiveFilter;
+  page: number;
+  pageCount: number;
+  /** Photographs in the current filter, across all pages. */
+  total: number;
+  counts: Record<ArchiveFilter, number>;
 };
 
-export function GalleryView({ assets, heroSrc }: Props) {
-  return (
-    <div className="brand-root">
-      <section className="relative flex min-h-[68svh] items-end overflow-hidden">
-        <BrandImage
-          src={heroSrc}
-          alt="Luxury event gallery by Nexyyra Events"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
-        <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
-            <span className="v4-kicker mb-4">Visual Stories</span>
-            <h1 className="v4-display text-white">
-              Immersive <span className="v4-gold-text">Gallery</span>
-            </h1>
-            <p className="v4-standfirst mt-4 text-white/80">
-              Editorial frames from our most celebrated weddings, galas, and destination productions.
-            </p>
-          </GlassPanel>
-        </div>
-      </section>
+const CHAPTER_TITLE: Record<ArchiveFilter, string> = {
+  all: "Every photograph",
+  weddings: "Weddings and décor",
+  venues: "Venues",
+};
 
-      {/* Masonry archive — headline leads straight into the photo wall
-          (the old duplicate hero image block created a redundant gap here) */}
-      <section className="v4-section">
-        <div className="brand-container">
-          <ScrollReveal preset="reveal" className="mb-10 text-center">
-            <span className="v4-kicker mb-4">Visual Archive</span>
-            <h2 className="v4-title [text-wrap:balance]">Behind the Lens</h2>
-          </ScrollReveal>
-          <LuxuryMasonryGallery assets={assets} />
+/** Crawlable filter + page links: `/gallery`, `/gallery?f=venues`, `/gallery?f=venues&page=2`. */
+export function galleryHref(filter: ArchiveFilter, page = 1): string {
+  const params = new URLSearchParams();
+  if (filter !== "all") params.set("f", filter);
+  if (page > 1) params.set("page", String(page));
+  const query = params.toString();
+  return query ? `/gallery?${query}` : "/gallery";
+}
+
+export function GalleryView({ items, filter, page, pageCount, total, counts }: GalleryViewProps) {
+  const pageNote = pageCount > 1 ? `, page ${page} of ${pageCount}` : "";
+  return (
+    <div className="lux-page">
+      <Cover
+        size="text"
+        eyebrow="Gallery"
+        title="The archive"
+        lead="Photographs from Nexyyra productions and venue walkthroughs."
+        primary={{ href: "#inquire", cta: "gallery_cover_proposal" }}
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Gallery", href: "/gallery" },
+        ]}
+      />
+
+      <Section
+        id="photographs"
+        number="01"
+        eyebrow="Photographs"
+        title={CHAPTER_TITLE[filter]}
+        lead={`${total} photographs${pageNote}. Select any frame to view it full screen.`}
+      >
+        <div className="pg-gallery-body">
+          <Tabs
+            ariaLabel="Filter photographs"
+            current={galleryHref(filter)}
+            items={ARCHIVE_FILTERS.map((f) => ({ href: galleryHref(f.value), label: f.label, count: counts[f.value] }))}
+          />
+          <Gallery assets={items} />
+          <Pagination page={page} pageCount={pageCount} hrefFor={(p) => galleryHref(filter, p)} ariaLabel="Gallery pages" />
         </div>
-      </section>
+      </Section>
+
+      <InquiryPanel source="contact" variant="compact" className="pg-portfolio-inquiry" />
     </div>
   );
 }

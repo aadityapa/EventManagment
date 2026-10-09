@@ -6,9 +6,10 @@ export const SITE_CONFIG = {
   cin: process.env.NEXT_PUBLIC_COMPANY_CIN || "U70200ME2026PTC476014",
   /** Short trade name — used where the full legal name would not fit (nav, chips). */
   shortName: "Nexyyra Events",
-  tagline: "The Next Era of Celebrations",
+  tagline: "Creating Experiences That Last Forever",
+  /** Default meta description and schema description — one full sentence, ≤ 160 characters. */
   description:
-    "Experience architects, celebration designers, and memory creators — crafting extraordinary weddings, corporate experiences, celebrity events, and destination celebrations across India.",
+    "Nexyyra Events plans and produces weddings, corporate events, celebrations and destination events across India, with one event director from start to finish.",
   url: SITE_URL,
   // Hard-coded on purpose — env overrides (e.g. a stale Vercel dashboard var)
   // must never resurrect an old number. Update HERE to change it site-wide.
@@ -16,18 +17,17 @@ export const SITE_CONFIG = {
   whatsapp: "+917020640157",
   email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "Info.Events@nexyyra.com",
   address:
-    "Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108",
-  streetAddress: "Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar",
+    "Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108",
+  streetAddress: "Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar",
   city: "Telhara",
   region: "Maharashtra",
   postalCode: "444108",
   /** Delivery & coordination office. */
   branchOffice: "Delivery & Coordination Office — Pune, Maharashtra, India",
+  /* Only profiles verified to exist — they feed Organization `sameAs`.
+     Add a network here only once its official page is live. */
   social: {
     instagram: "https://www.instagram.com/nexyyra/",
-    facebook: "https://facebook.com/nexyyraevents",
-    youtube: "https://youtube.com/nexyyraevents",
-    linkedin: "https://linkedin.com/company/nexyyraevents",
   },
 };
 
@@ -38,54 +38,36 @@ export const ENTITY_FACTS = {
      (CIN) is documented. Restore with audited figures only. */
   languages: ["English", "Hindi", "Marathi"],
   serviceAreas: ["Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Jaipur", "Indore", "Nashik", "Nagpur", "Ahmedabad", "Surat", "Goa", "Udaipur", "Maharashtra", "India", "International destinations"],
-  /* awards removed (Phase-2) — no public proof URLs; restore with citations. */
-  knowsAbout: [
-    "Luxury Wedding Planning",
-    "Corporate Experience Design",
-    "Destination Weddings",
-    "Concert Production",
-    "Exhibition Management",
-    "Celebrity Event Management",
-    "Brand Activations",
-    "Fashion Show Production",
-    "Product Launches",
-    "Award Ceremonies",
-  ],
-  priceRange: "₹10 Lakhs to ₹4 Crore+",
+  /* awards removed (Phase-2) — no public proof URLs; restore with citations.
+     knowsAbout and the meta keywords are built in lib/seo.ts from the twelve
+     `services` in data/cms.ts, so they never drift from the services shown. */
+  priceRange: "₹2 Lakhs (single services) to ₹1 Crore+ (collections)",
   consultation: "Complimentary, no obligation — in person, video, or at venue",
   bookingAdvance: "30% advance secures your date",
   responseTime: "Tailored proposal within 48 hours of consultation",
   lastUpdated: "2026-08-06",
 } as const;
 
-export const SEO_KEYWORDS = [
-  "Luxury Event Planner Pune",
-  "Wedding Planner Pune",
-  "Corporate Experience Designer Pune",
-  "Destination Wedding Planner India",
-  "Luxury Wedding Planner India",
-  "Celebrity Event Management Pune",
-  "Concert Production Pune",
-  "Award Ceremony Organizer",
-  "Fashion Show Production",
-  "Brand Activation Agency",
-  "Experience Architects India",
-  "Celebration Designers Pune",
-];
-
+/**
+ * Inquiry / calculator event types: one per service in src/data/cms.ts (labels
+ * are the service titles) plus a catch-all. Ids are Prisma `EventType` values
+ * so leads reach the Express API unchanged — except EVENT_PRODUCTION, which has
+ * no enum value and is sent to the API as OTHER (see /api/inquiry).
+ */
 export const EVENT_TYPES = [
-  { id: "WEDDING", label: "Luxury Weddings", icon: "Heart" },
+  { id: "WEDDING", label: "Wedding Planning", icon: "Heart" },
   { id: "DESTINATION_WEDDING", label: "Destination Weddings", icon: "Plane" },
-  { id: "CORPORATE", label: "Corporate Experiences", icon: "Building2" },
-  { id: "CELEBRITY", label: "Celebrity Events", icon: "Star" },
-  { id: "AWARD_FUNCTION", label: "Award Ceremonies", icon: "Trophy" },
-  { id: "BIRTHDAY", label: "Birthday Celebrations", icon: "Cake" },
-  { id: "PRODUCT_LAUNCH", label: "Product Launches", icon: "Rocket" },
-  { id: "EXHIBITION", label: "Exhibitions", icon: "LayoutGrid" },
-  { id: "BRAND_PROMOTION", label: "Brand Activations", icon: "Megaphone" },
-  { id: "CONCERT", label: "Concerts", icon: "Music" },
+  { id: "CORPORATE", label: "Corporate Events", icon: "Building2" },
+  { id: "CELEBRITY", label: "Celebrity Management", icon: "Star" },
+  { id: "BIRTHDAY", label: "Birthday Events", icon: "Cake" },
+  { id: "CONFERENCE", label: "Conferences", icon: "Presentation" },
   { id: "FASHION_SHOW", label: "Fashion Shows", icon: "Shirt" },
-  { id: "OTHER", label: "Event Production", icon: "Clapperboard" },
+  { id: "CONCERT", label: "Concert Management", icon: "Music" },
+  { id: "EXHIBITION", label: "Exhibitions", icon: "LayoutGrid" },
+  { id: "BRAND_PROMOTION", label: "Brand Promotions", icon: "Megaphone" },
+  { id: "PRODUCT_LAUNCH", label: "Product Launches", icon: "Rocket" },
+  { id: "EVENT_PRODUCTION", label: "Event Production", icon: "Clapperboard" },
+  { id: "OTHER", label: "Something else", icon: "Sparkles" },
 ] as const;
 
 export const ADDITIONAL_SERVICES = [
@@ -100,12 +82,15 @@ export const ADDITIONAL_SERVICES = [
   { id: "security", label: "Security Team", price: 15000 },
 ];
 
+/* One price story site-wide (see brand/data/content.ts BRAND_INVESTMENTS):
+   Boutique from ₹10L · Signature from ₹35L · Grand Masterpiece from ₹1Cr.
+   Single-service production (décor only, AV only, …) is quoted from the
+   service "basePrice" in data/cms.ts and sits below the Boutique band. */
 export const BUDGET_RANGES = [
-  { id: "budget-1", label: "Under ₹5 Lakhs", min: 0, max: 500000 },
-  { id: "budget-2", label: "₹5 - 15 Lakhs", min: 500000, max: 1500000 },
-  { id: "budget-3", label: "₹15 - 50 Lakhs", min: 1500000, max: 5000000 },
-  { id: "budget-4", label: "₹50 Lakhs - 1 Crore", min: 5000000, max: 10000000 },
-  { id: "budget-5", label: "Above ₹1 Crore", min: 10000000, max: 50000000 },
+  { id: "budget-1", label: "Under ₹10 Lakhs", min: 0, max: 1000000 },
+  { id: "budget-2", label: "₹10 – 35 Lakhs", min: 1000000, max: 3500000 },
+  { id: "budget-3", label: "₹35 Lakhs – 1 Crore", min: 3500000, max: 10000000 },
+  { id: "budget-4", label: "₹1 Crore+", min: 10000000, max: 50000000 },
 ];
 
 export const VENDOR_CATEGORIES = [
@@ -117,21 +102,19 @@ export const VENDOR_CATEGORIES = [
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Experiences" },
+  { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
-  { href: "/venues", label: "Venues" },
-  { href: "/blog", label: "Stories" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
 /** Secondary routes surfaced in Experiences mega-menu + footer (not primary nav). */
 export const MEGA_EXPLORE_LINKS = [
   { href: "/portfolio", label: "Portfolio" },
-  { href: "/venues", label: "Venues" },
-  { href: "/vendors", label: "Vendors" },
   { href: "/gallery", label: "Gallery" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/testimonials", label: "Testimonials" },
+  { href: "/why-nexyyra", label: "Why Nexyyra" },
   { href: "/faqs", label: "FAQs" },
 ] as const;
 

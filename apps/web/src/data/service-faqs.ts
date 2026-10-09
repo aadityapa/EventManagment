@@ -1,4 +1,9 @@
-/** Per-service FAQ blocks for GEO / AI search — keyed by service slug */
+/**
+ * Per-service FAQ blocks for GEO / AI search — keyed by service slug.
+ * Honesty pass (V6): answers describe capability and process only. No named
+ * venues, events or partners, no track record, no figures beyond the
+ * published starting prices (`services[].basePrice` in cms.ts).
+ */
 export type ServiceFaq = { question: string; answer: string };
 
 export const SERVICE_FAQS: Record<string, ServiceFaq[]> = {
@@ -6,324 +11,324 @@ export const SERVICE_FAQS: Record<string, ServiceFaq[]> = {
     {
       question: "How far in advance should we book a wedding planner in Pune?",
       answer:
-        "For luxury weddings with 200+ guests, we recommend engaging Nexyyra 9–12 months before your date. Peak season (November–February) fills quickly at premium venues like Lavasa, Mulshi, and Koregaon Park hotels. Shorter timelines are possible for intimate celebrations — contact us for an honest availability check.",
+        "For weddings of 200 guests or more, start 9–12 months before your date. Peak season (November–February) fills early at hill-station resorts, lakeside venues and city hotels alike. Shorter timelines can work for intimate celebrations — ask, and we will tell you plainly what is achievable.",
     },
     {
       question: "What does full wedding planning with Nexyyra include?",
       answer:
-        "Our wedding planning service covers venue scouting, vendor curation (florists, caterers, photographers, entertainment), design and décor direction, timeline management, rehearsal coordination, and on-ground command on every function day. You receive a dedicated coordinator as your single point of contact from first consultation to farewell brunch.",
+        "Venue shortlisting, vendor selection and contracts (florists, caterers, photographers, entertainment), design and décor direction, a single run-of-show, rehearsals, and on-ground management of every function. One event director is your single point of contact from the first consultation to the farewell brunch.",
     },
     {
       question: "Can Nexyyra manage multi-day Maharashtrian wedding functions?",
       answer:
-        "Yes. We specialise in multi-day celebrations — haldi, mehendi, sangeet, wedding, and reception — with seamless transitions between venues, coordinated guest logistics, and culturally respectful programming. Menus, invitations, and ceremonies can be prepared in Marathi, Hindi, or English.",
+        "Yes. Haldi, mehendi, sangeet, wedding and reception are planned as one schedule, with guest movement between venues and each ritual's customs written into the run-of-show. Menus, invitations and ceremonies can be prepared in Marathi, Hindi or English.",
     },
     {
       question: "How are wedding budgets structured with Nexyyra?",
       answer:
-        "After your complimentary consultation, we share a transparent proposal with line-item budgets for décor, F&B, entertainment, and production. A 30% advance secures your date; remaining payments follow milestone invoices aligned to vendor commitments. See our wedding budget guide for allocation benchmarks.",
+        "After your free consultation you receive an itemised proposal — décor, food and beverage, entertainment, production and our fee each on its own line. A 30% advance secures your date; the balance is invoiced in milestones aligned to vendor commitments.",
     },
     {
       question: "Do you offer day-of coordination only?",
       answer:
-        "We offer day-of and partial planning for clients who have secured most vendors independently. Our team reviews your timeline, coordinates vendors on event day, and manages contingencies — ideal for clients who want Nexyyra execution without full-scope planning.",
+        "Yes. If you have booked most vendors yourself, we review your timeline, brief your vendors, run the day and handle contingencies, without the full planning scope.",
     },
   ],
   "corporate-events": [
     {
       question: "What types of corporate events does Nexyyra manage in Pune?",
       answer:
-        "Nexyyra Events manages annual days, product launches, investor summits, award ceremonies, team-building retreats, dealer meets, and black-tie galas for 50 to 5,000 attendees. We serve IT parks, manufacturing groups, pharma, and financial services clients across Maharashtra.",
+        "Annual days, product launches, investor meets, award nights, team offsites, dealer meets and black-tie galas, from 50 guests to several thousand. Events can be planned in Pune, across Maharashtra and in other Indian cities.",
     },
     {
-      question: "How do you measure ROI on corporate events?",
+      question: "How do you measure the outcome of a corporate event?",
       answer:
-        "We define KPIs before planning — lead generation, employee engagement scores, media impressions, or partnership conversions. Post-event, we deliver analytics covering attendance, survey feedback, social reach, and pipeline impact. Our corporate ROI guide outlines frameworks we use with C-suite clients.",
+        "We agree the goals with you before planning starts — attendance, engagement, leads or media coverage. After the event you receive a post-event debrief and a media hand-over: attendance records, feedback you choose to collect, and the photos and films.",
     },
     {
       question: "Can Nexyyra handle hybrid and virtual corporate formats?",
       answer:
-        "Yes. We produce hybrid conferences with professional live streaming, remote speaker integration, and interactive Q&A for distributed teams. Our technical director manages AV, staging, and broadcast quality so in-room and virtual audiences receive a unified experience.",
+        "Yes. We produce hybrid conferences with live streaming, remote speakers and moderated Q&A. A technical director runs AV, staging and the stream so the room and remote audiences follow one programme.",
     },
     {
       question: "What is the typical timeline for a corporate gala?",
       answer:
-        "Corporate galas typically require 3–6 months from brief to execution. Product launches may compress to 6–8 weeks with dedicated rush capacity. We provide a detailed checklist covering venue, catering, entertainment, branding, and post-event reporting at kickoff.",
+        "Corporate galas usually need 3–6 months from brief to event. Product launches can work in 6–8 weeks, depending on venue and vendor availability. You receive a planning checklist covering venue, catering, entertainment and branding at kickoff.",
     },
     {
       question: "Do you manage vendor contracts and compliance for corporate clients?",
       answer:
-        "Absolutely. We handle vendor agreements, insurance certificates, fire safety compliance, and GST invoicing. Corporate clients receive consolidated billing and documentation suitable for audit and procurement review.",
+        "Yes. We handle vendor agreements, venue and fire-safety permissions, and GST invoicing. Corporate clients receive consolidated billing and documentation for procurement and audit review.",
     },
   ],
   "destination-weddings": [
     {
-      question: "Which destination wedding locations does Nexyyra specialise in?",
+      question: "Which destination wedding locations does Nexyyra plan?",
       answer:
-        "Our destination portfolio spans Udaipur palaces, Jaipur heritage havelis, Goa beachfront resorts, Kerala backwaters, and international venues in Dubai, Bali, and the Maldives. We maintain preferred partnerships with luxury properties for exclusive rates and priority dates.",
+        "Destinations across India — palace and heritage venues in Udaipur and Jaipur, beachfront resorts in Goa, hill-station resorts and lakeside venues — and international destinations on request. Every venue is shortlisted for your guest count, budget and dates.",
     },
     {
       question: "How does Nexyyra manage guest travel and accommodation?",
       answer:
-        "We coordinate group room blocks, airport transfers, welcome kits, and multi-venue shuttles. Guests receive a dedicated microsite with itineraries, dress codes, and RSVP tracking. For international destinations, we assist with visa guidance and travel insurance recommendations.",
+        "We coordinate room blocks, airport transfers, welcome kits and shuttles between venues. Guests receive a shared itinerary with timings, dress codes and RSVP details, and a hospitality desk on site.",
     },
     {
       question: "What legal requirements apply to destination weddings in India?",
       answer:
-        "Requirements vary by state and venue type. We liaise with local authorities for marriage registration, beach permits in Goa, and heritage property regulations in Rajasthan. Our legal checklist covers documentation timelines so your ceremony is fully compliant.",
+        "Requirements vary by state and venue type. We check marriage registration steps, beach and outdoor permits, and heritage-property rules for your chosen venue, and set the paperwork timeline with you early.",
     },
     {
       question: "Can you plan micro destination weddings under 50 guests?",
       answer:
-        "Yes. Micro destination weddings are a growing specialty — intimate gatherings in boutique resorts with personalised experiences, private chef dinners, and curated welcome rituals. Budgets typically start from ₹15 lakhs all-inclusive for a 2-day celebration.",
+        "Yes. Intimate destination weddings at smaller resorts, with private dinners and personal welcome rituals. Destination wedding planning starts from ₹15 Lakhs, and your proposal prices every line for your brief.",
     },
     {
       question: "What happens if weather disrupts an outdoor destination ceremony?",
       answer:
-        "Every Nexyyra destination wedding includes a documented Plan B — indoor backup venues, tenting specifications, and timeline buffers negotiated at contract stage. Our on-ground team monitors forecasts 72 hours ahead and activates contingencies without guest-visible stress.",
+        "Every outdoor ceremony we plan has a documented Plan B — an indoor backup space, tenting specifications and timeline buffers agreed at contract stage. The forecast is checked daily in the run-up, and the weather call is agreed with you in advance.",
     },
   ],
   "birthday-events": [
     {
       question: "What types of birthday events does Nexyyra plan in Pune?",
       answer:
-        "We design milestone birthday celebrations, themed kids parties, surprise soirées, and luxury adult milestone events for 30 to 500 guests across Pune and Maharashtra.",
+        "Milestone birthdays, themed children's parties, surprise celebrations and adult milestone evenings, from 30 to 500 guests, in Pune and across Maharashtra.",
     },
     {
-      question: "How much does a luxury birthday party cost with Nexyyra?",
+      question: "How much does a birthday celebration cost with Nexyyra?",
       answer:
-        "Birthday event packages start from ₹2 lakhs for intimate themed parties and scale to ₹25 lakhs+ for celebrity entertainment and bespoke venue transformations.",
+        "Birthday events start from ₹2 Lakhs. The final figure depends on guest count, venue, décor and entertainment, and your proposal prices every line.",
     },
     {
       question: "Can Nexyyra plan surprise birthday celebrations?",
       answer:
-        "Yes. Our surprise planning protocol includes covert venue access, decoy invitations, entertainment coordination, and a dedicated secrecy liaison to protect the reveal moment.",
+        "Yes. We plan venue access, invitations and timings so the guest of honour does not find out, with one planner as your contact for the reveal.",
     },
     {
       question: "What entertainment options are available for birthday events?",
       answer:
-        "Options include live bands, DJs, celebrity appearances, interactive installations, photo booths, firework finales, and themed performers matched to guest demographics.",
+        "Live bands, DJs, artist performances, interactive installations, photo booths, fireworks where permitted, and themed performers chosen for your guests.",
     },
     {
       question: "How far in advance should I book a birthday event planner?",
       answer:
-        "Book 2–4 months ahead for milestone celebrations. Premium dates and celebrity entertainment require 3–6 months lead time.",
+        "Two to four months ahead for milestone celebrations. Peak dates and booked artists usually need 3–6 months.",
     },
   ],
   "product-launches": [
     {
       question: "What does Nexyyra's product launch service include?",
       answer:
-        "Full launch production: venue selection, stage and holographic design, media and influencer coordination, live streaming, registration, and post-launch analytics reporting.",
+        "Venue selection, stage and reveal design, media and influencer coordination, live streaming, registration, and a post-event debrief and media hand-over.",
     },
     {
       question: "How much does a product launch event cost in India?",
       answer:
-        "Product launch packages start from ₹7.5 lakhs for 200–300 guest immersive experiences and scale to ₹50 lakhs+ for national media events with celebrity endorsements.",
+        "Product launches start from ₹7.5 Lakhs. Cost scales with guest count, staging and media scope, and your proposal itemises every line.",
     },
     {
       question: "Can Nexyyra manage media and influencer outreach for launches?",
       answer:
-        "Yes. We coordinate press kits, influencer seeding, red carpet management, and social amplification — our launches have generated 50M+ social impressions for leading brands.",
+        "Yes. We coordinate press kits, media invitations, influencer invitations, red-carpet arrivals and live social coverage for the launch.",
     },
     {
       question: "Do you offer hybrid product launch formats?",
       answer:
-        "We produce hybrid launches with professional live streaming, remote demo integration, and interactive Q&A for press and partners joining virtually.",
+        "Yes. Hybrid launches with live streaming, remote product demos and moderated Q&A for press and partners joining online.",
     },
     {
       question: "What is the typical timeline for a product launch?",
       answer:
-        "Standard launches require 6–8 weeks. Complex national launches with custom staging need 3–4 months from brief to execution.",
+        "Standard launches need 6–8 weeks. Launches with custom staging across several cities need 3–4 months from brief to event.",
     },
   ],
   conferences: [
     {
       question: "What conference sizes can Nexyyra manage?",
       answer:
-        "We manage conferences from 50-person leadership retreats to 5,000-delegate summits with multi-track programming, speaker management, and exhibition zones.",
+        "Conferences from 50-person leadership retreats to several thousand delegates, with multi-track programming, speaker management and exhibition zones.",
     },
     {
       question: "Does Nexyyra handle conference registration and badges?",
       answer:
-        "Yes. We provide registration platforms, badge printing, check-in kiosks, session tracking, and real-time attendance dashboards for organisers.",
+        "Yes. Online registration, badge printing, check-in desks and session attendance tracking for organisers.",
     },
     {
       question: "What AV production is included in conference management?",
       answer:
-        "Full AV scope: stage design, lighting, sound, LED walls, translation booths, session recording, and dedicated technical directors on-site.",
+        "Stage design, lighting, sound, LED walls, interpretation booths, session recording and a technical director on site.",
     },
     {
       question: "How much does conference management cost in Pune?",
       answer:
-        "Conference packages start from ₹6 lakhs for single-day events and scale based on delegate count, venue tier, and production complexity.",
+        "Conference management starts from ₹6 Lakhs for a single-day event and scales with delegate count, venue and production scope.",
     },
     {
       question: "Can Nexyyra manage multi-day conferences?",
       answer:
-        "Yes. We orchestrate multi-day summits including accommodation blocks, gala dinners, networking sessions, and speaker hospitality across consecutive days.",
+        "Yes. Multi-day summits with accommodation blocks, gala dinners, networking sessions and speaker hospitality, run from one schedule.",
     },
   ],
   exhibitions: [
     {
       question: "What exhibition services does Nexyyra provide in Pune?",
       answer:
-        "End-to-end exhibition management: custom booth and pavilion design, floor planning, lead capture systems, setup/teardown, and on-site brand ambassadors.",
+        "Booth and pavilion design, floor planning, lead capture, build and dismantle, and on-site brand staff.",
     },
     {
       question: "How much does exhibition booth design cost?",
       answer:
-        "Custom booth design and build starts from ₹4 lakhs for standard 3×3 metre stalls and scales to ₹30 lakhs+ for island pavilions with interactive technology.",
+        "Exhibition design and build starts from ₹4 Lakhs and scales with booth size, materials and interactive elements.",
     },
     {
       question: "Can Nexyyra manage trade show logistics?",
       answer:
-        "Yes. We handle freight coordination, on-site assembly, electrical compliance, storage, and post-show dismantling for Pune and national trade fairs.",
+        "Yes. Freight coordination, on-site assembly, electrical compliance, storage and post-show dismantling, in Pune and other Indian cities.",
     },
     {
       question: "Do you provide lead capture for exhibitions?",
       answer:
-        "We integrate QR-based lead capture, CRM export, and real-time footfall analytics so your sales team follows up within 24 hours of the show.",
+        "Yes. QR-based lead capture with an export your sales team can load into its CRM after the show.",
     },
     {
-      question: "Which Pune exhibitions does Nexyyra serve?",
+      question: "Which exhibitions can Nexyyra support?",
       answer:
-        "We serve Auto Expo Pune, IT and pharma trade shows, and brand activations at major convention centres across Maharashtra.",
+        "Trade shows, industry expos, consumer fairs and brand pavilions at convention centres, hotels and open grounds, in Pune and across India.",
     },
   ],
   "concert-management": [
     {
       question: "What scale of concerts does Nexyyra produce?",
       answer:
-        "From intimate 500-capacity gigs to 10,000+ stadium shows — including artist logistics, stage production, ticketing integration, security, and crowd management.",
+        "From intimate club gigs to large open-ground shows — artist logistics, stage production, ticketing integration, security and crowd management.",
     },
     {
       question: "How much does concert production cost in India?",
       answer:
-        "Concert management packages start from ₹20 lakhs for club-scale shows and exceed ₹2 crore for multi-artist festival productions with full staging.",
+        "Concert management starts from ₹20 Lakhs and scales with capacity, number of artists and staging. Your proposal itemises every line.",
     },
     {
       question: "Does Nexyyra handle artist booking and contracts?",
       answer:
-        "Yes. We manage artist booking, rider fulfilment, hospitality, sound check scheduling, and performance contracts through our entertainment division.",
+        "Yes. Talent and artist booking coordination, rider fulfilment, hospitality, sound-check scheduling and performance contracts.",
     },
     {
       question: "What safety measures are included in concert management?",
       answer:
-        "Comprehensive crowd control, medical standby, fire safety compliance, structural engineering for staging, and emergency evacuation plans approved by local authorities.",
+        "Crowd-control planning, medical standby, fire-safety compliance, structural checks on staging, and an evacuation plan submitted for local permissions.",
     },
     {
       question: "Can Nexyyra live stream concerts?",
       answer:
-        "Yes. Multi-camera live streaming, IMAG screens, and social broadcast integration for hybrid audience reach.",
+        "Yes. Multi-camera live streaming, IMAG screens and social streaming for audiences who cannot attend.",
     },
   ],
   "celebrity-management": [
     {
       question: "What celebrity event services does Nexyyra offer?",
       answer:
-        "Celebrity booking, red carpet production, VIP guest handling, media coordination, security detail liaison, and backstage hospitality for brand and private events.",
+        "Talent and artist booking coordination, red-carpet production, VIP guest handling, media coordination, security liaison and backstage hospitality for brand and private events.",
     },
     {
       question: "How does Nexyyra book celebrities for events?",
       answer:
-        "We maintain relationships with talent agencies across Bollywood, sports, and music. Booking includes contract negotiation, rider management, and appearance scheduling.",
+        "We approach the artist's management or agency on your behalf, then handle the contract, rider and appearance schedule once terms are agreed.",
     },
     {
       question: "What is the cost of celebrity appearances at events?",
       answer:
-        "Celebrity management packages start from ₹10 lakhs excluding talent fees. Talent fees vary by celebrity tier — we provide transparent quotes after understanding your brief.",
+        "Celebrity management starts from ₹10 Lakhs, excluding talent fees. Talent fees are set by the artist's management and quoted to you separately, line by line.",
     },
     {
       question: "Can Nexyyra manage media at celebrity events?",
       answer:
-        "Yes. Press accreditation, photo-op zones, interview scheduling, and social media amplification are managed by our dedicated media relations team.",
+        "Yes. Press accreditation, photo-op zones, interview scheduling and social media coverage are planned into the run-of-show.",
     },
     {
       question: "Is confidentiality guaranteed for celebrity events?",
       answer:
-        "All celebrity events operate under strict NDAs. Guest lists, locations, and talent details are protected throughout planning and execution.",
+        "Confidentiality terms are written into your agreement. Guest lists, locations and talent details are shared only with the team and vendors who need them.",
     },
   ],
   "brand-promotions": [
     {
       question: "What brand activation formats does Nexyyra create?",
       answer:
-        "Pop-up experiences, mall activations, sampling campaigns, roadshows, influencer events, and immersive brand installations across Pune and pan-India markets.",
+        "Pop-up experiences, mall activations, sampling campaigns, roadshows, influencer events and brand installations, in Pune and across India.",
     },
     {
       question: "How much does a brand activation cost?",
       answer:
-        "Brand promotion packages start from ₹3.5 lakhs for single-city activations and scale to ₹50 lakhs+ for multi-city experiential campaigns.",
+        "Brand activations start from ₹3.5 Lakhs and scale with the number of cities, days and installations.",
     },
     {
-      question: "Does Nexyyra measure brand activation ROI?",
+      question: "How do you report on a brand activation?",
       answer:
-        "Yes. We track footfall, sampling conversions, social engagement, lead capture, and post-campaign analytics against your marketing KPIs.",
+        "We agree what to measure before launch — footfall, samples handed out, leads or social engagement — and share a post-event debrief and media hand-over afterwards.",
     },
     {
       question: "Can Nexyyra integrate social media into activations?",
       answer:
-        "We design Instagrammable moments, influencer seeding, live social coverage, and hashtag campaigns as core activation elements.",
+        "Yes. Photo-friendly installations, influencer invitations, live social coverage and hashtag prompts can be designed into the activation.",
     },
     {
-      question: "What industries does Nexyyra serve for brand promotions?",
+      question: "Which industries can Nexyyra plan brand promotions for?",
       answer:
-        "FMCG, automotive, pharma, fashion, technology, and financial services — with activations tailored to each brand's audience and compliance requirements.",
+        "Consumer goods, automotive, pharma, fashion, technology and financial services, among others — each activation is shaped to the brand's audience and compliance rules.",
     },
   ],
   "fashion-shows": [
     {
       question: "What fashion show production services does Nexyyra offer?",
       answer:
-        "Runway design, model casting and coordination, backstage management, lighting and music direction, press events, and front-row guest management.",
+        "Runway design, model casting and coordination, backstage management, lighting and music direction, press events and front-row guest management.",
     },
     {
       question: "How much does a fashion show cost in India?",
       answer:
-        "Fashion show production starts from ₹9 lakhs for emerging designer showcases and exceeds ₹1 crore for fashion week finale productions.",
+        "Fashion show production starts from ₹9 Lakhs and scales with runway build, cast size and guest count.",
     },
     {
-      question: "Can Nexyyra manage fashion week runway shows?",
+      question: "Can Nexyyra produce a full runway show?",
       answer:
-        "Yes. We have produced fashion week finales for 500+ guest runway shows with celebrity front row, media pits, and live streaming.",
+        "Yes. Runway shows with a seated front row, a media pit and a live stream, planned cue by cue with the designer.",
     },
     {
       question: "Does Nexyyra handle model and designer logistics?",
       answer:
-        "Full backstage operations: fitting schedules, hair and makeup stations, quick-change teams, and designer liaison throughout rehearsal and show.",
+        "Yes. Fitting schedules, hair and makeup stations, quick-change teams and designer liaison through rehearsal and show.",
     },
     {
-      question: "What venues work best for fashion shows in Pune?",
+      question: "What venues work for fashion shows in Pune?",
       answer:
-        "Heritage properties, hotel ballrooms, and custom-built runway structures in IT parks — selected based on collection aesthetic and guest capacity.",
+        "Heritage properties, hotel ballrooms and custom-built runway structures — chosen for the collection's look and the guest count.",
     },
   ],
   "event-production": [
     {
       question: "What technical production does Nexyyra Events provide?",
       answer:
-        "Stage design, lighting design, sound engineering, LED walls, special effects, rigging, and power distribution for weddings, concerts, and corporate productions.",
+        "Stage design, lighting design, sound, LED walls, special effects, rigging and power distribution for weddings, concerts and corporate events.",
     },
     {
       question: "How much does event production cost?",
       answer:
-        "Technical production packages start from ₹5 lakhs for single-stage events and scale based on venue size, effect complexity, and crew requirements.",
+        "Technical production starts from ₹5 Lakhs and scales with venue size, effects and crew.",
     },
     {
       question: "Does Nexyyra provide production for outdoor events?",
       answer:
-        "Yes. Weather-rated staging, generator power, tenting specifications, and backup plans for outdoor weddings, concerts, and corporate events.",
+        "Yes. Weather-rated staging, generator power, tenting specifications and a backup plan for outdoor weddings, concerts and corporate events.",
     },
     {
       question: "Can Nexyyra integrate special effects into events?",
       answer:
-        "Cold pyro, confetti cannons, laser shows, drone displays, and projection mapping — engineered with safety compliance and venue approval.",
+        "Cold pyro, confetti cannons, laser shows, projection mapping and drone displays where permitted — each cleared with the venue and the required safety approvals.",
     },
     {
       question: "Do you offer production-only services without full planning?",
       answer:
-        "Yes. Production-only engagements are available for clients with existing planners who need Nexyyra's technical direction and on-ground crew.",
+        "Yes. Production can be booked on its own if you already have a planner and need technical direction and an on-ground crew.",
     },
   ],
 };
@@ -332,27 +337,27 @@ const GENERIC_SERVICE_FAQS: ServiceFaq[] = [
   {
     question: "How do I book this service with Nexyyra Events?",
     answer:
-      "Book a complimentary consultation at https://www.nexyyra.com/book-event or call +91 7020640157. You receive a tailored proposal within 48 hours.",
+      "Book a free consultation at https://www.nexyyra.com/book-event or call +91 7020640157. Your itemised proposal follows within 48 hours of the consultation.",
   },
   {
     question: "What areas does Nexyyra serve for this service?",
     answer:
-      "Nexyyra Events serves Pune, Mumbai, Maharashtra, and destinations across India and internationally from our Pune headquarters.",
+      "Pune, Mumbai, Delhi, Bangalore, Hyderabad, Jaipur, Indore, Nashik, Nagpur, Ahmedabad, Surat, Goa and Udaipur, other cities across India, and international destinations on request — coordinated from our Delivery & Coordination Office in Pune.",
   },
   {
     question: "What is included in Nexyyra's planning process?",
     answer:
-      "Every engagement includes a dedicated coordinator, vendor curation, timeline management, design direction, and on-ground execution command.",
+      "Every engagement has one dedicated event director, vendor selection and contracts, timeline management, design direction and on-ground management on the day.",
   },
   {
     question: "What payment terms does Nexyyra offer?",
     answer:
-      "A 30% advance secures your date. Remaining payments follow milestone invoices aligned to vendor commitments via Razorpay, bank transfer, or UPI.",
+      "A 30% advance secures your date. The balance is invoiced in milestones aligned to vendor commitments, payable by Razorpay, bank transfer or UPI.",
   },
   {
     question: "Does Nexyyra offer free consultations?",
     answer:
-      "Yes. Every service begins with a complimentary, no-obligation consultation — in person, via video, or at your venue.",
+      "Yes. Every service begins with a free, no-obligation consultation — in person, on video or at your venue.",
   },
 ];
 

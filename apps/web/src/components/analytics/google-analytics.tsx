@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-5WS115MZ5E";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 
 export function GoogleAnalytics() {
   useEffect(() => {

@@ -1,0 +1,253 @@
+/* V6 shell — header, services popover, mobile menu, action bar, footer, consent (DESIGN.md §10.0).
+   Replaces mobile-nav.css. Header transparency: html:has(.lux-cover--xl) — only the home cover is xl,
+   so no route attribute is needed. App routes (/dashboard, /admin, /login, /register) hide the site
+   chrome: their pages server-render a .lux-app-route element (html:has() works before hydration), and
+   HeaderIsland also sets html[data-chrome="app"] for browsers without :has(). Unlayered .luxury-button rules beat this layer, so the
+   action bar and consent use their own pg-* buttons instead of overriding it. */
+@layer components {
+  /* ── Header ─────────────────────────────────────────────────────────── */
+  .pg-shell-header {
+    position: fixed; inset: 0 0 auto 0; z-index: var(--lux-z-header);
+    padding-top: env(safe-area-inset-top);
+    background: var(--lux-bg); border-bottom: 1px solid var(--lux-border);
+    transition: background-color var(--lux-dur-ui) var(--lux-ease), border-color var(--lux-dur-ui) var(--lux-ease);
+  }
+  html:has(.lux-cover--xl) .pg-shell-header:not(.is-scrolled) { background: transparent; border-bottom-color: transparent; }
+  .pg-shell-header.is-scrolled { background: color-mix(in srgb, var(--lux-surface-1) 92%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+  html:is([data-chrome="app"], :has(.lux-app-route)) :is(.pg-shell-header, .lux-actionbar, .pg-shell-corner, .pg-shell-footer) { display: none; }
+
+  .pg-shell-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    width: min(100%, calc(var(--lux-container) + 2 * var(--lux-gutter)));
+    height: var(--lux-nav-h-mobile); margin-inline: auto; padding-inline: var(--lux-gutter);
+  }
+  .pg-shell-bar--desktop { display: none; }
+  .pg-shell-bar__end { display: flex; align-items: center; gap: 0.25rem; }
+  .pg-shell-wordmark { display: inline-flex; align-items: center; min-height: 44px; }
+  .pg-shell-wordmark img { width: 40px; }
+  @media (min-width: 1024px) {
+    .pg-shell-bar--desktop { display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem; height: var(--lux-nav-h); }
+    .pg-shell-bar--mobile { display: none; }
+    .pg-shell-bar--desktop .pg-shell-wordmark img { width: 48px; }
+  }
+
+  .pg-shell-nav ul { display: flex; justify-content: center; gap: clamp(0.75rem, 1.6vw, 1.75rem); margin: 0; padding: 0; list-style: none; }
+  .pg-shell-nav__link {
+    display: inline-flex; align-items: center; gap: 0.25rem; min-height: 44px; padding: 0;
+    border: 0; color: var(--lux-muted); cursor: pointer; text-decoration: none;
+    font: 600 0.82rem/1 var(--lux-font-body); letter-spacing: 0.08em; text-transform: uppercase;
+    background: linear-gradient(var(--lux-gold), var(--lux-gold)) no-repeat 0 calc(100% - 0.7rem) / 0 1px;
+    transition: background-size var(--lux-dur-ui) var(--lux-ease), color var(--lux-dur-fast) linear;
+  }
+  .pg-shell-nav__link:is([aria-current="page"], [data-active]) { color: var(--lux-white); background-size: 100% 1px; }
+  .pg-shell-nav__chev { transition: rotate var(--lux-dur-ui) var(--lux-ease); }
+  #services-trigger[aria-expanded="true"] .pg-shell-nav__chev { rotate: 180deg; }
+  .pg-shell-header:has(#services-panel:popover-open) .pg-shell-nav__chev { rotate: 180deg; }
+
+  .pg-shell-actions { display: flex; align-items: center; gap: 1.25rem; }
+  .pg-shell-phone, .pg-shell-iconlink {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-width: 44px; min-height: 44px;
+    color: var(--lux-muted); text-decoration: none; font: 600 var(--lux-text-small)/1 var(--lux-font-body); letter-spacing: 0.04em;
+  }
+  .pg-shell-iconlink { color: var(--lux-white); }
+  .pg-shell-phone__num { display: none; }
+  @media (min-width: 1280px) { .pg-shell-phone__num { display: inline; } }
+
+  /* ── Services popover: full-width fixed panel under the nav ─────────── */
+  .pg-shell-panel {
+    position: fixed; inset: var(--lux-nav-h) 0 auto 0; z-index: var(--lux-z-header);
+    width: 100%; max-height: calc(100dvh - var(--lux-nav-h)); overflow: auto; margin: 0; padding: 0;
+    border: 0; border-bottom: 1px solid var(--lux-border); background: var(--lux-surface-2); color: var(--lux-white);
+    box-shadow: var(--lux-shadow-plate);
+    transition: opacity var(--lux-dur-open) var(--lux-ease), translate var(--lux-dur-open) var(--lux-ease),
+      display var(--lux-dur-open) allow-discrete, overlay var(--lux-dur-open) allow-discrete;
+  }
+  /* Closed by default even where the Popover API (and its UA [popover] hiding) is missing — Safari < 17,
+     Firefox < 125 — so the panel never covers the page before HeaderIsland turns it into a plain
+     disclosure (it drops the popover attribute and toggles `hidden`). */
+  .pg-shell-panel[popover] { display: none; }
+  @supports selector(:popover-open) {
+    .pg-shell-panel[popover]:popover-open { display: block; }
+    .pg-shell-panel[popover]:not(:popover-open) { opacity: 0; translate: 0 12px; }
+  }
+  @starting-style { .pg-shell-panel:popover-open { opacity: 0; translate: 0 12px; } }
+  .pg-shell-panel__inner {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 0.8fr); gap: var(--lux-grid-gap);
+    width: min(100%, calc(var(--lux-container) + 2 * var(--lux-gutter))); margin-inline: auto;
+    padding: var(--lux-space-6) var(--lux-gutter) var(--lux-space-7);
+  }
+  .pg-shell-panel__group + .pg-shell-panel__group { padding-left: var(--lux-grid-gap); border-left: 1px solid var(--lux-border); }
+  .pg-shell-panel ul { display: grid; margin: 0.75rem 0 0; padding: 0; list-style: none; }
+  .pg-shell-panel__service { display: grid; grid-template-columns: 20px 1fr; column-gap: 0.75rem; align-items: center; padding-block: 0.5rem; color: var(--lux-white); text-decoration: none; }
+  .pg-shell-panel__service svg { grid-row: span 2; color: var(--lux-muted); transition: color var(--lux-dur-fast) linear; }
+  .pg-shell-panel__title { font: 600 0.92rem/1.3 var(--lux-font-body); }
+  .pg-shell-panel__price { grid-column: 2; font: 500 var(--lux-text-small)/1.4 var(--lux-font-body); color: var(--lux-subtle); font-variant-numeric: tabular-nums; }
+  .pg-shell-panel__link, .pg-shell-panel__all { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 40px; color: var(--lux-muted); text-decoration: none; font: 600 0.92rem/1.3 var(--lux-font-body); }
+  .pg-shell-panel__all { margin-top: var(--lux-space-4); color: var(--lux-gold); }
+  .pg-shell-panel__media { display: none; }
+  @media (min-width: 1280px) {
+    .pg-shell-panel__inner { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 0.8fr) 14rem; }
+    .pg-shell-panel__media { display: grid; }
+  }
+
+  /* ── Mobile menu: native modal dialog, rises from the bottom ─────────── */
+  .pg-shell-menubtn {
+    display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0 0.9rem;
+    border: 1px solid var(--lux-border-strong); border-radius: var(--lux-radius-pill); background: transparent; color: var(--lux-white);
+    cursor: pointer; font: 700 var(--lux-text-ui)/1 var(--lux-font-body); letter-spacing: var(--lux-tracking-ui); text-transform: uppercase;
+  }
+  .pg-shell-menu__x { rotate: 45deg; }
+  .pg-shell-menu {
+    position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0;
+    padding: calc(env(safe-area-inset-top) + 0.75rem) var(--lux-gutter) calc(env(safe-area-inset-bottom) + var(--lux-space-6));
+    border: 0; background: var(--lux-surface-2); color: var(--lux-white); overflow-y: auto; overscroll-behavior: contain;
+    translate: 0 100%;
+    transition: translate var(--lux-dur-open) var(--lux-ease), display var(--lux-dur-open) allow-discrete, overlay var(--lux-dur-open) allow-discrete;
+  }
+  .pg-shell-menu[open] { display: grid; align-content: start; gap: var(--lux-space-6); translate: 0 0; }
+  @starting-style { .pg-shell-menu[open] { translate: 0 100%; } }
+  .pg-shell-menu::backdrop { background: color-mix(in srgb, var(--lux-bg) 70%, transparent); }
+  html:has(.pg-shell-menu[open]) { overflow: hidden; }
+  .pg-shell-menu__head { display: flex; align-items: center; justify-content: space-between; min-height: var(--lux-nav-h-mobile); }
+  .pg-shell-menu__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--lux-border); }
+  .pg-shell-menu__list > li { border-bottom: 1px solid var(--lux-border); }
+  .pg-shell-menu__link {
+    display: flex; align-items: baseline; gap: 1rem; min-height: 56px; padding-block: 0.65rem;
+    color: var(--lux-white); cursor: pointer; list-style: none; text-decoration: none;
+    font: 500 clamp(1.75rem, 1.4rem + 2vw, 2.25rem)/1.1 var(--lux-font-display);
+  }
+  .pg-shell-menu__link::-webkit-details-marker { display: none; }
+  .pg-shell-menu__link > svg { margin-left: auto; align-self: center; transition: rotate var(--lux-dur-ui) var(--lux-ease); }
+  .pg-shell-menu__group[open] .lux-icon-plus { rotate: 45deg; }
+  .pg-shell-menu__num { min-width: 2.25rem; color: var(--lux-gold); font: 400 1.375rem/1 var(--lux-font-display); font-variant-numeric: lining-nums tabular-nums; }
+  .pg-shell-menu__link:is([aria-current="page"], [data-active]) .pg-shell-menu__label {
+    text-decoration: underline; text-decoration-color: var(--lux-gold); text-decoration-thickness: 1px; text-underline-offset: 0.2em;
+  }
+  .pg-shell-menu__group { interpolate-size: allow-keywords; }
+  .pg-shell-menu__group::details-content { height: 0; overflow: clip; transition: height var(--lux-dur-ui) var(--lux-ease), content-visibility var(--lux-dur-ui) allow-discrete; }
+  .pg-shell-menu__group[open]::details-content { height: auto; }
+  .pg-shell-menu__services { display: grid; margin: 0; padding: 0 0 var(--lux-space-4) 3.25rem; list-style: none; }
+  .pg-shell-menu__service {
+    display: grid; grid-template-columns: 24px 1fr; column-gap: 0.75rem; align-items: center; min-height: 48px; padding-block: 0.35rem;
+    color: var(--lux-muted); text-decoration: none; font: 600 0.95rem/1.3 var(--lux-font-body);
+  }
+  .pg-shell-menu__service svg { grid-row: span 2; }
+  .pg-shell-menu__service[aria-current="page"] { color: var(--lux-gold); }
+  .pg-shell-menu__price { grid-column: 2; font: 500 var(--lux-text-small)/1.4 var(--lux-font-body); color: var(--lux-subtle); }
+  .pg-shell-menu__all { display: inline-flex; gap: 0.5rem; color: var(--lux-gold); }
+  .pg-shell-menu__contact { display: grid; margin: 0; padding: 0; list-style: none; }
+  .pg-shell-menu__contact a { display: flex; align-items: center; gap: 0.75rem; min-height: 44px; color: var(--lux-muted); text-decoration: none; font: 500 0.95rem/1.3 var(--lux-font-body); overflow-wrap: anywhere; }
+  .pg-shell-whatsapp { color: var(--lux-whatsapp); }
+
+  /* ── Action bar (phones) + desktop corner stack ──────────────────────── */
+  /* Rises once the cover's own CTA has scrolled away (one purple per viewport). `transform` composes with the
+     `translate` that primitives.css uses to hide the bar beside an InquiryPanel or an open dialog. */
+  /* visibility: hidden while parked off-screen takes the links out of the tab order and the a11y tree. */
+  @keyframes pg-shell-rise { from { transform: translateY(110%); visibility: hidden; } to { transform: none; } }
+  .pg-shell-actionbar { align-items: stretch; }
+  @starting-style { .pg-shell-actionbar { translate: 0 100%; } }
+  @supports (animation-timeline: scroll()) {
+    .pg-shell-actionbar { animation: pg-shell-rise linear both; animation-timeline: scroll(root); animation-range: 20svh 55svh; }
+  }
+  .pg-shell-actionbar__contact {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-width: 3.5rem; min-height: 44px; padding: 0.2rem 0.6rem;
+    border: 1px solid var(--lux-border-strong); border-radius: var(--lux-radius-sm);
+    color: var(--lux-white); text-decoration: none; font: 600 var(--lux-text-small)/1.2 var(--lux-font-body);
+  }
+  .pg-shell-actionbar__proposal {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0.25rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--lux-purple-bright) 50%, transparent); border-radius: var(--lux-radius-pill);
+    background: var(--lux-gradient-purple); color: var(--lux-white); text-align: center; text-decoration: none;
+    font: 700 var(--lux-text-small)/1.2 var(--lux-font-body); letter-spacing: 0.02em;
+  }
+  .pg-shell-corner { display: none; }
+  @media (min-width: 768px) {
+    .pg-shell-corner {
+      position: fixed; right: var(--lux-gutter); bottom: calc(var(--lux-space-5) + env(safe-area-inset-bottom));
+      z-index: var(--lux-z-actionbar); display: grid; gap: 0.6rem;
+    }
+    .pg-shell-corner a {
+      display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--lux-border-gold); border-radius: 50%;
+      background: var(--lux-surface-1); color: var(--lux-white); box-shadow: var(--lux-shadow-plate);
+    }
+  }
+
+  /* ── Footer colophon ─────────────────────────────────────────────────── */
+  .pg-shell-footer { margin-top: auto; border-top: 1px solid var(--lux-border); padding-block: var(--lux-space-8) var(--lux-space-6); content-visibility: auto; contain-intrinsic-size: auto 40rem; }
+  @media (max-width: 767.98px) { .pg-shell-footer { padding-bottom: calc(var(--lux-actionbar-h) + env(safe-area-inset-bottom) + var(--lux-space-5)); } }
+  .pg-shell-footer__inner { display: grid; gap: var(--lux-space-7); width: min(100% - 2 * var(--lux-gutter), var(--lux-container)); margin-inline: auto; }
+  .pg-shell-footer a { color: var(--lux-muted); text-decoration: none; }
+  .pg-shell-colophon { display: grid; gap: var(--lux-space-6); }
+  .pg-shell-colophon__brand { display: grid; justify-items: start; gap: 0.75rem; }
+  .pg-shell-colophon__brand .pg-shell-wordmark img { width: 72px; }
+  .pg-shell-colophon__tagline { margin: 0; color: var(--lux-white); font: 500 1.5rem/1.2 var(--lux-font-display); }
+  .pg-shell-footer__social { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; }
+  .pg-shell-colophon__facts { display: grid; gap: var(--lux-space-5); margin: 0; }
+  .pg-shell-colophon__facts dt { margin-bottom: 0.35rem; color: var(--lux-gold); font: 700 var(--lux-text-label)/1.4 var(--lux-font-body); letter-spacing: var(--lux-tracking-label); text-transform: uppercase; }
+  .pg-shell-colophon__facts dd, .pg-shell-colophon__areas { margin: 0; color: var(--lux-muted); font: 400 0.92rem/1.6 var(--lux-font-body); text-wrap: pretty; }
+  .pg-shell-colophon__contact { display: grid; justify-items: start; }
+  .pg-shell-colophon__contact a { display: inline-flex; align-items: center; min-height: 44px; overflow-wrap: anywhere; }
+  .pg-shell-colophon__areas { max-width: 62ch; padding-top: var(--lux-space-5); border-top: 1px solid var(--lux-border); }
+  @media (min-width: 768px) { .pg-shell-colophon__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) {
+    .pg-shell-colophon { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--lux-grid-gap); }
+    .pg-shell-colophon__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pg-shell-colophon__areas { grid-column: 1 / -1; }
+  }
+
+  .pg-shell-fgroups { display: grid; border-top: 1px solid var(--lux-border); }
+  .pg-shell-fgroup { border-bottom: 1px solid var(--lux-border); }
+  .pg-shell-fgroup > summary {
+    display: flex; align-items: center; justify-content: space-between; min-height: 52px; cursor: pointer; list-style: none;
+    color: var(--lux-gold); font: 700 var(--lux-text-label)/1.4 var(--lux-font-body); letter-spacing: var(--lux-tracking-label); text-transform: uppercase;
+  }
+  .pg-shell-fgroup > summary::-webkit-details-marker { display: none; }
+  .pg-shell-fgroup[open] .lux-icon-plus { rotate: 45deg; }
+  .pg-shell-fgroup ul { display: grid; margin: 0; padding: 0 0 var(--lux-space-4); list-style: none; }
+  .pg-shell-fgroup li a { display: flex; align-items: center; min-height: 44px; font: 500 0.92rem/1.35 var(--lux-font-body); }
+  @media (min-width: 1024px) {
+    .pg-shell-fgroups { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--lux-grid-gap); padding-top: var(--lux-space-5); }
+    .pg-shell-fgroup { border-bottom: 0; }
+    .pg-shell-fgroup > summary { cursor: default; pointer-events: none; }
+    .pg-shell-fgroup > summary .lux-icon-plus { display: none; }
+    .pg-shell-fgroup li a { min-height: 2rem; }
+  }
+
+  .pg-shell-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; padding-top: var(--lux-space-5); border-top: 1px solid var(--lux-border); color: var(--lux-subtle); font: 500 var(--lux-text-small)/1.5 var(--lux-font-body); }
+  .pg-shell-legal p { margin: 0; }
+  .pg-shell-legal ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin: 0; padding: 0; list-style: none; }
+  .pg-shell-legal a { display: inline-flex; align-items: center; min-height: 44px; color: var(--lux-subtle); }
+
+  /* ── Cookie consent: above the action bar on phones, Accept = Decline ─ */
+  .pg-shell-consent {
+    position: fixed; inset: auto 0 calc(var(--lux-actionbar-h) + env(safe-area-inset-bottom)) 0; z-index: var(--lux-z-consent);
+    display: grid; gap: 0.6rem; padding: var(--lux-space-4) var(--lux-gutter);
+    border-top: 1px solid var(--lux-border-strong); background: var(--lux-surface-2); box-shadow: var(--lux-shadow-plate);
+  }
+  html:is([data-chrome="app"], :has(.lux-app-route)) .pg-shell-consent { bottom: env(safe-area-inset-bottom); }
+  @media (min-width: 768px) {
+    .pg-shell-consent { inset: auto auto var(--lux-space-5) var(--lux-gutter); max-width: 26rem; border: 1px solid var(--lux-border-strong); border-radius: var(--lux-radius-md); }
+  }
+  .pg-shell-consent__title { margin: 0; color: var(--lux-white); font: 700 0.92rem/1.4 var(--lux-font-body); }
+  .pg-shell-consent__text { margin: 0; color: var(--lux-muted); font: 400 var(--lux-text-small)/1.55 var(--lux-font-body); }
+  .pg-shell-consent__text a { color: var(--lux-white); text-decoration: underline; text-decoration-color: var(--lux-gold); text-underline-offset: 0.2em; }
+  .pg-shell-consent__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .pg-shell-consent__btn { min-height: 44px; border: 1px solid var(--lux-border-gold); border-radius: var(--lux-radius-pill); background: transparent; color: var(--lux-white); cursor: pointer; font: 700 var(--lux-text-ui)/1 var(--lux-font-body); letter-spacing: var(--lux-tracking-ui); text-transform: uppercase; }
+
+  /* ── Hover (pointer devices) + preference fallbacks ──────────────────── */
+  @media (hover: hover) {
+    .pg-shell-nav__link:hover { color: var(--lux-white); background-size: 100% 1px; }
+    :is(.pg-shell-phone, .pg-shell-panel__link, .pg-shell-footer a, .pg-shell-menu__contact a):hover { color: var(--lux-white); }
+    .pg-shell-panel__service:hover svg, .pg-shell-corner a:hover { color: var(--lux-gold); }
+    :is(.pg-shell-menubtn, .pg-shell-consent__btn, .pg-shell-actionbar__contact):hover { border-color: var(--lux-gold); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :is(.pg-shell-header, .pg-shell-nav__link, .pg-shell-nav__chev, .pg-shell-panel, .pg-shell-menu, .pg-shell-menu__link > svg, .pg-shell-actionbar) { transition: none; }
+    .pg-shell-menu__group::details-content { transition: none; }
+    .pg-shell-actionbar { animation: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .pg-shell-header.is-scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--lux-surface-1); }
+  }
+}

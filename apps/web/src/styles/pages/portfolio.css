@@ -1,0 +1,112 @@
+/* Portfolio, concept case pages and the gallery (DESIGN.md §10.4–10.6).
+   Page-local layout only: --lux-* tokens, pg-* classes, no lux-* class is redefined. */
+
+@layer components {
+  /* ── /portfolio ─────────────────────────────────────────────────── */
+
+  /* The standing honesty line sits between the cover and chapter 01. */
+  .pg-portfolio-banner { margin-block: var(--lux-space-block) 0; }
+
+  .pg-portfolio-concepts {
+    display: grid;
+    gap: var(--lux-space-section);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Photo then text on phones; photo cols 1–7, text cols 8–12 from lg. */
+  .pg-portfolio-concept {
+    display: grid;
+    gap: var(--lux-space-tight);
+    align-items: start;
+  }
+
+  .pg-portfolio-concept__text {
+    display: grid;
+    gap: var(--lux-space-4);
+    justify-items: start;
+    min-width: 0;
+  }
+
+  .pg-portfolio-concept__text > .lux-ledger,
+  .pg-portfolio-concept__text > .lux-heading { justify-self: stretch; }
+
+  .pg-portfolio-concept__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--lux-space-3);
+    margin: 0;
+  }
+
+  .pg-portfolio-concept__story {
+    margin: 0;
+    max-width: 54ch;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 1024px) {
+    .pg-portfolio-concept {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--lux-grid-gap);
+    }
+    .pg-portfolio-concept__media { grid-column: 1 / span 7; }
+    .pg-portfolio-concept__text { grid-column: 8 / span 5; }
+  }
+
+  /* Archive: zero-JS in-place filter. The radios sit before the grid, so the
+     wrapper carries the :has() test; tiles expose data-cat. */
+  .pg-portfolio-archive {
+    display: grid;
+    gap: var(--lux-space-block);
+  }
+
+  .pg-portfolio-archive:has(#archive-weddings:checked) [data-cat]:not([data-cat="weddings"]),
+  .pg-portfolio-archive:has(#archive-venues:checked) [data-cat]:not([data-cat="venues"]) {
+    display: none;
+  }
+
+  .pg-portfolio-more { margin: var(--lux-space-block) 0 0; }
+
+  /* ── /portfolio/[slug] ──────────────────────────────────────────── */
+
+  /* Specs ledger directly under the cover. */
+  .pg-portfolio-specs {
+    max-width: var(--lux-wide);
+    margin-block: var(--lux-space-block);
+  }
+
+  /* The page's one deck, between chapters 02 and 03. */
+  .pg-portfolio-deck {
+    margin-block: 0 var(--lux-space-section);
+  }
+
+  .pg-portfolio-diptych { margin-block-end: var(--lux-space-section); }
+
+  .pg-portfolio-others {
+    display: grid;
+    gap: var(--lux-space-block) var(--lux-grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .pg-portfolio-others { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* The inquiry plate is the last block before the footer. */
+  .pg-portfolio-inquiry { margin-block-end: var(--lux-space-section); }
+
+  /* ── /gallery ───────────────────────────────────────────────────── */
+
+  .pg-gallery-body {
+    display: grid;
+    gap: var(--lux-space-block);
+  }
+}

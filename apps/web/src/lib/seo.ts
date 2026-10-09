@@ -1,6 +1,9 @@
 import { Metadata } from "next";
-import { SITE_CONFIG, SEO_KEYWORDS, ENTITY_FACTS } from "./constants";
-import { TEAM_MEMBERS } from "@/data/team";
+import { services } from "@/data/cms";
+import { SITE_CONFIG, ENTITY_FACTS } from "./constants";
+
+/** Static OG fallback (1200×630). Route-level opengraph-image.tsx files override it. */
+const DEFAULT_OG_IMAGE = "/brand/og-default.png";
 
 interface SEOProps {
   title?: string;
@@ -10,26 +13,98 @@ interface SEOProps {
   twitterImage?: string;
   path?: string;
   type?: "website" | "article";
+  /**
+   * Keep the page out of the index. Unless `canonicalPath` is given, the page
+   * also declares no canonical or og:url: a noindex page should not point
+   * search engines (or share cards) at another URL.
+   */
   noIndex?: boolean;
+  /** Robots `follow`; defaults to `!noIndex`. Listing filters are noindex but follow, so their links stay crawlable. */
+  follow?: boolean;
+  /** Canonical (and og:url) when it differs from `path`, e.g. a filtered listing pointing at its unfiltered base. */
+  canonicalPath?: string;
+  /**
+   * The 404 page. Next.js injects `<meta name="robots" content="noindex">` on
+   * every 404 response, so emit no robots tag of our own (never two) and no
+   * canonical or og:url.
+   */
+  notFound?: boolean;
   publishedTime?: string;
   modifiedTime?: string;
   authors?: string[];
   tags?: string[];
-  /** Blog posts use "Post Title | Nexyyra Blog"; default pages use "| Nexyyra" */
-  blogPost?: boolean;
 }
 
 const SEO_BRAND = "Nexyyra Events";
-const SEO_BLOG_BRAND = "Nexyyra Events Blog";
+/** Search results show about 60–65 characters of a title before cutting it. */
+const MAX_TITLE = 65;
+const MAX_DESCRIPTION = 160;
 
-function trimDescription(text: string, max = 160): string {
-  if (text.length <= max) return text;
-  const trimmed = text.slice(0, max - 1);
-  const lastSpace = trimmed.lastIndexOf(" ");
-  return `${(lastSpace > 120 ? trimmed.slice(0, lastSpace) : trimmed).trim()}…`;
+function warnInDev(message: string) {
+  if (process.env.NODE_ENV !== "production") console.warn(`[seo] ${message}`);
 }
 
-const ORG_ID = `${SITE_CONFIG.url}/#organization`;
+/** "Title | Nexyyra Events", or the bare title when the suffix would push it past 65 characters. */
+function composeTitle(title?: string): string {
+  if (!title) return `${SEO_BRAND} | ${SITE_CONFIG.tagline}`;
+  const branded = `${title} | ${SEO_BRAND}`;
+  if (branded.length <= MAX_TITLE) return branded;
+  warnInDev(`title is over ${MAX_TITLE} characters with the brand suffix — shorten it: "${branded}"`);
+  return title;
+}
+
+/**
+ * Descriptions are authored as complete sentences of 160 characters or fewer.
+ * If one runs long, keep the whole sentences that fit — never cut mid-sentence
+ * and append "…" — and warn in development so the copy gets rewritten.
+ */
+function fitDescription(text: string): string {
+  if (text.length <= MAX_DESCRIPTION) return text;
+  warnInDev(`description is over ${MAX_DESCRIPTION} characters — rewrite it: "${text}"`);
+  let fitted = "";
+  for (const sentence of text.match(/[^.!?]*[.!?]+(?:\s+|$)/g) ?? []) {
+    if ((fitted + sentence).trimEnd().length > MAX_DESCRIPTION) break;
+    fitted += sentence;
+  }
+  return fitted.trimEnd() || text;
+}
+
+/**
+ * The twelve services as published in data/cms.ts — the only topic and offer
+ * list the schema and meta keywords may state.
+ */
+const SERVICE_TITLES = services.map((s) => s.title);
+
+const DEFAULT_KEYWORDS = [
+  "Nexyyra Events",
+  "Event Management Company Pune",
+  "Luxury Event Planner Pune",
+  "Wedding Planner Pune",
+  "Destination Wedding Planner India",
+  ...SERVICE_TITLES,
+];
+
+/**
+ * A published "From ₹…" price. Every price on the site is a starting point,
+ * so the amount is a minimum (minPrice), never an exact Offer.price.
+ */
+export function startingPriceSpecification(minPrice: number) {
+  return { "@type": "PriceSpecification", minPrice, priceCurrency: "INR" };
+}
+
+/** "₹10 Lakhs" → 1000000, "₹1 Crore+" → 10000000 (the BRAND_INVESTMENTS `from` labels). */
+function rupeesFromLabel(label: string): number | undefined {
+  const match = /₹\s*([\d.,]+)\s*(lakhs?|l\b|crores?|cr\b)?/i.exec(label);
+  if (!match) return undefined;
+  const amount = Number(match[1].replace(/,/g, ""));
+  const unit = match[2]?.toLowerCase() ?? "";
+  if (unit.startsWith("c")) return amount * 1_00_00_000;
+  if (unit.startsWith("l")) return amount * 1_00_000;
+  return amount;
+}
+
+/** The global Organization node's @id — reference it instead of emitting a second Organization. */
+export const ORG_ID = `${SITE_CONFIG.url}/#organization`;
 const LOCAL_BUSINESS_ID = `${SITE_CONFIG.url}/#localbusiness`;
 const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
 
@@ -37,24 +112,24 @@ const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
 export function generateSEO({
   title,
   description = SITE_CONFIG.description,
-  keywords = SEO_KEYWORDS,
-  image = "/brand/nexyyra-og.png",
-  twitterImage = "/brand/nexyyra-og.png",
+  keywords = DEFAULT_KEYWORDS,
+  image = DEFAULT_OG_IMAGE,
+  twitterImage = DEFAULT_OG_IMAGE,
   path = "",
   type = "website",
   noIndex = false,
+  follow = !noIndex,
+  canonicalPath,
+  notFound = false,
   publishedTime,
   modifiedTime,
   authors,
   tags,
-  blogPost = false,
 }: SEOProps = {}): Metadata {
-  const brandSuffix = blogPost ? SEO_BLOG_BRAND : SEO_BRAND;
-  const fullTitle = title
-    ? `${title} | ${brandSuffix}`
-    : `${SEO_BRAND} | ${SITE_CONFIG.tagline}`;
-  const metaDescription = trimDescription(description);
-  const url = `${SITE_CONFIG.url}${path}`;
+  const fullTitle = composeTitle(title);
+  const metaDescription = fitDescription(description);
+  const canonical =
+    notFound || (noIndex && canonicalPath === undefined) ? null : `${SITE_CONFIG.url}${canonicalPath ?? path}`;
   const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
   const bingVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
   const pinterestVerification = process.env.NEXT_PUBLIC_PINTEREST_SITE_VERIFICATION;
@@ -72,11 +147,12 @@ export function generateSEO({
     creator: SITE_CONFIG.name,
     publisher: SITE_CONFIG.name,
     metadataBase: new URL(SITE_CONFIG.url),
-    alternates: { canonical: url, languages: { "en-IN": url } },
+    // null (not undefined) so a noindex page does not inherit the layout's homepage canonical.
+    alternates: canonical ? { canonical, languages: { "en-IN": canonical } } : null,
     openGraph: {
       title: fullTitle,
       description: metaDescription,
-      url,
+      ...(canonical && { url: canonical }),
       siteName: SITE_CONFIG.shortName,
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
       locale: "en_IN",
@@ -96,13 +172,15 @@ export function generateSEO({
       // creator/site handles removed — no verified X/Twitter profile on record.
       // EXTERNAL INPUT REQUIRED: restore once an official @handle exists.
     },
-    robots: noIndex
-      ? { index: false, follow: false }
-      : {
-          index: true,
-          follow: true,
-          googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
-        },
+    robots: notFound
+      ? null
+      : noIndex
+        ? { index: false, follow }
+        : {
+            index: true,
+            follow: true,
+            googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+          },
     ...(googleVerification || bingVerification || pinterestVerification || yandexVerification
       ? {
           verification: {
@@ -115,7 +193,7 @@ export function generateSEO({
   };
 }
 
-/** Consolidated global JSON-LD — single @graph for layout; ONE aggregateRating on Organization only. */
+/** Consolidated global JSON-LD — single @graph for layout (Organization, LocalBusiness, WebSite). */
 export function globalGraphSchema() {
   const { "@context": _epsCtx, ...eventPlanningNode } = eventPlanningServiceSchema();
   void _epsCtx;
@@ -138,13 +216,14 @@ export function globalGraphSchema() {
         url: SITE_CONFIG.url,
         telephone: SITE_CONFIG.phone,
         email: SITE_CONFIG.email,
-        image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+        image: `${SITE_CONFIG.url}${DEFAULT_OG_IMAGE}`,
         logo: `${SITE_CONFIG.url}/brand/nexyyra-logo-dark.svg`,
         slogan: SITE_CONFIG.tagline,
         sameAs: Object.values(SITE_CONFIG.social),
-        knowsAbout: ENTITY_FACTS.knowsAbout,
-        // numberOfEmployees / award / aggregateRating removed — unverified claims
-        // (520-review rating had no visible on-site source; awards pending verification).
+        knowsAbout: SERVICE_TITLES,
+        // numberOfEmployees / award / aggregateRating / founder / employee removed —
+        // unverified claims. No Person nodes anywhere until a name is verified
+        // against the MCA filing and shown on the page.
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -162,27 +241,20 @@ export function globalGraphSchema() {
             areaServed: "IN",
           },
         ],
-        founder: TEAM_MEMBERS.filter((m) => m.founder).map((m) => ({
-          "@type": "Person",
-          name: m.name,
-          jobTitle: m.role,
-          description: m.bio,
-          worksFor: { "@id": ORG_ID },
-        })),
-        employee: TEAM_MEMBERS.filter((m) => !m.founder).map((m) => ({
-          "@type": "Person",
-          name: m.name,
-          jobTitle: m.role,
-          description: m.bio,
-          worksFor: { "@id": ORG_ID },
-        })),
+        // The twelve published services, each with its page. Prices stay on
+        // /pricing and the service pages, where they are rendered.
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Luxury Event Services",
-          itemListElement: ENTITY_FACTS.knowsAbout.map((name, i) => ({
+          name: "Event services",
+          itemListElement: services.map((s, i) => ({
             "@type": "Offer",
             position: i + 1,
-            itemOffered: { "@type": "Service", name, provider: { "@id": ORG_ID } },
+            itemOffered: {
+              "@type": "Service",
+              name: s.title,
+              url: `${SITE_CONFIG.url}/services/${s.slug}`,
+              provider: { "@id": ORG_ID },
+            },
           })),
         },
       },
@@ -194,7 +266,7 @@ export function globalGraphSchema() {
         url: SITE_CONFIG.url,
         telephone: SITE_CONFIG.phone,
         email: SITE_CONFIG.email,
-        image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+        image: `${SITE_CONFIG.url}${DEFAULT_OG_IMAGE}`,
         priceRange: "₹₹₹₹",
         address: {
           "@type": "PostalAddress",
@@ -258,7 +330,7 @@ export function organizationSchema() {
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+    image: `${SITE_CONFIG.url}${DEFAULT_OG_IMAGE}`,
     slogan: SITE_CONFIG.tagline,
     priceRange: "₹₹₹₹",
     address: {
@@ -300,7 +372,7 @@ export function entityDefinitionSchema() {
     },
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
-    knowsAbout: ENTITY_FACTS.knowsAbout,
+    knowsAbout: SERVICE_TITLES,
     slogan: SITE_CONFIG.tagline,
     // numberOfEmployees / award removed — pending verification (see remediation report).
   };
@@ -349,38 +421,14 @@ export function qaPageSchema(qa: { question: string; answer: string; url: string
   };
 }
 
-export function howToSchema(howTo: {
-  name: string;
-  description: string;
-  slug: string;
-  steps: { name: string; text: string }[];
-  totalTime?: string;
-}) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: howTo.name,
-    description: howTo.description,
-    url: `${SITE_CONFIG.url}/blog/${howTo.slug}`,
-    inLanguage: "en-IN",
-    step: howTo.steps.map((s, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name: s.name,
-      text: s.text,
-    })),
-    ...(howTo.totalTime && { totalTime: howTo.totalTime }),
-    publisher: { "@id": ORG_ID },
-  };
-}
-
-export function speakableWebPageSchema(path: string, cssSelectors: string[]) {
+/** WebPage + speakable. `name` is the page's own title (its H1), never the company name. */
+export function speakableWebPageSchema(path: string, cssSelectors: string[], name?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "@id": `${SITE_CONFIG.url}${path}#webpage`,
     url: `${SITE_CONFIG.url}${path}`,
-    name: SITE_CONFIG.name,
+    ...(name && { name }),
     isPartOf: { "@id": WEBSITE_ID },
     speakable: {
       "@type": "SpeakableSpecification",
@@ -403,14 +451,25 @@ export function contactPageSchema() {
   };
 }
 
-export function collectionPageSchema(name: string, path: string, description: string) {
+type CollectionPageInput = { name: string; description: string; path: string };
+
+/** CollectionPage node — object form `({ name, description, path })` or legacy positional args. */
+export function collectionPageSchema(page: CollectionPageInput): Record<string, unknown>;
+export function collectionPageSchema(name: string, path: string, description: string): Record<string, unknown>;
+export function collectionPageSchema(
+  nameOrPage: string | CollectionPageInput,
+  path = "",
+  description = "",
+) {
+  const page: CollectionPageInput =
+    typeof nameOrPage === "string" ? { name: nameOrPage, path, description } : nameOrPage;
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": `${SITE_CONFIG.url}${path}#webpage`,
-    url: `${SITE_CONFIG.url}${path}`,
-    name,
-    description,
+    "@id": `${SITE_CONFIG.url}${page.path}#webpage`,
+    url: `${SITE_CONFIG.url}${page.path}`,
+    name: page.name,
+    description: page.description,
     isPartOf: { "@id": WEBSITE_ID },
     publisher: { "@id": ORG_ID },
     inLanguage: "en-IN",
@@ -491,17 +550,12 @@ export function eventPlanningServiceSchema() {
     url: SITE_CONFIG.url,
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
-    image: `${SITE_CONFIG.url}/brand/nexyyra-og.png`,
+    image: `${SITE_CONFIG.url}${DEFAULT_OG_IMAGE}`,
     provider: { "@id": ORG_ID },
     areaServed: ENTITY_FACTS.serviceAreas.map((name) => ({ "@type": "Place", name })),
     priceRange: ENTITY_FACTS.priceRange,
-    knowsAbout: ENTITY_FACTS.knowsAbout,
-    serviceType: [
-      "Luxury Wedding Planning",
-      "Destination Weddings",
-      "Corporate Events",
-      "Concert Production",
-    ],
+    knowsAbout: SERVICE_TITLES,
+    serviceType: SERVICE_TITLES,
   };
 }
 
@@ -510,7 +564,8 @@ export function serviceSchema(service: {
   description: string;
   slug: string;
   image?: string;
-  price?: number;
+  /** The published "From ₹…" price (cms basePrice) — emitted as a minimum, not an exact price. */
+  startingPrice?: number;
 }) {
   return {
     "@context": "https://schema.org",
@@ -522,48 +577,18 @@ export function serviceSchema(service: {
     image: service.image,
     provider: { "@id": ORG_ID },
     areaServed: { "@type": "AdministrativeArea", name: "Maharashtra, India" },
-    ...(service.price && {
+    ...(service.startingPrice && {
       offers: {
         "@type": "Offer",
-        price: service.price,
-        priceCurrency: "INR",
+        priceSpecification: startingPriceSpecification(service.startingPrice),
         availability: "https://schema.org/InStock",
       },
     }),
   };
 }
 
-export function reviewSchema(reviews: {
-  author: string;
-  reviewBody: string;
-  ratingValue: number;
-  datePublished?: string;
-}[]) {
-  return {
-    "@context": "https://schema.org",
-    "@graph": reviews.map((r) => ({
-      "@type": "Review",
-      author: { "@type": "Person", name: r.author },
-      reviewBody: r.reviewBody,
-      reviewRating: { "@type": "Rating", ratingValue: r.ratingValue, bestRating: 5 },
-      itemReviewed: { "@id": ORG_ID },
-      ...(r.datePublished && { datePublished: r.datePublished }),
-    })),
-  };
-}
-
-export function aggregateRatingSchema(ratingValue: number, reviewCount: number) {
-  return {
-    "@type": "AggregateRating",
-    ratingValue: String(ratingValue),
-    reviewCount: String(reviewCount),
-    bestRating: "5",
-  };
-}
-
-/* ORG_AGGREGATE_RATING removed — a 4.9/520 rating had no verifiable on-site review
-   source, violating Google's self-serving review policy. Use aggregateRatingSchema()
-   only if a page visibly displays the reviews it summarizes. */
+/* reviewSchema / aggregateRatingSchema deleted (V6): the site publishes no reviews
+   or ratings, so Review/AggregateRating markup would be self-serving spam. */
 
 export function venueSchema(venue: {
   name: string;
@@ -595,7 +620,12 @@ export function articleSchema(article: {
   description: string;
   slug: string;
   image: string;
-  author: string;
+  /**
+   * The byline the page shows, as the Organization's display name (defaults to
+   * the trade name). Articles are published as the house, so the author is
+   * always the global Organization node — no Person nodes, no verified names.
+   */
+  author?: string;
   publishedAt: string;
   modifiedAt?: string;
   tags?: string[];
@@ -609,10 +639,10 @@ export function articleSchema(article: {
     description: article.description,
     image: article.image,
     author: {
-      "@type": "Person",
-      name: article.author,
-      url: `${SITE_CONFIG.url}/about`,
-      worksFor: { "@id": ORG_ID },
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: article.author ?? SITE_CONFIG.shortName,
+      url: SITE_CONFIG.url,
     },
     publisher: { "@id": ORG_ID },
     datePublished: article.publishedAt,
@@ -627,11 +657,23 @@ export function articleSchema(article: {
   };
 }
 
-export function itemListSchema(items: { name: string; url: string; image?: string }[]) {
+type ListItemInput = { name: string; url: string; image?: string };
+/** The `services` rows from data/cms.ts (and anything shaped like them). */
+type ServiceListInput = { title: string; slug: string; image?: string };
+
+function toListItem(item: ListItemInput | ServiceListInput): ListItemInput {
+  if ("slug" in item) {
+    return { name: item.title, url: `/services/${item.slug}`, image: item.image };
+  }
+  return item;
+}
+
+/** ItemList node — pass `services` straight from cms.ts, or `{ name, url, image? }` rows. */
+export function itemListSchema(items: readonly (ListItemInput | ServiceListInput)[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: items.map((item, i) => ({
+    itemListElement: items.map(toListItem).map((item, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
@@ -664,83 +706,79 @@ export function creativeWorkSchema(work: {
   };
 }
 
+/** A pre-shaped offer, or a BRAND_INVESTMENTS collection (`from` is the "₹10 Lakhs" string). */
+type CollectionOfferInput =
+  | { name: string; description: string; price: string }
+  | { name: string; from: string; narrative: string };
+/** A `services` row from data/cms.ts — basePrice is the published starting price in INR. */
+type ServiceOfferInput = { title: string; slug: string; description: string; basePrice: number };
+
+/**
+ * OfferCatalog for /pricing: the three collections plus, when `services` is
+ * passed, the twelve single-service offers. Every price is a published
+ * starting price, so each carries a machine-readable minPrice. Emit only what
+ * the page renders.
+ */
 export function offerCatalogSchema(
-  offers: { name: string; description: string; price: string }[],
+  collections: readonly CollectionOfferInput[],
+  services: readonly ServiceOfferInput[] = [],
 ) {
+  const collectionOffers = collections.map((c, i) => {
+    const description = "narrative" in c ? c.narrative : c.description;
+    const label = "from" in c ? `From ${c.from}` : c.price;
+    const minPrice = rupeesFromLabel(label);
+    return {
+      "@type": "Offer",
+      position: i + 1,
+      name: c.name,
+      description,
+      priceSpecification: minPrice
+        ? { ...startingPriceSpecification(minPrice), description: label }
+        : { "@type": "PriceSpecification", priceCurrency: "INR", description: label },
+      seller: { "@id": ORG_ID },
+    };
+  });
+
+  const serviceOffers = services.map((s, i) => ({
+    "@type": "Offer",
+    position: collectionOffers.length + i + 1,
+    name: s.title,
+    description: s.description,
+    priceSpecification: startingPriceSpecification(s.basePrice),
+    availability: "https://schema.org/InStock",
+    itemOffered: {
+      "@type": "Service",
+      name: s.title,
+      url: `${SITE_CONFIG.url}/services/${s.slug}`,
+      provider: { "@id": ORG_ID },
+    },
+    seller: { "@id": ORG_ID },
+  }));
+
   return {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
     name: `${SITE_CONFIG.name} Investment Collections`,
-    itemListElement: offers.map((o, i) => ({
-      "@type": "Offer",
-      position: i + 1,
-      name: o.name,
-      description: o.description,
-      priceSpecification: {
-        "@type": "PriceSpecification",
-        priceCurrency: "INR",
-        description: o.price,
-      },
-      seller: { "@id": ORG_ID },
-    })),
+    itemListElement: [...collectionOffers, ...serviceOffers],
   };
 }
 
-export function personSchema(person: {
-  name: string;
-  jobTitle: string;
-  description: string;
-  image?: string;
-  url?: string;
-  sameAs?: string[];
-}) {
+/**
+ * AboutPage node with rendered facts only. The company is referenced by ORG_ID
+ * (the global Organization node), never re-declared, and there are no Person
+ * nodes: no name is published until it is verified against the MCA filing.
+ */
+export function aboutPageSchema({ description }: { description: string }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": `${SITE_CONFIG.url}/about#${person.name.replace(/\s+/g, "-").toLowerCase()}`,
-    name: person.name,
-    jobTitle: person.jobTitle,
-    description: person.description,
-    image: person.image,
-    url: person.url ?? `${SITE_CONFIG.url}/about`,
-    worksFor: { "@id": ORG_ID },
-    ...(person.sameAs?.length && { sameAs: person.sameAs }),
-  };
-}
-
-export function aboutPageSchema(
-  team: { name: string; role: string; bio: string; image?: string }[],
-  founderName: string,
-) {
-  const founder = team.find((m) => m.name === founderName) ?? team[0];
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "AboutPage",
-        "@id": `${SITE_CONFIG.url}/about#webpage`,
-        url: `${SITE_CONFIG.url}/about`,
-        name: `About ${SITE_CONFIG.name}`,
-        mainEntity: { "@id": ORG_ID },
-        founder: { "@id": `${SITE_CONFIG.url}/about#${founder.name.replace(/\s+/g, "-").toLowerCase()}` },
-      },
-      personSchema({
-        name: founder.name,
-        jobTitle: founder.role,
-        description: founder.bio,
-        image: founder.image,
-        url: `${SITE_CONFIG.url}/about`,
-      }),
-      ...team.slice(0, 6).map((member) =>
-        personSchema({
-          name: member.name,
-          jobTitle: member.role,
-          description: member.bio,
-          image: member.image,
-          url: `${SITE_CONFIG.url}/about`,
-        }),
-      ),
-    ],
+    "@type": "AboutPage",
+    "@id": `${SITE_CONFIG.url}/about#webpage`,
+    url: `${SITE_CONFIG.url}/about`,
+    name: `About ${SITE_CONFIG.shortName}`,
+    description,
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntity: { "@id": ORG_ID },
+    inLanguage: "en-IN",
   };
 }
 

@@ -16,14 +16,14 @@ interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
 }
 
 const fieldStyles =
-  "flex h-11 w-full rounded-lg border border-[var(--glitz-border)] bg-[var(--glitz-surface-elevated,var(--glitz-card))] px-4 py-2 text-sm text-primary placeholder:text-muted/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--glitz-gold)] focus-visible:border-[var(--glitz-gold)]/50 disabled:cursor-not-allowed disabled:opacity-50";
+  "flex h-11 w-full rounded-lg border border-[var(--lux-border)] bg-[var(--lux-surface-2)] px-4 py-2 text-sm text-lux-white placeholder:text-lux-subtle/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lux-gold)] focus-visible:border-[var(--lux-gold)]/50 disabled:cursor-not-allowed disabled:opacity-50";
 
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   ({ label, error, hint, id, className, required, ...props }, ref) => {
     const inputId = id ?? props.name;
     return (
       <div className="space-y-1.5">
-        <label htmlFor={inputId} className="block text-sm font-medium text-primary">
+        <label htmlFor={inputId} className="block text-sm font-medium text-lux-white">
           {label}
           {required && <span className="ml-0.5 text-[var(--color-error,#ef4444)]" aria-hidden="true">*</span>}
         </label>
@@ -37,7 +37,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           {...props}
         />
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="text-xs text-muted">{hint}</p>
+          <p id={`${inputId}-hint`} className="text-xs text-lux-subtle">{hint}</p>
         )}
         {error && (
           <p id={`${inputId}-error`} role="alert" className="text-xs text-[var(--color-error,#ef4444)]">{error}</p>
@@ -53,7 +53,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
     const inputId = id ?? props.name;
     return (
       <div className="space-y-1.5">
-        <label htmlFor={inputId} className="block text-sm font-medium text-primary">
+        <label htmlFor={inputId} className="block text-sm font-medium text-lux-white">
           {label}
           {required && <span className="ml-0.5 text-[var(--color-error,#ef4444)]" aria-hidden="true">*</span>}
         </label>
@@ -73,7 +73,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
           {...props}
         />
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="text-xs text-muted">{hint}</p>
+          <p id={`${inputId}-hint`} className="text-xs text-lux-subtle">{hint}</p>
         )}
         {error && (
           <p id={`${inputId}-error`} role="alert" className="text-xs text-[var(--color-error,#ef4444)]">{error}</p>

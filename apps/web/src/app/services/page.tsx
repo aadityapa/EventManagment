@@ -1,31 +1,28 @@
-import { generateSEO, itemListSchema, collectionPageSchema } from "@/lib/seo";
-import { ServicesView } from "@/brand";
+import { ServicesView } from "@/brand/views/services-view";
+import { JsonLd, SERVICE_GROUPS } from "@/components/ui";
 import { services } from "@/data/cms";
+import { collectionPageSchema, generateSEO, itemListSchema } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Twelve event services from Nexyyra Events: weddings, destination weddings, corporate events, conferences, launches and production, each with a starting price.";
 
 export const metadata = generateSEO({
-  title: "Luxury Event Services",
-  description: "Luxury weddings, corporate galas, destination celebrations, concerts, exhibitions, and premium experiences across India.",
+  title: "Event Services and Starting Prices",
+  description: DESCRIPTION,
   path: "/services",
 });
 
 export default function ServicesPage() {
-  const collectionLd = collectionPageSchema(
-    "Luxury Event Services",
-    "/services",
-    "Full-service luxury event experiences by Nexyyra Events — weddings, corporate, destination, concerts, and more.",
-  );
-  const listLd = itemListSchema(
-    services.map((s) => ({
-      name: s.title,
-      url: `/services/${s.slug}`,
-      image: s.image,
-    })),
-  );
+  // ItemList in the order the index renders the rows (breadcrumb + FAQ JSON-LD come from the rendered primitives).
+  const ordered = SERVICE_GROUPS.flatMap((g) => g.slugs).flatMap((slug) => {
+    const s = services.find((x) => x.slug === slug);
+    return s ? [{ name: s.title, url: `/services/${s.slug}` }] : [];
+  });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }} />
+      <JsonLd data={collectionPageSchema({ name: "Event services", path: "/services", description: DESCRIPTION })} />
+      <JsonLd data={itemListSchema(ordered)} />
       <ServicesView />
     </>
   );

@@ -1,0 +1,103 @@
+/* /about + /company (package F, DESIGN.md §10.7–10.8). Page-local only: pg-about-* classes, --lux-* tokens. */
+@layer components {
+  /* ── 01 The house: two-column essay, ruled at ≥ 1024 by .lux-grid--ruled ── */
+  .pg-about-essay {
+    row-gap: 0;
+  }
+
+  .pg-about-essay > .lux-prose {
+    max-width: none;
+  }
+
+  /* Stacked on phones: the second column simply continues the essay. */
+  @media (max-width: 767.98px) {
+    .pg-about-essay > .lux-prose + .lux-prose {
+      margin-block-start: 1lh;
+    }
+  }
+
+  /* ── 02 Vision, mission, philosophy: three ruled columns, hairlines when stacked ── */
+  .pg-about-pillar {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--lux-space-3);
+    align-content: start;
+    min-width: 0;
+  }
+
+  .pg-about-pillar__copy {
+    margin: 0;
+    max-width: 38ch;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-size: var(--lux-text-body);
+    line-height: var(--lux-leading-body);
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 1023.98px) {
+    .pg-about-pillar + .pg-about-pillar {
+      padding-top: var(--lux-space-5);
+      border-top: 1px solid var(--lux-border);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pg-about-pillar {
+      grid-column: span 4;
+    }
+  }
+
+  /* ── Commitments chapter: the text CTA sits under the grid ── */
+  .pg-about-cta {
+    margin-top: var(--lux-space-block);
+  }
+
+  /* ── /company: values that are links (phone, email, website) ── */
+  .pg-about-fact-link {
+    color: var(--lux-white);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+  }
+
+  .pg-about-fact-link:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  /* Policies + contact links row: 44px targets, hairline above. */
+  .pg-about-links {
+    margin-top: var(--lux-space-block);
+    padding-top: var(--lux-space-4);
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .pg-about-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--lux-space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Padding makes the 44px target; content-box origin keeps the drawn underline under the text. */
+  .pg-about-links a {
+    display: inline-block;
+    padding-block: 0.8rem 0.9rem;
+    background-origin: content-box;
+  }
+
+  .pg-about-links a:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  /* ── Inquiry plate: a chapter's worth of air before the footer ── */
+  .pg-about-inquiry {
+    margin-block-end: var(--lux-space-section);
+  }
+}

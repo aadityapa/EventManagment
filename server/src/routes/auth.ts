@@ -2,23 +2,35 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import prisma from "../lib/prisma";
+import { emailSchema, parseBody, phoneSchema, sendServerError, shortText } from "../lib/http";
+import { authLimiter, otpLimiter, registerLimiter } from "../lib/rate-limit";
 import { authenticate, AuthRequest, generateOTP, generateToken } from "../middleware/auth";
 
 const router = Router();
 
 const registerSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  password: z.string().min(8).optional(),
-  phone: z.string().optional(),
+  name: shortText(120).min(2),
+  email: emailSchema,
+  password: z.string().min(8).max(128).optional(),
+  phone: phoneSchema.optional(),
   role: z.enum(["CLIENT", "VENDOR"]).default("CLIENT"),
 });
 
-router.post("/register", async (req, res) => {
+const loginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1).max(128),
+});
+
+function publicUser(user: { id: string; name: string; email: string; role: string }) {
+  return { id: user.id, name: user.name, email: user.email, role: user.role };
+}
+
+router.post("/register", registerLimiter, async (req, res) => {
+  const data = parseBody(registerSchema, req, res);
+  if (!data) return;
   try {
-    const data = registerSchema.parse(req.body);
-    const existing = await prisma.user.findUnique({ where: { email: data.email } });
-    if (existing) return res.status(400).json({ error: "Email already registered" });
+    const existing = await prisma.user.findUnique({ where: { email: data.email }, select: { id: true } });
+    if (existing) return res.status(409).json({ error: "An account with this email already exists" });
 
     const passwordHash = data.password ? await bcrypt.hash(data.password, 12) : null;
     const user = await prisma.user.create({
@@ -26,42 +38,65 @@ router.post("/register", async (req, res) => {
     });
 
     const token = generateToken({ id: user.id, email: user.email, role: user.role });
-    res.status(201).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role }, token });
+    res.status(201).json({ user: publicUser(user), token });
   } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
-    res.status(500).json({ error: "Registration failed" });
+    sendServerError(res, "auth.register", err, "Registration failed");
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", authLimiter, async (req, res) => {
+  const data = parseBody(loginSchema, req, res);
+  if (!data) return;
   try {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user?.passwordHash) return res.status(401).json({ error: "Invalid credentials" });
-
-    const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) return res.status(401).json({ error: "Invalid credentials" });
+    const user = await prisma.user.findUnique({ where: { email: data.email } });
+    // Compare against a dummy hash when the user is unknown so response time
+    // does not reveal which emails are registered.
+    const hash = user?.passwordHash ?? DUMMY_HASH;
+    const valid = await bcrypt.compare(data.password, hash);
+    if (!user?.passwordHash || !valid) return res.status(401).json({ error: "Invalid email or password" });
 
     const token = generateToken({ id: user.id, email: user.email, role: user.role });
-    res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role }, token });
-  } catch {
-    res.status(500).json({ error: "Login failed" });
+    res.json({ user: publicUser(user), token });
+  } catch (err) {
+    sendServerError(res, "auth.login", err, "Login failed");
   }
 });
 
-router.post("/otp/send", async (req, res) => {
+const DUMMY_HASH = bcrypt.hashSync("not-a-real-password", 12);
+
+/* OTP login is OFF unless OTP_LOGIN_ENABLED=true. The codes were never
+   delivered (no SMS/email integration), any email — including the admin's —
+   could be targeted, and there was no attempt limit, so the 900k-code space
+   could be brute-forced into an account takeover. The web app does not use
+   these routes. Before enabling: wire delivery, hash stored codes and cap
+   attempts per code. */
+const OTP_ENABLED = process.env.OTP_LOGIN_ENABLED === "true";
+const PRIVILEGED_ROLES = new Set(["ADMIN", "STAFF"]);
+
+const otpSendSchema = z
+  .object({ email: emailSchema.optional(), phone: phoneSchema.optional() })
+  .refine((v) => v.email || v.phone, { message: "Email or phone is required", path: ["email"] });
+
+const otpVerifySchema = z.object({
+  email: emailSchema,
+  otp: z.string().trim().regex(/^\d{6}$/, "OTP must be 6 digits"),
+});
+
+router.post("/otp/send", otpLimiter, async (req, res) => {
+  if (!OTP_ENABLED) return res.status(404).json({ error: "Not found" });
+  const data = parseBody(otpSendSchema, req, res);
+  if (!data) return;
   try {
-    const { email, phone } = req.body;
     const otp = generateOTP();
     const expires = new Date(Date.now() + 10 * 60 * 1000);
 
     let user = await prisma.user.findFirst({
-      where: email ? { email } : { phone },
+      where: data.email ? { email: data.email } : { phone: data.phone },
     });
 
-    if (!user && email) {
+    if (!user && data.email) {
       user = await prisma.user.create({
-        data: { email, name: email.split("@")[0], phone, otpCode: otp, otpExpires: expires },
+        data: { email: data.email, name: data.email.split("@")[0], phone: data.phone, otpCode: otp, otpExpires: expires },
       });
     } else if (user) {
       await prisma.user.update({
@@ -70,18 +105,26 @@ router.post("/otp/send", async (req, res) => {
       });
     }
 
-    // In production: send via SMS/email
-    res.json({ message: "OTP sent", ...(process.env.NODE_ENV === "development" && { otp }) });
-  } catch {
-    res.status(500).json({ error: "Failed to send OTP" });
+    // In production: send via SMS/email. Same response whether or not the user exists.
+    res.json({ message: "If the account exists, an OTP has been sent", ...(process.env.NODE_ENV === "development" && { otp }) });
+  } catch (err) {
+    sendServerError(res, "auth.otp.send", err, "Failed to send OTP");
   }
 });
 
-router.post("/otp/verify", async (req, res) => {
+router.post("/otp/verify", otpLimiter, async (req, res) => {
+  if (!OTP_ENABLED) return res.status(404).json({ error: "Not found" });
+  const data = parseBody(otpVerifySchema, req, res);
+  if (!data) return;
   try {
-    const { email, otp } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || user.otpCode !== otp || !user.otpExpires || user.otpExpires < new Date()) {
+    const user = await prisma.user.findUnique({ where: { email: data.email } });
+    if (
+      !user ||
+      PRIVILEGED_ROLES.has(user.role) ||
+      user.otpCode !== data.otp ||
+      !user.otpExpires ||
+      user.otpExpires < new Date()
+    ) {
       return res.status(401).json({ error: "Invalid or expired OTP" });
     }
 
@@ -91,9 +134,9 @@ router.post("/otp/verify", async (req, res) => {
     });
 
     const token = generateToken({ id: user.id, email: user.email, role: user.role });
-    res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role }, token });
-  } catch {
-    res.status(500).json({ error: "OTP verification failed" });
+    res.json({ user: publicUser(user), token });
+  } catch (err) {
+    sendServerError(res, "auth.otp.verify", err, "OTP verification failed");
   }
 });
 
@@ -105,8 +148,8 @@ router.get("/me", authenticate, async (req: AuthRequest, res) => {
     });
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json({ user });
-  } catch {
-    res.status(500).json({ error: "Failed to fetch user" });
+  } catch (err) {
+    sendServerError(res, "auth.me", err, "Failed to fetch user");
   }
 });
 

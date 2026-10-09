@@ -1,16 +1,24 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { safeNextPath } from "@/lib/safe-next";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/lux-button";
 import { FormInput } from "@/components/ui/form-input";
 import { toast } from "sonner";
 
+/**
+ * Same-origin paths only. `next=//evil.example`, `next=https://…` and
+ * `next=/%09/evil.example` (the URL parser strips tabs and newlines, leaving
+ * `//evil.example`) would all be open redirects, so: decode fully, refuse any
+ * control character or backslash, and require one leading "/" that is not
+ * followed by another "/".
+ */
 export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = useMemo(() => params.get("next") || "/dashboard", [params]);
+  const next = useMemo(() => safeNextPath(params.get("next")), [params]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +47,7 @@ export function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8" aria-label="Sign in form">
       <h1 className="font-display text-2xl font-bold">Sign in</h1>
-      <p className="mt-1 text-sm text-muted">Access your bookings, payments, and timeline.</p>
+      <p className="mt-1 text-sm text-lux-subtle">Access your bookings, payments, and timeline.</p>
 
       <div className="mt-6 space-y-4">
         <FormInput
@@ -62,14 +70,14 @@ export function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button type="submit" className="w-full btn-premium-hover" disabled={loading}>
+        <Button type="submit" variant="primary" size="full" cta="login_submit" location="login_form" disabled={loading}>
           {loading ? "Signing in..." : "Sign in"}
         </Button>
       </div>
 
-      <p className="mt-6 text-sm text-muted">
+      <p className="mt-6 text-sm text-lux-subtle">
         New here?{" "}
-        <Link href={`/register?next=${encodeURIComponent(next)}`} className="font-semibold text-primary">
+        <Link href={`/register?next=${encodeURIComponent(next)}`} className="font-semibold text-lux-white">
           Create an account
         </Link>
       </p>

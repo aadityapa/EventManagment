@@ -1,79 +1,114 @@
-import { StitchRoute } from "@/components/stitch/stitch-route";
-import { stitchMetadata } from "@/lib/stitch/pages";
-import { PageHero } from "@/components/shared/page-hero";
+import { LEGAL_DOCS, LegalPage, REGISTERED_ADDRESS, type LegalSection } from "@/brand/templates/legal-page";
+import { HOTJAR_ID } from "@/lib/analytics";
 import { SITE_CONFIG } from "@/lib/constants";
+import { generateSEO } from "@/lib/seo";
 
-export const metadata = stitchMetadata("privacy");
+export const metadata = generateSEO({
+  title: LEGAL_DOCS.privacy.title,
+  description: "How Nexyyra Events collects, uses and protects your personal information, and how to exercise your rights.",
+  path: LEGAL_DOCS.privacy.href,
+});
+
+const email = (
+  <a href={`mailto:${SITE_CONFIG.email}`} data-cta="legal_privacy_email" data-cta-location="legal_body">
+    {SITE_CONFIG.email}
+  </a>
+);
+
+const SECTIONS: LegalSection[] = [
+  {
+    id: "introduction",
+    title: "Introduction",
+    body: (
+      <p>
+        {SITE_CONFIG.legalName} (&ldquo;we&rdquo;, &ldquo;our&rdquo; or &ldquo;us&rdquo;), trading as {SITE_CONFIG.shortName}, is
+        committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose and safeguard your
+        information when you visit our website or use our event management services.
+      </p>
+    ),
+  },
+  {
+    id: "information-we-collect",
+    title: "Information we collect",
+    body: (
+      <p>
+        We may collect personal information including your name, email address, phone number, event details, payment records
+        and communication preferences when you book events, contact us or use our client dashboard.
+      </p>
+    ),
+  },
+  {
+    id: "how-we-use-it",
+    title: "How we use your information",
+    body: (
+      <ul>
+        <li>To provide and manage event planning services</li>
+        <li>To process bookings and payments</li>
+        <li>To communicate about your events via email, SMS and WhatsApp</li>
+        <li>To improve our website and services</li>
+        <li>To comply with legal obligations</li>
+      </ul>
+    ),
+  },
+  {
+    id: "cookies",
+    title: "Cookies and analytics",
+    body: (
+      <>
+        <p>
+          With your permission, we use Google Analytics cookies to understand how the website is used
+          {HOTJAR_ID === null
+            ? "."
+            : ", and Hotjar, which records how visitors move through our pages (clicks, taps and scrolling) and sets its own cookies."}{" "}
+          No analytics run until you make a choice in the cookie notice, and declining does not affect how the website works.
+        </p>
+        <p>
+          You can change or withdraw your choice at any time from{" "}
+          <a href="#cookies" data-consent-open="">
+            Cookie settings
+          </a>{" "}
+          (also linked in the footer of every page). If you withdraw consent, analytics stop loading, and the Google
+          Analytics{HOTJAR_ID === null ? "" : " and Hotjar"} cookies on this website are deleted from your browser.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "data-security",
+    title: "Data security",
+    body: (
+      <p>
+        We use reasonable safeguards, including access controls, to protect your personal information. Online payments are
+        processed by Razorpay: card details are entered on Razorpay&rsquo;s checkout and are not stored by us.
+      </p>
+    ),
+  },
+  {
+    id: "your-rights",
+    title: "Your rights",
+    body: <p>You have the right to access, correct or delete your personal data. Write to us at {email} to exercise these rights.</p>,
+  },
+  {
+    id: "contact",
+    title: "Contact us",
+    body: (
+      <p>
+        For privacy-related questions, contact us at {email} or{" "}
+        <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} data-cta="legal_privacy_call" data-cta-location="legal_body">
+          {SITE_CONFIG.phone}
+        </a>
+        . Our registered address is {SITE_CONFIG.legalName}, {REGISTERED_ADDRESS}.
+      </p>
+    ),
+  },
+];
 
 export default function PrivacyPage() {
   return (
-    <StitchRoute screen="privacy">
-    <>
-      <PageHero title="Privacy Policy" subtitle={`Last updated: June 1, 2026`} />
-
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="prose prose-lg max-w-none space-y-8">
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">1. Introduction</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                {SITE_CONFIG.name} (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting
-                your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard
-                your information when you visit our website or use our event management services.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">2. Information We Collect</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                We may collect personal information including your name, email address, phone number,
-                event details, payment information, and communication preferences when you book events,
-                contact us, or use our client dashboard.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">3. How We Use Your Information</h2>
-              <ul className="mt-3 list-inside list-disc space-y-2 text-muted">
-                <li>To provide and manage event planning services</li>
-                <li>To process bookings and payments</li>
-                <li>To communicate about your events via email, SMS, and WhatsApp</li>
-                <li>To improve our website and services</li>
-                <li>To comply with legal obligations</li>
-              </ul>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">4. Data Security</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                We implement industry-standard security measures including encryption, secure payment
-                processing through Razorpay, Stripe, and PayPal, and access controls to protect your
-                personal information.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">5. Your Rights</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                You have the right to access, correct, or delete your personal data. Contact us at{" "}
-                <a href={`mailto:${SITE_CONFIG.email}`} className="text-primary hover:underline">
-                  {SITE_CONFIG.email}
-                </a>{" "}
-                to exercise these rights.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">6. Contact Us</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                For privacy-related inquiries, please contact us at {SITE_CONFIG.email} or{" "}
-                {SITE_CONFIG.phone}. Our registered address is {SITE_CONFIG.address}.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-    </StitchRoute>
+    <LegalPage
+      doc="privacy"
+      lead="What we collect when you contact or book with us, how we use it, and how to have it corrected or deleted."
+      sections={SECTIONS}
+    />
   );
 }

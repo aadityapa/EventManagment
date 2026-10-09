@@ -1,20 +1,12 @@
+/* COMPANY */
+Nexyyra Events and Promotions Private Limited (trade name: Nexyyra Events)
+CIN: U70200ME2026PTC476014 · Incorporated 2026
 Contact: Info.Events@nexyyra.com — +91 70206 40157
-Location: Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108
+Registered office: Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108
 Delivery & Coordination Office: Pune, Maharashtra, India
-Last update: 2026/08/06
-
-/* TEAM */
-Founder & Managing Director: Yash Bajaj (2012)
-Co-Founder & CTO: Aaditya Padiya (2026)
-Co-Founder & CMO: Amey Korde (2026)
-Finance & Accounts Manager: Shilpa Sharma
-Data & Administration Manager: Radhika Bajaj
-Head - Decoration Department: Bharti Jadhav
+Last update: 2026/10/08
 
 /* SITE */
 Standards: HTML5, CSS3, ES2024, Next.js 16, React 19
-Components: Tailwind CSS, Framer Motion, Radix UI
+Components: Tailwind CSS
 Software: TypeScript, Prisma, PostgreSQL
-
-/* THANKS */
-Clients, partners, and collaborators who trust Nexyyra with extraordinary celebrations.

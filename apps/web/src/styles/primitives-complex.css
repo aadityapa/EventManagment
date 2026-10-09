@@ -1,0 +1,359 @@
+/* V6 complex primitives (package A2): Strand · ServicesIndex · ProcessLine ·
+   PriceTable · Gallery + Lightbox · InquiryPanel.
+   Import after primitives.css and lux-conversion.css. Tokens only. */
+
+@layer components {
+  /* ── Strand: user-driven strip; 12-col grid from md unless --nav ─────── */
+  .lux-strand-wrap { position: relative; }
+  .lux-strand {
+    display: flex;
+    gap: var(--lux-grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--lux-strand-pad, 0px);
+    scrollbar-width: none;
+  }
+  .lux-strand::-webkit-scrollbar { display: none; }
+  .lux-strand--mandatory { scroll-snap-type: x mandatory; }
+  .lux-strand--proximity { scroll-snap-type: x proximity; }
+  .lux-strand > * { flex: 0 0 auto; min-width: min(var(--lux-strand-item, 78vw), 100%); scroll-snap-align: start; }
+  /* A bled strand scrolls under the page gutters and snaps back to the rail. */
+  .lux-bleed .lux-strand { --lux-strand-pad: var(--lux-gutter); padding-inline: var(--lux-gutter); }
+  .lux-strand__nav { display: none; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+  .lux-strand__btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--lux-border-strong);
+    border-radius: var(--lux-radius-pill);
+    background: transparent;
+    color: var(--lux-white);
+    cursor: pointer;
+    transition: border-color var(--lux-dur-ui) var(--lux-ease), color var(--lux-dur-ui) var(--lux-ease);
+  }
+  .lux-strand__btn:hover { border-color: var(--lux-gold); color: var(--lux-gold); }
+  .lux-strand__btn:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  @media (min-width: 768px) {
+    .lux-strand:not(.lux-strand--nav) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
+    .lux-strand:not(.lux-strand--nav) > * { min-width: 0; grid-column: span var(--lux-strand-span, 4); }
+    .lux-strand--nav > * { min-width: var(--lux-strand-item-md, 22rem); }
+  }
+  @media (hover: hover) { .lux-strand-wrap--nav .lux-strand__nav { display: flex; } }
+
+  /* ── Services index: rows left, sticky frame right, :has() swap ──────── */
+  .lux-index { display: grid; gap: var(--lux-grid-gap); align-items: start; }
+  .lux-index__rows { min-width: 0; }
+  .lux-index__group { margin: 0; padding: var(--lux-space-tight) 0 0.75rem; }
+  .lux-index__list { margin: 0; padding: 0; list-style: none; }
+  .lux-index__row { container-type: inline-size; border-top: 1px solid var(--lux-border); }
+  .lux-index__section:last-child .lux-index__list > .lux-index__row:last-child { border-bottom: 1px solid var(--lux-border); }
+  .lux-index__link {
+    display: grid;
+    grid-template-columns: 2.5rem 2rem minmax(0, 1fr) auto;
+    grid-template-areas: "num icon title arrow" "num icon narrative arrow" "num icon price arrow";
+    column-gap: 1rem;
+    row-gap: 0.35rem;
+    align-items: baseline;
+    min-height: 56px;
+    padding-block: 1.1rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .lux-index__link:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  .lux-index__num { grid-area: num; font: 400 var(--lux-text-small)/1 var(--lux-font-body); letter-spacing: 0.08em; color: var(--lux-gold); font-variant-numeric: tabular-nums; }
+  .lux-index__icon { grid-area: icon; align-self: center; color: var(--lux-muted); transition: color var(--lux-dur-ui) var(--lux-ease); }
+  .lux-index__icon svg { display: block; }
+  .lux-index__title { grid-area: title; margin: 0; font: 600 var(--lux-text-h3)/var(--lux-leading-h3) var(--lux-font-display); color: var(--lux-white); text-wrap: balance; }
+  .lux-index__narrative { grid-area: narrative; margin: 0; max-width: 48ch; font: 400 var(--lux-text-small)/1.55 var(--lux-font-body); color: var(--lux-muted); text-wrap: pretty; }
+  .lux-index__price { grid-area: price; font: 500 var(--lux-text-small)/1.4 var(--lux-font-body); color: var(--lux-subtle); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .lux-index__arrow { grid-area: arrow; align-self: center; color: var(--lux-gold); transition: translate var(--lux-dur-ui) var(--lux-ease); }
+  .lux-index__arrow svg { display: block; }
+  /* Row wide enough (≈ from 1200px viewports in the 7/12 column) for title · narrative · price on one line. */
+  @container (min-width: 40rem) {
+    .lux-index--full .lux-index__link {
+      grid-template-columns: 2.5rem 2rem minmax(0, 4fr) minmax(0, 4fr) auto auto;
+      grid-template-areas: "num icon title narrative price arrow";
+      column-gap: 1.25rem;
+    }
+    .lux-index--full .lux-index__price { font-size: var(--lux-text-body); color: var(--lux-white); }
+  }
+  @media (hover: hover) {
+    .lux-index__link:hover .lux-index__arrow { translate: 6px 0; }
+    .lux-index__link:hover .lux-index__icon { color: var(--lux-gold); }
+  }
+  .lux-index__frame { display: none; }
+  @media (min-width: 1024px) {
+    .lux-index--framed { grid-template-columns: 7fr 5fr; column-gap: var(--lux-space-block); }
+    .lux-index__frame {
+      display: block;
+      position: sticky;
+      top: calc(var(--lux-nav-h) + 1.5rem);
+      z-index: var(--lux-z-sticky);
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--lux-surface-1);
+      box-shadow: inset 0 0 0 1px var(--lux-border-gold);
+    }
+    /* The gilt hairline must paint above the stacked images. */
+    .lux-index__frame::after { content: ""; position: absolute; inset: 0; z-index: 1; box-shadow: inset 0 0 0 1px var(--lux-border-gold); pointer-events: none; }
+    .lux-index__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity var(--lux-dur-ui) var(--lux-ease); }
+    .lux-index__frame img:first-child { opacity: 1; }
+    .lux-index:has(.lux-index__row:is(:hover, :focus-within)) .lux-index__frame img:first-child { opacity: 0; }
+    /* One rule per slug (frame="all") and per group (frame="groups") — generated once here, never inline. */
+    .lux-index:has([data-slug="wedding-planning"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="wedding-planning"],
+    .lux-index:has([data-slug="destination-weddings"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="destination-weddings"],
+    .lux-index:has([data-slug="corporate-events"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="corporate-events"],
+    .lux-index:has([data-slug="celebrity-management"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="celebrity-management"],
+    .lux-index:has([data-slug="birthday-events"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="birthday-events"],
+    .lux-index:has([data-slug="conferences"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="conferences"],
+    .lux-index:has([data-slug="fashion-shows"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="fashion-shows"],
+    .lux-index:has([data-slug="concert-management"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="concert-management"],
+    .lux-index:has([data-slug="exhibitions"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="exhibitions"],
+    .lux-index:has([data-slug="brand-promotions"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="brand-promotions"],
+    .lux-index:has([data-slug="product-launches"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="product-launches"],
+    .lux-index:has([data-slug="event-production"]:is(:hover, :focus-within)) .lux-index__frame img[data-slug="event-production"],
+    .lux-index:has([data-group="celebrations"]:is(:hover, :focus-within)) .lux-index__frame img[data-group="celebrations"],
+    .lux-index:has([data-group="corporate"]:is(:hover, :focus-within)) .lux-index__frame img[data-group="corporate"],
+    .lux-index:has([data-group="production"]:is(:hover, :focus-within)) .lux-index__frame img[data-group="production"] { opacity: 1; }
+  }
+  @media (max-width: 1023.98px) {
+    /* Phones and tablets: 2-up icon-and-price cards, no photos, no narrative. */
+    .lux-index--cards .lux-index__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+    .lux-index--cards .lux-index__row { border: 0 !important; }
+    .lux-index--cards .lux-index__link {
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "icon arrow" "title title" "price price";
+      gap: 0.5rem;
+      align-items: start;
+      align-content: start;
+      min-height: 9.5rem;
+      padding: 1rem;
+      border: 1px solid var(--lux-border);
+      border-radius: var(--lux-radius-sm);
+    }
+    .lux-index--cards .lux-index__num,
+    .lux-index--cards .lux-index__narrative { display: none; }
+    .lux-index--cards .lux-index__icon svg { width: 2rem; height: 2rem; }
+    .lux-index--cards .lux-index__title { font-size: 1.375rem; }
+    .lux-index--cards .lux-index__price { white-space: normal; }
+  }
+
+  /* ── Process line: oversized numerals, rail draws down on scroll ─────── */
+  .lux-process { position: relative; display: grid; margin: 0; padding: 0 0 0 1.25rem; list-style: none; }
+  .lux-process::before { content: ""; position: absolute; inset-block: 0; left: 0; width: 1px; background: var(--lux-gold); transform-origin: top; }
+  .lux-process__step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "num title" "num copy";
+    column-gap: var(--lux-space-tight);
+    row-gap: 0.4rem;
+    align-items: start;
+    padding-block: var(--lux-space-tight);
+    border-top: 1px solid var(--lux-border);
+  }
+  .lux-process__step:first-child { border-top: 0; padding-top: 0; }
+  .lux-process__num { grid-area: num; font: 300 var(--lux-text-numeral)/1 var(--lux-font-display); font-variant-numeric: lining-nums tabular-nums; color: var(--lux-gold); }
+  .lux-process--compact .lux-process__num { font-size: var(--lux-text-h2); }
+  .lux-process__title { grid-area: title; margin: 0; font: 600 var(--lux-text-h3)/var(--lux-leading-h3) var(--lux-font-display); color: var(--lux-white); text-wrap: balance; }
+  .lux-process__copy { grid-area: copy; margin: 0; max-width: 44rem; font: 400 var(--lux-text-body)/var(--lux-leading-body) var(--lux-font-body); color: var(--lux-muted); text-wrap: pretty; }
+  @media (min-width: 768px) {
+    .lux-process--cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--lux-space-block); }
+    .lux-process--cols-2 .lux-process__step:nth-child(2) { border-top: 0; padding-top: 0; }
+  }
+  @media (min-width: 1024px) {
+    .lux-process { padding-left: 2.5rem; }
+    .lux-process--full:not(.lux-process--cols-2) .lux-process__step { grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "num title copy"; column-gap: var(--lux-space-block); }
+  }
+  @keyframes lux-draw-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes lux-gild { from { color: var(--lux-gold-55); } to { color: var(--lux-gold); } }
+  @supports (animation-timeline: view()) {
+    .lux-process::before { animation: lux-draw-y linear both; animation-timeline: view(); animation-range: entry 20% exit 80%; }
+    .lux-process__num { animation: lux-gild linear both; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lux-process::before, .lux-process__num { animation: none; }
+  }
+
+  /* ── Price table: real <table>, stacked cards per collection < 640px ─── */
+  .lux-pricetable { container-type: inline-size; display: grid; gap: var(--lux-space-block); }
+  .lux-pricetable__table { width: 100%; border-collapse: collapse; background: var(--lux-surface-1); font: 400 var(--lux-text-small)/1.5 var(--lux-font-body); color: var(--lux-muted); }
+  .lux-pricetable__caption { caption-side: top; padding: 0 0 1rem; text-align: left; font: 500 var(--lux-text-small)/1.5 var(--lux-font-body); color: var(--lux-subtle); text-wrap: pretty; }
+  .lux-pricetable__table th, .lux-pricetable__table td { padding: 0.9rem 1rem; border-top: 1px solid var(--lux-border); text-align: left; vertical-align: top; }
+  .lux-pricetable__table thead th { border-top: 0; vertical-align: bottom; }
+  .lux-pricetable__table tbody th { font-weight: 500; color: var(--lux-white); }
+  .lux-pricetable__name { display: block; font: 600 var(--lux-text-h3)/var(--lux-leading-h3) var(--lux-font-display); color: var(--lux-white); text-wrap: balance; }
+  .lux-pricetable__tagline { display: block; margin-top: 0.3rem; font-weight: 400; color: var(--lux-subtle); }
+  .lux-pricetable__head[data-featured] { box-shadow: inset 0 2px 0 var(--lux-gold); } /* featured = gold rule, no badge */
+  .lux-pricetable__from { color: var(--lux-white); white-space: nowrap; }
+  .lux-pricetable__dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--lux-gold); vertical-align: middle; }
+  .lux-pricetable__dash { color: var(--lux-subtle); }
+  .lux-pricetable__action { padding-top: 1.25rem; }
+  .lux-pricetable__table td::before, .lux-pricetable__table td::after { display: none; }
+  @container (max-width: 639.98px) {
+    .lux-pricetable__table { display: grid; grid-template-columns: minmax(0, 1fr); background: none; }
+    .lux-pricetable__table > caption { grid-row: 1; }
+    .lux-pricetable__table thead, .lux-pricetable__table tbody, .lux-pricetable__table tr { display: contents; }
+    /* --c/--r come from the cells; row 1 is the caption, then one block of --rows per collection. */
+    .lux-pricetable__table th, .lux-pricetable__table td { display: block; grid-column: 1; grid-row: calc(2 + var(--c, 0) * var(--rows, 1) + var(--r, 0)); background: var(--lux-surface-1); }
+    .lux-pricetable__label { display: none !important; }
+    .lux-pricetable__head { margin-top: var(--lux-space-tight); border-top: 2px solid var(--lux-border); }
+    .lux-pricetable__head[data-featured] { border-top-color: var(--lux-gold); box-shadow: none; }
+    .lux-pricetable__table td::before { content: attr(data-label); display: block; margin-bottom: 0.2rem; font: 600 var(--lux-text-label)/1.4 var(--lux-font-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--lux-subtle); }
+    .lux-pricetable__table td[data-included="false"] { display: none; }
+    .lux-pricetable__table td[data-included="true"]::before { display: none; }
+    .lux-pricetable__table td[data-included="true"]::after { content: attr(data-label); display: inline; margin-left: 0.6rem; color: var(--lux-white); }
+    .lux-pricetable__action::before { display: none; }
+  }
+  .lux-pricetable__services { display: grid; margin: 0; padding: 0; list-style: none; }
+  .lux-pricetable__service {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    grid-template-areas: "icon name price" "icon link link";
+    column-gap: 1rem;
+    row-gap: 0.25rem;
+    align-items: center;
+    padding-block: 1rem;
+    border-top: 1px solid var(--lux-border);
+  }
+  .lux-pricetable__service:last-child { border-bottom: 1px solid var(--lux-border); }
+  .lux-pricetable__service-icon { grid-area: icon; color: var(--lux-muted); }
+  .lux-pricetable__service-icon svg { display: block; }
+  .lux-pricetable__service-name { grid-area: name; font: 600 var(--lux-text-h3)/var(--lux-leading-h3) var(--lux-font-display); color: var(--lux-white); }
+  .lux-pricetable__service-price { grid-area: price; font: 500 var(--lux-text-body)/1.4 var(--lux-font-body); color: var(--lux-white); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .lux-pricetable__service-link { grid-area: link; display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content; min-height: 44px; font: 600 var(--lux-text-small)/1 var(--lux-font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--lux-gold); text-decoration: none; }
+  .lux-pricetable__service-link:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  @media (min-width: 768px) {
+    .lux-pricetable__service { grid-template-columns: 2rem minmax(0, 1fr) auto auto; grid-template-areas: "icon name price link"; column-gap: var(--lux-space-tight); }
+  }
+
+  /* ── Gallery: 12-col grid, spans from data in DOM order (no dense) ───── */
+  .lux-gallery { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--lux-grid-gap); margin: 0; padding: 0; list-style: none; }
+  .lux-gallery__tile { grid-column: span 6; content-visibility: auto; contain-intrinsic-size: auto 18rem; }
+  .lux-gallery__tile--wide { grid-column: span 12; }
+  @media (min-width: 1024px) {
+    .lux-gallery__tile { grid-column: span 4; }
+    .lux-gallery__tile--wide { grid-column: span 8; }
+  }
+  .lux-gallery__link { display: block; color: inherit; text-decoration: none; }
+  .lux-gallery__link:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  .lux-gallery__frame, .lux-gallery__frame img { border-radius: 0; }
+  @media (hover: hover) {
+    .lux-gallery__link img { transition: scale var(--lux-dur-image) var(--lux-ease); }
+    .lux-gallery__link:hover img { scale: 1.03; }
+  }
+
+  /* ── Lightbox: native dialog, three-slide snap strip, counter on scrim ─ */
+  .lux-lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--lux-bg);
+    color: var(--lux-white);
+    overflow: hidden;
+    opacity: 0;
+    translate: 0 12px;
+    transition: opacity var(--lux-dur-open) var(--lux-ease-exit), translate var(--lux-dur-open) var(--lux-ease-exit), display var(--lux-dur-open) allow-discrete, overlay var(--lux-dur-open) allow-discrete;
+  }
+  .lux-lightbox[open] { opacity: 1; translate: 0 0; transition-timing-function: var(--lux-ease); }
+  @starting-style { .lux-lightbox[open] { opacity: 0; translate: 0 12px; } }
+  .lux-lightbox::backdrop { background: var(--lux-bg); }
+  html:has(.lux-lightbox[open]) { overflow: hidden; }
+  .lux-lightbox__strip { display: flex; width: 100%; height: 100%; overflow-x: auto; overscroll-behavior: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .lux-lightbox__strip::-webkit-scrollbar { display: none; }
+  .lux-lightbox__slide {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-content: center;
+    justify-items: center;
+    flex: 0 0 100%;
+    height: 100%;
+    margin: 0;
+    padding: calc(var(--lux-nav-h-mobile) + env(safe-area-inset-top)) var(--lux-gutter) calc(var(--lux-gutter) + env(safe-area-inset-bottom));
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  .lux-lightbox__box { position: relative; display: grid; place-items: center; min-height: 0; max-width: 100%; }
+  .lux-lightbox__img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+  .lux-lightbox__box::after { content: ""; position: absolute; inset: auto 0 0 0; height: 20%; background: var(--lux-scrim); pointer-events: none; }
+  .lux-lightbox__counter { position: absolute; left: 1rem; bottom: 1rem; z-index: 1; font: 500 var(--lux-text-small)/1 var(--lux-font-body); color: var(--lux-white); }
+  .lux-lightbox__caption { width: min(100%, 60rem); margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid var(--lux-border); font: 500 var(--lux-text-small)/1.5 var(--lux-font-body); color: var(--lux-subtle); text-wrap: pretty; }
+  .lux-lightbox__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--lux-border-strong);
+    border-radius: var(--lux-radius-pill);
+    background: var(--lux-surface-2);
+    color: var(--lux-white);
+    cursor: pointer;
+    transition: border-color var(--lux-dur-ui) var(--lux-ease), color var(--lux-dur-ui) var(--lux-ease);
+  }
+  .lux-lightbox__btn:hover { border-color: var(--lux-gold); color: var(--lux-gold); }
+  .lux-lightbox__btn:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  .lux-lightbox__close { top: calc(0.75rem + env(safe-area-inset-top)); right: var(--lux-gutter); }
+  .lux-lightbox__prev, .lux-lightbox__next { top: 50%; translate: 0 -50%; }
+  .lux-lightbox__prev { left: var(--lux-gutter); }
+  .lux-lightbox__next { right: var(--lux-gutter); }
+  /* Prev/next stay on touch screens too: swiping the strip is an extra input, never the only one (WCAG 2.5.1). */
+  @media (prefers-reduced-motion: reduce) {
+    .lux-lightbox { transition: none; }
+    .lux-gallery__link img { transition: none; }
+    .lux-gallery__link:hover img { scale: 1; }
+  }
+
+  /* ── Inquiry plate: copy cols 1–5, the one InquiryForm cols 6–12 ────── */
+  /* The plate is its own container: it splits only when IT is wide enough,
+     so a plate dropped into a 7-of-12 column stacks without page overrides. */
+  .lux-inquiry {
+    position: relative;
+    container: lux-inquiry / inline-size;
+    padding: var(--lux-space-block) var(--lux-gutter);
+    border-radius: var(--lux-radius-md);
+    background: var(--lux-surface-1);
+    box-shadow: inset 0 0 0 1px var(--lux-border-gold);
+  }
+  .lux-inquiry__body { display: grid; gap: var(--lux-space-block); }
+  .lux-inquiry__copy { display: grid; gap: 1.25rem; align-content: start; }
+  .lux-inquiry__form { min-width: 0; }
+  .lux-inquiry__title { margin: 0; font: 500 var(--lux-text-h2)/var(--lux-leading-heading) var(--lux-font-display); color: var(--lux-white); text-wrap: balance; }
+  .lux-inquiry__lead { margin: 0; max-width: 54ch; font: 400 var(--lux-text-lead)/var(--lux-leading-lead) var(--lux-font-body); color: var(--lux-muted); text-wrap: pretty; }
+  .lux-inquiry__price { margin: 0; font: 600 var(--lux-text-price)/1.1 var(--lux-font-body); color: var(--lux-white); font-variant-numeric: tabular-nums; }
+  .lux-inquiry__contacts { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+  .lux-inquiry__contact { display: inline-flex; align-items: center; gap: 0.75rem; min-height: 44px; font: 500 var(--lux-text-body)/1.4 var(--lux-font-body); color: var(--lux-white); text-decoration: none; overflow-wrap: anywhere; }
+  .lux-inquiry__contact svg { flex: none; color: var(--lux-gold); }
+  .lux-inquiry__contact[data-cta="inquiry_whatsapp"] svg { color: var(--lux-whatsapp); } /* green as stroke only */
+  .lux-inquiry__contact-label { display: none; }
+  .lux-inquiry__contact:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; }
+  @media (hover: hover) {
+    .lux-inquiry__contact:hover .lux-inquiry__contact-value { text-decoration: underline; text-decoration-color: var(--lux-gold); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  }
+  @media (max-width: 767.98px) {
+    /* Phones: Call · WhatsApp · Email as a three-button row above the form. */
+    .lux-inquiry__contacts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+    .lux-inquiry__contact { flex-direction: column; justify-content: center; gap: 0.35rem; min-height: 56px; padding: 0.6rem 0.5rem; border: 1px solid var(--lux-border); border-radius: var(--lux-radius-sm); font-size: var(--lux-text-small); text-align: center; }
+    .lux-inquiry__contact-label { display: block; }
+    .lux-inquiry__contact-value { display: none; }
+  }
+  @media (min-width: 1024px) {
+    .lux-inquiry { padding: var(--lux-space-block); }
+  }
+  /* 48rem of plate content ≈ a full-rail plate at a 1024px viewport; a plate
+     in 7 of 12 columns (≤ ~44rem inside) stays stacked. */
+  @container lux-inquiry (min-width: 48rem) {
+    .lux-inquiry__body { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--lux-grid-gap); }
+    .lux-inquiry__copy { grid-column: 1 / span 5; }
+    .lux-inquiry__form { grid-column: 6 / -1; }
+  }
+}

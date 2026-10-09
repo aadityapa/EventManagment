@@ -9,5 +9,12 @@ export const metadata = generateSEO({
 });
 
 export default function AdminPage() {
-  return <AdminDashboard />;
+  // The marker is server-rendered so pages/shell.css hides the marketing chrome before hydration;
+  // it trails the content so the dashboard keeps its own first-child layout.
+  return (
+    <>
+      <AdminDashboard />
+      <span className="lux-app-route" hidden />
+    </>
+  );
 }

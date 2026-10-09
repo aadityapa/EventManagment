@@ -102,11 +102,11 @@ export function MediaUploader({ className }: { className?: string }) {
     <div className={cn("space-y-6", className)}>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
-          <span className="mb-1.5 block font-medium text-muted">Destination folder</span>
+          <span className="mb-1.5 block font-medium text-lux-subtle">Destination folder</span>
           <select
             value={folder}
             onChange={(e) => setFolder(e.target.value as MediaImageFolder)}
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2.5 text-sm"
+            className="w-full rounded-lg border border-[var(--lux-border-gold)] bg-[var(--lux-card-solid)] px-3 py-2.5 text-sm"
           >
             {FOLDERS.map((f) => (
               <option key={f.id} value={f.id}>
@@ -116,11 +116,11 @@ export function MediaUploader({ className }: { className?: string }) {
           </select>
         </label>
         <label className="block text-sm">
-          <span className="mb-1.5 block font-medium text-muted">Category</span>
+          <span className="mb-1.5 block font-medium text-lux-subtle">Category</span>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as MediaCategory)}
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2.5 text-sm"
+            className="w-full rounded-lg border border-[var(--lux-border-gold)] bg-[var(--lux-card-solid)] px-3 py-2.5 text-sm"
           >
             {MEDIA_CATEGORIES.map((c) => (
               <option key={c} value={c}>
@@ -132,13 +132,13 @@ export function MediaUploader({ className }: { className?: string }) {
       </div>
 
       <label className="block text-sm">
-        <span className="mb-1.5 block font-medium text-muted">Title (optional)</span>
+        <span className="mb-1.5 block font-medium text-lux-subtle">Title (optional)</span>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Royal Palace Reception"
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2.5 text-sm"
+          className="w-full rounded-lg border border-[var(--lux-border-gold)] bg-[var(--lux-card-solid)] px-3 py-2.5 text-sm"
         />
       </label>
 
@@ -158,13 +158,13 @@ export function MediaUploader({ className }: { className?: string }) {
         className={cn(
           "flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all",
           dragging
-            ? "border-[var(--glitz-gold)] bg-[var(--glitz-gold)]/5"
-            : "border-[var(--border)] hover:border-[var(--glitz-gold)]/50 hover:bg-[var(--card)]"
+            ? "border-[var(--lux-gold)] bg-[var(--lux-gold)]/5"
+            : "border-[var(--lux-border-gold)] hover:border-[var(--lux-gold)]/50 hover:bg-[var(--lux-card-solid)]"
         )}
       >
-        <Upload className="mb-3 h-8 w-8 text-[var(--glitz-gold)]" aria-hidden />
+        <Upload className="mb-3 h-8 w-8 text-[var(--lux-gold)]" aria-hidden />
         <p className="text-sm font-semibold">Drag & drop images here</p>
-        <p className="mt-1 text-xs text-muted">JPG, PNG, WebP — auto-converted to WebP with blur placeholders</p>
+        <p className="mt-1 text-xs text-lux-subtle">JPG, PNG, WebP — auto-converted to WebP with blur placeholders</p>
         <input
           ref={inputRef}
           type="file"
@@ -183,7 +183,7 @@ export function MediaUploader({ className }: { className?: string }) {
           type="button"
           disabled={uploading}
           onClick={() => inputRef.current?.click()}
-          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[var(--glitz-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-60"
+          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[var(--lux-gold)] px-5 py-2.5 text-sm font-semibold text-[#0A0A0A] disabled:opacity-60"
         >
           {uploading ? "Uploading…" : "Choose files"}
         </button>
@@ -191,7 +191,7 @@ export function MediaUploader({ className }: { className?: string }) {
           type="button"
           disabled={reindexing}
           onClick={() => void reindex()}
-          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[var(--border)] px-5 py-2.5 text-sm font-semibold"
+          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[var(--lux-border-gold)] px-5 py-2.5 text-sm font-semibold"
         >
           <RefreshCw className={cn("h-4 w-4", reindexing && "animate-spin")} aria-hidden />
           Reindex library
@@ -199,7 +199,7 @@ export function MediaUploader({ className }: { className?: string }) {
       </div>
 
       {results.length > 0 && (
-        <ul className="space-y-2 rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 text-sm">
+        <ul className="space-y-2 rounded-xl border border-[var(--lux-border-gold)] bg-[var(--lux-card-solid)] p-4 text-sm">
           {results.map((r, i) => (
             <li key={i} className="flex items-start gap-2">
               {r.ok ? (

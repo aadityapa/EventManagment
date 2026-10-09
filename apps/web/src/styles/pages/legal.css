@@ -1,0 +1,149 @@
+/* Package K — legal documents, HTML sitemap, 404 (DESIGN.md §10.18–10.20).
+   pg-legal-* only; values from tokens.css. */
+@layer components {
+  /* ── Legal document: contents list + article ─────────────────────── */
+  .pg-legal-layout {
+    display: grid;
+    gap: var(--lux-space-block);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .pg-legal-layout {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      column-gap: var(--lux-grid-gap);
+    }
+  }
+
+  .pg-legal-contents { min-width: 0; }
+
+  /* Legal chapters read at h3 scale: long documents, many headings. */
+  .pg-legal-article h2 {
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+  }
+
+  .pg-legal-article > h2:first-child { margin-block-start: 0; }
+
+  .pg-legal-article a,
+  .pg-legal-link {
+    color: var(--lux-white);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  @media (hover: hover) {
+    .pg-legal-article a:hover,
+    .pg-legal-link:hover { color: var(--lux-gold); }
+  }
+
+  /* ── HTML sitemap: link groups as ruled columns ──────────────────── */
+  .pg-legal-groups {
+    columns: 3 16rem;
+    column-gap: var(--lux-space-7);
+    column-rule: 1px solid var(--lux-border);
+  }
+
+  .pg-legal-group {
+    break-inside: avoid;
+    padding-bottom: var(--lux-space-6);
+  }
+
+  .pg-legal-group__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0 0 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--lux-border-gold);
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: var(--lux-text-h3);
+    line-height: var(--lux-leading-h3);
+    text-wrap: balance;
+  }
+
+  .pg-legal-group ul,
+  .pg-legal-feeds {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-legal-group .pg-legal-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.35rem;
+    border-bottom: 1px solid var(--lux-border);
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-size: var(--lux-text-body);
+    line-height: 1.4;
+    text-decoration-color: transparent;
+  }
+
+  @media (hover: hover) {
+    .pg-legal-group .pg-legal-link:hover {
+      color: var(--lux-white);
+      text-decoration-color: var(--lux-gold);
+    }
+  }
+
+  .pg-legal-feeds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+
+  .pg-legal-feeds .pg-legal-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--lux-font-body);
+    font-size: var(--lux-text-small);
+    font-weight: 600;
+  }
+
+  /* ── 404: centred text cover ─────────────────────────────────────── */
+  .pg-legal-404 {
+    display: grid;
+    justify-items: center;
+    gap: 1.1em;
+    gap: 1lh;
+    justify-self: center;
+    width: 100%;
+    max-width: var(--lux-measure);
+    padding-top: calc(var(--lux-nav-h-current) + var(--lux-space-cover));
+    padding-bottom: var(--lux-space-block);
+    text-align: center;
+  }
+
+  .pg-legal-404 .lux-lead { max-width: 54ch; color: var(--lux-muted); }
+
+  /* The one Cinzel element on the page; in the folio face, at display scale. */
+  .pg-legal-404__numeral {
+    margin: 0;
+    color: var(--lux-gold-55);
+    font-family: var(--lux-font-folio);
+    font-weight: 400;
+    font-size: var(--lux-text-display-xl);
+    line-height: 1;
+    letter-spacing: var(--lux-tracking-folio);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pg-legal-404__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.25em;
+  }
+}

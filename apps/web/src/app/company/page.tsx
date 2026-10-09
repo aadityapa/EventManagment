@@ -1,140 +1,109 @@
 import Link from "next/link";
-import { generateSEO, breadcrumbSchema } from "@/lib/seo";
-import { SITE_CONFIG } from "@/lib/constants";
-import { TEAM_MEMBERS } from "@/data/team";
-import { PageHero } from "@/components/shared/page-hero";
+import { Commitments, Cover, InquiryPanel, Ledger, Section, type LedgerRow } from "@/components/ui";
+import { ENTITY_FACTS, FOOTER_LEGAL, SITE_CONFIG } from "@/lib/constants";
+import { generateSEO } from "@/lib/seo";
 
 export const metadata = generateSEO({
-  title: "Company Information — Nexyyra Events and Promotions Private Limited",
+  // The brand suffix already names the company; the legal name is in the H1 and description.
+  title: "Company Information and CIN",
   description:
-    "Official company information for Nexyyra Events and Promotions Private Limited (CIN: U70200ME2026PTC476014) — the legal entity behind the Nexyyra Events brand. Registered in Telhara, Maharashtra; luxury event management across Pune and India.",
+    "Company facts for Nexyyra Events and Promotions Private Limited: CIN U70200ME2026PTC476014, incorporated 2026, registered office Telhara, Maharashtra.",
   path: "/company",
 });
 
-const ORG_ID = `${SITE_CONFIG.url}/#organization`;
+/** Service-area entries that are regions, not cities — said in prose instead of listed. */
+const REGION_AREAS = new Set(["Maharashtra", "India", "International destinations"]);
+const listOf = (items: readonly string[]) => new Intl.ListFormat("en-GB", { type: "conjunction" }).format(items);
+const CITIES = ENTITY_FACTS.serviceAreas.filter((area) => !REGION_AREAS.has(area));
 
-/** Entity disambiguation page — one canonical statement of who the company is. */
-export default function CompanyPage() {
-  const founders = TEAM_MEMBERS.filter((m) => m.founder);
-  const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Company", url: "/company" },
-  ]);
-  const aboutSchema = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "@id": `${SITE_CONFIG.url}/company#aboutpage`,
-    url: `${SITE_CONFIG.url}/company`,
-    name: "Company Information — Nexyyra Events and Promotions Private Limited",
-    mainEntity: { "@id": ORG_ID },
-  };
+const tel = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
+const website = SITE_CONFIG.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
-  const facts: Array<{ label: string; value: string }> = [
-    { label: "Legal name", value: SITE_CONFIG.legalName },
-    { label: "Brand name", value: SITE_CONFIG.shortName },
-    { label: "CIN", value: SITE_CONFIG.cin },
-    { label: "Incorporated", value: "2026 — private limited company (Ministry of Corporate Affairs, India)" },
-    { label: "Official domain", value: "www.nexyyra.com" },
-    { label: "Email", value: SITE_CONFIG.email },
-    { label: "Phone", value: SITE_CONFIG.phone },
-    { label: "Registered office", value: `${SITE_CONFIG.streetAddress}, ${SITE_CONFIG.city}, ${SITE_CONFIG.region} ${SITE_CONFIG.postalCode}, India` },
-    { label: "Delivery & coordination office", value: "Pune, Maharashtra, India" },
-  ];
-
+/** Contact values in the ledger are CTAs too: the delegated handler reads `data-cta`. */
+function FactLink({ href, cta, children }: { href: string; cta: string; children: string }) {
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
+    <a href={href} className="pg-about-fact-link" data-cta={cta} data-cta-location="company_facts">
+      {children}
+    </a>
+  );
+}
 
-      <PageHero
-        title="Company Information"
-        subtitle="Nexyyra Events and Promotions Private Limited"
+const FACTS: LedgerRow[] = [
+  { id: "legal-name", term: "Legal name", body: SITE_CONFIG.legalName },
+  { id: "trade-name", term: "Trade name", body: SITE_CONFIG.shortName },
+  { id: "cin", term: "CIN", body: SITE_CONFIG.cin },
+  { id: "incorporated", term: "Incorporated", body: "2026, as a private limited company in India" },
+  {
+    id: "registered-office",
+    term: "Registered office",
+    body: `${SITE_CONFIG.streetAddress}, ${SITE_CONFIG.city}, ${SITE_CONFIG.region} ${SITE_CONFIG.postalCode}`,
+  },
+  // No published street address in Pune — the office is named, never located.
+  { id: "pune", term: "Delivery & Coordination Office", body: "Pune, Maharashtra" },
+  { id: "phone", term: "Phone and WhatsApp", body: <FactLink href={tel} cta="company_call">{SITE_CONFIG.phone}</FactLink> },
+  { id: "email", term: "Email", body: <FactLink href={`mailto:${SITE_CONFIG.email}`} cta="company_email">{SITE_CONFIG.email}</FactLink> },
+  { id: "website", term: "Website", body: <FactLink href={SITE_CONFIG.url} cta="company_website">{website}</FactLink> },
+  { id: "languages", term: "Languages", body: listOf(ENTITY_FACTS.languages) },
+  { id: "areas", term: "Service areas", body: `${CITIES.join(", ")}; across India and at international destinations` },
+  { id: "payments", term: "Payment methods", body: "Razorpay, bank transfer or UPI" },
+  { id: "booking", term: "Booking terms", body: "A 30% advance secures the date; the balance is paid in milestones." },
+];
+
+const POLICY_LINKS = [...FOOTER_LEGAL, { href: "/contact", label: "Contact" }];
+
+/**
+ * /company (DESIGN.md §10.8): one canonical statement of the legal entity.
+ * No JSON-LD beyond the breadcrumb trail — the global graph already carries
+ * the Organization, and a second one here would compete with it.
+ */
+export default function CompanyPage() {
+  return (
+    <div className="lux-page">
+      <Cover
+        size="text"
+        eyebrow="Company information"
+        title={SITE_CONFIG.legalName}
+        lead="Registered facts about the company"
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Company", href: "/company" },
+        ]}
+        primary={{ href: "#inquire", cta: "company_cover_proposal" }}
       />
 
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-8">
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">Official Identity</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                <strong>Nexyyra Events</strong> is the brand of{" "}
-                <strong>{SITE_CONFIG.legalName}</strong>, an Indian private limited company
-                (CIN: {SITE_CONFIG.cin}). The company&apos;s only official website is{" "}
-                <strong>www.nexyyra.com</strong>. &ldquo;Nexyyra&rdquo;, &ldquo;Nexyyra
-                Events&rdquo; and &ldquo;{SITE_CONFIG.legalName}&rdquo; all refer to the same
-                organization.
-              </p>
-              <dl className="mt-5 space-y-3">
-                {facts.map((f) => (
-                  <div key={f.label} className="flex flex-col gap-0.5 sm:flex-row sm:gap-3">
-                    <dt className="min-w-[220px] text-sm font-medium text-muted">{f.label}</dt>
-                    <dd className="text-sm leading-relaxed">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+      <Section
+        id="facts"
+        number="01"
+        eyebrow="Facts"
+        title="The company on record"
+        lead={`${SITE_CONFIG.shortName} is the trade name of ${SITE_CONFIG.legalName}. The two names refer to the same company.`}
+      >
+        <Ledger as="dl" columns={2} rows={FACTS} ariaLabel="Company facts" className="lux-wide" />
+      </Section>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">Brand History &amp; Incorporation</h2>
-              <p className="mt-3 text-muted leading-relaxed">
-                The Nexyyra Events brand was founded by <strong>Yash Bajaj</strong> and plans and
-                produces weddings, corporate events, concerts and destination celebrations across
-                India. In 2026 the business was incorporated as {SITE_CONFIG.legalName}, when
-                co-founders <strong>Aaditya Padiya</strong> and <strong>Amey Korde</strong> joined
-                the company. The operating brand and the legal entity refer to the same continuous
-                business.
-              </p>
-            </div>
+      <Section
+        id="policies"
+        number="02"
+        eyebrow="Policies"
+        title="How we work with every client"
+        lead="Commitments the company sets and keeps on every booking."
+        lazy
+      >
+        <Commitments variant="grid" expanded />
+        <nav aria-label="Policies and contact" className="pg-about-links">
+          <ul>
+            {POLICY_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} prefetch={false} className="lux-link">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </Section>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">Leadership</h2>
-              <ul className="mt-3 space-y-2">
-                {founders.map((m) => (
-                  <li key={m.slug} className="text-muted leading-relaxed">
-                    <strong className="text-foreground">{m.name}</strong> — {m.role}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 text-muted leading-relaxed">
-                Full team profiles are on our <Link href="/about" className="underline">About page</Link>.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-semibold">Official Profiles</h2>
-              <ul className="mt-3 space-y-2 text-muted">
-                <li>
-                  Instagram:{" "}
-                  <a href={SITE_CONFIG.social.instagram} rel="me noopener" target="_blank" className="underline">
-                    {SITE_CONFIG.social.instagram}
-                  </a>
-                </li>
-                <li>
-                  LinkedIn:{" "}
-                  <a href={SITE_CONFIG.social.linkedin} rel="me noopener" target="_blank" className="underline">
-                    {SITE_CONFIG.social.linkedin}
-                  </a>
-                </li>
-                <li>
-                  Facebook:{" "}
-                  <a href={SITE_CONFIG.social.facebook} rel="me noopener" target="_blank" className="underline">
-                    {SITE_CONFIG.social.facebook}
-                  </a>
-                </li>
-                <li>
-                  YouTube:{" "}
-                  <a href={SITE_CONFIG.social.youtube} rel="me noopener" target="_blank" className="underline">
-                    {SITE_CONFIG.social.youtube}
-                  </a>
-                </li>
-              </ul>
-              <p className="mt-3 text-sm text-muted">
-                Profiles not listed here are not operated by {SITE_CONFIG.legalName}.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      <InquiryPanel id="inquire" source="contact" variant="compact" className="pg-about-inquiry" />
+    </div>
   );
 }

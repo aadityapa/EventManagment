@@ -1,0 +1,103 @@
+/* /services and /services/[slug] (DESIGN.md §10.2–10.3) — package G.
+   Layout glue only; every visual comes from the lux-* primitives and --lux-* tokens. */
+@layer components {
+  /* ── /services: Investment ledger — name · from · guest band on one hairline row ── */
+  .pg-services-ledger { max-width: var(--lux-wide); }
+
+  @media (min-width: 768px) {
+    .pg-services-ledger .lux-ledger__row {
+      grid-template-columns: 1.25rem minmax(0, 1fr) minmax(0, 14rem) minmax(0, 10rem);
+      align-items: baseline;
+    }
+    .pg-services-ledger :is(.lux-ledger__term, .lux-ledger__body, .lux-ledger__cell) { grid-column: auto; }
+    .pg-services-ledger .lux-ledger__cell { text-align: end; }
+  }
+
+  /* ── /services/[slug]: "The brief" — essay cols 1–7, commitments cols 9–12 (offset) ── */
+  .pg-services-brief {
+    display: grid;
+    gap: var(--lux-space-block);
+  }
+
+  .pg-services-brief__aside {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .pg-services-brief__aside .lux-label { margin: 0; }
+
+  @media (min-width: 1024px) {
+    .pg-services-brief {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--lux-grid-gap);
+    }
+    .pg-services-brief__copy { grid-column: 1 / span 7; }
+    .pg-services-brief__aside {
+      grid-column: 9 / span 4;
+      margin-top: clamp(2rem, 6vw, 5rem);
+    }
+    /* A 4-column aside is too narrow for the 4-up commitments grid: stack the cells. */
+    .pg-services-brief__aside .lux-commit { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* ── "How we deliver": the process line sits in cols 1–7 ── */
+  @media (min-width: 1024px) {
+    .pg-services-method { max-width: calc((100% - 11 * var(--lux-grid-gap)) / 12 * 7 + 6 * var(--lux-grid-gap)); }
+  }
+
+  /* ── Gallery strand: tiles are hash links upgraded by the Lightbox island ── */
+  .pg-services-photo {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pg-services-photo:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .pg-services-photo img { transition: scale var(--lux-dur-image) var(--lux-ease); }
+    .pg-services-photo:hover img { scale: 1.03; }
+  }
+
+  /* ── Related: contextual links in small type under the related rows ── */
+  .pg-services-links {
+    margin-top: var(--lux-space-block);
+    padding-top: 1rem;
+    border-top: 1px solid var(--lux-border);
+  }
+
+  .pg-services-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-services-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-size: var(--lux-text-small);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  .pg-services-links a:hover { color: var(--lux-white); }
+
+  .pg-services-links a:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+}

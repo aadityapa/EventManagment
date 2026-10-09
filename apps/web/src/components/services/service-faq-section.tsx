@@ -1,29 +1,32 @@
-"use client";
-
-import { BrandFaqAccordion } from "@/brand/primitives/brand-faq-accordion";
-import type { GlitzFaq } from "@/brand/data/faq";
+import { Accordion, Button, Section } from "@/components/ui";
 import type { ServiceFaq } from "@/data/service-faqs";
 
 type ServiceFaqSectionProps = {
   faqs: ServiceFaq[];
   serviceTitle: string;
   slug: string;
+  number?: string;
 };
 
-export function ServiceFaqSection({ faqs, serviceTitle, slug }: ServiceFaqSectionProps) {
+/** "Questions" chapter of a service page; the Accordion emits FAQ JSON-LD for exactly the rendered items. */
+export function ServiceFaqSection({ faqs, serviceTitle, slug, number }: ServiceFaqSectionProps) {
   if (!faqs.length) return null;
-
-  const items: GlitzFaq[] = faqs.map((f) => ({ ...f, category: serviceTitle }));
+  const items = faqs.map((f, i) => ({ id: `${slug}-faq-${i + 1}`, question: f.question, answer: f.answer }));
 
   return (
-    <div className="mt-20">
-      <h2 className="font-display text-2xl font-bold">Frequently Asked Questions</h2>
-      <p className="mt-2 max-w-2xl text-muted">
-        Common questions about our {serviceTitle.toLowerCase()} service — answered by the Nexyyra planning team.
-      </p>
-      <div className="mt-8 max-w-3xl">
-        <BrandFaqAccordion items={items} location={`service_${slug}`} />
-      </div>
-    </div>
+    <Section
+      id="questions"
+      number={number}
+      eyebrow="Questions"
+      title={`Common questions about ${serviceTitle.toLowerCase()}`}
+      actions={
+        <Button variant="text" href="/faqs" cta="service_all_faqs" location={`service_${slug}`} arrow>
+          All questions
+        </Button>
+      }
+      lazy
+    >
+      <Accordion name="service-faq" items={items} schema className="lux-measure" />
+    </Section>
   );
 }

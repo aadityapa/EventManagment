@@ -12,12 +12,17 @@ export const dynamic = "force-dynamic";
 
 /** Vercel Cron — refresh Google Drive media cache every few minutes. */
 export async function GET(request: Request) {
+  // Fail closed: without CRON_SECRET anyone could trigger Drive syncs.
+  // Vercel Cron sends `Authorization: Bearer $CRON_SECRET` once it is set.
+  // Both refusals look identical to the caller, so the endpoint never reveals
+  // whether the secret is configured; the misconfiguration goes to the logs.
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret) {
-    const auth = request.headers.get("authorization");
-    if (auth !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  if (!cronSecret && process.env.NODE_ENV === "production") {
+    console.error("[cron/media-sync] CRON_SECRET is not configured; refusing the request.");
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (cronSecret && request.headers.get("authorization") !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   if (!shouldUseLiveDriveSync()) {

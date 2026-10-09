@@ -1,135 +1,67 @@
-/** GEO/AEO content — HowTo steps, blog FAQs, universal local FAQs */
+/** GEO/AEO content — blog FAQs and universal local FAQs (capability and process only) */
+
+import { BRAND_INVESTMENTS, BRAND_REPLY_HOURS } from "@/brand/data/content";
+import { services } from "@/data/cms";
 
 export type GeoFaq = { question: string; answer: string };
 
+// Price story comes from content.ts / cms.ts only — never typed into copy.
+const [BOUTIQUE, SIGNATURE, GRAND] = BRAND_INVESTMENTS;
+const lakhs = (price: number) => `₹${price / 1_00_000} Lakhs`;
+const SINGLE_SERVICE_FROM = lakhs(Math.min(...services.map((s) => s.basePrice)));
+const WEDDING_FROM = lakhs(services.find((s) => s.slug === "wedding-planning")?.basePrice ?? 0);
+
 export const UNIVERSAL_LOCAL_FAQS: GeoFaq[] = [
   {
-    question: "How do I book Nexyyra Events in Pune?",
+    question: "How do I book a consultation with Nexyyra Events?",
     answer:
-      "Book a complimentary consultation at https://www.nexyyra.com/book-event or call +91 7020640157. After your consultation, you receive a tailored proposal within 48 hours. Confirm with a 30% advance to secure your date.",
+      `Use the form on this page or at https://www.nexyyra.com/book-event, or call or WhatsApp +91 7020640157. ${BRAND_REPLY_HOURS} After a free consultation, your itemised proposal follows within 48 hours, and a 30% advance secures the date.`,
   },
   {
-    question: "What is Nexyyra Events' service area?",
+    question: "Which cities does Nexyyra Events serve?",
     answer:
-      "Nexyyra Events is headquartered in Telhara, Maharashtra, with a delivery and coordination office in Pune, and serves clients across Mumbai, Nashik, Lonavala, Goa, Rajasthan, and international destinations. The team plans and produces weddings, corporate events, concerts and destination celebrations across India.",
+      "Our registered office is in Telhara, Maharashtra, with a Delivery & Coordination Office in Pune. We plan events in Pune, Mumbai, Delhi, Bangalore, Hyderabad, Jaipur, Indore, Nashik, Nagpur, Ahmedabad, Surat, Goa and Udaipur, elsewhere in India and at international destinations.",
   },
   {
     question: "What languages does Nexyyra support?",
     answer:
-      "Consultations are available in English, Hindi, and Marathi. Menus, invitations, and guest communications can be prepared in regional languages on request.",
+      "Consultations are available in English, Hindi and Marathi. Invitations and guest communications can be prepared in other languages on request.",
   },
   {
     question: "What is Nexyyra Events' price range?",
-    answer:
-      "Investment collections start from ₹10 lakhs for intimate celebrations and scale to ₹4 crore+ for palace-scale destination weddings and large corporate productions. Every proposal is customised after consultation.",
+    answer: `Collections start from ${BOUTIQUE.from} (${BOUTIQUE.name}, 50–150 guests), ${SIGNATURE.from} (${SIGNATURE.name}, 150–500 guests) and ${GRAND.from} (${GRAND.name}, 500+ guests). Single services start from ${SINGLE_SERVICE_FROM}. Every proposal is itemised after a free consultation.`,
   },
   {
     question: "Does Nexyyra offer free consultations?",
     answer:
-      "Yes. Every Nexyyra journey begins with a complimentary, no-obligation consultation — in person at our Pune studio, via video call, or at your preferred venue.",
-  },
-  {
-    question: "Who founded Nexyyra Events?",
-    answer:
-      "Nexyyra Events was founded by Yash Bajaj and incorporated as Nexyyra Events and Promotions Private Limited in 2026, when Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders. The company evolved from a boutique wedding studio into a full-service luxury experience house serving weddings, corporate events, and entertainment productions across India.",
+      "Yes. Every engagement begins with a free, no-obligation consultation by phone, video call or in person. There is no fee to receive a proposal.",
   },
 ];
-
-/** AEO — featured snippet / voice-search answer blocks */
-export const AEO_FEATURED_FAQS: GeoFaq[] = [
-  {
-    question: "Who is the best event planner in Pune?",
-    answer:
-      "Nexyyra Events is a luxury event management company serving Pune, operated by Nexyyra Events and Promotions Private Limited. It plans and produces weddings, corporate events and destination celebrations with in-house design and production. Book a complimentary consultation at https://www.nexyyra.com/book-event.",
-  },
-  {
-    question: "What wedding planner services does Nexyyra provide?",
-    answer:
-      "Nexyyra provides full-service luxury wedding planning: venue curation, décor and floral design, vendor management, guest hospitality, sangeet and reception production, destination wedding logistics, and day-of coordination across Pune, Mumbai, Goa, Udaipur, and international venues.",
-  },
-  {
-    question: "How much does luxury wedding planning cost?",
-    answer:
-      "Luxury wedding planning with Nexyyra Events typically starts from ₹10 lakhs for intimate celebrations and scales to ₹4 crore+ for palace-scale destination weddings. Investment depends on guest count, venue, design scope, and entertainment. Complimentary consultations include a tailored proposal within 48 hours.",
-  },
-  {
-    question: "What corporate event services are available?",
-    answer:
-      "Nexyyra manages conferences, AGMs, product launches, award ceremonies, dealer meets, brand activations, exhibitions, and executive galas for up to 5,000 delegates — including AV production, hybrid streaming, stage design, and post-event analytics.",
-  },
-  {
-    question: "What celebrity event management services are offered?",
-    answer:
-      "Nexyyra delivers celebrity and VIP event management including red-carpet premieres, private celebrations, fashion shows, concert production, security coordination, media management, and white-glove guest hospitality for high-profile clients across India.",
-  },
-];
-
-export const BLOG_HOW_TO: Record<
-  string,
-  { steps: { name: string; text: string }[]; totalTime?: string }
-> = {
-  "corporate-gala-planning-checklist": {
-    totalTime: "P6M",
-    steps: [
-      { name: "Define objectives and KPIs", text: "Align stakeholders on event goals — employee engagement, brand launch, or client entertainment — and set measurable KPIs before venue selection." },
-      { name: "Set budget and timeline", text: "Allocate 40% venue/F&B, 25% production, 15% entertainment, 10% branding, 10% contingency. Corporate galas typically require 3–6 months lead time." },
-      { name: "Select venue and date", text: "Evaluate capacity, AV infrastructure, load-in access, and backup indoor options. Book 4–6 months ahead for peak season." },
-      { name: "Curate vendors and entertainment", text: "Confirm caterer tastings, AV vendor site survey, and entertainment rehearsals. Consolidate contracts under a single event director." },
-      { name: "Design guest experience", text: "Plan registration flow, seating, stage programming, and hybrid streaming if required. Issue save-the-dates 8 weeks before the event." },
-      { name: "Execute and measure ROI", text: "Run dress rehearsal 48 hours prior. Post-event, deliver attendance analytics, survey feedback, and social reach report to stakeholders." },
-    ],
-  },
-  "venue-site-visit-checklist": {
-    totalTime: "PT2H",
-    steps: [
-      { name: "Assess capacity and layout", text: "Verify seated and standing capacity matches guest count with 15% buffer. Check dance floor, mandap/stage footprint, and vendor prep areas." },
-      { name: "Evaluate infrastructure", text: "Inspect power load, generator backup, acoustics, air conditioning, and WiFi for hybrid events." },
-      { name: "Review catering facilities", text: "Confirm kitchen access, service entrances, and F&B licensing. Request sample menu tasting before contract." },
-      { name: "Check accessibility and parking", text: "Validate guest parking, valet capacity, wheelchair access, and elderly guest drop-off points." },
-      { name: "Document contingency options", text: "Identify indoor backup for outdoor ceremonies. Photograph load-in routes and negotiate rain plan in writing." },
-    ],
-  },
-  "wedding-budget-allocation-guide": {
-    totalTime: "P3M",
-    steps: [
-      { name: "Establish total investment", text: "Define all-in budget including venue, décor, F&B, entertainment, photography, and 10% contingency." },
-      { name: "Allocate venue and catering (45–50%)", text: "Venue rental and F&B typically consume the largest share. Negotiate off-season rates and minimum guarantees early." },
-      { name: "Budget décor and florals (15–20%)", text: "Mandap, stage, and reception florals scale with guest count and design complexity." },
-      { name: "Plan entertainment and production (10–15%)", text: "Include sangeet production, DJ/band, and special effects in this allocation." },
-      { name: "Reserve photography and guest experience (10%)", text: "Book photographers and videographers 9–12 months ahead for premium dates." },
-      { name: "Hold contingency (10%)", text: "Maintain a contingency fund for guest count changes, overtime, and last-minute enhancements." },
-    ],
-  },
-};
 
 export const BLOG_FAQS: Record<string, GeoFaq[]> = {
   "wedding-planner-pune-guide": [
     {
       question: "How much does a wedding planner cost in Pune?",
-      answer: "Luxury wedding planners in Pune charge ₹8 lakhs to ₹40 lakhs+ for full-service planning, depending on guest count, venue, and design scope. Nexyyra Events offers complimentary consultations with tailored proposals.",
+      answer: `Planner fees vary with guest count, venue and design scope. With Nexyyra Events, wedding planning as a single service starts from ${WEDDING_FROM} and collections from ${BOUTIQUE.from}; consultations are free and every proposal is itemised.`,
     },
     {
       question: "When should I hire a wedding planner in Pune?",
-      answer: "Engage a planner 9–12 months before your wedding date. Peak season (November–February) requires earlier booking for premium Pune and destination venues.",
+      answer: "Engage a planner 9–12 months before your wedding date. Peak season (November–February) needs earlier booking, both for Pune venues and for destination venues.",
     },
   ],
   "destination-wedding-trends-2026": [
     {
       question: "What are the top destination wedding trends for 2026?",
-      answer: "Micro-luxury gatherings, sustainable décor, multi-day experiential programming, and heritage palace venues in Udaipur and Jaipur lead 2026 destination wedding trends in India.",
+      answer: "Formats worth considering for 2026 include intimate guest lists, sustainable décor, multi-day programmes with an event for every evening, and heritage palace venues in Udaipur and Jaipur.",
     },
   ],
   "corporate-event-roi": [
     {
       question: "How do you measure ROI on corporate events?",
-      answer: "Define KPIs before planning — lead generation, employee engagement scores, media impressions, or partnership conversions. Post-event analytics cover attendance, survey feedback, and pipeline impact.",
+      answer: "Agree the goals before planning — leads, employee engagement or media coverage — and how each will be measured. After the event, a post-event debrief and media hand-over covers attendance, the feedback you collected and the photos and films.",
     },
   ],
 };
-
-export function getBlogHowTo(slug: string) {
-  return BLOG_HOW_TO[slug];
-}
 
 export function getBlogFaqs(slug: string): GeoFaq[] {
   return BLOG_FAQS[slug] ?? [];

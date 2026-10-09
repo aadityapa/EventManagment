@@ -1,198 +1,109 @@
-"use client";
+import Link from "next/link";
+import { BRAND_REPLY_HOURS, BRAND_REPLY_HOURS_SHORT } from "@/brand/data/content";
+import { EDITORIAL_BAND } from "@/brand/data/image-curation";
+import { Commitments, Cover, Eyebrow, Heading, InquiryPanel, Ledger, MediaFrame, Section, type LedgerRow } from "@/components/ui";
+import { ENTITY_FACTS, SITE_CONFIG } from "@/lib/constants";
+import { getWhatsAppUrl } from "@/lib/utils";
 
-import { MapPin, Phone, Mail, Clock, MessageCircle, Calendar } from "lucide-react";
-import { BrandImage } from "@/brand/primitives/brand-image";
-import { BrandButton } from "@/brand/primitives/brand-button";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { MagneticButton } from "@/components/effects/magnetic-button";
-import { ContactForm } from "@/components/contact/contact-form";
-import { SITE_CONFIG } from "@/lib/constants";
-import { BRAND_IMAGES } from "@/brand/data/imagery";
-import { ScrollReveal } from "@/lib/motion";
+const WHATSAPP_URL = getWhatsAppUrl("Hello Nexyyra Events, I would like to talk to a planner about my event.");
 
-const SERVICE_AREAS = [
-  "Pune & Maharashtra",
-  "Mumbai Metropolitan",
-  "Goa & Konkan Coast",
-  "Rajasthan (Jaipur, Udaipur)",
-  "Bangalore & South India",
-  "Pan-India destination weddings",
+/* Cities only; the broad areas read better as the closing words of the line. */
+const BROAD_AREAS = new Set<string>(["Maharashtra", "India", "International destinations"]);
+const CITIES = ENTITY_FACTS.serviceAreas.filter((area) => !BROAD_AREAS.has(area));
+
+const link = (href: string, cta: string, label: string, external = false) => (
+  <a
+    href={href}
+    className="pg-conv-link"
+    data-cta={cta}
+    data-cta-location="contact-ledger"
+    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+  >
+    {label}
+  </a>
+);
+
+/* The registered office is the only published street address. The Pune office
+   has no published street, so none is shown and no map is embedded. */
+const CONTACT_ROWS: LedgerRow[] = [
+  { id: "phone", term: "Phone", body: link(`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`, "contact_call", SITE_CONFIG.phone) },
+  { id: "whatsapp", term: "WhatsApp", body: link(WHATSAPP_URL, "contact_whatsapp", "Message a planner", true) },
+  { id: "email", term: "Email", body: link(`mailto:${SITE_CONFIG.email}`, "contact_email", SITE_CONFIG.email) },
+  { id: "hours", term: "Hours", body: BRAND_REPLY_HOURS },
+  {
+    id: "registered",
+    term: "Registered office",
+    body: `${SITE_CONFIG.streetAddress}, ${SITE_CONFIG.city}, ${SITE_CONFIG.region} ${SITE_CONFIG.postalCode}`,
+  },
+  {
+    id: "pune",
+    term: "Delivery & Coordination Office — Pune",
+    body: "Consultations in person, on video or at your venue.",
+  },
+  { id: "languages", term: "Languages", body: ENTITY_FACTS.languages.join(", ") },
+  { id: "areas", term: "Service areas", body: `${CITIES.join(", ")} — and pan-India and international destinations.` },
+  {
+    id: "company",
+    term: "Company",
+    body: (
+      <>
+        {SITE_CONFIG.legalName} · CIN {SITE_CONFIG.cin} ·{" "}
+        <Link href="/company" prefetch={false} className="pg-conv-link" data-cta="contact_company" data-cta-location="contact-ledger">
+          Company information
+        </Link>
+      </>
+    ),
+  },
 ];
 
+/**
+ * /contact (DESIGN.md §10.12): the full form first on phones, the contact
+ * ledger beside it from 1024px. No map iframe, no duplicate "at a glance" block.
+ */
 export function ContactView() {
+  const band = EDITORIAL_BAND[EDITORIAL_BAND.length - 1];
+
   return (
-    <div className="brand-root">
-      {/* Hero */}
-      <section className="relative flex min-h-[68svh] items-end overflow-hidden">
-        <BrandImage
-          src={BRAND_IMAGES.contact}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
+    <div className="lux-page pg-conv">
+      <Cover
+        size="text"
+        eyebrow="Contact"
+        title="Talk to a planner"
+        lead={BRAND_REPLY_HOURS_SHORT}
+        primary={{ href: "#inquire", cta: "contact_cover_proposal" }}
+        secondary={{ href: WHATSAPP_URL, label: "WhatsApp a planner", cta: "contact_cover_whatsapp", external: true }}
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Contact", href: "/contact" },
+        ]}
+      />
+
+      <div className="pg-conv-split pg-conv-split--contact">
+        <InquiryPanel
+          source="contact"
+          variant="full"
+          contacts={false}
+          eyebrow="Your brief"
+          title="Tell us about your event"
+          lead="A few details are enough to start. After a free consultation, your itemised proposal follows within 48 hours."
+          className="pg-conv-split__main"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/20" />
-        <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel textSafe className="max-w-2xl px-8 py-10 sm:px-10">
-            <span className="v4-kicker mb-4">Concierge</span>
-            <h1 className="v4-display text-white">
-              Let&apos;s Create Something <span className="v4-gold-text">Extraordinary</span>
-            </h1>
-            <p className="v4-standfirst mt-4 text-white/80">
-              Private consultation with our luxury specialists — we respond within 24 hours.
-            </p>
-          </GlassPanel>
-        </div>
-      </section>
+        <section className="pg-conv-split__aside" aria-labelledby="contact-details-title">
+          <Eyebrow>Direct lines</Eyebrow>
+          <Heading as="h2" size="h3" id="contact-details-title">
+            Reach us directly
+          </Heading>
+          <Ledger as="dl" rows={CONTACT_ROWS} />
+        </section>
+      </div>
 
-      <section className="v4-section" aria-labelledby="contact-main-heading">
-        <div className="brand-container">
-          <h2 id="contact-main-heading" className="sr-only">Contact Nexyyra Events</h2>
-          <div className="grid gap-8 lg:grid-cols-12">
-            {/* Contact info */}
-            <div className="space-y-4 lg:col-span-3">
-              <ScrollReveal preset="left">
-                <GlassPanel className="p-6">
-                  <h3 className="v4-title text-lg">Direct Line</h3>
-                  <ul className="mt-4 space-y-3 text-sm text-muted">
-                    <li className="flex gap-2">
-                      <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
-                      {SITE_CONFIG.address}
-                    </li>
-                    <li className="flex gap-2">
-                      <MapPin className="h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
-                      {SITE_CONFIG.branchOffice}
-                    </li>
-                    <li>
-                      <a
-                        href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-                        className="flex gap-2 transition-colors hover:text-[var(--glitz-gold)]"
-                      >
-                        <Phone className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-                        {SITE_CONFIG.phone}
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={`mailto:${SITE_CONFIG.email}`}
-                        className="flex gap-2 transition-colors hover:text-[var(--glitz-gold)]"
-                      >
-                        <Mail className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-                        {SITE_CONFIG.email}
-                      </a>
-                    </li>
-                    <li className="flex gap-2">
-                      <Clock className="h-4 w-4 text-[var(--glitz-gold)]" aria-hidden="true" />
-                      Mon–Sat 9 AM – 9 PM IST
-                    </li>
-                  </ul>
-                </GlassPanel>
-              </ScrollReveal>
+      <Section id="commitments" number="01" eyebrow="Commitments" title="What you can expect" lazy>
+        <Commitments variant="row" />
+      </Section>
 
-              <a
-                href={`https://wa.me/${SITE_CONFIG.whatsapp.replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-[var(--v4-radius)] bg-[#25D366] py-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" /> WhatsApp Concierge
-              </a>
-
-              {/* GEO-friendly facts block */}
-              <ScrollReveal preset="left" delay={0.1}>
-                <aside aria-label="Nexyyra Events contact facts">
-                  <GlassPanel className="p-6">
-                  <h3 className="v4-kicker mb-3">At a Glance</h3>
-                  <dl className="space-y-3 text-sm">
-                    <div>
-                      <dt className="font-semibold text-primary">Business</dt>
-                      <dd className="text-muted">{SITE_CONFIG.legalName}</dd>
-                    </div>
-                    <div>
-                      <dt className="font-semibold text-primary">CIN</dt>
-                      <dd className="text-muted">{SITE_CONFIG.cin}</dd>
-                    </div>
-                    <div>
-                      <dt className="font-semibold text-primary">Headquarters</dt>
-                      <dd className="text-muted">{SITE_CONFIG.address}</dd>
-                    </div>
-                    <div>
-                      <dt className="font-semibold text-primary">Pune Office</dt>
-                      <dd className="text-muted">{SITE_CONFIG.branchOffice}</dd>
-                    </div>
-                    <div>
-                      <dt className="font-semibold text-primary">Phone</dt>
-                      <dd>
-                        <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="text-muted hover:text-[var(--glitz-gold)]">
-                          {SITE_CONFIG.phone}
-                        </a>
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-semibold text-primary">Service Areas</dt>
-                      <dd className="text-muted">
-                        <ul className="mt-1 list-inside list-disc space-y-0.5">
-                          {SERVICE_AREAS.map((area) => (
-                            <li key={area}>{area}</li>
-                          ))}
-                        </ul>
-                      </dd>
-                    </div>
-                  </dl>
-                  </GlassPanel>
-                </aside>
-              </ScrollReveal>
-            </div>
-
-            {/* Form */}
-            <div className="lg:col-span-5">
-              <ScrollReveal preset="reveal">
-                <GlassPanel className="p-6 sm:p-8">
-                  <h3 className="v4-title text-xl">Luxury Inquiry Form</h3>
-                  <p className="mt-2 text-sm text-muted">
-                    Share your vision — our team will craft a tailored response within one business day.
-                  </p>
-                  <div className="mt-6">
-                    <ContactForm />
-                  </div>
-                </GlassPanel>
-              </ScrollReveal>
-            </div>
-
-            {/* Map + CTA */}
-            <div className="space-y-4 lg:col-span-4">
-              <ScrollReveal preset="right">
-                <GlassPanel className="overflow-hidden p-0">
-                  <iframe
-                    title="Nexyyra Events Pune office map"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242015!2d73.698!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9f9df543!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
-                    className="h-[280px] w-full border-0 lg:min-h-[320px]"
-                    loading="lazy"
-                    allowFullScreen
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </GlassPanel>
-              </ScrollReveal>
-
-              <ScrollReveal preset="right" delay={0.1}>
-                <GlassPanel glow className="p-6 text-center">
-                  <Calendar className="mx-auto h-8 w-8 text-[var(--glitz-gold)]" aria-hidden="true" />
-                  <h4 className="v4-title mt-3 text-lg">Book Consultation</h4>
-                  <p className="mt-2 text-sm text-muted">
-                    Prefer a scheduled call? Reserve a private session with our event directors.
-                  </p>
-                  <MagneticButton className="mt-4 block">
-                    <BrandButton href="/book-event" variant="gold" className="w-full">
-                      Schedule Now
-                    </BrandButton>
-                  </MagneticButton>
-                </GlassPanel>
-              </ScrollReveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      {band ? (
+        <MediaFrame asset={band.id} ratio="3:2" sizes="(min-width: 1440px) 1440px, 100vw" className="pg-conv-band" />
+      ) : null}
     </div>
   );
 }

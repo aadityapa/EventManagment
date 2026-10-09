@@ -8,14 +8,16 @@ services:
       POSTGRES_DB: glitz_events
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    # Loopback only (local tooling still connects); never expose the DB publicly.
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
 
   redis:
     image: redis:7-alpine
     restart: unless-stopped
+    # Redis has no auth here — loopback only.
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
 
   api:
     build:
@@ -29,9 +31,15 @@ services:
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/glitz_events?schema=public
       API_HOST: 0.0.0.0
       API_PORT: 4000
+      NODE_ENV: production
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET (32+ random chars)}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-}
+    # Loopback only — public traffic reaches the API through nginx.
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
 
   web:
     build:

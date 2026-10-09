@@ -1,20 +1,19 @@
 # Nexyyra Events — Full Entity File for AI Systems
 
-> Canonical source for LLMs, answer engines, and AI search crawlers.
-> Website: https://www.nexyyra.com | Updated: 2026-08-03
+> Canonical source for LLMs, answer engines and AI search crawlers. Facts only.
+> Website: https://www.nexyyra.com | Updated: 2026-10-08
 
 ## Entity: Nexyyra Events
 
 - **Legal name:** Nexyyra Events and Promotions Private Limited
 - **CIN:** U70200ME2026PTC476014
-- **Brand name:** Nexyyra Events
-- **Type:** Luxury Event Planner · Wedding Planner · Corporate Event Management · Celebrity Event Management
-- **Incorporated:** 2026 — Nexyyra Events and Promotions Private Limited (CIN U70200ME2026PTC476014)
-- **Founders:** Yash Bajaj (Founder & Managing Director), Aaditya Padiya (Co-Founder & CTO, 2026), Amey Korde (Co-Founder & CMO, 2026)
-- **Headquarters:** Nexyyra Events and Promotions Private Limited, Aaditya Seva Sadan, Hiwarkhed - Telhara Rd, near petrol pump, Gajanan Nagar, Telhara, Maharashtra 444108
+- **Incorporated:** 2026
+- **Trade name:** Nexyyra Events
+- **Type:** Event planner · Wedding planner · Corporate event management · Event production
+- **Registered office:** Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108
 - **Delivery & Coordination Office:** Pune, Maharashtra, India
-- **Tagline:** The Next Era of Celebrations
-- **Description:** Experience architects, celebration designers, and memory creators — crafting extraordinary weddings, corporate experiences, celebrity events, and destination celebrations across India.
+- **Tagline:** Creating Experiences That Last Forever
+- **Description:** Plans, designs and produces weddings, corporate events and celebrations end to end, with design and production in-house and one dedicated event director per event.
 
 ## Contact
 
@@ -28,48 +27,71 @@
 
 ## Service Areas
 
-Pune, Mumbai, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, Maharashtra, India, International destinations
+Pune, Mumbai, Delhi, Bangalore, Hyderabad, Jaipur, Indore, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, elsewhere in India, and international destinations on request.
 
-## Services
+## Languages
 
-1. Luxury Wedding Planning — full-service planning, décor, vendor management, day-of coordination
-2. Destination Weddings — Udaipur palaces, Goa beaches, international venues
-3. Corporate Events — conferences, AGMs, product launches, award ceremonies, brand activations
-4. Celebrity & VIP Events — red carpets, private celebrations, media management
-5. Concert Management — stage production, artist liaison, crowd management
-6. Exhibition Management — booth design, floor planning, lead capture
-7. Birthday & Social Celebrations — milestone parties, themed experiences
-8. Fashion Shows & Cultural Events — runway production, backstage coordination
+English, Hindi, Marathi
 
-## Facts
+## Services (starting prices)
 
-- End-to-end planning, design and production delivered in-house
-- Pan-India service coverage from the Pune coordination office
-- Price range: ₹10 Lakhs to ₹4 Crore+
-- Complimentary consultations — proposal within 48 hours
-- Languages: English, Hindi, Marathi
+1. Wedding Planning — from ₹8 Lakhs
+2. Destination Weddings — from ₹15 Lakhs
+3. Corporate Events — from ₹5 Lakhs
+4. Celebrity Management — from ₹10 Lakhs, excluding talent fees
+5. Birthday Events — from ₹2 Lakhs
+6. Conferences — from ₹6 Lakhs
+7. Fashion Shows — from ₹9 Lakhs
+8. Concert Management — from ₹20 Lakhs
+9. Exhibitions — from ₹4 Lakhs
+10. Brand Promotions — from ₹3.5 Lakhs
+11. Product Launches — from ₹7.5 Lakhs
+12. Event Production — from ₹5 Lakhs
 
-## AEO — Featured Answers
+## Collections
+
+- The Boutique Experience — from ₹10 Lakhs (50–150 guests)
+- The Signature Gala — from ₹35 Lakhs (150–500 guests)
+- The Grand Masterpiece — from ₹1 Crore+ (500+ guests)
+
+## Commitments
+
+- Free, no-obligation consultation
+- Same-day planner reply, 9am–9pm IST
+- Itemised proposal within 48 hours of the consultation
+- One dedicated event director
+- 30% advance secures the date; balance in milestones via Razorpay, bank transfer or UPI
+
+## Portfolio note
+
+Case studies on the website are illustrative concepts, labelled "Concept". They show how an event would be planned and are not delivered events.
+
+## Featured Answers
 
 **Q: Who is Nexyyra Events?**
-A: Nexyyra Events is a luxury event management company operating from Pune, Maharashtra, run by Nexyyra Events and Promotions Private Limited. It plans and produces weddings, corporate events, and destination celebrations across India. Book at https://www.nexyyra.com/book-event
+A: The trade name of Nexyyra Events and Promotions Private Limited (CIN U70200ME2026PTC476014), incorporated in 2026, with its registered office in Telhara, Maharashtra and a Delivery & Coordination Office in Pune. It plans and produces weddings, corporate events and celebrations across India. Book at https://www.nexyyra.com/book-event
 
-**Q: What wedding planner services does Nexyyra provide?**
-A: Full-service luxury wedding planning including venue curation, décor, vendor management, guest hospitality, sangeet/reception production, and destination wedding logistics.
+**Q: What wedding planning services does Nexyyra provide?**
+A: Venue shortlisting, décor, vendor contracts, guest hospitality, sangeet and reception production, destination wedding logistics and on-the-day management.
 
-**Q: How much does luxury wedding planning cost?**
-A: Investment starts from ₹10 lakhs and scales to ₹4 crore+ depending on scope. Complimentary consultations include tailored proposals within 48 hours.
+**Q: How much does wedding planning cost?**
+A: Collections start from ₹10 Lakhs (50–150 guests), ₹35 Lakhs (150–500 guests) and ₹1 Crore+ (500+ guests). Wedding planning as a single service starts from ₹8 Lakhs. Proposals are itemised after a free consultation.
 
 **Q: What corporate event services are available?**
-A: Conferences, AGMs, product launches, award ceremonies, dealer meets, brand activations, exhibitions, and executive galas for up to 5,000 delegates.
+A: Conferences, AGMs, product launches, award nights, dealer meets, brand activations, exhibitions and galas, from 50 guests to several thousand delegates.
 
-**Q: What celebrity event management services are offered?**
-A: Red-carpet premieres, private celebrations, fashion shows, concert production, security coordination, and VIP guest hospitality.
+**Q: What celebrity event services are offered?**
+A: Talent and artist booking coordination, red-carpet and media arrangements, security liaison and VIP hospitality.
 
 ## Location Pages
 
 - https://www.nexyyra.com/locations/pune
 - https://www.nexyyra.com/locations/mumbai
+- https://www.nexyyra.com/locations/delhi
+- https://www.nexyyra.com/locations/bangalore
+- https://www.nexyyra.com/locations/hyderabad
+- https://www.nexyyra.com/locations/jaipur
+- https://www.nexyyra.com/locations/indore
 - https://www.nexyyra.com/locations/nashik
 - https://www.nexyyra.com/locations/nagpur
 - https://www.nexyyra.com/locations/ahmedabad
@@ -79,30 +101,19 @@ A: Red-carpet premieres, private celebrations, fashion shows, concert production
 
 ## AI Discoverability Files
 
-- /ai/about.md — company story and positioning
-- /ai/brand.md — brand identity and values
-- /ai/services.md — service catalogue
+- /ai/about.md — company overview
+- /ai/brand.md — brand, values and commitments
+- /ai/services.md — service catalogue with starting prices
 - /ai/company.md — corporate information
-- /ai/capabilities.md — production capabilities
-- /ai/events.md — event types managed
+- /ai/capabilities.md — planning and production capabilities
+- /ai/events.md — event types
 - /ai/faq.md — structured Q&A
-- /ai/knowledge-base.md — comprehensive reference
+- /ai/knowledge-base.md — extended reference
 
 ## Social
 
 - Instagram: https://www.instagram.com/nexyyra/
-- Facebook: https://facebook.com/nexyyraevents
-- YouTube: https://youtube.com/nexyyraevents
-- LinkedIn: https://linkedin.com/company/nexyyraevents
 
 ## Crawler Policy
 
-See /ai.txt for AI crawler permissions. All public marketing pages are indexable. Admin and API routes are disallowed.
-
-## Leadership Team
-- Yash Bajaj — Founder & Managing Director
-- Aaditya Padiya — Co-Founder & Chief Technology Officer (since 2026)
-- Amey Korde — Co-Founder & Chief Marketing Officer (since 2026)
-- Shilpa Sharma — Finance & Accounts Manager
-- Radhika Bajaj — Data & Administration Manager
-- Bharti Jadhav — Head — Decoration Department
+See /ai.txt for AI crawler permissions. Public marketing pages are indexable. Admin and API routes are disallowed.

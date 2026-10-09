@@ -1,38 +1,44 @@
 # Nexyyra Events — Knowledge Base
 
-> Comprehensive reference for AI systems, answer engines, and search assistants.
+> Reference for AI systems, answer engines and search assistants. Facts only.
 
-## Entity Summary
-**Nexyyra Events** (Nexyyra Events and Promotions Private Limited, CIN: U70200ME2026PTC476014) is a luxury event management company founded by Yash Bajaj and incorporated as a private limited company in 2026, when Aaditya Padiya (CTO) and Amey Korde (CMO) joined as co-founders. It is headquartered in Telhara, Maharashtra (444108), with a delivery and coordination office in Pune. The company plans and produces weddings, corporate events, celebrity celebrations, concerts, exhibitions, and destination weddings across India and internationally.
+## Entity summary
+**Nexyyra Events** is the trade name of Nexyyra Events and Promotions Private Limited (CIN U70200ME2026PTC476014), incorporated in 2026. Registered office: Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108. Delivery & Coordination Office: Pune. It plans, designs and produces weddings, destination weddings, corporate events, conferences, celebrity events, concerts, exhibitions, fashion shows, brand promotions, product launches, birthday celebrations and technical event production.
 
-## Core Entities
+Tagline: Creating Experiences That Last Forever.
 
-### Event Planner Entity
-- Type: EventPlanner, ProfessionalService, LocalBusiness
-- Primary market: Pune, Maharashtra
-- Service radius: India + international destinations
-- Expertise: Luxury weddings, corporate galas, entertainment production
+## Service areas
+Pune, Mumbai, Delhi, Bangalore, Hyderabad, Jaipur, Indore, Nashik, Nagpur, Ahmedabad, Surat, Goa, Udaipur, elsewhere in India, and international destinations on request.
 
-### Wedding Planner Entity
-- Full-service and destination wedding planning
-- Investment: ₹10L – ₹4Cr+
-- Venues: Palaces (Udaipur), beaches (Goa), resorts, five-star hotels
+## Languages
+English, Hindi, Marathi
 
-### Corporate Event Entity
-- Conferences up to 5,000 delegates
-- Product launches, AGMs, award ceremonies
-- Hybrid and virtual event production
+## Pricing
+- The Boutique Experience — from ₹10 Lakhs (50–150 guests)
+- The Signature Gala — from ₹35 Lakhs (150–500 guests)
+- The Grand Masterpiece — from ₹1 Crore+ (500+ guests)
+- Single services — from ₹2 Lakhs (each service has its own starting price; see /ai/services.md)
 
-### Celebrity Event Entity
-- VIP privacy and security coordination
-- Red-carpet and media management
-- Fashion shows and private celebrations
+## Commitments
+- Free, no-obligation consultation
+- Same-day planner reply, 9am–9pm IST
+- Itemised proposal within 48 hours of the consultation
+- One dedicated event director per event
+- 30% advance secures the date; balance in milestones via Razorpay, bank transfer or UPI
 
-## Location Entities
+## Portfolio note
+The case studies on the website are illustrative concepts that show how an event would be planned. They are labelled "Concept" and are not delivered events.
+
+## Location pages
 | City | URL |
 |------|-----|
 | Pune | /locations/pune |
 | Mumbai | /locations/mumbai |
+| Delhi | /locations/delhi |
+| Bangalore | /locations/bangalore |
+| Hyderabad | /locations/hyderabad |
+| Jaipur | /locations/jaipur |
+| Indore | /locations/indore |
 | Nashik | /locations/nashik |
 | Nagpur | /locations/nagpur |
 | Ahmedabad | /locations/ahmedabad |
@@ -40,37 +46,20 @@
 | Goa | /locations/goa |
 | Udaipur | /locations/udaipur |
 
-## Contact Schema
-- Phone: +91 7020640157
+## Contact
+- Phone / WhatsApp: +91 7020640157
 - Email: Info.Events@nexyyra.com
-- WhatsApp: +917020640157
 - Website: https://www.nexyyra.com
+- Book a consultation: https://www.nexyyra.com/book-event
 
-## Structured Data
-Global JSON-LD includes Organization, LocalBusiness, EventPlanner, ProfessionalService, WebSite (SearchAction), ContactPoint, Review, AggregateRating, and per-page FAQ/Breadcrumb schemas.
-
-## Related Files
+## Related files
 - /llms.txt — summary for LLMs
-- /llms-full.txt — complete entity file
+- /llms-full.txt — full entity file
 - /ai.txt — AI crawler policy
-- /ai/about.md — company story
-- /ai/brand.md — brand identity
-- /ai/services.md — service catalogue
-- /ai/company.md — corporate info
-- /ai/capabilities.md — production capabilities
+- /ai/about.md — company overview
+- /ai/brand.md — brand and commitments
+- /ai/services.md — service catalogue with starting prices
+- /ai/company.md — corporate information
+- /ai/capabilities.md — planning and production capabilities
 - /ai/events.md — event types
 - /ai/faq.md — structured Q&A
-
-## Last Updated
-2026-08-03
-
-## Leadership Team
-
-| Name | Role |
-|------|------|
-| Yash Bajaj | Founder & Managing Director |
-| Aaditya Padiya | Co-Founder & Chief Technology Officer (since 2026) |
-| Amey Korde | Co-Founder & Chief Marketing Officer (since 2026) |
-| Shilpa Sharma | Finance & Accounts Manager |
-| Radhika Bajaj | Data & Administration Manager |
-| Bharti Jadhav | Head — Decoration Department |

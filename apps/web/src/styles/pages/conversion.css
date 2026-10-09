@@ -1,0 +1,199 @@
+/* Package I — /pricing, /faqs, /why-nexyyra, /contact, /book-event (DESIGN.md §10.9–10.13).
+   Page-local layout only: pg-conv-* classes, --lux-* tokens, no hex. */
+
+@layer components {
+  /* ── Inquiry plate placed directly on the page rail ─────────────────── */
+  .pg-conv-inquiry {
+    margin-block: var(--lux-space-block) var(--lux-space-section);
+  }
+
+  /* ── Links inside ledgers (gold underline, as in prose) ─────────────── */
+  .pg-conv-link {
+    color: var(--lux-white);
+    text-decoration: underline;
+    text-decoration-color: var(--lux-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+  }
+
+  .pg-conv-link:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) {
+    .pg-conv-link:hover { color: var(--lux-gold); }
+  }
+
+  /* ── /faqs: contents cols 1–3, one accordion per group cols 4–12 ─────── */
+  .pg-conv-faqs {
+    align-items: start;
+    padding-top: var(--lux-space-block);
+  }
+
+  .pg-conv-faqs__nav,
+  .pg-conv-faqs__groups {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .pg-conv-faqs__nav { grid-column: 1 / span 3; }
+    .pg-conv-faqs__groups { grid-column: 4 / -1; }
+  }
+
+  /* ── Split: form + ledger (contact) / form + next steps (book-event) ── */
+  .pg-conv-split {
+    display: grid;
+    gap: var(--lux-space-block);
+    padding-block: var(--lux-space-block) var(--lux-space-section);
+  }
+
+  .pg-conv-split__main,
+  .pg-conv-split__aside {
+    display: grid;
+    gap: var(--lux-space-tight);
+    align-content: start;
+    min-width: 0;
+  }
+
+  .pg-conv-split__aside { gap: 1rem; }
+
+  @media (min-width: 1024px) {
+    .pg-conv-split {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--lux-grid-gap);
+      align-items: start;
+    }
+
+    /* DOM keeps the form first (phones); desktop puts the ledger on the left. */
+    .pg-conv-split--contact .pg-conv-split__main { grid-column: 6 / -1; grid-row: 1; }
+    .pg-conv-split--contact .pg-conv-split__aside { grid-column: 1 / span 5; grid-row: 1; }
+
+    .pg-conv-split--book .pg-conv-split__main { grid-column: 1 / span 7; }
+    .pg-conv-split--book .pg-conv-split__aside { grid-column: 8 / -1; }
+
+    .pg-conv-next {
+      position: sticky;
+      top: calc(var(--lux-nav-h) + 1.5rem);
+      z-index: var(--lux-z-sticky);
+    }
+  }
+
+  /* Read-only note above the book-event form when ?collection= names a collection. */
+  .pg-conv-note {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--lux-gold);
+    background: var(--lux-surface-1);
+    color: var(--lux-muted);
+    font: 400 var(--lux-text-body)/var(--lux-leading-lead) var(--lux-font-body);
+    text-wrap: pretty;
+  }
+
+  .pg-conv-note strong {
+    color: var(--lux-white);
+    font-weight: 600;
+  }
+
+  /* Text link after a commitments grid. */
+  .pg-conv-after {
+    margin: var(--lux-space-tight) 0 0;
+  }
+
+  /* Editorial band at the foot of /contact. */
+  .pg-conv-band {
+    margin-bottom: var(--lux-space-section);
+  }
+
+  /* ── "Which collection fits" (InlineBudgetCalculator island) ───────── */
+  .pg-conv-calc {
+    display: grid;
+    gap: var(--lux-space-block);
+    max-width: var(--lux-wide);
+  }
+
+  @media (min-width: 1024px) {
+    .pg-conv-calc {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+  }
+
+  .pg-conv-calc__set {
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .pg-conv-calc__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pg-conv-calc__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--lux-border-strong);
+    border-radius: var(--lux-radius-pill);
+    color: var(--lux-muted);
+    font: 500 var(--lux-text-small)/1.2 var(--lux-font-body);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: border-color var(--lux-dur-fast) var(--lux-ease), color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  .pg-conv-calc__chip input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: var(--lux-gold);
+  }
+
+  .pg-conv-calc__chip:has(:checked) {
+    border-color: var(--lux-gold);
+    color: var(--lux-white);
+  }
+
+  .pg-conv-calc__chip:has(:focus-visible) {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  .pg-conv-calc__chip input:focus-visible { outline: none; }
+
+  @media (hover: hover) {
+    .pg-conv-calc__chip:hover { border-color: var(--lux-border-gold); }
+  }
+
+  .pg-conv-calc__result {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    justify-items: start;
+    min-height: 8rem;
+    padding: var(--lux-space-tight);
+    border-radius: var(--lux-radius-md);
+    background: var(--lux-surface-1);
+    box-shadow: inset 0 0 0 1px var(--lux-border);
+  }
+
+  .pg-conv-calc__result > dl { width: 100%; }
+
+  .pg-conv-calc__fine {
+    margin: 0;
+    color: var(--lux-subtle);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pg-conv-calc__chip { transition: none; }
+  }
+}

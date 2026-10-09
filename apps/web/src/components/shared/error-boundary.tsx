@@ -32,21 +32,21 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="brand-root flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-          <span className="brand-label mb-4">Something went wrong</span>
-          <h1 className="brand-display text-3xl font-bold">We&apos;re working on it</h1>
-          <p className="mt-4 max-w-md text-muted">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
+          <span className="lux-label mb-4">Something went wrong</span>
+          <h1 className="font-display text-h2 text-lux-white">We&apos;re working on it</h1>
+          <p className="mt-4 max-w-md text-lux-subtle">
             An unexpected error occurred. Please refresh the page or return home.
           </p>
           <div className="mt-8 flex gap-4">
             <button
               type="button"
               onClick={() => this.setState({ hasError: false })}
-              className="btn-gold-metallic rounded-lg px-6 py-3 text-sm font-semibold"
+              className="luxury-button luxury-button--purple luxury-button--compact"
             >
               Try Again
             </button>
-            <Link href="/" className="rounded-lg border border-[var(--glitz-border)] px-6 py-3 text-sm font-semibold text-primary hover:border-[var(--glitz-gold)]">
+            <Link href="/" className="luxury-button luxury-button--ghost luxury-button--compact">
               Go Home
             </Link>
           </div>

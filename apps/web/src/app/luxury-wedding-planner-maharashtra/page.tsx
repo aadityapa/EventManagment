@@ -1,11 +1,9 @@
+import { LocalPage } from "@/brand/templates/local-page";
+import { requireLocalSeoPage } from "@/lib/local-seo-pages";
 import { generateSEO } from "@/lib/seo";
-import { getLocalSeoPage } from "@/lib/local-seo-pages";
-import { LocalSeoPageContent } from "@/components/shared/local-seo-page";
-import { notFound } from "next/navigation";
 
 const SLUG = "luxury-wedding-planner-maharashtra";
-const page = getLocalSeoPage(SLUG);
-if (!page) throw new Error(`Missing local SEO page: ${SLUG}`);
+const page = requireLocalSeoPage(SLUG);
 
 export const metadata = generateSEO({
   title: page.title,
@@ -15,6 +13,5 @@ export const metadata = generateSEO({
 });
 
 export default function LuxuryWeddingPlannerMaharashtraPage() {
-  if (!page) notFound();
-  return <LocalSeoPageContent page={page} />;
+  return <LocalPage variant="service" page={page} />;
 }

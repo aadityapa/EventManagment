@@ -1,47 +1,59 @@
 # Nexyyra Events — Services
 
-## Wedding Planning
-Full-service luxury wedding planning: venue curation, décor design, vendor management, guest hospitality, sangeet/reception production, and day-of coordination.
+Each service can be booked on its own or as part of a collection. Prices are starting points; every proposal is itemised.
 
-**URL:** https://www.nexyyra.com/services/wedding-planning
+## Wedding Planning — from ₹8 Lakhs
+Venue shortlisting, décor design, vendor contracts, guest hospitality, sangeet and reception production, and on-the-day management.
+https://www.nexyyra.com/services/wedding-planning
 
-## Destination Weddings
-Multi-day destination celebrations in Udaipur, Goa, Kerala, Rajasthan, and international venues with guest travel logistics.
+## Destination Weddings — from ₹15 Lakhs
+Multi-day celebrations at palace, beach and hill-station venues across India, and international destinations on request, with guest travel and stays.
+https://www.nexyyra.com/services/destination-weddings
 
-**URL:** https://www.nexyyra.com/services/destination-weddings
+## Corporate Events — from ₹5 Lakhs
+Annual days, AGMs, leadership offsites, award nights, dealer meets and galas.
+https://www.nexyyra.com/services/corporate-events
 
-## Corporate Events
-Conferences, AGMs, annual days, product launches, award ceremonies, dealer meets, and executive galas.
+## Celebrity Management — from ₹10 Lakhs (excluding talent fees)
+Talent and artist booking coordination, red-carpet production, media coordination and VIP hospitality.
+https://www.nexyyra.com/services/celebrity-management
 
-**URL:** https://www.nexyyra.com/services/corporate-events
+## Birthday Events — from ₹2 Lakhs
+Milestone birthdays, themed parties and private celebrations.
+https://www.nexyyra.com/services/birthday-events
 
-## Celebrity Management
-VIP celebrations, red-carpet premieres, fashion shows, and private celebrity events with security and media coordination.
+## Conferences — from ₹6 Lakhs
+Registration, speaker management, AV production and hybrid streaming, from 50 to several thousand delegates.
+https://www.nexyyra.com/services/conferences
 
-**URL:** https://www.nexyyra.com/services/celebrity-management
+## Fashion Shows — from ₹9 Lakhs
+Runway design, casting coordination, backstage management, lighting and music direction.
+https://www.nexyyra.com/services/fashion-shows
 
-## Product Launches
-Brand activations, launch events, and experiential marketing with stage design and media integration.
+## Concert Management — from ₹20 Lakhs
+Stage production, artist hospitality, crowd-safety planning and technical direction.
+https://www.nexyyra.com/services/concert-management
 
-**URL:** https://www.nexyyra.com/services/product-launches
+## Exhibitions — from ₹4 Lakhs
+Booth and pavilion design, floor planning, lead capture, build and dismantle.
+https://www.nexyyra.com/services/exhibitions
 
-## Exhibitions
-Trade show booth design, floor planning, lead capture, and setup/teardown management.
+## Brand Promotions — from ₹3.5 Lakhs
+Pop-ups, mall activations, sampling campaigns and roadshows.
+https://www.nexyyra.com/services/brand-promotions
 
-**URL:** https://www.nexyyra.com/services/exhibitions
+## Product Launches — from ₹7.5 Lakhs
+Launch reveals, media and influencer coordination, staging and live streaming.
+https://www.nexyyra.com/services/product-launches
 
-## Concert Management
-Stage production, artist liaison, crowd management, and technical direction.
+## Event Production — from ₹5 Lakhs
+Lighting, sound, staging, LED walls, special effects and show calling.
+https://www.nexyyra.com/services/event-production
 
-**URL:** https://www.nexyyra.com/services/concert-management
-
-## Birthday Events
-Milestone birthday celebrations with themed décor and entertainment.
-
-**URL:** https://www.nexyyra.com/services/birthday-events
-
-## Investment Range
-₹10 Lakhs to ₹4 Crore+ depending on event type, guest count, and design scope.
+## Collections
+- The Boutique Experience — from ₹10 Lakhs (50–150 guests)
+- The Signature Gala — from ₹35 Lakhs (150–500 guests)
+- The Grand Masterpiece — from ₹1 Crore+ (500+ guests)
 
 ## Booking
-Complimentary consultation at https://www.nexyyra.com/book-event
+Free consultation at https://www.nexyyra.com/book-event

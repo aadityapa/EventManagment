@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { safeNextPath } from "@/lib/safe-next";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/lux-button";
 import { FormInput } from "@/components/ui/form-input";
 import { toast } from "sonner";
 import { analytics } from "@/lib/analytics";
@@ -11,7 +12,7 @@ import { analytics } from "@/lib/analytics";
 export function RegisterForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = useMemo(() => params.get("next") || "/dashboard", [params]);
+  const next = useMemo(() => safeNextPath(params.get("next")), [params]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,7 +45,7 @@ export function RegisterForm() {
   return (
     <form onSubmit={onSubmit} className="glass-card mx-auto w-full max-w-md p-6 sm:p-8" aria-label="Create account form">
       <h1 className="font-display text-2xl font-bold">Create account</h1>
-      <p className="mt-1 text-sm text-muted">Book, pay, and track your event journey.</p>
+      <p className="mt-1 text-sm text-lux-subtle">Book, pay, and track your event journey.</p>
 
       <div className="mt-6 space-y-4">
         <FormInput label="Full name" name="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
@@ -52,14 +53,14 @@ export function RegisterForm() {
         <FormInput label="Phone" name="phone" type="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} hint="Optional — for event coordination updates" />
         <FormInput label="Password" name="password" type="password" autoComplete="new-password" required value={password} onChange={(e) => setPassword(e.target.value)} hint="Minimum 8 characters." />
 
-        <Button type="submit" className="w-full btn-premium-hover" disabled={loading}>
+        <Button type="submit" variant="primary" size="full" cta="register_submit" location="register_form" disabled={loading}>
           {loading ? "Creating..." : "Create account"}
         </Button>
       </div>
 
-      <p className="mt-6 text-sm text-muted">
+      <p className="mt-6 text-sm text-lux-subtle">
         Already have an account?{" "}
-        <Link href={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-primary">
+        <Link href={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-lux-white">
           Sign in
         </Link>
       </p>

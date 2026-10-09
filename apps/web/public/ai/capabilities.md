@@ -1,36 +1,35 @@
 # Nexyyra Events — Capabilities
 
-## Planning & Strategy
-- Event concept development and creative direction
-- Budget allocation and vendor negotiation
+## Planning
+- Event concept and creative direction
+- Budget planning and an itemised proposal
 - Timeline and milestone management
 - Risk assessment and contingency planning
 
-## Design & Production
-- Stage, mandap, and set design
+## Design and production
+- Stage, mandap and set design
 - Floral and décor fabrication
 - Lighting design and special effects
-- Custom fabrication and scenic builds
+- Custom scenic builds
 
-## Technical Production
-- AV systems with redundant backup
-- Live streaming and hybrid event platforms
-- LED walls, projection mapping, and immersive environments
-- Dedicated technical directors on every large production
+## Technical production
+- AV systems with backup equipment for critical cues
+- Live streaming and hybrid formats
+- LED walls, projection mapping and immersive staging
+- A technical director on large productions
 
-## Guest Experience
-- RSVP and guest list management
+## Guest experience
+- RSVP and guest-list management
 - Travel and accommodation coordination
-- Welcome kits and concierge services
-- Multi-language guest communications
+- Welcome kits and guest hospitality desks
+- Guest communications in English, Hindi and Marathi
 
-## Vendor Management
-- Curated network of photographers, caterers, entertainers, and decorators
-- Single point of contact for all vendor coordination
-- Quality assurance and on-site supervision
+## Vendor management
+- Vendor shortlisting, contracts and quality checks
+- One point of contact for every vendor
+- Each vendor cost shown as its own line in the proposal
 
-## On-Ground Execution
-- Dedicated event directors and floor managers
-- Real-time communication systems
-- Load-in/load-out management
-- Post-event reporting and analytics
+## On the day
+- A dedicated event director and floor managers
+- Load-in and load-out management
+- A post-event debrief and media hand-over

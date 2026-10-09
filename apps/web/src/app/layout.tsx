@@ -1,29 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Cormorant_Garamond, Inter, Manrope, Playfair_Display } from "next/font/google";
-import { Suspense } from "react";
-import { AdaptiveThemeProvider } from "@/components/adaptive/adaptive-theme-provider";
+import { Cinzel, Cormorant_Garamond, Manrope, Playfair_Display } from "next/font/google";
 import { CacheVersionClear } from "@/components/providers/cache-version-clear";
-import { CinematicProvider } from "@/components/providers/cinematic-provider";
-import { ToastProvider } from "@/components/providers/toast-provider";
 import { BrandHeader } from "@/brand/shell/brand-header";
 import { BrandFooter } from "@/brand/shell/brand-footer";
-import { BrandFab } from "@/brand/shell/brand-fab";
+import { ActionBar } from "@/brand/shell/brand-action-bar";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { SentryInit } from "@/components/monitoring/sentry-init";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { ViewTransition } from "@/components/ui/view-transition";
 import { generateSEO, globalGraphSchema } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
-import { PortalTransition } from "@/lib/motion/portal-transition";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: false });
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], display: "swap", preload: true });
-const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], display: "swap", preload: true });
-const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], display: "swap" });
+// Only the body face (Manrope) and the display face used by every H1 (Cormorant)
+// are preloaded; Playfair and Cinzel are accent faces that can swap in.
+const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], display: "swap", preload: false });
+const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], display: "swap", preload: false });
 // Montserrat + Poppins removed — Poppins had zero usages; Montserrat only backs the
 // legacy stitch theme, which declares a system-ui fallback.
 const cormorant = Cormorant_Garamond({ variable: "--font-cormorant", weight: ["400", "500", "600", "700"], subsets: ["latin"], display: "swap" });
+
+/**
+ * Speculation Rules — prerender the top conversion targets, prefetch the two
+ * big indexes. Chrome already suppresses prefetch/prerender under Data Saver,
+ * so there is no server-side gating (reading headers() here would force the
+ * whole app dynamic). AnalyticsProvider and CookieConsent wait for
+ * document.prerendering === false, so a prerendered page never counts a
+ * pageview or stamps consent.
+ */
+const SPECULATION = JSON.stringify({
+  prerender: [{ where: { href_matches: ["/services", "/book-event", "/contact", "/pricing"] }, eagerness: "moderate" }],
+  prefetch: [{ where: { href_matches: ["/services/*", "/portfolio/*"] }, eagerness: "conservative" }],
+});
 
 export const metadata: Metadata = {
   ...generateSEO(),
@@ -36,7 +46,7 @@ export const metadata: Metadata = {
       { url: "/brand/android-chrome-192.png", sizes: "192x192", type: "image/png" },
     ],
     apple: "/brand/apple-touch-icon.png",
-    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#C9A227" }],
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#d8b26a" }],
   },
   manifest: "/manifest.json",
   category: "Event Management",
@@ -59,35 +69,34 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const jsonLdHtml = `<script type="application/ld+json">${JSON.stringify(globalSchema).replace(/</g, "\\u003c")}</script>`;
 
   return (
-    <html lang="en-IN" className="dark" suppressHydrationWarning data-scroll-behavior="smooth">
+    // The next/font variable classes sit on <html> so the :root --lux-font-* tokens
+    // (tokens.css), which are built from var(--font-*), resolve where they are declared.
+    <html
+      lang="en-IN"
+      className={`${manrope.variable} ${playfair.variable} ${cinzel.variable} ${cormorant.variable} dark`}
+      suppressHydrationWarning
+    >
       <head>
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
-        <link rel="preload" href="/brand/nexyyra-logo-dark.svg" as="image" type="image/svg+xml" fetchPriority="high" />
+        <script type="speculationrules" dangerouslySetInnerHTML={{ __html: SPECULATION }} />
       </head>
-      <body className={`${inter.variable} ${manrope.variable} ${playfair.variable} ${cinzel.variable} ${cormorant.variable} brand-root brand-body min-h-screen flex flex-col antialiased overflow-guard`}>
+      <body className="brand-root min-h-screen flex flex-col antialiased">
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <CacheVersionClear />
         <SentryInit />
         <AnalyticsProvider />
-        <AdaptiveThemeProvider>
-          <CinematicProvider>
-            <Suspense fallback={null}>
-              <PortalTransition />
-            </Suspense>
-            <BrandHeader />
-            <ErrorBoundary>
-              <main id="main-content" className="app-main flex flex-1 flex-col pb-20 md:pb-0" tabIndex={-1}>
-                {children}
-              </main>
-            </ErrorBoundary>
-            <BrandFooter />
-            <BrandFab />
-            <CookieConsent />
-            <ToastProvider />
-          </CinematicProvider>
-        </AdaptiveThemeProvider>
+        <BrandHeader />
+        <ErrorBoundary>
+          <main id="main-content" className="app-main flex flex-1 flex-col" tabIndex={-1}>
+            {/* 200ms root crossfade on route change (globals.css: ::view-transition-*(.lux-crossfade)). */}
+            <ViewTransition default="lux-crossfade">{children}</ViewTransition>
+          </main>
+        </ErrorBoundary>
+        <BrandFooter />
+        <ActionBar />
+        <CookieConsent />
         <div hidden suppressHydrationWarning dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
       </body>
     </html>

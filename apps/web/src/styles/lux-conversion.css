@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Conversion layer — inquiry form (components/inquiry) and the homepage
+   services / process / promise / inquiry / FAQ sections. Uses --lux-* tokens.
+   ========================================================================== */
+
+/* Inquiry form ------------------------------------------------------------ */
+
+.lux-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.lux-form__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .lux-form--full .lux-form__grid,
+  .lux-form--compact .lux-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lux-form__wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.lux-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.lux-field__label {
+  color: var(--lux-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.lux-field__error {
+  color: #ff9b9b;
+  font-size: 0.78rem;
+}
+
+.lux-input {
+  width: 100%;
+  min-height: 2.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.85rem;
+  background: rgba(5, 8, 22, 0.55);
+  color: var(--lux-white);
+  font-size: 1rem; /* 16px floor prevents iOS zoom */
+  padding: 0.65rem 0.95rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lux-input::placeholder {
+  color: var(--lux-subtle); /* 6.6:1 on navy — placeholders must meet 4.5:1 */
+}
+
+.lux-input:focus-visible {
+  outline: none;
+  border-color: var(--lux-gold);
+  box-shadow: 0 0 0 3px rgba(216, 178, 106, 0.22);
+}
+
+.lux-input[aria-invalid="true"] {
+  border-color: #ff9b9b;
+}
+
+select.lux-input {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--lux-gold) 50%),
+    linear-gradient(135deg, var(--lux-gold) 50%, transparent 50%);
+  background-position: calc(100% - 1.15rem) 50%, calc(100% - 0.8rem) 50%;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+  padding-right: 2.2rem;
+}
+
+select.lux-input option {
+  background: #0d1730;
+  color: var(--lux-white);
+}
+
+.lux-input--area {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+
+.lux-form__hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.lux-form__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .lux-form__actions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.lux-form__fine {
+  color: var(--lux-subtle);
+  font-size: 0.75rem;
+}
+
+.lux-form__alert {
+  border: 1px solid rgba(255, 155, 155, 0.35);
+  border-radius: 0.85rem;
+  background: rgba(255, 155, 155, 0.06);
+  color: var(--lux-white);
+  font-size: 0.9rem;
+  padding: 1rem 1.1rem;
+}
+
+.lux-form--done {
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 2rem;
+  text-align: center;
+}
+
+.lux-form__done-title {
+  color: var(--lux-white);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.lux-form__done-copy {
+  max-width: 28rem;
+  color: var(--lux-muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.lux-form__link {
+  color: var(--lux-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Services / process / promise / inquiry / FAQ blocks moved to the layered
+   V6 primitives (primitives.css, primitives-complex.css). Unlayered copies
+   here would override them, so they were removed. */
+
+/* Submit-button busy indicator (replaces the lucide Loader2 icon). */
+.lux-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 999px;
+  animation: lux-spin 0.8s linear infinite;
+}
+
+@keyframes lux-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lux-spinner {
+    animation-duration: 2.4s;
+  }
+}
+
+/* Honest labelling for illustrative portfolio pieces. */
+.lux-concept-tag {
+  display: inline-flex;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(5, 8, 22, 0.6);
+  color: var(--lux-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 0.25rem 0.6rem;
+  text-transform: uppercase;
+}

@@ -1,118 +1,149 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
+import { LEGAL_DOCS, LegalShell } from "@/brand/templates/legal-page";
+import { ConceptTag, JsonLd, Section } from "@/components/ui";
 import { blogPosts, services } from "@/data/cms";
-import { BrandHeader, BrandSection } from "@/brand/primitives/brand-section";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
 import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
 import { LOCATION_PAGES } from "@/lib/location-pages";
 import { generateSEO, collectionPageSchema, itemListSchema, pageGraphSchema } from "@/lib/seo";
 import { SITEMAP_CHILDREN } from "@/lib/sitemap-entries";
 
+const DESCRIPTION = "Every public page on the Nexyyra Events website: services, cities, planning guides, concepts and policies.";
+
 export const metadata = generateSEO({
-  title: "HTML Sitemap",
-  description:
-    "Browse Nexyyra Events services, locations, blog guides, portfolio case studies, and XML sitemap feeds.",
+  title: "Sitemap",
+  description: DESCRIPTION,
   path: "/sitemap",
 });
 
-const CORE_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Nexyyra" },
-  { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/venues", label: "Venues" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
-] as const;
+type LinkGroup = { id: string; title: string; concept?: boolean; links: { href: string; label: string }[] };
 
-const groups = [
-  { title: "Core Pages", links: CORE_LINKS },
-  { title: "Services", links: services.map((s) => ({ href: `/services/${s.slug}`, label: s.title })) },
-  { title: "Locations", links: LOCATION_PAGES.map((p) => ({ href: `/locations/${p.slug}`, label: `${p.city} Events` })) },
-  { title: "Local SEO Pages", links: LOCAL_SEO_PAGES.map((p) => ({ href: `/${p.slug}`, label: p.title })) },
-  { title: "Recent Blog Guides", links: blogPosts.map((p) => ({ href: `/blog/${p.slug}`, label: p.title })) },
-  { title: "Portfolio", links: BRAND_CASE_STUDIES.map((cs) => ({ href: `/portfolio/${cs.id}`, label: cs.title })) },
-] as const;
+const GROUPS: LinkGroup[] = [
+  {
+    id: "core",
+    title: "Main pages",
+    links: [
+      { href: "/", label: "Home" },
+      { href: "/about", label: "About" },
+      { href: "/why-nexyyra", label: "Why Nexyyra" },
+      { href: "/company", label: "Company information" },
+      { href: "/pricing", label: "Pricing" },
+      { href: "/faqs", label: "Questions" },
+      { href: "/contact", label: "Contact" },
+      { href: "/book-event", label: "Get a Free Proposal" },
+    ],
+  },
+  {
+    id: "services",
+    title: "Services",
+    links: [{ href: "/services", label: "All services" }, ...services.map((s) => ({ href: `/services/${s.slug}`, label: s.title }))],
+  },
+  {
+    id: "cities",
+    title: "Cities",
+    links: LOCATION_PAGES.map((p) => ({ href: `/locations/${p.slug}`, label: p.city })),
+  },
+  {
+    id: "maharashtra",
+    title: "Pune & Maharashtra",
+    links: LOCAL_SEO_PAGES.map((p) => ({ href: `/${p.slug}`, label: p.title })),
+  },
+  {
+    id: "journal",
+    title: "Journal",
+    links: [{ href: "/blog", label: "Planning notes" }, ...blogPosts.map((p) => ({ href: `/blog/${p.slug}`, label: p.title }))],
+  },
+  {
+    id: "portfolio",
+    title: "Portfolio",
+    links: [
+      { href: "/portfolio", label: "Concepts and the archive" },
+      { href: "/gallery", label: "Gallery" },
+    ],
+  },
+  {
+    // Case studies are illustrative — the group carries the Concept tag.
+    id: "concepts",
+    title: "Concepts",
+    concept: true,
+    links: BRAND_CASE_STUDIES.map((cs) => ({ href: `/portfolio/${cs.id}`, label: cs.title })),
+  },
+  {
+    id: "policies",
+    title: "Policies",
+    links: Object.values(LEGAL_DOCS).map((d) => ({ href: d.href, label: d.title })),
+  },
+];
 
 export default function HtmlSitemapPage() {
-  const allLinks = groups.flatMap((group) => group.links.map((link) => ({ name: link.label, url: link.href })));
   const sitemapLd = pageGraphSchema(
-    collectionPageSchema(
-      "Nexyyra Events HTML Sitemap",
-      "/sitemap",
-      "A crawlable index of Nexyyra Events services, locations, blog guides, portfolio, and sitemap feeds.",
-    ),
-    itemListSchema(allLinks),
+    collectionPageSchema({ name: "Nexyyra Events sitemap", path: "/sitemap", description: DESCRIPTION }),
+    itemListSchema(GROUPS.flatMap((g) => g.links.map((l) => ({ name: l.label, url: l.href })))),
   );
 
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sitemapLd) }} />
-      <div className="brand-root">
-        <section className="border-b border-[var(--glitz-border)] bg-[var(--glitz-surface)] py-16 md:py-24">
-          <div className="brand-container">
-            <span className="brand-label">Sitemap</span>
-            <h1 className="brand-display mt-4 max-w-4xl text-[clamp(2.25rem,5vw,4rem)] font-bold leading-tight text-primary">
-              Explore Nexyyra Events
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-secondary">
-              Browse every important public page, including services, city pages, planning guides,
-              and XML feeds used by search engines.
-            </p>
-          </div>
-        </section>
+    <LegalShell
+      eyebrow="Sitemap"
+      title="Every page, in one place"
+      lead="Services, cities, planning guides, concepts and policies, grouped by topic."
+      path="/sitemap"
+    >
+      <JsonLd data={sitemapLd} />
 
-        <BrandSection>
-          <div className="grid gap-6 lg:grid-cols-2">
-            {groups.map((group) => (
-              <GlassPanel key={group.title} className="p-6 sm:p-8">
-                <h2 className="brand-display text-2xl font-semibold text-primary">{group.title}</h2>
-                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {group.links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="inline-flex items-start gap-2 text-sm font-medium text-secondary transition-colors hover:text-[var(--glitz-gold)]"
-                      >
-                        <ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-[var(--glitz-gold)]" aria-hidden="true" />
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </GlassPanel>
-            ))}
-          </div>
-        </BrandSection>
+      <Section id="pages" eyebrow="Pages" title="Browse the site">
+        <div className="pg-legal-groups">
+          {GROUPS.map((group) => (
+            <section key={group.id} className="pg-legal-group" aria-labelledby={`sitemap-${group.id}`}>
+              <h3 id={`sitemap-${group.id}`} className="pg-legal-group__title">
+                {group.title}
+                {/* The tag is visual; the heading's accessible name gets one
+                    plain phrase instead of running "Concepts" into "Concept". */}
+                {group.concept ? (
+                  <>
+                    <span className="sr-only">, illustrative, not delivered events</span>
+                    <span aria-hidden="true">
+                      <ConceptTag />
+                    </span>
+                  </>
+                ) : null}
+              </h3>
+              <ul>
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} prefetch={false} className="pg-legal-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </Section>
 
-        <BrandSection alt>
-          <BrandHeader
-            label="XML Feeds"
-            title="Search Engine Sitemaps"
-            subtitle="Google should be submitted the sitemap index, while these child sitemaps remain directly discoverable."
-            center
-          />
-          <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-3">
-            <a
-              href="/sitemap.xml"
-              className="rounded-full border border-[var(--glitz-border)] px-5 py-2.5 text-sm font-semibold text-secondary transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
-            >
-              Sitemap Index
+      <Section
+        id="feeds"
+        eyebrow="For search engines"
+        title="Machine-readable sitemaps"
+        lead="The same pages in the XML format search engines read. Visitors can use the links above."
+        space="block"
+        lazy
+      >
+        <ul className="pg-legal-feeds">
+          <li>
+            <a href="/sitemap.xml" className="pg-legal-link">
+              Everything (XML)
             </a>
-            {SITEMAP_CHILDREN.map((sitemap) => (
-              <a
-                key={sitemap.path}
-                href={sitemap.path}
-                className="rounded-full border border-[var(--glitz-border)] px-5 py-2.5 text-sm font-semibold text-secondary transition-colors hover:border-[var(--glitz-gold)] hover:text-[var(--glitz-gold)]"
-              >
-                {sitemap.id} sitemap
+          </li>
+          {SITEMAP_CHILDREN.map((feed) => (
+            <li key={feed.path}>
+              <a href={feed.path} className="pg-legal-link">
+                {feed.label}
               </a>
-            ))}
-          </div>
-        </BrandSection>
-      </div>
-    </>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </LegalShell>
   );
 }

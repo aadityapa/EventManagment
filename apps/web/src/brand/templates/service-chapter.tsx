@@ -1,205 +1,168 @@
-"use client";
-
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
-import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
-import { BrandImage } from "@/brand/primitives/brand-image";
-import { BrandButton } from "@/brand/primitives/brand-button";
-import { GlassPanel } from "@/brand/primitives/glass-panel";
-import { MagneticButton } from "@/components/effects/magnetic-button";
-import { DynamicIcon } from "@/components/shared/dynamic-icon";
+import { assetForRole, assetsForService, withoutDuplicates } from "@/brand/data/image-curation";
+import { ServiceIcon } from "@/components/icons";
 import { ServiceFaqSection } from "@/components/services/service-faq-section";
-import { BRAND_PROCESS_STEPS, BRAND_SERVICE_STATS } from "@/brand/data/content";
-import { ScrollReveal, staggerParent, staggerItem } from "@/lib/motion";
-import { motion } from "framer-motion";
+import {
+  Commitments,
+  Cover,
+  InquiryPanel,
+  Ledger,
+  Lightbox,
+  PhotoName,
+  MediaFrame,
+  ProcessLine,
+  Prose,
+  Section,
+  SERVICE_GROUPS,
+  ServicesIndex,
+  Strand,
+} from "@/components/ui";
+import type { services } from "@/data/cms";
+import { getServiceFaqs } from "@/data/service-faqs";
+import { SERVICE_EVENT_TYPE } from "@/lib/inquiry";
 import { formatCurrency } from "@/lib/utils";
-import type { ServiceFaq } from "@/data/service-faqs";
-import type { ContextualLink } from "@/lib/wedding-internal-links";
-import { ContextualLinksBlock } from "@/components/seo/contextual-links-block";
-import type { MediaAsset } from "@/lib/media/types";
+import { getServiceContextualLinks, getServicePageIntro } from "@/lib/wedding-internal-links";
 
-const emptySubscribe = () => () => {};
+export type Service = (typeof services)[number];
 
-export type ServiceChapterProps = {
-  service: {
-    slug: string;
-    title: string;
-    description: string;
-    image: string;
-    icon: string;
-    basePrice: number;
-    features: string[];
-  };
-  faqs: ServiceFaq[];
-  related: Array<{ slug: string; title: string; icon: string }>;
-  contextualLinks?: ContextualLink[];
-  pageIntro?: string;
-  galleryAssets?: MediaAsset[];
-};
+/** Canonical order of the twelve (the index's numbering), so the folio matches the row numeral on /services. */
+const ORDER: readonly string[] = SERVICE_GROUPS.flatMap((g) => g.slugs);
 
-/** V5 cinematic service chapter template. */
-export function ServiceChapter({ service, faqs, related, contextualLinks = [], pageIntro, galleryAssets = [] }: ServiceChapterProps) {
-  // Read ?world= on the client instead of useSearchParams: the hook forces a
-  // CSR bailout that strips the whole chapter (h1, features, FAQs) from the
-  // prerendered HTML, hiding the page content from search engines.
-  const world = useSyncExternalStore(
-    emptySubscribe,
-    () => new URLSearchParams(window.location.search).get("world"),
-    () => null,
-  );
-  const bookHref = world ? `/book-event?world=${world}&service=${service.slug}` : `/book-event?service=${service.slug}`;
-  const galleryMoments = galleryAssets.length
-    ? galleryAssets.slice(0, 3).map((asset) => ({
-        src: asset.src,
-        alt: asset.alt,
-      }))
-    : Array.from({ length: 3 }, (_, i) => ({
-        src: service.image,
-        alt: `${service.title} gallery image ${i + 1}`,
-      }));
+/** Three neighbours: same index group first, then the rest in index order. */
+function relatedSlugs(slug: string): string[] {
+  const group = SERVICE_GROUPS.find((g) => (g.slugs as readonly string[]).includes(slug));
+  const sameGroup = ((group?.slugs ?? []) as readonly string[]).filter((s) => s !== slug);
+  const rest = ORDER.filter((s) => s !== slug && !sameGroup.includes(s));
+  return [...sameGroup, ...rest].slice(0, 3);
+}
+
+/** `/services/[slug]` (DESIGN.md §10.3). Server only; the Lightbox is the one island, mounted with the gallery. */
+export function ServiceChapter({ service }: { service: Service }) {
+  const { slug, title } = service;
+  const position = ORDER.indexOf(slug) + 1;
+  const price = `From ${formatCurrency(service.basePrice)}`;
+  const intro = getServicePageIntro(slug);
+  const faqs = getServiceFaqs(slug);
+  const contextual = getServiceContextualLinks(slug);
+
+  // Local cover (LCP); the gallery shows only real photographs of this service and never repeats the cover.
+  const cover = assetForRole(`service-cover-${slug}`)?.id;
+  const gallery = withoutDuplicates(assetsForService(slug), cover ? [cover] : []).slice(0, 6);
+
+  const included = service.features.map((feature, i) => ({
+    id: `included-${i + 1}`,
+    term: feature,
+    body: service.featureNotes[i],
+  }));
+
+  const links = [
+    ...contextual.map((l) => ({ href: l.href, label: l.label })),
+    { href: "/services", label: "All twelve services" },
+    { href: "/pricing", label: "Collections and prices" },
+  ];
 
   return (
-    <>
-      <section className="relative flex min-h-[72svh] items-end overflow-hidden">
-        <BrandImage src={service.image} alt={`${service.title} — Nexyyra Events`} fill priority sizes="100vw" className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--v5-obsidian,#050505)]/90 via-black/45 to-black/25" />
-        <div className="brand-container relative w-full pb-16 pt-32 sm:pb-20">
-          <GlassPanel variant="portal" glow className="max-w-2xl px-8 py-10 sm:px-10">
-            <div className="flex items-center gap-3 text-[var(--glitz-gold)]">
-              <DynamicIcon name={service.icon} className="h-7 w-7" aria-hidden />
-              <span className="v4-kicker mb-0">Service Chapter</span>
-            </div>
-            <h1 className="v4-display mt-3 text-white">{service.title}</h1>
-            <p className="v4-standfirst mt-4 text-white/80">{service.description}</p>
-            <p className="mt-4 text-sm text-[var(--glitz-gold-light)]">From {formatCurrency(service.basePrice)}</p>
-            <MagneticButton className="mt-6 inline-block">
-              <BrandButton href={bookHref} variant="gold">
-                Commission This Experience
-              </BrandButton>
-            </MagneticButton>
-          </GlassPanel>
-        </div>
-      </section>
+    <div className="lux-page">
+      <Cover
+        eyebrow="Services"
+        title={title}
+        lead={service.description}
+        primary={{ href: "#inquire", cta: `service_${slug}_cover_proposal` }}
+        asset={cover}
+        breadcrumbs={[
+          { name: "Home", href: "/" },
+          { name: "Services", href: "/services" },
+          { name: title, href: `/services/${slug}` },
+        ]}
+        folio={position > 0 ? `${String(position).padStart(2, "0")} / 12` : undefined}
+        icon={<ServiceIcon name={slug} size={48} />}
+        priceLine={price}
+        viewTransitionName={`service-title-${slug}`}
+      />
 
-      <section className="v4-section bg-[var(--glitz-bg)]">
-        <div className="brand-container grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <ScrollReveal preset="reveal">
-              <span className="v4-kicker mb-4">Process Film</span>
-              <h2 className="v4-display max-w-xl">How We <span className="v4-gold-text">Deliver</span></h2>
-              {pageIntro && (
-                <p className="v4-standfirst mt-6 max-w-2xl text-[var(--text-secondary)]">{pageIntro}</p>
-              )}
-            </ScrollReveal>
-            <motion.ol variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-10 space-y-6">
-              {BRAND_PROCESS_STEPS.map((s) => (
-                <motion.li key={s.step} variants={staggerItem} className="flex gap-4 border-l border-[var(--glitz-gold)]/30 pl-6">
-                  <span className="font-[family-name:var(--font-cinzel)] text-sm text-[var(--glitz-gold)]">{s.step}</span>
-                  <div>
-                    <p className="font-semibold text-[var(--text-primary)]">{s.title}</p>
-                    <p className="mt-1 text-sm text-[var(--text-secondary)]">{s.desc}</p>
-                  </div>
-                </motion.li>
+      <Section id="brief" number="01" eyebrow="The brief" title="What this service covers" lead={intro}>
+        <div className="pg-services-brief">
+          <Prose dropcap className="pg-services-brief__copy">
+            <p>{service.narrative}</p>
+          </Prose>
+          <aside className="pg-services-brief__aside" aria-labelledby="brief-expect">
+            <p id="brief-expect" className="lux-label lux-label--rule-leading">
+              What to expect
+            </p>
+            <Commitments variant="grid" />
+          </aside>
+        </div>
+      </Section>
+
+      <Section
+        id="included"
+        number="02"
+        eyebrow="What's included"
+        title="What the service includes"
+        lead={`Each line is priced in your itemised proposal. Single-service production starts ${price.toLowerCase()}.`}
+        lazy
+      >
+        <Ledger as="dl" columns={2} rows={included} ariaLabel={`${title}: what is included`} />
+      </Section>
+
+      <Section id="method" number="03" eyebrow="How we deliver" title="Five steps from brief to the day" lazy>
+        <div className="pg-services-method">
+          <ProcessLine variant="compact" />
+        </div>
+      </Section>
+
+      {gallery.length ? (
+        <Section
+          id="photographs"
+          eyebrow="Gallery"
+          title="Photographs"
+          lead="Photographs from Nexyyra productions and venue walkthroughs. Select one to view it larger."
+          lazy
+        >
+          {/* Tiles render inside the Lightbox so PhotoName can hand each tile's
+              view-transition name to the viewer while that photo is open, and
+              each tile carries the id its #photo- link targets (works without JS). */}
+          <Lightbox assets={gallery.map(({ id, src, alt, caption, width, height }) => ({ id, src, alt, caption, width, height }))}>
+            <Strand ariaLabel={`${title} photographs`}>
+              {gallery.map((a) => (
+                <li key={a.id} id={`photo-${a.id}`}>
+                  <a href={`#photo-${a.id}`} className="pg-services-photo">
+                    <PhotoName id={a.id}>
+                      <MediaFrame asset={a.id} ratio="3:2" sizes="(min-width:768px) 33vw, 78vw" />
+                    </PhotoName>
+                  </a>
+                </li>
               ))}
-            </motion.ol>
-          </div>
-          <GlassPanel glow className="h-fit px-6 py-8 lg:col-span-5">
-            <h3 className="font-[family-name:var(--font-playfair)] text-xl font-semibold">Proof</h3>
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              {BRAND_SERVICE_STATS.map((s) => (
-                <div key={s.label}>
-                  <p className="font-[family-name:var(--font-playfair)] text-2xl font-bold text-[var(--glitz-gold)]">
-                    {s.value}{s.suffix}
-                  </p>
-                  <p className="text-xs text-[var(--text-muted)]">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </GlassPanel>
-        </div>
-      </section>
+            </Strand>
+          </Lightbox>
+        </Section>
+      ) : null}
 
-      <section className="v4-section bg-[var(--glitz-surface)]">
-        <div className="brand-container">
-          <ScrollReveal preset="reveal">
-            <h2 className="v4-display">What&apos;s <span className="v4-gold-text">Included</span></h2>
-          </ScrollReveal>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {service.features.map((feature) => (
-              <GlassPanel key={feature} variant="commission" className="flex items-center gap-3 px-4 py-4">
-                <Check className="h-5 w-5 shrink-0 text-[var(--glitz-gold)]" aria-hidden />
-                <span className="text-sm">{feature}</span>
-              </GlassPanel>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServiceFaqSection faqs={faqs} serviceTitle={title} slug={slug} number="04" />
 
-      <section className="v4-section bg-[var(--glitz-bg)]">
-        <div className="brand-container">
-          <ScrollReveal preset="fade">
-            <h2 className="v4-display mb-8">Gallery <span className="v4-gold-text">Moments</span></h2>
-          </ScrollReveal>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {galleryMoments.map((moment, i) => (
-              <div key={`${moment.src}-${i}`} className="relative aspect-[4/3] overflow-hidden rounded-[var(--v4-radius-lg)]">
-                <BrandImage
-                  src={moment.src}
-                  alt={moment.alt}
-                  fill
-                  sizes="33vw"
-                  loading="lazy"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="v4-section bg-[var(--glitz-surface)]">
-        <div className="brand-container">
-          <ServiceFaqSection faqs={faqs} serviceTitle={service.title} slug={service.slug} />
-        </div>
-      </section>
-
-      {contextualLinks.length > 0 && (
-        <section className="v4-section bg-[var(--glitz-bg)]">
-          <div className="brand-container max-w-3xl">
-            <ContextualLinksBlock title="Related Pages" links={contextualLinks} />
-          </div>
-        </section>
-      )}
-
-      {related.length > 0 && (
-        <section className="v4-section bg-[var(--glitz-bg)]">
-          <div className="brand-container">
-            <h2 className="v4-display mb-6">Related <span className="v4-gold-text">Chapters</span></h2>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {related.map((s) => (
-                <Link key={s.slug} href={`/services/${s.slug}`} className="v4-glass group flex items-center gap-3 p-4 transition-all hover:shadow-[var(--v4-glow-gold)]">
-                  <DynamicIcon name={s.icon} className="h-6 w-6 text-[var(--glitz-gold)]" />
-                  <span className="font-medium group-hover:text-[var(--glitz-gold)]">{s.title}</span>
-                  <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
+      <Section id="related" eyebrow="Related" title="Services that pair with this one" lazy>
+        <ServicesIndex items={relatedSlugs(slug)} variant="related" frame="none" location={`service_${slug}_related`} />
+        <nav className="pg-services-links" aria-label="More on this topic">
+          <ul role="list">
+            {links.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} prefetch={false} data-cta={`service_link_${l.href.replace(/\W+/g, "_")}`} data-cta-location={`service_${slug}`}>
+                  {l.label}
                 </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </Section>
 
-      <section className="v4-section-lg v4-dune-glow bg-[var(--glitz-surface)]">
-        <div className="brand-container text-center">
-          <GlassPanel glow className="mx-auto max-w-2xl px-8 py-12">
-            <CheckCircle2 className="mx-auto h-8 w-8 text-[var(--glitz-gold)]" aria-hidden />
-            <h2 className="v4-display mt-4">Ready to commission?</h2>
-            <p className="v4-standfirst mx-auto mt-4 max-w-md">Speak with an Event Architect — bespoke planning from concept to curtain call.</p>
-            <MagneticButton className="mt-8 inline-block">
-              <BrandButton href={bookHref} variant="gold">Book Consultation</BrandButton>
-            </MagneticButton>
-          </GlassPanel>
-        </div>
-      </section>
-    </>
+      <InquiryPanel
+        id="inquire"
+        source="service"
+        variant="compact"
+        defaultEventType={SERVICE_EVENT_TYPE[slug]}
+        eyebrow={`${title} · Free consultation`}
+        priceLine={price}
+      />
+    </div>
   );
 }

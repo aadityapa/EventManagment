@@ -1,366 +1,121 @@
-"use client";
-
+/* eslint-disable @next/next/no-img-element -- pre-sized WebP wordmark with its own srcset; nothing to optimise */
 import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowUpRight,
-  ChevronDown,
-  Phone,
-} from "lucide-react";
-import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
-import { EVENT_IMAGES } from "@/lib/images";
-import { Logo } from "@/components/branding/logo";
-import { cn } from "@/lib/utils";
-import { MobileMenu } from "./mobile-menu";
+import { assetForRole } from "@/brand/data/image-curation";
+import { ServiceIcon, UiIcon } from "@/components/icons";
+import { Button, MediaFrame } from "@/components/ui";
+import { SITE_CONFIG } from "@/lib/constants";
+import { HeaderIsland } from "./header-island";
 import { MobileNavbar } from "./mobile-navbar";
-import { isNavActive, MEGA_COLUMNS, MEGA_EXPLORE_LINKS } from "./nav-data";
+import {
+  MEGA_EXPLORE_LINKS,
+  NAV_LINKS,
+  NAV_SERVICE_GROUPS,
+  PRIMARY_LABEL,
+  PROPOSAL_HREF,
+  TEL_HREF,
+  WORDMARK,
+} from "./nav-data";
 
-const MEGA_MOTION = {
-  initial: { opacity: 0, y: 10, scale: 0.98 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: 6, scale: 0.99 },
-  transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const },
-};
-
-const MEGA_MOTION_REDUCED = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.12 },
-};
-
-function HeaderNavLink({
-  href,
-  label,
-  isActive,
-  onClick,
-}: {
-  href: string;
-  label: string;
-  isActive: boolean;
-  onClick?: () => void;
-}) {
+/**
+ * Site header (DESIGN.md §10.0) — a server component. Desktop ≥ 1024: wordmark,
+ * primary nav with the Services popover, phone + the primary CTA. Phones get
+ * MobileNavbar inside the same fixed <header>, so there is one banner landmark
+ * and one scroll flag. Transparency over the home cover is pure CSS
+ * (`html:has(.lux-cover--xl)` in pages/shell.css); `.is-scrolled`, aria-current
+ * and the popover fallback come from HeaderIsland.
+ */
+export function BrandHeader() {
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      aria-current={isActive ? "page" : undefined}
-      className={cn("brand-nav-link", isActive && "is-active")}
-    >
-      {label}
-    </Link>
+    <header id="site-header" className="lux-header pg-shell-header">
+      <div className="pg-shell-bar pg-shell-bar--desktop">
+        <Link href="/" className="pg-shell-wordmark" aria-label={`${SITE_CONFIG.shortName} — Home`}>
+          <img src={WORDMARK.src} srcSet={WORDMARK.srcSet} sizes="48px" alt="" width={WORDMARK.width} height={WORDMARK.height} decoding="async" />
+        </Link>
+
+        <nav aria-label="Primary" className="pg-shell-nav">
+          <ul role="list">
+            {NAV_LINKS.map((link) =>
+              link.href === "/services" ? (
+                <li key={link.href}>
+                  <button id="services-trigger" type="button" popoverTarget="services-panel" className="pg-shell-nav__link" data-nav-href={link.href}>
+                    {link.label}
+                    <UiIcon name="chevron-down" size={20} className="pg-shell-nav__chev" />
+                  </button>
+                </li>
+              ) : (
+                <li key={link.href}>
+                  <Link href={link.href} className="pg-shell-nav__link" data-nav-href={link.href}>
+                    {link.label}
+                  </Link>
+                </li>
+              ),
+            )}
+          </ul>
+        </nav>
+
+        <div className="pg-shell-actions">
+          <a href={TEL_HREF} className="pg-shell-phone" aria-label={`Call ${SITE_CONFIG.phone}`} data-cta="call_header" data-cta-location="header">
+            <UiIcon name="phone" size={20} />
+            <span className="pg-shell-phone__num">{SITE_CONFIG.phone}</span>
+          </a>
+          <Button variant="primary" size="compact" href={PROPOSAL_HREF} cta="header_proposal" location="header">
+            {PRIMARY_LABEL}
+          </Button>
+        </div>
+      </div>
+
+      <ServicesPanel />
+      <MobileNavbar />
+      <HeaderIsland />
+    </header>
   );
 }
 
-export function BrandHeader() {
-  const pathname = usePathname();
-  const prefersReducedMotion = useReducedMotion();
-  const megaMotion = prefersReducedMotion ? MEGA_MOTION_REDUCED : MEGA_MOTION;
-  const [servicesPath, setServicesPath] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const servicesOpen = servicesPath === pathname;
-  const setServicesOpen = useCallback(
-    (value: boolean | ((prev: boolean) => boolean)) => {
-      setServicesPath((prev) => {
-        const current = prev === pathname;
-        const next = typeof value === "function" ? value(current) : value;
-        return next ? pathname : null;
-      });
-    },
-    [pathname]
-  );
-  const [scrolled, setScrolled] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const megaRef = useRef<HTMLDivElement>(null);
-  const megaTriggerRef = useRef<HTMLButtonElement>(null);
-  const megaMenuWrapRef = useRef<HTMLDivElement>(null);
-  const hoverCapableRef = useRef(true);
-  const isHome = pathname === "/";
-  const hidden = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
-
-  useEffect(() => {
-    const mqDesktop = window.matchMedia("(min-width: 1024px)");
-    const mqHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => {
-      setIsDesktop(mqDesktop.matches);
-      hoverCapableRef.current = mqHover.matches;
-      if (!mqDesktop.matches) setServicesOpen(false);
-      if (mqDesktop.matches) setMobileMenuOpen(false);
-    };
-    sync();
-    mqDesktop.addEventListener("change", sync);
-    mqHover.addEventListener("change", sync);
-    return () => {
-      mqDesktop.removeEventListener("change", sync);
-      mqHover.removeEventListener("change", sync);
-    };
-  }, [setServicesOpen]);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    fn();
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  useEffect(() => {
-    if (!servicesOpen || !isDesktop) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setServicesOpen(false);
-    };
-    const close = (e: MouseEvent) => {
-      if (megaRef.current && !megaRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", close);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", close);
-    };
-  }, [servicesOpen, isDesktop, setServicesOpen]);
-
-  const positionMegaMenu = useCallback(() => {
-    const trigger = megaTriggerRef.current;
-    const wrap = megaMenuWrapRef.current;
-    const menu = wrap?.querySelector(".brand-mega-menu") as HTMLElement | null;
-    if (!trigger || !wrap || !menu) return;
-
-    const triggerRect = trigger.getBoundingClientRect();
-    const menuWidth = menu.offsetWidth;
-    const viewportPad = 16;
-    const centerX = triggerRect.left + triggerRect.width / 2;
-    let left = centerX - menuWidth / 2;
-    left = Math.max(viewportPad, Math.min(left, window.innerWidth - menuWidth - viewportPad));
-
-    wrap.style.left = `${left}px`;
-    wrap.style.top = `${triggerRect.bottom + 12}px`;
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!servicesOpen || !isDesktop) return;
-    const run = () => {
-      positionMegaMenu();
-      requestAnimationFrame(() => positionMegaMenu());
-    };
-    run();
-    window.addEventListener("resize", positionMegaMenu);
-    window.addEventListener("scroll", positionMegaMenu, { passive: true });
-    return () => {
-      window.removeEventListener("resize", positionMegaMenu);
-      window.removeEventListener("scroll", positionMegaMenu);
-    };
-  }, [servicesOpen, isDesktop, positionMegaMenu, pathname]);
-
-  if (hidden) return null;
-
-  const glass = scrolled || !isHome;
-
+/**
+ * Full-width fixed panel under the nav (never position:absolute under the
+ * trigger — top-layer elements ignore ancestor containing blocks). Light
+ * dismiss and ESC are native; links skip prefetch so opening it is not a
+ * request storm. Plain link lists, no menu roles.
+ */
+function ServicesPanel() {
+  const photo = assetForRole("cover-services")?.id;
   return (
-    <>
-      <header
-        className={cn(
-          "brand-site-header fixed top-0 z-[var(--z-nav,9999)] hidden w-full transform-gpu transition-[background-color,border-color,box-shadow,opacity] duration-300 safe-top lg:block",
-          glass || (isHome && !scrolled)
-            ? "border-b border-[var(--glitz-border)] bg-[var(--glitz-glass)] shadow-[var(--shadow-md)] backdrop-blur-xl backdrop-saturate-150"
-            : "bg-transparent",
-          scrolled && "is-scrolled shadow-[var(--shadow-glow-gold-sm)]"
-        )}
-        role="banner"
-      >
-        <div className="brand-header-shell brand-nav-bar">
-          <div className="brand-header-grid">
-            <div className="brand-header-logo">
-              <Logo priority />
-            </div>
-
-            <nav className="brand-header-nav" aria-label="Main navigation">
-              {NAV_LINKS.map((l) => {
-                if (l.href === "/services") {
-                  const servicesActive = pathname.startsWith("/services");
-                  return (
-                    <div key={l.href} ref={megaRef} className="relative flex h-full items-center">
-                      <button
-                        ref={megaTriggerRef}
-                        type="button"
-                        className={cn("brand-nav-link", servicesActive && "is-active")}
-                        aria-expanded={servicesOpen && isDesktop}
-                        aria-haspopup="true"
-                        aria-controls="services-mega-menu"
-                        onClick={() => {
-                          if (isDesktop) setServicesOpen((v) => !v);
-                        }}
-                        onMouseEnter={() => {
-                          if (hoverCapableRef.current && isDesktop) setServicesOpen(true);
-                        }}
-                        onFocus={() => {
-                          if (isDesktop) setServicesOpen(true);
-                        }}
-                      >
-                        {l.label}
-                        <ChevronDown
-                          className={cn("brand-nav-link__chevron", servicesOpen && isDesktop && "is-open")}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {servicesOpen && isDesktop && (
-                          <motion.div
-                            ref={megaMenuWrapRef}
-                            className="brand-mega-menu-wrap"
-                            onMouseLeave={() => {
-                              if (hoverCapableRef.current) setServicesOpen(false);
-                            }}
-                            {...megaMotion}
-                          >
-                            <div
-                              id="services-mega-menu"
-                              role="menu"
-                              aria-label="Experience categories"
-                              className="brand-mega-menu"
-                            >
-                              <div className="brand-mega-menu__grid">
-                                <div className="brand-mega-menu__media">
-                                  <Image
-                                    src={EVENT_IMAGES.wedding}
-                                    alt="Luxury wedding experience by Nexyyra Events"
-                                    fill
-                                    sizes="320px"
-                                    className="object-cover object-[center_30%]"
-                                  />
-                                  <div className="brand-mega-menu__media-veil" aria-hidden />
-                                  <div className="brand-mega-menu__media-caption">
-                                    <p className="brand-mega-menu__media-eyebrow">Featured</p>
-                                    <p className="brand-mega-menu__media-title">Wedding World</p>
-                                    <Link
-                                      href="/services/wedding-planning"
-                                      onClick={() => setServicesOpen(false)}
-                                      className="brand-mega-menu__media-link tap-target"
-                                    >
-                                      Explore weddings
-                                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                                    </Link>
-                                  </div>
-                                </div>
-
-                                {MEGA_COLUMNS.map((col) => (
-                                  <div key={col.heading} className="brand-mega-menu__col">
-                                    <p className="brand-mega-menu__heading">{col.heading}</p>
-                                    <ul className="brand-mega-menu__list">
-                                      {col.heading === "Explore"
-                                        ? MEGA_EXPLORE_LINKS.map((link) => (
-                                            <li key={link.href}>
-                                              <Link
-                                                href={link.href}
-                                                role="menuitem"
-                                                onClick={() => setServicesOpen(false)}
-                                                className="brand-mega-menu__link brand-mega-menu__link--arrow"
-                                              >
-                                                {link.label}
-                                                <ArrowUpRight className="h-3 w-3 shrink-0 opacity-40" aria-hidden="true" />
-                                              </Link>
-                                            </li>
-                                          ))
-                                        : col.items.map((item) => {
-                                            const Icon = item.icon;
-                                            return (
-                                              <li key={item.href}>
-                                                <Link
-                                                  href={item.href}
-                                                  role="menuitem"
-                                                  onClick={() => setServicesOpen(false)}
-                                                  className="brand-mega-menu__link brand-mega-menu__link--icon"
-                                                >
-                                                  <Icon className="brand-mega-menu__icon" aria-hidden="true" />
-                                                  {item.label}
-                                                </Link>
-                                              </li>
-                                            );
-                                          })}
-                                    </ul>
-                                    {col.heading === "Celebrations" && (
-                                      <Link
-                                        href="/services"
-                                        onClick={() => setServicesOpen(false)}
-                                        className="brand-mega-menu__cta"
-                                      >
-                                        View all experiences
-                                        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                                      </Link>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="brand-mega-menu__footer">
-                                <Link
-                                  href="/book-event"
-                                  onClick={() => setServicesOpen(false)}
-                                  className="luxury-button luxury-button--gold luxury-button--compact tap-target"
-                                >
-                                  Book Consultation
-                                </Link>
-                                <Link
-                                  href="/services"
-                                  onClick={() => setServicesOpen(false)}
-                                  className="luxury-button luxury-button--ghost luxury-button--compact tap-target"
-                                >
-                                  Explore Experiences
-                                </Link>
-                                <Link
-                                  href="/portfolio"
-                                  onClick={() => setServicesOpen(false)}
-                                  className="luxury-button luxury-button--ghost luxury-button--compact tap-target"
-                                >
-                                  View Portfolio
-                                </Link>
-                              </div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                }
-                return (
-                  <HeaderNavLink
-                    key={l.href}
-                    href={l.href}
-                    label={l.label}
-                    isActive={isNavActive(pathname, l.href)}
-                  />
-                );
-              })}
-            </nav>
-
-            <div className="brand-header-actions">
-              <a
-                href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
-                className="brand-header-phone tap-target"
-                aria-label={`Call ${SITE_CONFIG.phone}`}
-              >
-                <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
-                {SITE_CONFIG.phone}
-              </a>
-              <Link
-                href="/book-event"
-                className="brand-header-cta btn-gold-metallic btn-premium-hover tap-target"
-              >
-                Book Consultation
-              </Link>
-            </div>
+    <div id="services-panel" popover="auto" className="pg-shell-panel">
+      <div className="pg-shell-panel__inner">
+        {NAV_SERVICE_GROUPS.map((group) => (
+          <div key={group.id} className="pg-shell-panel__group">
+            <p id={`panel-${group.id}`} className="lux-label lux-label--rule-none">{group.label}</p>
+            <ul role="list" aria-labelledby={`panel-${group.id}`}>
+              {group.items.map((item) => (
+                <li key={item.slug}>
+                  <Link href={item.href} prefetch={false} className="pg-shell-panel__service" data-cta={`nav_${item.slug}`} data-cta-location="services-panel">
+                    <ServiceIcon name={item.slug} size={20} />
+                    <span className="pg-shell-panel__title">{item.title}</span>
+                    <span className="pg-shell-panel__price">{item.from}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      </header>
+        ))}
 
-      <MobileNavbar
-        isOpen={mobileMenuOpen}
-        onToggle={() => setMobileMenuOpen((v) => !v)}
-      />
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
-    </>
+        <div className="pg-shell-panel__group pg-shell-panel__explore">
+          <p id="panel-explore" className="lux-label lux-label--rule-none">Explore</p>
+          <ul role="list" aria-labelledby="panel-explore">
+            {MEGA_EXPLORE_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} prefetch={false} className="pg-shell-panel__link">{link.label}</Link>
+              </li>
+            ))}
+          </ul>
+          <Link href="/services" prefetch={false} className="pg-shell-panel__all" data-cta="nav_all_services" data-cta-location="services-panel">
+            All services
+            <UiIcon name="arrow-right" size={20} />
+          </Link>
+        </div>
+
+        {photo ? <MediaFrame asset={photo} ratio="4:5" sizes="224px" caption={false} frame className="pg-shell-panel__media" /> : null}
+      </div>
+    </div>
   );
 }
