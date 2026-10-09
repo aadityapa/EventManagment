@@ -40,7 +40,7 @@ export function Gallery({ assets, filter, className }: GalleryProps) {
       <ul className={cn("lux-gallery", className)}>
         {shown.map((a) => (
           <li key={a.id} id={`photo-${a.id}`} className={cn("lux-gallery__tile", `lux-gallery__tile--${a.span}`)} data-cat={galleryCategory(a)}>
-            <a href={`#photo-${a.id}`} className="lux-gallery__link">
+            <a href={`#photo-${a.id}`} className="lux-gallery__link" data-tilt="soft">
               <PhotoName id={a.id}>
                 <MediaFrame
                   asset={a.id}

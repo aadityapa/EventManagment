@@ -89,7 +89,7 @@ export function PriceTable({
           <tr>
             <th scope="col" className="lux-pricetable__label" style={cell(0, 0)}><span className="sr-only">Collection</span></th>
             {collections.map((c, i) => (
-              <th key={c.name} scope="col" className="lux-pricetable__head" data-featured={c.featured ? "true" : undefined} style={cell(i + 1, 0)}>
+              <th key={c.name} scope="col" className="lux-pricetable__head" data-featured={c.featured ? "true" : undefined} data-col={i + 1} style={cell(i + 1, 0)}>
                 <span className="lux-pricetable__name">{c.name}</span>
                 {c.tagline ? <span className="lux-pricetable__tagline">{c.tagline}</span> : null}
               </th>
@@ -100,13 +100,13 @@ export function PriceTable({
           <tr>
             <th scope="row" className="lux-pricetable__label" style={cell(0, 1)}>From</th>
             {collections.map((c, i) => (
-              <td key={c.name} className="lux-pricetable__from lux-price" data-label="From" style={cell(i + 1, 1)}>{c.from}</td>
+              <td key={c.name} className="lux-pricetable__from lux-price" data-label="From" data-col={i + 1} style={cell(i + 1, 1)}>{c.from}</td>
             ))}
           </tr>
           <tr>
             <th scope="row" className="lux-pricetable__label" style={cell(0, 2)}>Guests</th>
             {collections.map((c, i) => (
-              <td key={c.name} data-label="Guests" style={cell(i + 1, 2)}>{guestBand(c.narrative)}</td>
+              <td key={c.name} data-label="Guests" data-col={i + 1} style={cell(i + 1, 2)}>{guestBand(c.narrative)}</td>
             ))}
           </tr>
           {includes.map((item, r) => (
@@ -115,7 +115,7 @@ export function PriceTable({
               {collections.map((c, i) => {
                 const has = c.includes.includes(item);
                 return (
-                  <td key={c.name} data-label={item} data-included={has ? "true" : "false"} style={cell(i + 1, r + 3)}>
+                  <td key={c.name} data-label={item} data-included={has ? "true" : "false"} data-col={i + 1} style={cell(i + 1, r + 3)}>
                     {has ? <span className="lux-pricetable__dot" aria-hidden="true" /> : <span className="lux-pricetable__dash" aria-hidden="true">—</span>}
                     <span className="sr-only">{has ? "Included" : "Not included"}</span>
                   </td>
@@ -126,7 +126,7 @@ export function PriceTable({
           <tr>
             <th scope="row" className="lux-pricetable__label" style={cell(0, actionRow)}><span className="sr-only">Enquire</span></th>
             {collections.map((c, i) => (
-              <td key={c.name} className="lux-pricetable__action" style={cell(i + 1, actionRow)}>
+              <td key={c.name} className="lux-pricetable__action" data-col={i + 1} style={cell(i + 1, actionRow)}>
                 <Button
                   variant={c.featured ? "primary" : "ghost"}
                   size="compact"

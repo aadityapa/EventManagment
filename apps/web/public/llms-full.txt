@@ -1,7 +1,7 @@
 # Nexyyra Events — Full Entity File for AI Systems
 
 > Canonical source for LLMs, answer engines and AI search crawlers. Facts only.
-> Website: https://www.nexyyra.com | Updated: 2026-10-08
+> Website: https://www.nexyyra.com | Updated: 2026-10-09
 
 ## Entity: Nexyyra Events
 
@@ -12,6 +12,7 @@
 - **Type:** Event planner · Wedding planner · Corporate event management · Event production
 - **Registered office:** Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108
 - **Delivery & Coordination Office:** Pune, Maharashtra, India
+- **Founders:** Yash Bajaj (Founder & Managing Director), Aaditya Padiya (Founder & Chief Technology Officer), Amey Korde (Founder & Chief Marketing Officer)
 - **Tagline:** Creating Experiences That Last Forever
 - **Description:** Plans, designs and produces weddings, corporate events and celebrations end to end, with design and production in-house and one dedicated event director per event.
 
@@ -117,3 +118,11 @@ A: Talent and artist booking coordination, red-carpet and media arrangements, se
 ## Crawler Policy
 
 See /ai.txt for AI crawler permissions. Public marketing pages are indexable. Admin and API routes are disallowed.
+
+## Leadership Team
+- Yash Bajaj — Founder & Managing Director
+- Aaditya Padiya — Founder & Chief Technology Officer
+- Amey Korde — Founder & Chief Marketing Officer
+- Shilpa Sharma — Finance & Accounts Manager
+- Radhika Bajaj — Data & Administration Manager
+- Bharti Jadhav — Head — Decoration Department

@@ -54,3 +54,8 @@
     border-radius: var(--lux-radius-xs);
   }
 }
+
+/* V7: the services ticker carries its own hairlines; the chapter after it drops its top rule. */
+@layer components {
+  .pg-home > .lux-marquee + .lux-section { border-top: 0; }
+}

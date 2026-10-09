@@ -5,6 +5,9 @@
 @import "../styles/luxury-redesign.css";
 @import "../styles/primitives.css";
 @import "../styles/primitives-complex.css";
+/* V7 — the 3D scene hosts (package T) and the motion layer (package M). */
+@import "../styles/scene.css";
+@import "../styles/motion.css";
 @import "../styles/lux-conversion.css";
 @import "../styles/pages/inquiry.css";
 /* Page layers (pg-* classes, @layer components) */
@@ -110,6 +113,13 @@ html {
   }
 }
 
+/* ≥ 768: the fixed WhatsApp/Call corner stack (2 × 48px + gap, lifted 1.5rem). */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-bottom: calc(1.5rem + 2 * 48px + 0.6rem + env(safe-area-inset-bottom) + 1rem);
+  }
+}
+
 /* body carries .brand-root: clip (not hidden) so sticky children keep working. */
 .brand-root {
   overflow-x: clip;
@@ -211,22 +221,25 @@ main {
 
 /* ── Motion safety ─────────────────────────────────────────────────────── */
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  html {
-    scroll-behavior: auto;
-  }
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
+/* Site motion preference (DESIGN.md §9 "Motion preference"): the inline script in
+   layout.tsx sets html[data-motion="full" | "reduced"] before paint from the
+   visitor's stored choice (footer / menu toggle), else the OS setting. Only an
+   explicit "reduced" collapses every duration; with no JS (no attribute) the
+   component rules scoped :not([data-motion="full"]) keep the page static. */
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+:root[data-motion="reduced"] {
+  scroll-behavior: auto;
+}
+:root[data-motion="reduced"]::view-transition-group(*),
+:root[data-motion="reduced"]::view-transition-old(*),
+:root[data-motion="reduced"]::view-transition-new(*) {
+  animation: none !important;
 }
 
 /* ── Legacy helpers for the private auth/admin/dashboard screens ───────── */

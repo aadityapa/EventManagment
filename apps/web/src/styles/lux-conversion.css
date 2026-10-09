@@ -180,7 +180,7 @@ select.lux-input option {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+:where(:root:not([data-motion="full"])) {
   .lux-spinner {
     animation-duration: 2.4s;
   }

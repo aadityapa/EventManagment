@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export function Spread({ asset, caption = true, className }: { asset: CurationId; caption?: boolean; className?: string }) {
   return (
     <div className={cn("lux-spread lux-bleed", className)}>
-      <MediaFrame asset={asset} ratio="3:2" sizes="100vw" caption={caption ? undefined : false} />
+      <MediaFrame asset={asset} ratio="3:2" sizes="100vw" caption={caption ? undefined : false} depth={false} />
     </div>
   );
 }
@@ -20,8 +20,8 @@ export function Diptych({ left, right, className }: { left: CurationId; right: C
   const sizes = "(min-width:768px) 50vw, 100vw";
   return (
     <div className={cn("lux-diptych", className)}>
-      <MediaFrame asset={left} ratio="3:4" sizes={sizes} frame />
-      <MediaFrame asset={right} ratio="3:4" sizes={sizes} frame />
+      <MediaFrame asset={left} ratio="3:4" sizes={sizes} frame tilt="soft" />
+      <MediaFrame asset={right} ratio="3:4" sizes={sizes} frame tilt="soft" />
     </div>
   );
 }

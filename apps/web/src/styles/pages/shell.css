@@ -163,8 +163,12 @@
   }
   .pg-shell-corner { display: none; }
   @media (min-width: 768px) {
+    /* Where the margin beside the 90rem rail is wide enough (≈ ≥ 1650px), the stack moves
+       out of the content column into it; narrower, it keeps the gutter and the footer
+       below reserves its height so nothing at the end of the page sits under it. */
     .pg-shell-corner {
-      position: fixed; right: var(--lux-gutter); bottom: calc(var(--lux-space-5) + env(safe-area-inset-bottom));
+      position: fixed; right: max(var(--lux-gutter), calc((100vw - var(--lux-container)) / 2 - 48px - var(--lux-space-5)));
+      bottom: calc(var(--lux-space-5) + env(safe-area-inset-bottom));
       z-index: var(--lux-z-actionbar); display: grid; gap: 0.6rem;
     }
     .pg-shell-corner a {
@@ -174,8 +178,16 @@
   }
 
   /* ── Footer colophon ─────────────────────────────────────────────────── */
-  .pg-shell-footer { margin-top: auto; border-top: 1px solid var(--lux-border); padding-block: var(--lux-space-8) var(--lux-space-6); content-visibility: auto; contain-intrinsic-size: auto 40rem; }
+  .pg-shell-footer { margin-top: auto; border-top: 1px solid var(--lux-border); padding-block: var(--lux-space-8) var(--lux-space-6); content-visibility: auto; contain-intrinsic-size: auto 82rem; }
+  /* The placeholder is the inner column's measured height; padding is added on top. Phones:
+     ≈ 1,305px inner (≈ 1,460px rendered) at 375; ≥ 1024: ≈ 1,260-1,350px (four open link columns). */
   @media (max-width: 767.98px) { .pg-shell-footer { padding-bottom: calc(var(--lux-actionbar-h) + env(safe-area-inset-bottom) + var(--lux-space-5)); } }
+  /* ≥ 768: clear the fixed WhatsApp/Call corner stack (2 × 48px + 0.6rem gap, lifted
+     --lux-space-5), so at the end of the page the legal row ("Cookie settings") and the
+     colophon end above it and stay visible, clickable and focus-visible (WCAG 2.4.11). */
+  @media (min-width: 768px) { .pg-shell-footer { padding-bottom: calc(var(--lux-space-5) + 2 * 48px + 0.6rem + var(--lux-space-5) + env(safe-area-inset-bottom)); } }
+  /* 768-1023: link groups collapse to accordions, ≈ 1,050px inner at 800. */
+  @media (min-width: 768px) and (max-width: 1023.98px) { .pg-shell-footer { contain-intrinsic-size: auto 66rem; } }
   .pg-shell-footer__inner { display: grid; gap: var(--lux-space-7); width: min(100% - 2 * var(--lux-gutter), var(--lux-container)); margin-inline: auto; }
   .pg-shell-footer a { color: var(--lux-muted); text-decoration: none; }
   .pg-shell-colophon { display: grid; gap: var(--lux-space-6); }
@@ -219,6 +231,22 @@
   .pg-shell-legal ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin: 0; padding: 0; list-style: none; }
   .pg-shell-legal a { display: inline-flex; align-items: center; min-height: 44px; color: var(--lux-subtle); }
 
+  /* ── Motion preference toggle (footer legal row + phone menu; DESIGN.md §9) ── */
+  .pg-shell-motion {
+    display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; min-width: 44px; padding: 0;
+    border: 0; background: transparent; color: var(--lux-subtle); cursor: pointer; touch-action: manipulation;
+    font: inherit; letter-spacing: inherit;
+  }
+  .pg-shell-motion[hidden] { display: none; }
+  .pg-shell-motion:focus-visible { outline: 2px solid var(--lux-gold); outline-offset: 3px; border-radius: var(--lux-radius-sm); }
+  .pg-shell-motion svg { flex: none; color: var(--lux-gold); }
+  .pg-shell-motion[aria-pressed="false"] svg { opacity: 0.55; }
+  .pg-shell-legal li:has(> .pg-shell-motion[hidden]) { display: none; }
+  .pg-shell-motion--menu { justify-self: start; color: var(--lux-muted); font: 500 0.95rem/1.3 var(--lux-font-body); gap: 0.75rem; }
+  @media (hover: hover) {
+    .pg-shell-motion:hover { color: var(--lux-white); }
+  }
+
   /* ── Cookie consent: above the action bar on phones, Accept = Decline ─ */
   .pg-shell-consent {
     position: fixed; inset: auto 0 calc(var(--lux-actionbar-h) + env(safe-area-inset-bottom)) 0; z-index: var(--lux-z-consent);
@@ -242,7 +270,7 @@
     .pg-shell-panel__service:hover svg, .pg-shell-corner a:hover { color: var(--lux-gold); }
     :is(.pg-shell-menubtn, .pg-shell-consent__btn, .pg-shell-actionbar__contact):hover { border-color: var(--lux-gold); }
   }
-  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
     :is(.pg-shell-header, .pg-shell-nav__link, .pg-shell-nav__chev, .pg-shell-panel, .pg-shell-menu, .pg-shell-menu__link > svg, .pg-shell-actionbar) { transition: none; }
     .pg-shell-menu__group::details-content { transition: none; }
     .pg-shell-actionbar { animation: none; }

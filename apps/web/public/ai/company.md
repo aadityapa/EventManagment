@@ -15,6 +15,20 @@ Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 
 ## Delivery & Coordination Office
 Pune, Maharashtra, India
 
+## Founders
+Yash Bajaj (Founder & Managing Director), Aaditya Padiya (Founder & Chief Technology Officer) and Amey Korde (Founder & Chief Marketing Officer)
+
+## Leadership Team
+
+| Name | Role |
+|------|------|
+| Yash Bajaj | Founder & Managing Director |
+| Aaditya Padiya | Founder & Chief Technology Officer |
+| Amey Korde | Founder & Chief Marketing Officer |
+| Shilpa Sharma | Finance & Accounts Manager |
+| Radhika Bajaj | Data & Administration Manager |
+| Bharti Jadhav | Head — Decoration Department |
+
 ## Industry
 Event management · Wedding planning · Corporate events · Event production
 

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { services } from "@/data/cms";
+import { TEAM_MEMBERS } from "@/data/team";
 import { SITE_CONFIG, ENTITY_FACTS } from "./constants";
 
 /** Static OG fallback (1200×630). Route-level opengraph-image.tsx files override it. */
@@ -107,6 +108,8 @@ function rupeesFromLabel(label: string): number | undefined {
 export const ORG_ID = `${SITE_CONFIG.url}/#organization`;
 const LOCAL_BUSINESS_ID = `${SITE_CONFIG.url}/#localbusiness`;
 const WEBSITE_ID = `${SITE_CONFIG.url}/#website`;
+/** A team member's Person @id — the fragment is the member's card id on /about. */
+export const personId = (slug: string) => `${SITE_CONFIG.url}/about#${slug}`;
 
 
 export function generateSEO({
@@ -221,9 +224,15 @@ export function globalGraphSchema() {
         slogan: SITE_CONFIG.tagline,
         sameAs: Object.values(SITE_CONFIG.social),
         knowsAbout: SERVICE_TITLES,
-        // numberOfEmployees / award / aggregateRating / founder / employee removed —
-        // unverified claims. No Person nodes anywhere until a name is verified
-        // against the MCA filing and shown on the page.
+        // The three founders shown on /about (owner-confirmed, V7); full Person
+        // nodes are emitted by the /about page under the same @ids.
+        // numberOfEmployees / award / aggregateRating stay removed (unverified).
+        founder: TEAM_MEMBERS.filter((m) => m.founder).map((m) => ({
+          "@type": "Person",
+          "@id": personId(m.slug),
+          name: m.name,
+          jobTitle: m.role,
+        })),
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -763,14 +772,38 @@ export function offerCatalogSchema(
   };
 }
 
-/**
- * AboutPage node with rendered facts only. The company is referenced by ORG_ID
- * (the global Organization node), never re-declared, and there are no Person
- * nodes: no name is published until it is verified against the MCA filing.
- */
-export function aboutPageSchema({ description }: { description: string }) {
+export type PersonInput = {
+  slug: string;
+  name: string;
+  /** Public designation, as shown on the card. */
+  role: string;
+  bio: string;
+  image?: string;
+  email?: string;
+};
+
+/** One team member as rendered on /about; @id matches the Organization's `founder` refs. */
+export function personSchema(person: PersonInput) {
   return {
     "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": personId(person.slug),
+    name: person.name,
+    jobTitle: person.role,
+    description: person.bio,
+    url: personId(person.slug),
+    ...(person.image && { image: person.image.startsWith("http") ? person.image : `${SITE_CONFIG.url}${person.image}` }),
+    ...(person.email && { email: person.email }),
+    worksFor: { "@id": ORG_ID },
+  };
+}
+
+/**
+ * AboutPage + a Person node for every member rendered on the page. The company
+ * is referenced by ORG_ID (the global Organization node), never re-declared.
+ */
+export function aboutPageSchema({ description, people = [] }: { description: string; people?: readonly PersonInput[] }) {
+  const page = {
     "@type": "AboutPage",
     "@id": `${SITE_CONFIG.url}/about#webpage`,
     url: `${SITE_CONFIG.url}/about`,
@@ -778,8 +811,15 @@ export function aboutPageSchema({ description }: { description: string }) {
     description,
     isPartOf: { "@id": WEBSITE_ID },
     mainEntity: { "@id": ORG_ID },
+    ...(people.length > 0 && { mentions: people.map((p) => ({ "@id": personId(p.slug) })) }),
     inLanguage: "en-IN",
   };
+  const persons = people.map((p) => {
+    const { "@context": _ctx, ...node } = personSchema(p);
+    void _ctx;
+    return node;
+  });
+  return { "@context": "https://schema.org", "@graph": [page, ...persons] };
 }
 
 /** Merge page-level schemas into one @graph block (no duplicate @context nodes). */

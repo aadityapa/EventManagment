@@ -1,33 +1,195 @@
-/* /about + /company (package F, DESIGN.md §10.7–10.8). Page-local only: pg-about-* classes, --lux-* tokens. */
+/* /about (V7 Package A — the pre-V6 format restored) + /company. Page-local only: pg-about-* / pg-team-* classes, --lux-* tokens.
+   Motion here is decorative and is scoped to :root[data-motion="full"] (the site motion preference, DESIGN.md §9); everything reads static without it. */
 @layer components {
-  /* ── 01 The house: two-column essay, ruled at ≥ 1024 by .lux-grid--ruled ── */
-  .pg-about-essay {
-    row-gap: 0;
+  /* ── 1 · Hero: full-bleed photo, veil, dust scene, text in a glass panel ── */
+  .pg-about-hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: end;
+    min-height: 72svh;
+    padding-top: calc(var(--lux-nav-h-current, var(--lux-nav-h)) + var(--lux-space-cover));
+    padding-bottom: var(--lux-space-block);
+    overflow: hidden;
+    background: var(--lux-bg);
   }
 
-  .pg-about-essay > .lux-prose {
-    max-width: none;
+  .pg-about-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
   }
 
-  /* Stacked on phones: the second column simply continues the essay. */
-  @media (max-width: 767.98px) {
-    .pg-about-essay > .lux-prose + .lux-prose {
-      margin-block-start: 1lh;
+  .pg-about-hero__media img,
+  .pg-about-hero__media .lux-frame,
+  .pg-about-hero__media .lux-frame__box {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .pg-about-hero__media img {
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Darkens the photo under the panel; the panel itself carries the text contrast. */
+  .pg-about-hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(to top, rgb(5 8 22 / 0.9) 0%, rgb(5 8 22 / 0.5) 45%, rgb(5 8 22 / 0.3) 100%);
+  }
+
+  .pg-about-hero > .pg-about-hero__scene {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .pg-about-hero__inner {
+    width: min(100% - 2 * var(--lux-gutter), var(--lux-container));
+    margin-inline: auto;
+  }
+
+  /* ≥ 80% navy behind every glyph keeps muted copy above 4.5:1 over the brightest photo. */
+  .pg-about-hero__panel {
+    display: grid;
+    gap: var(--lux-space-4);
+    max-width: 42rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: rgb(5 8 22 / 0.82);
+    border: 1px solid var(--lux-border-gold);
+    border-radius: var(--lux-radius-md);
+    box-shadow: var(--lux-shadow-plate);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  .pg-about-hero__crumbs { margin-bottom: 0.25rem; }
+  .pg-about-hero__lead { color: color-mix(in srgb, var(--lux-white) 86%, transparent); }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .pg-about-hero__panel {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--lux-surface-1);
     }
   }
 
-  /* ── 02 Vision, mission, philosophy: three ruled columns, hairlines when stacked ── */
-  .pg-about-pillar {
-    grid-column: 1 / -1;
+  /* ── 2 · Manifesto: one large centred statement ── */
+  .pg-about-manifesto {
+    text-align: center;
+  }
+
+  .pg-about-manifesto::before {
+    content: "";
+    display: block;
+    width: 4rem;
+    height: 1px;
+    margin: 0 auto var(--lux-space-6);
+    background: var(--lux-gradient-gold-line);
+  }
+
+  .pg-about-manifesto__text {
+    max-width: 22em;
+    margin: 0 auto;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 500;
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
+    line-height: 1.22;
+    text-wrap: balance;
+    font-feature-settings: "liga", "dlig", "kern";
+  }
+
+  /* ── 3 · Founder story ── */
+  .pg-about-founder {
+    row-gap: var(--lux-space-block);
+    align-items: center;
+  }
+
+  .pg-about-founder__text {
+    display: grid;
+    gap: var(--lux-space-5);
+    align-content: start;
+  }
+
+  .pg-about-founder__text .lux-prose { max-width: 38rem; }
+  .pg-about-founder__cta { margin-top: var(--lux-space-2); }
+
+  .pg-about-founder__media {
+    max-width: 34rem;
+    width: 100%;
+    justify-self: center;
+  }
+
+  @media (min-width: 1024px) {
+    .pg-about-founder__media { justify-self: end; }
+  }
+
+  /* ── 4 + 7 · Card rows (purpose, why Nexyyra) ── */
+  .pg-about-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--lux-grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-about-cards > li { display: grid; min-width: 0; }
+
+  @media (min-width: 640px) {
+    .pg-about-cards--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 768px) {
+    .pg-about-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .pg-about-cards--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  .pg-about-card {
     display: grid;
     gap: var(--lux-space-3);
     align-content: start;
-    min-width: 0;
+    height: 100%;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--lux-surface-1);
+    border: 1px solid var(--lux-border);
+    border-radius: var(--lux-radius-md);
+    transition: border-color var(--lux-dur-ui) var(--lux-ease);
   }
 
-  .pg-about-pillar__copy {
+  .pg-about-card__icon { color: var(--lux-gold); }
+
+  .pg-about-card__jewel {
+    display: inline-grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--lux-space-2);
+    color: var(--lux-gold);
+    background: var(--lux-gold-12);
+    border: 1px solid var(--lux-border-gold);
+    border-radius: 50%;
+  }
+
+  .pg-about-card__title {
     margin: 0;
-    max-width: 38ch;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.75rem);
+    line-height: var(--lux-leading-h3);
+  }
+
+  .pg-about-card__copy {
+    margin: 0;
     color: var(--lux-muted);
     font-family: var(--lux-font-body);
     font-size: var(--lux-text-body);
@@ -35,22 +197,330 @@
     text-wrap: pretty;
   }
 
-  @media (max-width: 1023.98px) {
-    .pg-about-pillar + .pg-about-pillar {
-      padding-top: var(--lux-space-5);
-      border-top: 1px solid var(--lux-border);
+  @media (hover: hover) {
+    .pg-about-card:hover,
+    .pg-team-card:hover { border-color: var(--lux-border-gold); }
+  }
+
+  /* ── 5 · Behind the scenes: the "Nexyyra Atelier" line over the photo (≥ 768), beneath it on phones ── */
+  .pg-about-atelier {
+    position: relative;
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+
+  .pg-about-atelier__overlay {
+    display: grid;
+    gap: var(--lux-space-2);
+    padding-top: var(--lux-space-5);
+  }
+
+  .pg-about-atelier__label {
+    margin: 0;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 600;
+    font-size: var(--lux-text-label);
+    letter-spacing: var(--lux-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .pg-about-atelier__line {
+    margin: 0;
+    max-width: 28ch;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 1rem + 1.8vw, 2.5rem);
+    line-height: var(--lux-leading-deck);
+    text-wrap: balance;
+  }
+
+  @media (min-width: 768px) {
+    .pg-about-atelier__overlay {
+      position: absolute;
+      inset: 0;
+      align-content: end;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      background: linear-gradient(to top, rgb(5 8 22 / 0.92) 0%, rgb(5 8 22 / 0.7) 38%, rgb(5 8 22 / 0.15) 75%, transparent 100%);
+      pointer-events: none;
     }
   }
 
-  @media (min-width: 1024px) {
-    .pg-about-pillar {
-      grid-column: span 4;
+  /* ── 6 · Meet Our Leadership ── */
+  .pg-team .lux-section__head {
+    justify-items: center;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .pg-team .lux-section__head::after { justify-self: stretch; }
+  .pg-team .lux-section__head .lux-lead { margin-inline: auto; }
+
+  .pg-team__coin {
+    position: relative;
+    width: clamp(6.5rem, 10vw, 9rem);
+    aspect-ratio: 1;
+    margin: calc(var(--lux-space-block) * -0.5) auto var(--lux-space-5);
+  }
+
+  .pg-team-tier + .pg-team-tier { margin-top: var(--lux-space-block); }
+
+  .pg-team-tier__label {
+    margin: 0 0 var(--lux-space-5);
+    color: var(--lux-subtle);
+    font-family: var(--lux-font-body);
+    font-weight: 600;
+    font-size: var(--lux-text-label);
+    letter-spacing: 0.3em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .pg-team-tier__label span { color: var(--lux-gold); }
+
+  .pg-team-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--lux-grid-gap);
+    max-width: 66rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-team-grid__item { display: grid; min-width: 0; }
+
+  @media (min-width: 640px) {
+    .pg-team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pg-team-grid__item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - var(--lux-grid-gap) / 2);
     }
   }
 
-  /* ── Commitments chapter: the text CTA sits under the grid ── */
-  .pg-about-cta {
-    margin-top: var(--lux-space-block);
+  @media (min-width: 960px) {
+    .pg-team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pg-team-grid__item:last-child:nth-child(odd) {
+      grid-column: auto;
+      width: auto;
+    }
+  }
+
+  .pg-team-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    text-align: center;
+    background: var(--lux-surface-1);
+    border: 1px solid var(--lux-border);
+    border-radius: var(--lux-radius-md);
+    transition: border-color var(--lux-dur-ui) var(--lux-ease);
+  }
+
+  .pg-team-card--founder {
+    background: linear-gradient(180deg, var(--lux-gold-12), transparent 45%), var(--lux-surface-1);
+    border-color: var(--lux-border-gold);
+  }
+
+  /* Monogram + CSS-3D ring (a tilted orbit with one gold jewel). */
+  .pg-team-card__avatar {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    aspect-ratio: 1;
+    perspective: 420px;
+    transform-style: preserve-3d;
+  }
+
+  .pg-team-card__monogram {
+    position: absolute;
+    inset: 12%;
+    display: grid;
+    place-items: center;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: 1.375rem;
+    letter-spacing: 0.04em;
+    background: radial-gradient(circle at 35% 30%, var(--lux-surface-3), var(--lux-surface-1) 70%);
+    border: 1px solid var(--lux-border-gold);
+    border-radius: 50%;
+  }
+
+  .pg-team-card__ring {
+    position: absolute;
+    inset: -4%;
+    border: 1px solid var(--lux-gold-55);
+    border-radius: 50%;
+    transform: rotateX(68deg) rotateZ(0deg);
+  }
+
+  .pg-team-card__ring::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: calc(50% - 3px);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lux-gold-metal);
+    box-shadow: 0 0 8px var(--lux-gold);
+  }
+
+  .pg-team-card__ring--cross {
+    inset: 2%;
+    border-color: color-mix(in srgb, var(--lux-gold) 30%, transparent);
+    transform: rotateY(68deg) rotateZ(120deg);
+  }
+
+  .pg-team-card__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: var(--lux-space-3) 0 0;
+    padding: 0.2rem 0.7rem;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: var(--lux-gold-12);
+    border: 1px solid var(--lux-border-gold);
+    border-radius: var(--lux-radius-pill);
+  }
+
+  .pg-team-card__badge svg { width: 0.9rem; height: 0.9rem; }
+
+  .pg-team-card__name {
+    margin: var(--lux-space-3) 0 0;
+    color: var(--lux-white);
+    font-family: var(--lux-font-display);
+    font-weight: 600;
+    font-size: clamp(1.375rem, 1.3rem + 0.35vw, 1.625rem);
+    line-height: var(--lux-leading-h3);
+  }
+
+  .pg-team-card__role {
+    margin: 0.3rem 0 0;
+    color: var(--lux-gold);
+    font-family: var(--lux-font-body);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .pg-team-card__lead,
+  .pg-team-card__bio {
+    margin: var(--lux-space-3) 0 0;
+    font-family: var(--lux-font-body);
+    font-size: 0.875rem;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  .pg-team-card__lead { color: var(--lux-gold-metal); }
+  .pg-team-card__bio { color: var(--lux-muted); }
+
+  .pg-team-card__duties {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: var(--lux-space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-team-card__duties li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    color: var(--lux-muted);
+    font-family: var(--lux-font-body);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    border: 1px solid var(--lux-border-strong);
+    border-radius: var(--lux-radius-pill);
+  }
+
+  .pg-team-card__duties svg {
+    flex-shrink: 0;
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--lux-gold);
+  }
+
+  .pg-team-card__links {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: var(--lux-space-4);
+  }
+
+  .pg-team-card__link {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--lux-muted);
+    border: 1px solid var(--lux-border-strong);
+    border-radius: 50%;
+    transition: color var(--lux-dur-fast) var(--lux-ease), border-color var(--lux-dur-fast) var(--lux-ease);
+  }
+
+  .pg-team-card__link:hover,
+  .pg-team-card__link:focus-visible {
+    color: var(--lux-gold);
+    border-color: var(--lux-gold);
+  }
+
+  .pg-team-card__link:focus-visible {
+    outline: 2px solid var(--lux-gold);
+    outline-offset: 3px;
+  }
+
+  /* ── 8 · CTA ── */
+  .pg-about-cta__panel {
+    display: grid;
+    justify-items: center;
+    gap: var(--lux-space-5);
+    max-width: 48rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 6vw, 3.75rem) clamp(1.25rem, 5vw, 3.5rem);
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, var(--lux-gold-12), transparent 70%), var(--lux-surface-1);
+    border: 1px solid var(--lux-border-gold);
+    border-radius: var(--lux-radius-md);
+  }
+
+  .pg-about-cta__lead { margin-inline: auto; }
+
+  .pg-about-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--lux-space-3) var(--lux-space-4);
+    margin-top: var(--lux-space-2);
+  }
+
+  @media (max-width: 639.98px) {
+    .pg-about-cta__actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
   }
 
   /* ── /company: values that are links (phone, email, website) ── */
@@ -96,8 +566,44 @@
     outline-offset: 3px;
   }
 
-  /* ── Inquiry plate: a chapter's worth of air before the footer ── */
+  /* /company inquiry plate: a chapter's worth of air before the footer. */
   .pg-about-inquiry {
     margin-block-end: var(--lux-space-section);
   }
+}
+
+/* ── Motion (decorative; static without support or under reduced motion) ── */
+:where(:root[data-motion="full"]) {
+  /* The orbit turns as the card scrolls through the viewport (user-driven, not autoplay)… */
+  @supports (animation-timeline: view()) {
+    .pg-team-card__ring {
+      animation: pg-team-orbit linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    .pg-team-card__ring--cross { animation-name: pg-team-orbit-cross; }
+  }
+
+  /* …and spins slowly while the card is hovered or focused. */
+  @media (hover: hover) {
+    .pg-team-card:is(:hover, :focus-within) .pg-team-card__ring {
+      animation: pg-team-orbit 6s linear infinite;
+      animation-delay: var(--ring-delay, 0s);
+    }
+
+    .pg-team-card:is(:hover, :focus-within) .pg-team-card__ring--cross {
+      animation: pg-team-orbit-cross 9s linear infinite reverse;
+    }
+  }
+}
+
+@keyframes pg-team-orbit {
+  from { transform: rotateX(68deg) rotateZ(0deg); }
+  to { transform: rotateX(68deg) rotateZ(360deg); }
+}
+
+@keyframes pg-team-orbit-cross {
+  from { transform: rotateY(68deg) rotateZ(120deg); }
+  to { transform: rotateY(68deg) rotateZ(480deg); }
 }

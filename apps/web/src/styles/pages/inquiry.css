@@ -69,6 +69,6 @@
 .lux-form__done-copy { max-width: 34rem; font: 400 var(--lux-text-body)/var(--lux-leading-body) var(--lux-font-body); text-wrap: pretty; }
 .lux-form__link { text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 
-@media (prefers-reduced-motion: reduce) {
+:where(:root:not([data-motion="full"])) {
   .lux-form .lux-input { transition: none; }
 }

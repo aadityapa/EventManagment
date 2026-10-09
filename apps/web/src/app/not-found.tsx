@@ -1,4 +1,5 @@
 import { UiIcon } from "@/components/icons";
+import { Scene3D } from "@/components/three/scene-host";
 import { Button, Heading, PAGE_TITLE_ID, Section, ServicesIndex, type ServiceSlug } from "@/components/ui";
 import { generateSEO } from "@/lib/seo";
 import { getWhatsAppUrl } from "@/lib/utils";
@@ -26,6 +27,10 @@ export default function NotFound() {
   return (
     <div className="lux-page">
       <section className="pg-legal-404" aria-labelledby={PAGE_TITLE_ID}>
+        {/* V7: the Nexyyra coin turning above the numeral (CSS glow when 3D is off). */}
+        <div className="lux-coin-stage" aria-hidden="true">
+          <Scene3D variant="coin" className="lux-coin-stage__scene" />
+        </div>
         {/* The page's one Cinzel element (DESIGN.md §10.20). */}
         <p className="pg-legal-404__numeral" aria-hidden="true">
           404

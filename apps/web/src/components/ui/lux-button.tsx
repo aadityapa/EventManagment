@@ -57,7 +57,8 @@ export function Button({
   children,
 }: ButtonProps) {
   const cls = cn("luxury-button", VARIANT_CLASS[variant], SIZE_CLASS[size], arrow && "luxury-button--arrow", className);
-  const data = { "data-cta": cta, "data-cta-location": location };
+  // V7: the primary action drifts toward a fine pointer (MotionRuntime); inert elsewhere.
+  const data = { "data-cta": cta, "data-cta-location": location, ...(variant === "primary" && !disabled ? { "data-magnetic": "" } : {}) };
 
   if (asChild) {
     // cloneElement instead of Radix Slot: no hooks, so it renders in the RSC runtime.

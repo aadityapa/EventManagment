@@ -1,5 +1,7 @@
 "use client";
 
+import { getMotionMode } from "@/components/motion/motion-mode";
+
 /**
  * Prev/next buttons for a Strand. CSS shows them only on hover-capable
  * devices; the strand itself stays a user-driven scroller (no autoplay).
@@ -8,8 +10,7 @@ export function StrandNav({ targetId }: { targetId: string }) {
   const nudge = (dir: -1 | 1) => {
     const el = document.getElementById(targetId);
     if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: getMotionMode() === "full" ? "smooth" : "auto" });
   };
   return (
     <div className="lux-strand__nav">

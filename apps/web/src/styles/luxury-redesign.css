@@ -138,7 +138,7 @@ html {
   cursor: not-allowed;
 }
 
-@media (prefers-reduced-motion: reduce) {
+:where(:root:not([data-motion="full"])) {
   .luxury-button,
   .luxury-button::after {
     transition-duration: 0.01ms;

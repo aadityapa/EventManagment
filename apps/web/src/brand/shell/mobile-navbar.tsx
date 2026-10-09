@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ServiceIcon, UiIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
 import { SITE_CONFIG } from "@/lib/constants";
+import { MotionToggle } from "@/components/motion/motion-toggle";
 import { MobileMenu } from "./mobile-menu";
 import {
   MAIL_HREF,
@@ -108,6 +109,8 @@ function MenuContent() {
           </a>
         </li>
       </ul>
+
+      <MotionToggle icon={<UiIcon name="play" size={20} />} className="pg-shell-motion--menu" />
 
       <Button variant="primary" size="full" href={PROPOSAL_HREF} arrow cta="menu_proposal" location="mobile-menu">
         {PRIMARY_LABEL}

@@ -25,6 +25,13 @@ export type MediaFrameProps = {
   /** 1px inset gold hairline ("gilt frame"): covers, the sticky index frame, diptychs. */
   frame?: boolean;
   viewTransitionName?: string;
+  /**
+   * V7 scroll parallax inside the box (image drifts ±6% at 1.14 scale). Default
+   * on for every non-priority frame; the LCP cover and spreads keep their settle.
+   */
+  depth?: boolean;
+  /** V7 pointer tilt on the whole figure (`soft` = 4°). */
+  tilt?: boolean | "soft";
   className?: string;
 };
 
@@ -87,6 +94,8 @@ export function MediaFrame({
   index,
   frame = false,
   viewTransitionName,
+  depth,
+  tilt,
   className,
 }: MediaFrameProps) {
   const curated = asset ? resolveAsset(asset) : undefined;
@@ -138,7 +147,10 @@ export function MediaFrame({
   const box = <div className="lux-frame__box">{img}</div>;
 
   return (
-    <figure className={cn("lux-frame", RATIO_CLASS[ratio], frame && "lux-frame--gilt", className)}>
+    <figure
+      className={cn("lux-frame", RATIO_CLASS[ratio], frame && "lux-frame--gilt", (depth ?? !priority) && "lux-frame--depth", className)}
+      data-tilt={tilt === "soft" ? "soft" : tilt ? "" : undefined}
+    >
       {viewTransitionName ? <ViewTransition name={viewTransitionName}>{box}</ViewTransition> : box}
       {text || index ? (
         <figcaption className="lux-caption">

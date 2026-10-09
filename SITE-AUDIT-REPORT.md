@@ -94,3 +94,7 @@ One reply commitment everywhere ("same day, Mon–Sat 9am–9pm IST"). No stats,
    - Mon–Sat reply hours
    - add social profiles to `SITE_CONFIG.social` only once they exist (only Instagram is listed)
 6. **Commit and deploy:** the work is uncommitted in the working tree. Review `git status`, commit, and deploy. The root `scripts/stitch-*.mjs` tools still write to `src/lib/stitch/exports/`, but the runtime that read those files was removed as dead code.
+
+## 4. V7 — Living Editorial
+
+- **Motion preference:** a site-level "Motion: On / Off" control (footer legal row + phone menu) overrides the OS `prefers-reduced-motion` via `html[data-motion]` set before paint; "reduced" keeps the 3D scenes as still frames and stops loops, tilt, Lenis and the marquee instead of removing them (DESIGN.md §9.6).

@@ -101,7 +101,7 @@ export function ServicesIndex({ items, variant = "full", grouped = false, frame 
                     data-group={row.group}
                     style={{ "--i": index - 1 } as CSSProperties}
                   >
-                    <Link href={`/services/${row.slug}`} className="lux-index__link" data-cta={`index_${row.slug}`} data-cta-location={location}>
+                    <Link href={`/services/${row.slug}`} className="lux-index__link" data-tilt="soft" data-cta={`index_${row.slug}`} data-cta-location={location}>
                       <span className="lux-index__num" aria-hidden="true">{String(index).padStart(2, "0")}</span>
                       <span className="lux-index__icon"><ServiceIcon name={row.slug} size={24} /></span>
                       <h3 className="lux-index__title">
@@ -121,7 +121,7 @@ export function ServicesIndex({ items, variant = "full", grouped = false, frame 
         ))}
       </div>
       {frames.length ? (
-        <div className="lux-index__frame" aria-hidden="true">
+        <div className="lux-index__frame" aria-hidden="true" data-tilt="soft" data-tilt-glare="off">
           {frames.map((f) => (
             // eslint-disable-next-line @next/next/no-img-element -- decorative, lazy, ≤ 828px; plain <img> keeps the 12 frames hydration-free
             <img key={f.key} src={f.src} alt="" loading="lazy" decoding="async" style={f.focal ? { objectPosition: f.focal } : undefined} {...f.attrs} />

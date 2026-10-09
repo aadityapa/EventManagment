@@ -6,11 +6,13 @@
 
   @media (min-width: 768px) {
     .pg-services-ledger .lux-ledger__row {
-      grid-template-columns: 1.25rem minmax(0, 1fr) minmax(0, 14rem) minmax(0, 10rem);
+      grid-template-columns: 1.25rem minmax(0, 1fr) minmax(0, 18rem) minmax(0, 10rem);
       align-items: baseline;
     }
     .pg-services-ledger :is(.lux-ledger__term, .lux-ledger__body, .lux-ledger__cell) { grid-column: auto; }
     .pg-services-ledger .lux-ledger__cell { text-align: end; }
+    /* "From ₹35 Lakhs" stays on one line, level with the one-line Crore+ row. */
+    .pg-services-ledger .lux-ledger__body .lux-price { white-space: nowrap; }
   }
 
   /* ── /services/[slug]: "The brief" — essay cols 1–7, commitments cols 9–12 (offset) ── */
@@ -58,9 +60,29 @@
     outline-offset: 3px;
   }
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .pg-services-photo img { transition: scale var(--lux-dur-image) var(--lux-ease); }
-    .pg-services-photo:hover img { scale: 1.03; }
+  @media (hover: hover) {
+    :where(:root[data-motion="full"]) {
+      .pg-services-photo img { transition: scale var(--lux-dur-image) var(--lux-ease); }
+      .pg-services-photo:hover img { scale: 1.03; }
+    }
+  }
+
+  /* V7 depth: the tile tilts (data-tilt="soft") and lifts like the Gallery primitive.
+     motion.css gives depth-frame photos a 1.14 parallax scale and a 1.18 hover scale
+     for linked frames; these tiles keep the hover zoom subtle (1.16 over the 1.14
+     that keeps parallax edges covered). Same specificity as motion.css, later file. */
+  @media (hover: hover) and (pointer: fine) {
+    :where(:root[data-motion="full"]) {
+      .pg-services-photo[data-tilt].is-tilting {
+        transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(14px);
+      }
+    }
+  }
+
+  :where(:root[data-motion="full"]) {
+    @supports (animation-timeline: view()) {
+      .pg-services-photo:is(:hover, :focus-visible) .lux-frame--depth .lux-frame__box img { scale: 1.16; }
+    }
   }
 
   /* ── Related: contextual links in small type under the related rows ── */

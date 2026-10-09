@@ -193,7 +193,7 @@
     color: var(--lux-subtle);
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
     .pg-conv-calc__chip { transition: none; }
   }
 }

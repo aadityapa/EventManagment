@@ -126,7 +126,7 @@ export function ServiceChapter({ service }: { service: Service }) {
             <Strand ariaLabel={`${title} photographs`}>
               {gallery.map((a) => (
                 <li key={a.id} id={`photo-${a.id}`}>
-                  <a href={`#photo-${a.id}`} className="pg-services-photo">
+                  <a href={`#photo-${a.id}`} className="pg-services-photo" data-tilt="soft">
                     <PhotoName id={a.id}>
                       <MediaFrame asset={a.id} ratio="3:2" sizes="(min-width:768px) 33vw, 78vw" />
                     </PhotoName>

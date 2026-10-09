@@ -43,7 +43,7 @@ export function ConceptCard({ study, viewTransition = true, location = "concepts
   const caption = `Illustrative concept · ${study.category}`;
   const name = viewTransition ? `concept-${study.id}` : undefined;
   return (
-    <article className={cn("lux-concept", className)}>
+    <article className={cn("lux-concept", className)} data-tilt>
       {/* Duplicate target of the title link, kept out of the tab order. */}
       <Link href={href} prefetch={false} className="lux-concept__media" tabIndex={-1} aria-hidden="true">
         {asset ? (

@@ -1,143 +1,239 @@
-import { assetForRole, assetsByRole, withoutDuplicates } from "@/brand/data/image-curation";
-import {
-  Button,
-  Commitments,
-  Cover,
-  Heading,
-  InquiryPanel,
-  Ledger,
-  ProcessLine,
-  Prose,
-  Section,
-  Spread,
-  type LedgerRow,
-} from "@/components/ui";
+import type { CSSProperties } from "react";
+import { preload } from "react-dom";
+import { assetForRole, localSources, withoutDuplicates, type CurationAsset } from "@/brand/data/image-curation";
+import { BRAND_REPLY_HOURS } from "@/brand/data/reply-hours";
+import { AboutIcon, type AboutIconName } from "@/brand/sections/about/about-icons";
+import { TeamSection } from "@/brand/sections/about/team-section";
+import { Scene3D } from "@/components/three/scene-host";
+import { UiIcon } from "@/components/icons";
+import { Breadcrumbs, Button, Eyebrow, focalToObjectPosition, Heading, MediaFrame, PAGE_TITLE_ID, Reveal, Section } from "@/components/ui";
 import { companyProfile } from "@/data/cms";
-import { ENTITY_FACTS } from "@/lib/constants";
-import { LOCATION_PAGES } from "@/lib/location-pages";
 import { getWhatsAppUrl } from "@/lib/utils";
 
-/** Service-area entries that are regions, not cities — said in prose instead of listed. */
-const REGION_AREAS = new Set(["Maharashtra", "India", "International destinations"]);
-const listOf = (items: readonly string[]) => new Intl.ListFormat("en-GB", { type: "conjunction" }).format(items);
-
-const CITIES = ENTITY_FACTS.serviceAreas.filter((area) => !REGION_AREAS.has(area));
-const REACH = `Planners work in ${listOf(ENTITY_FACTS.languages)}. Events are planned in ${listOf(CITIES)}, elsewhere in India and at international destinations.`;
-
-const PURPOSE = [
-  { id: "vision", title: "Vision", copy: companyProfile.vision },
-  { id: "mission", title: "Mission", copy: companyProfile.mission },
-  { id: "philosophy", title: "Philosophy", copy: companyProfile.philosophy },
-] as const;
-
-const CITY_ROWS: LedgerRow[] = LOCATION_PAGES.map((page) => ({
-  id: page.slug,
-  term: page.city,
-  body: page.state,
-  href: `/locations/${page.slug}`,
-}));
-
-const WHATSAPP_MESSAGE = "Hello Nexyyra Events, I would like to talk to a planner about my event.";
-
-/**
- * /about (DESIGN.md §10.7): what the house is, in facts only. The people
- * chapter is omitted — no names are verified against the MCA filing — and
- * there is no founder story, no stock team photography, no track record.
+/*
+ * /about — the pre-V6 page restored at the owner's request (V7 brief,
+ * Package A): same sections, same order, same copy, rebuilt on the V6
+ * primitives with the V7 motion layer. Server component; the only islands are
+ * the Scene3D hosts (lazy three.js, CSS fallback) and the global motion runtime.
  */
+
+const MANIFESTO =
+  "We believe luxury is intention — every candle, every cue, every guest experience deliberately crafted so the celebration feels effortless and eternal.";
+
+const FOUNDER_STORY =
+  "Founded by Yash Bajaj — joined by co-founders Aaditya Padiya and Amey Korde — Nexyyra began as an intimate wedding studio with a singular belief: every celebration carries the weight of memory. Today the team operates as Nexyyra Events and Promotions Private Limited, planning and producing weddings, corporate events and destination celebrations across India.";
+
+const PURPOSE: { icon: AboutIconName; title: string; copy: string }[] = [
+  { icon: "eye", title: "Vision", copy: companyProfile.vision },
+  { icon: "target", title: "Mission", copy: companyProfile.mission },
+  { icon: "gem", title: "Philosophy", copy: companyProfile.philosophy },
+];
+
+const TRUST_PILLARS: { icon: AboutIconName; title: string; copy: string }[] = [
+  { icon: "crown", title: "Uncompromising Craft", copy: "Every detail engineered to museum standards — nothing is left to chance." },
+  { icon: "shield", title: "Absolute Discretion", copy: "NDA-bound teams and airtight privacy for high-profile clients and brands." },
+  { icon: "globe", title: "Pan-India Production", copy: "Palace to penthouse, across India — fully in-house, fully owned execution." },
+  { icon: "sparkle", title: "Cinematic Execution", copy: "Broadcast-grade AV, lighting and stagecraft on every single production." },
+];
+
+/** The assets for these roles, in order, skipping roles with no photo. */
+const curated = (...roles: string[]): CurationAsset[] => roles.flatMap((role) => assetForRole(role) ?? []);
+
+const WHATSAPP_MESSAGE = "Hello Nexyyra Events, I would like to book a consultation.";
+
+/** Manifesto words as server-rendered spans for the `.lux-split` word reveal; the text reads unchanged. */
+function SplitWords({ text }: { text: string }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <span key={i} className="lux-split__w" style={{ "--w": i } as CSSProperties}>
+          {word}
+          {i < words.length - 1 ? " " : null}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function AboutView() {
   const cover = assetForRole("cover-about");
-  // One photo per page: the spread must not repeat the cover (or a near-duplicate of it).
-  const spread = withoutDuplicates(assetsByRole("spread-about"), cover ? [cover.id] : [])[0];
+  // No photo twice on the page (near-duplicates included): portrait first, then the atelier frame.
+  const [portrait] = withoutDuplicates(curated("house-portrait", "spread-about"), cover ? [cover.id] : []);
+  const [atelier] = withoutDuplicates(curated("spread-about", "house-portrait"), [cover, portrait].flatMap((a) => (a ? [a.id] : [])));
+  const coverSet = cover ? localSources(cover) : undefined;
+  // The hero photo is the LCP: preload the local WebP set (never a Drive URL).
+  if (coverSet) preload(coverSet.src, { as: "image", imageSrcSet: coverSet.srcSet, imageSizes: "100vw", fetchPriority: "high" });
 
   return (
-    <div className="lux-page">
-      <Cover
-        eyebrow="About"
-        title="A house built for the next era of celebrations"
-        titleAccent="next era"
-        lead={companyProfile.introduction}
-        asset={cover?.id}
-        breadcrumbs={[
-          { name: "Home", href: "/" },
-          { name: "About", href: "/about" },
-        ]}
-        primary={{ href: "#inquire", cta: "about_cover_proposal" }}
-        secondary={{ href: getWhatsAppUrl(WHATSAPP_MESSAGE), label: "WhatsApp a planner", cta: "about_cover_whatsapp", external: true }}
-      />
-
-      <Section
-        id="house"
-        number="01"
-        eyebrow="The house"
-        title="One company, from design to delivery"
-        deck="Every celebration we plan is designed, produced and run by the same house."
-      >
-        <div className="lux-grid lux-grid--ruled pg-about-essay">
-          <Prose dropcap className="lux-col-text">
-            <p>{companyProfile.story}</p>
-            <p>{companyProfile.scope}</p>
-          </Prose>
-          <Prose className="lux-col-media">
-            <p>{companyProfile.inHouse}</p>
-            <p>{REACH}</p>
-          </Prose>
+    <div className="lux-page pg-about">
+      {/* 1 · Hero — full-bleed photograph, text in a glass panel (the pre-V6 format). */}
+      <section className="pg-about-hero lux-bleed" aria-labelledby={PAGE_TITLE_ID}>
+        {cover ? (
+          <div className="pg-about-hero__media">
+            {coverSet ? (
+              // eslint-disable-next-line @next/next/no-img-element -- local WebP set (768 is the 4:5 phone crop); the LCP stays off the optimizer
+              <img
+                src={coverSet.src}
+                srcSet={coverSet.srcSet}
+                sizes="100vw"
+                alt={cover.alt}
+                width={cover.width}
+                height={cover.height}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                style={{ objectPosition: focalToObjectPosition(cover.focal) }}
+              />
+            ) : (
+              <MediaFrame asset={cover.id} ratio="4:5" sizes="100vw" priority caption={false} />
+            )}
+          </div>
+        ) : null}
+        <div className="pg-about-hero__veil" aria-hidden="true" />
+        <Scene3D variant="dust" intensity={0.6} className="pg-about-hero__scene" />
+        <div className="pg-about-hero__inner">
+          <div className="pg-about-hero__panel">
+            <Breadcrumbs
+              items={[
+                { name: "Home", href: "/" },
+                { name: "About", href: "/about" },
+              ]}
+              schema
+              className="pg-about-hero__crumbs"
+            />
+            <Eyebrow rule="leading">Our Story</Eyebrow>
+            <Heading as="h1" size="display" id={PAGE_TITLE_ID} accent="Celebrations">
+              The Next Era of Celebrations
+            </Heading>
+            <p className="lux-lead pg-about-hero__lead">
+              Experience architects, celebration designers, and memory creators — crafting extraordinary moments across India.
+            </p>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section id="purpose" number="02" eyebrow="Purpose" title="Vision, mission and philosophy" lazy>
-        <div className="lux-grid lux-grid--ruled pg-about-pillars">
-          {PURPOSE.map((item) => (
-            <div key={item.id} className="pg-about-pillar">
-              <Heading as="h3" size="h3">
-                {item.title}
-              </Heading>
-              <p className="pg-about-pillar__copy">{item.copy}</p>
+      {/* 2 · Manifesto — one large centred statement, revealed word by word. */}
+      <section className="lux-section pg-about-manifesto" aria-label="Our belief">
+        <p className="pg-about-manifesto__text lux-split">
+          <SplitWords text={MANIFESTO} />
+        </p>
+      </section>
+
+      {/* 3 · Founder story */}
+      <Section id="founder" number="01" eyebrow="Founder Philosophy" title="We Architect Experiences">
+        <div className="lux-grid pg-about-founder">
+          <div className="lux-col-text pg-about-founder__text">
+            <p className="lux-lead">{companyProfile.introduction}</p>
+            <div className="lux-prose">
+              <p>{FOUNDER_STORY}</p>
+              <p>{companyProfile.story}</p>
             </div>
+            <div className="pg-about-founder__cta">
+              <Button variant="primary" href="/book-event" cta="book_consultation" location="about_founder" arrow>
+                Book Consultation
+              </Button>
+            </div>
+          </div>
+          {portrait ? (
+            <div className="lux-col-media pg-about-founder__media" data-tilt="soft">
+              <MediaFrame asset={portrait.id} ratio="4:5" sizes="(min-width:768px) 50vw, 100vw" frame />
+            </div>
+          ) : null}
+        </div>
+      </Section>
+
+      {/* 4 · Vision, Mission & Philosophy */}
+      <Section id="purpose" number="02" eyebrow="Purpose" title="Vision, Mission & Philosophy" lazy>
+        <ul className="pg-about-cards pg-about-cards--3">
+          {PURPOSE.map((item, i) => (
+            <Reveal as="li" key={item.title} index={i}>
+              <article className="pg-about-card" data-tilt="">
+                <AboutIcon name={item.icon} size={32} className="pg-about-card__icon" />
+                <h3 className="pg-about-card__title">{item.title}</h3>
+                <p className="pg-about-card__copy">{item.copy}</p>
+              </article>
+            </Reveal>
           ))}
-        </div>
+        </ul>
       </Section>
 
-      {spread ? <Spread asset={spread.id} /> : null}
-
+      {/* 5 · Behind the Scenes */}
       <Section
-        id="method"
+        id="behind-the-scenes"
         number="03"
-        eyebrow="How we work"
-        title="Five steps from brief to wrap"
-        lead="The same method at every scale: one brief, one itemised plan, one director accountable for the day."
+        eyebrow="Behind the Scenes"
+        title="Our story in motion"
+        lead="A glimpse into the artistry behind every Nexyyra celebration — from first sketches to final guest arrival."
         lazy
       >
-        <ProcessLine variant="full" />
+        {atelier ? (
+          <div className="pg-about-atelier" data-tilt="soft">
+            <MediaFrame asset={atelier.id} ratio="16:10" sizes="(min-width:1024px) 56rem, 100vw" caption={false} frame />
+            <div className="pg-about-atelier__overlay">
+              <p className="pg-about-atelier__label">Nexyyra Atelier</p>
+              <p className="pg-about-atelier__line">Every celebration is rehearsed, refined, and delivered with quiet precision.</p>
+            </div>
+          </div>
+        ) : null}
       </Section>
 
-      <Section
-        id="where-we-work"
-        number="04"
-        eyebrow="Where we work"
-        title="From Pune, across India and abroad"
-        lead="Each city below has its own planning page. Anywhere else in India, or abroad, is planned the same way, with travel and logistics in the proposal."
-        lazy
-      >
-        <Ledger as="dl" columns={4} rows={CITY_ROWS} ariaLabel="Cities with a planning page" className="lux-wide" />
-      </Section>
+      {/* 6 · Meet Our Leadership */}
+      <TeamSection number="04" />
 
+      {/* 7 · Why Nexyyra */}
       <Section
-        id="commitments"
+        id="why-nexyyra"
         number="05"
-        eyebrow="Commitments"
-        title="What you can hold us to"
-        lead="Policies the company sets and keeps, written down before you book."
+        eyebrow="Why Nexyyra"
+        title="Why India's Premium Brands Trust Nexyyra"
+        lead="Flawless, discreet, cinematic celebrations — engineered in-house and delivered across India for families and brands that expect precision."
         lazy
       >
-        <Commitments variant="grid" />
-        <div className="pg-about-cta">
-          <Button variant="text" href="/book-event" cta="about_commitments_proposal" location="about_commitments" arrow>
-            Get a Free Proposal
-          </Button>
-        </div>
+        <ul className="pg-about-cards pg-about-cards--4">
+          {TRUST_PILLARS.map((pillar, i) => (
+            <Reveal as="li" key={pillar.title} index={i}>
+              <article className="pg-about-card pg-about-card--pillar" data-tilt="">
+                <span className="pg-about-card__jewel">
+                  <AboutIcon name={pillar.icon} size={24} />
+                </span>
+                <h3 className="pg-about-card__title">{pillar.title}</h3>
+                <p className="pg-about-card__copy">{pillar.copy}</p>
+              </article>
+            </Reveal>
+          ))}
+        </ul>
       </Section>
 
-      <InquiryPanel id="inquire" source="contact" variant="compact" className="pg-about-inquiry" />
+      {/* 8 · CTA */}
+      <section className="lux-section pg-about-cta" aria-labelledby="about-cta-title">
+        <Reveal className="pg-about-cta__panel">
+          <Heading as="h2" id="about-cta-title">
+            Let&apos;s craft your legend
+          </Heading>
+          <p className="lux-lead pg-about-cta__lead">
+            Schedule a private consultation — complimentary and without obligation. {BRAND_REPLY_HOURS}
+          </p>
+          <div className="pg-about-cta__actions">
+            <Button variant="primary" href="/book-event" cta="book_consultation" location="about_cta" arrow>
+              Book Consultation
+            </Button>
+            <Button
+              variant="ghost"
+              href={getWhatsAppUrl(WHATSAPP_MESSAGE)}
+              external
+              cta="whatsapp"
+              location="about_cta"
+              icon={<UiIcon name="whatsapp" size={20} />}
+            >
+              WhatsApp a planner
+            </Button>
+            <Button variant="text" href="/portfolio" cta="view_portfolio" location="about_cta">
+              View Our Work
+            </Button>
+          </div>
+        </Reveal>
+      </section>
     </div>
   );
 }

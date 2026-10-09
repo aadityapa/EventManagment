@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { UiIcon } from "@/components/icons";
 import { DetailsOpenAtDesktop } from "@/components/ui";
+import { MotionToggle } from "@/components/motion/motion-toggle";
 import { blogPosts, services } from "@/data/cms";
 import { ENTITY_FACTS, FOOTER_LEGAL, SITE_CONFIG } from "@/lib/constants";
 import { LOCAL_SEO_PAGES } from "@/lib/local-seo-pages";
@@ -47,7 +48,8 @@ const CITIES = ENTITY_FACTS.serviceAreas.filter((a) => !AREA_SUMMARY.has(a));
  * `<details name="footer">` accordion on phones. The groups are server-rendered
  * open (without `name`, so parsing does not close all but one) so crawlers and
  * desktop first paint see every link. Every discovery link skips prefetch.
- * "Cookie settings" re-opens the consent banner (see CookieConsent).
+ * "Cookie settings" re-opens the consent banner (see CookieConsent); beside it,
+ * the MotionToggle island switches the site motion preference.
  * Social: Instagram only — the other profiles are unverified.
  */
 export function BrandFooter() {
@@ -144,6 +146,10 @@ export function BrandFooter() {
             <li>
               {/* Plain anchor, not Link: CookieConsent's delegated [data-consent-open] handler re-opens the banner; without JS it lands on the cookie section of the privacy policy. */}
               <a href="/privacy#cookies" data-consent-open="">Cookie settings</a>
+            </li>
+            <li className="pg-shell-legal__motion">
+              {/* Client island: the site motion preference (DESIGN.md §9); hidden until hydrated. */}
+              <MotionToggle icon={<UiIcon name="play" size={20} />} />
             </li>
           </ul>
         </div>

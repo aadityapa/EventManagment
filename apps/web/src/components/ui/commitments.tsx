@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { BRAND_COMMITMENTS } from "@/brand/data/content";
 import type { Commitment } from "@/components/ui/types";
 import { cn } from "@/lib/utils";
@@ -16,8 +17,8 @@ export function Commitments({ variant = "grid", expanded = false, items = BRAND_
   const list = variant === "cover" ? items.slice(0, 3) : items;
   return (
     <dl className={cn("lux-commit", `lux-commit--${variant}`, expanded && "lux-commit--expanded", className)}>
-      {list.map((item) => (
-        <div key={item.id} className="lux-commit__cell">
+      {list.map((item, i) => (
+        <div key={item.id} className="lux-commit__cell lux-reveal" style={{ "--i": i } as CSSProperties}>
           <dt>{item.term}</dt>
           <dd>{item.detail}</dd>
         </div>

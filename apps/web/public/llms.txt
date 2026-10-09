@@ -8,7 +8,7 @@ Pricing: The Boutique Experience from ₹10 Lakhs (50–150 guests), The Signatu
 
 Commitments: free, no-obligation consultation; same-day planner reply (9am–9pm IST); itemised proposal within 48 hours of the consultation; one dedicated event director; 30% advance secures the date, balance in milestones via Razorpay, bank transfer or UPI. Languages: English, Hindi, Marathi.
 
-Contact: Phone/WhatsApp +91 7020640157 (https://wa.me/917020640157), email Info.Events@nexyyra.com. Registered office: Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108. Delivery & Coordination Office: Pune, Maharashtra, India.
+Contact: Phone/WhatsApp +91 7020640157 (https://wa.me/917020640157), email Info.Events@nexyyra.com. Registered office: Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108. Delivery & Coordination Office: Pune, Maharashtra, India. Leadership: Yash Bajaj (Founder & Managing Director), Aaditya Padiya (Founder & Chief Technology Officer), Amey Korde (Founder & Chief Marketing Officer), Shilpa Sharma (Finance & Accounts Manager), Radhika Bajaj (Data & Administration Manager), Bharti Jadhav (Head — Decoration Department).
 
 ## Key Pages
 
@@ -20,7 +20,7 @@ Contact: Phone/WhatsApp +91 7020640157 (https://wa.me/917020640157), email Info.
 - [Why Nexyyra](https://www.nexyyra.com/why-nexyyra): Commitments and how we work
 - [Book Consultation](https://www.nexyyra.com/book-event): Book a free consultation
 - [Contact](https://www.nexyyra.com/contact): Phone, WhatsApp, email and enquiry form
-- [About](https://www.nexyyra.com/about): The company and how it works
+- [About](https://www.nexyyra.com/about): Company story, founders and team
 - [Company Information](https://www.nexyyra.com/company): Legal entity, CIN and incorporation details
 - [FAQs](https://www.nexyyra.com/faqs): Frequently asked questions
 
@@ -43,7 +43,7 @@ Contact: Phone/WhatsApp +91 7020640157 (https://wa.me/917020640157), email Info.
 ## AI Discoverability
 
 - [Full entity file](https://www.nexyyra.com/llms-full.txt): Complete company information
-- [About](https://www.nexyyra.com/ai/about.md): Company overview
+- [About](https://www.nexyyra.com/ai/about.md): Company overview and leadership
 - [Brand](https://www.nexyyra.com/ai/brand.md): Brand, values and commitments
 - [Services](https://www.nexyyra.com/ai/services.md): Services with starting prices
 - [Company](https://www.nexyyra.com/ai/company.md): Legal and corporate details

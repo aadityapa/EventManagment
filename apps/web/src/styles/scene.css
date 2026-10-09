@@ -1,0 +1,189 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   V7 3D layer — host + CSS fallback for <Scene3D> (src/components/three).
+   The host fills its positioned parent, never takes pointer events, never
+   affects layout. The fallback glow is always present; the WebGL canvas fades
+   in over it once the first frame renders (data-scene="ready").
+
+   Layout hooks (set on .lux-scene or any ancestor):
+     --coin-x, --coin-y   hero coin position, % of the canvas
+     --coin-scale         hero coin size multiplier (0 hides it)
+     --scene-veil         optional readability veil painted above the canvas
+                          (any <image>, e.g. a linear-gradient); default none
+   Content placed over a scene needs `position: relative; z-index: 1`.
+   ────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* Defaults live on :root so a Cover (or any ancestor) can override them by
+     inheritance; the hero scene reads the computed values from its host. */
+  :where(:root) {
+    --coin-x: 74%;
+    --coin-y: 44%;
+    --coin-scale: 1;
+  }
+
+  .lux-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    contain: strict;
+    isolation: isolate;
+    background-color: transparent;
+  }
+
+  .lux-scene > canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.6s var(--lux-ease);
+  }
+
+  .lux-scene[data-scene="ready"] > canvas {
+    opacity: 1;
+  }
+
+  .lux-scene[data-scene="lost"] > canvas,
+  .lux-scene[data-scene="off"] > canvas {
+    opacity: 0;
+    transition-duration: var(--lux-dur-ui);
+  }
+
+  /* Readability veil above the canvas (and the fallback). */
+  .lux-scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--scene-veil, none);
+    pointer-events: none;
+  }
+
+  /* ── Fallback glow (also the base under the live canvas) ─────────────── */
+  .lux-scene__fallback {
+    position: absolute;
+    inset: -12%;
+    opacity: var(--scene-intensity, 1);
+    transition: opacity 1.6s var(--lux-ease);
+    background:
+      radial-gradient(1.5px 1.5px at 22% 30%, rgb(244 208 141 / 0.55), transparent 60%),
+      radial-gradient(1px 1px at 64% 22%, rgb(244 208 141 / 0.45), transparent 60%),
+      radial-gradient(1.5px 1.5px at 81% 68%, rgb(216 178 106 / 0.5), transparent 60%),
+      radial-gradient(1px 1px at 38% 74%, rgb(180 124 255 / 0.45), transparent 60%),
+      radial-gradient(1px 1px at 12% 58%, rgb(216 178 106 / 0.4), transparent 60%),
+      radial-gradient(ellipse 42% 38% at var(--coin-x) var(--coin-y), rgb(216 178 106 / 0.16), transparent 70%),
+      radial-gradient(ellipse 36% 30% at 16% 82%, rgb(180 124 255 / 0.09), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgb(244 208 141 / 0.06), transparent 75%);
+  }
+
+  .lux-scene[data-scene="ready"] .lux-scene__fallback {
+    opacity: calc(var(--scene-intensity, 1) * 0.4);
+  }
+
+  .lux-scene--dust .lux-scene__fallback {
+    background:
+      radial-gradient(1px 1px at 18% 34%, rgb(244 208 141 / 0.45), transparent 60%),
+      radial-gradient(1px 1px at 72% 26%, rgb(216 178 106 / 0.4), transparent 60%),
+      radial-gradient(1.5px 1.5px at 86% 72%, rgb(244 208 141 / 0.4), transparent 60%),
+      radial-gradient(1px 1px at 44% 80%, rgb(180 124 255 / 0.35), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 78% 30%, rgb(216 178 106 / 0.1), transparent 70%),
+      radial-gradient(ellipse 40% 35% at 10% 90%, rgb(180 124 255 / 0.06), transparent 70%);
+  }
+
+  .lux-scene--coin .lux-scene__fallback,
+  .lux-scene--globe .lux-scene__fallback {
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 50%, rgb(216 178 106 / 0.18), transparent 48%),
+      radial-gradient(circle at 50% 50%, transparent 52%, rgb(180 124 255 / 0.06) 58%, transparent 66%);
+  }
+
+  /* Static monogram coin face when WebGL is off. */
+  .lux-scene--coin .lux-scene__fallback::before {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(62%, 62cqh, 22rem);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background:
+      url("/brand/android-chrome-512.png") center / 80% no-repeat,
+      radial-gradient(circle at 40% 35%, #1a2547, #0c1430 65%, #060a1c);
+    box-shadow:
+      inset 0 0 0 2px var(--lux-gold),
+      inset 0 0 0 6px var(--lux-bg),
+      inset 0 0 0 7px var(--lux-border-gold),
+      var(--lux-glow);
+    transition: opacity 1.2s var(--lux-ease);
+  }
+
+  .lux-scene--coin {
+    container-type: size;
+  }
+
+  .lux-scene--coin[data-scene="ready"] .lux-scene__fallback::before {
+    opacity: 0;
+  }
+
+  /* Dotted disc stands in for the globe. */
+  .lux-scene--globe .lux-scene__fallback::before {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(76%, 30rem);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 1px solid var(--lux-border-gold);
+    background: radial-gradient(circle, rgb(216 178 106 / 0.35) 0.9px, transparent 1.4px) 0 0 / 14px 14px;
+    mask-image: radial-gradient(circle, #000 55%, transparent 72%);
+    transition: opacity 1.2s var(--lux-ease);
+  }
+
+  .lux-scene--globe[data-scene="ready"] .lux-scene__fallback::before {
+    opacity: 0;
+  }
+
+  /* Phones: the hero coin sits small, top-right, clear of the copy. */
+  @media (max-width: 767.98px) {
+    :where(:root) {
+      --coin-x: 80%;
+      --coin-y: 14%;
+      --coin-scale: 0.6;
+    }
+  }
+
+  /* Ambient breathing of the fallback only under the full motion preference. Under
+     "reduced" the canvas still mounts and renders one still frame (no loop). */
+  :where(:root[data-motion="full"]) {
+    .lux-scene:not([data-scene="ready"]) .lux-scene__fallback {
+      animation: lux-scene-breathe 14s ease-in-out infinite alternate;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .lux-scene {
+      display: none;
+    }
+  }
+
+  @media print {
+    .lux-scene {
+      display: none;
+    }
+  }
+}
+
+@keyframes lux-scene-breathe {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.06) translate3d(-1.5%, -1%, 0);
+  }
+}

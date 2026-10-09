@@ -46,6 +46,7 @@ export function HomeAbout() {
             ratio="4:5"
             sizes="(min-width:1024px) 34vw, (min-width:768px) 42vw, 100vw"
             className="pg-home-about__media lux-col-offset"
+            tilt="soft"
           />
         ) : null}
       </div>

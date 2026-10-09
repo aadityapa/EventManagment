@@ -54,7 +54,7 @@
     .pg-local-band { margin-block: var(--lux-space-tight) var(--lux-space-block); }
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
     .pg-local-links__link { transition: none; }
   }
 }

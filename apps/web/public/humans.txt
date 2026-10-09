@@ -4,7 +4,15 @@ CIN: U70200ME2026PTC476014 · Incorporated 2026
 Contact: Info.Events@nexyyra.com — +91 70206 40157
 Registered office: Aaditya Seva Sadan, Hiwarkhed–Telhara Rd, Gajanan Nagar, Telhara, Maharashtra 444108
 Delivery & Coordination Office: Pune, Maharashtra, India
-Last update: 2026/10/08
+Last update: 2026/10/09
+
+/* TEAM */
+Founder & Managing Director: Yash Bajaj
+Founder & Chief Technology Officer: Aaditya Padiya
+Founder & Chief Marketing Officer: Amey Korde
+Finance & Accounts Manager: Shilpa Sharma
+Data & Administration Manager: Radhika Bajaj
+Head — Decoration Department: Bharti Jadhav
 
 /* SITE */
 Standards: HTML5, CSS3, ES2024, Next.js 16, React 19

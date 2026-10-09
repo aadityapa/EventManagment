@@ -5,12 +5,13 @@ import { HomeConcepts } from "@/brand/sections/home/concepts";
 import { HomeCover } from "@/brand/sections/home/cover";
 import { HomeFaq } from "@/brand/sections/home/faq";
 import { HomeInquiry } from "@/brand/sections/home/inquiry";
+import { HomeMarquee } from "@/brand/sections/home/marquee";
 import { HomeMethod } from "@/brand/sections/home/method";
 import { HomeServices } from "@/brand/sections/home/services";
 import { Diptych, Spread } from "@/components/ui";
 
 /**
- * The home page (DESIGN.md §10.1), entirely server-rendered: cover → services
+ * The home page (DESIGN.md §10.1), entirely server-rendered: cover → (V7 services ticker) → services
  * → spread → about → method → diptych → concepts → commitments → inquiry →
  * questions. Every photo is a distinct curated asset (no photo twice).
  */
@@ -22,6 +23,7 @@ export function HomeView() {
   return (
     <div className="lux-page pg-home">
       <HomeCover />
+      <HomeMarquee />
       <HomeServices />
       {spread ? <Spread asset={spread.id} /> : null}
       <HomeAbout />

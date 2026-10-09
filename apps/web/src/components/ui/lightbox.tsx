@@ -97,16 +97,17 @@ export function Lightbox({ assets, children }: { assets: LightboxAsset[]; childr
     return () => document.removeEventListener("click", onClick);
   }, [openById]);
 
-  // showModal() gives the focus trap and inert background for free.
-  useEffect(() => {
-    const d = dialogRef.current;
-    if (d && index !== null && !d.open) d.showModal();
-  }, [index]);
-
-  // Keep the current photo in the middle slot; instant, so re-renders never visibly jump.
+  // showModal() gives the focus trap and inert background for free. It must run
+  // BEFORE the strip is scrolled: a closed dialog is display:none, so the strip's
+  // clientWidth is 0 and the scroll would land on slot 0 (the previous photo).
+  // Then keep the current photo in the middle slot; instant, so re-renders never
+  // visibly jump.
   useLayoutEffect(() => {
+    if (index === null) return;
+    const d = dialogRef.current;
+    if (d && !d.open) d.showModal();
     const s = stripRef.current;
-    if (s && index !== null) s.scrollTo({ left: s.clientWidth, behavior: "instant" });
+    if (s) s.scrollTo({ left: s.clientWidth, behavior: "instant" });
   }, [index]);
 
   const count = order.length;

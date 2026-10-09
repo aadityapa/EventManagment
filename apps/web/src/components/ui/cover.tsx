@@ -5,6 +5,7 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/lux-button";
 import { MediaFrame, resolveCoverAsset } from "@/components/ui/media-frame";
+import { Scene3D } from "@/components/three/scene-host";
 import type { BreadcrumbItem, CurationId } from "@/components/ui/types";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -74,6 +75,8 @@ export function Cover({
       className={cn("lux-cover lux-bleed", size === "text" && "lux-cover--text", size === "xl" && "lux-cover--xl", className)}
       aria-labelledby={PAGE_TITLE_ID}
     >
+      {/* V7: 3D layer behind the copy (hero particles + coin on the home cover, dust elsewhere); CSS glow fallback. */}
+      <Scene3D variant={size === "xl" ? "hero" : "dust"} intensity={size === "xl" ? 1 : 0.6} className="lux-cover__scene" />
       <div className="lux-cover__text">
         {breadcrumbs?.length ? <Breadcrumbs items={breadcrumbs} schema className="lux-cover__crumbs" /> : null}
         {folio ? (
@@ -101,7 +104,8 @@ export function Cover({
         {commitments ? <Commitments variant="cover" /> : null}
       </div>
       {photo ? (
-        <div className="lux-cover__media">
+        <div className="lux-cover__media" data-tilt="soft">
+          <span className="lux-cover__depth" aria-hidden="true" />
           <MediaFrame
             asset={photo.id}
             ratio="4:5"

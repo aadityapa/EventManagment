@@ -38,3 +38,6 @@ export * from "@/components/ui/gallery";
 export * from "@/components/ui/lightbox"; // client island
 export * from "@/components/ui/inquiry-panel";
 export * from "@/components/ui/inquiry-sentinel"; // client island
+
+// V7 (package M): the services ticker. Its pause/play button is wired by the MotionRuntime island.
+export { Marquee, type MarqueeItem, type MarqueeProps } from "@/components/ui/marquee";

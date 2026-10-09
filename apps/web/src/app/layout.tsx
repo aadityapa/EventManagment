@@ -9,6 +9,8 @@ import { SentryInit } from "@/components/monitoring/sentry-init";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { ViewTransition } from "@/components/ui/view-transition";
+import { MotionRuntime } from "@/components/motion/motion-runtime";
+import { MOTION_BOOT_SCRIPT } from "@/components/motion/motion-mode";
 import { generateSEO, globalGraphSchema } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
@@ -74,9 +76,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en-IN"
       className={`${manrope.variable} ${playfair.variable} ${cinzel.variable} ${cormorant.variable} dark`}
+      // data-motion / data-motion-source are written by the boot script before hydration.
       suppressHydrationWarning
     >
       <head>
+        {/* Site motion preference (DESIGN.md §9): sets html[data-motion] before first paint from the
+            stored "nx-motion" choice, else the OS setting; exposes window.__nxSetMotion. Render-blocking
+            on purpose and tiny; CSP script-src already allows inline scripts. */}
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT_SCRIPT }} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms-full.txt`} />
         <link rel="author" href={`${SITE_CONFIG.url}/humans.txt`} />
@@ -97,6 +104,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <BrandFooter />
         <ActionBar />
         <CookieConsent />
+        {/* V7: tilt, magnetic, cursor light, smooth scroll and the reveal fallback — one small island. */}
+        <MotionRuntime />
         <div hidden suppressHydrationWarning dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
       </body>
     </html>

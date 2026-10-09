@@ -2,29 +2,21 @@ import { blogWordCount, getBlogArticleContent } from "@/data/blog-content";
 import { EVENT_IMAGES } from "@/lib/images";
 
 /**
- * The house in facts only (V6 honesty rules): the 2026 incorporation, what it
- * plans, in-house design + production. No founder story, no track record, no
- * statistics. Languages and cities come from ENTITY_FACTS where rendered.
+ * The house in the owner's words — the /about copy restored at the owner's
+ * request (V7): introduction, vision, mission and story are the pre-V6 text.
+ * The leadership team lives in `src/data/team.ts`.
  */
 export const companyProfile = {
-  /** /about cover lead. */
+  /** /about founder chapter standfirst and the AboutPage description. */
   introduction:
-    "Weddings, corporate events and celebrations, planned and produced in-house from Pune for venues across India and abroad. One event director stays with you from the first brief to the last guest home.",
-  /** The incorporation fact — first paragraph of the /about essay. */
-  story:
-    "Nexyyra Events is the trade name of Nexyyra Events and Promotions Private Limited, a private limited company incorporated in India in 2026. Its registered office is in Telhara, Maharashtra; planning and delivery are coordinated from Pune.",
-  /** What the company plans. */
-  scope:
-    "The company plans weddings and destination weddings, corporate events and conferences, product launches, exhibitions and brand activations, milestone birthdays, fashion shows, concerts and celebrity appearances. Each begins with a free consultation and an itemised proposal, so every line is visible before you commit.",
-  /** In-house design + production. */
-  inHouse:
-    "Design and production are handled in-house. The planners who shape the concept also schedule the décor, staging, lighting and sound, and run the day itself, so the brief never passes between agencies.",
+    "Nexyyra Events are experience architects, celebration designers, and memory creators — transforming visions into unforgettable experiences. The team plans and produces events across India — from intimate destination weddings to corporate galas, celebrity appearances, and concerts.",
   vision:
-    "Celebrations that feel personal, look considered and run calmly, wherever in India they are held.",
+    "To usher in the next era of celebrations — setting new standards in creativity, precision, and guest experience across India.",
   mission:
-    "To turn each brief into a clear, itemised plan, then design and produce it in-house with one event director answerable for every detail.",
-  philosophy:
-    "Intention over excess. Every element earns its place, and every cost is shown line by line before you commit.",
+    "We craft extraordinary moments through meticulous planning, innovative design, and flawless execution — ensuring every celebration reflects our clients' unique story and exceeds every expectation.",
+  philosophy: "Luxury is intention — every detail deliberately crafted.",
+  story:
+    "Nexyyra Events began as a boutique wedding studio and has grown into a full-service experience house, operating today as Nexyyra Events and Promotions Private Limited and serving clients across Maharashtra and beyond.",
 };
 
 export const services = [

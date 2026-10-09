@@ -43,12 +43,10 @@
   animation-timing-function: var(--lux-ease);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none;
-  }
+:root[data-motion="reduced"]::view-transition-group(*),
+:root[data-motion="reduced"]::view-transition-old(*),
+:root[data-motion="reduced"]::view-transition-new(*) {
+  animation: none;
 }
 
 @layer components {
@@ -118,8 +116,13 @@
     line-height: var(--lux-leading-heading);
     letter-spacing: 0;
     text-wrap: balance;
+    hyphens: manual; /* V7: never auto-hyphenate display type */
+    overflow-wrap: normal;
     font-feature-settings: "liga", "dlig", "kern";
   }
+
+  /* The accent phrase ("end-to-end") never breaks at its own hyphens. */
+  .lux-heading .lux-accent-purple { white-space: nowrap; }
 
   .lux-heading--display-xl {
     font-size: var(--lux-text-display-xl);
@@ -386,9 +389,21 @@
   .lux-section--tighter { padding-block: var(--lux-space-tight); }
   .lux-section--plate { background: var(--lux-surface-1); }
 
+  /* Below-fold chapters skip rendering until near the viewport. The placeholder
+     deliberately UNDER-estimates (real chapters run 50–90rem): a short guess only
+     grows when rendered, while the old 48rem guess left blank bands under short
+     chapters (tight/tighter ones are 15–30rem). `auto` remembers the real size. */
   .lux-section--lazy {
     content-visibility: auto;
-    contain-intrinsic-size: auto 48rem;
+    contain-intrinsic-size: auto 36rem;
+  }
+
+  .lux-section--lazy.lux-section--tight { contain-intrinsic-size: auto 24rem; }
+  .lux-section--lazy.lux-section--tighter { contain-intrinsic-size: auto 16rem; }
+  /* Phones: stacked concept cards ("Other concepts": two cards + heading, ≈ 1,045px of content
+     at 375, padding on top) run far past the 36rem guess. A swipe strand stays one card tall. */
+  @media (max-width: 767.98px) {
+    .lux-section--lazy:has(.lux-concept):not(:has(.lux-strand)) { contain-intrinsic-size: auto 66rem; }
   }
 
   .lux-section:has(> .lux-spread:first-child) { padding-top: 0; }
@@ -424,11 +439,57 @@
 
   /* ── Cover: its own rails + 12 columns; text never overlays the photo (§5.2, §6) ── */
   .lux-cover {
+    position: relative;
+    isolation: isolate; /* scene (-2) and veil (-1) paint under the copy, inside the cover */
     display: grid;
     gap: var(--lux-space-block);
     padding-top: calc(var(--lux-nav-h-current) + var(--lux-space-cover));
     padding-bottom: var(--lux-space-block);
   }
+
+  /* V7: the 3D scene host (Scene3D) fills the cover behind everything; its own
+     CSS fallback glow shows when WebGL is off. Coin placement for the hero
+     scene: --coin-x / --coin-y (% of the canvas) and --coin-scale. */
+  .lux-cover > .lux-cover__scene {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+    --coin-x: 86%;
+    --coin-y: 7.5%;
+    --coin-scale: 0.4; /* phones: small, in the empty band above the eyebrow */
+  }
+
+  /* Readability veil between the scene and the copy (text stays ≥ 4.5:1). */
+  .lux-cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--lux-bg) 45%, transparent) 0%,
+      color-mix(in srgb, var(--lux-bg) 62%, transparent) 25%,
+      color-mix(in srgb, var(--lux-bg) 62%, transparent) 70%,
+      var(--lux-bg) 100%
+    );
+  }
+
+  .lux-cover--xl::before {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--lux-bg) 35%, transparent) 0%,
+      color-mix(in srgb, var(--lux-bg) 66%, transparent) 22%,
+      color-mix(in srgb, var(--lux-bg) 66%, transparent) 72%,
+      var(--lux-bg) 100%
+    );
+  }
+
+  .lux-cover__text,
+  .lux-cover__media,
+  .lux-cover__entity { position: relative; }
 
   .lux-cover__text {
     display: grid;
@@ -451,6 +512,7 @@
   }
 
   .lux-cover__media { min-width: 0; }
+  .lux-cover__depth { display: none; }
   .lux-cover__entity { margin: 0; }
 
   @media (max-width: 1023.98px) {
@@ -479,7 +541,48 @@
     .lux-cover__media { grid-column: col-start 7 / full-end; grid-row: 1; }
     .lux-cover__media .lux-frame__box { min-height: 72svh; }
     .lux-cover__entity { grid-column: content; }
+
+    /* Desktop: the copy column carries the veil; the photo side stays clear. */
+    .lux-cover::before {
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--lux-bg) 72%, transparent) 0%, color-mix(in srgb, var(--lux-bg) 45%, transparent) 40%, transparent 58%),
+        linear-gradient(to bottom, transparent 72%, var(--lux-bg) 100%);
+    }
+
+    /* Hero coin: the copy column fills the left half and the photo covers the right,
+       so the only free space is the band under the header, above the eyebrow and H1.
+       Below 1280 x 760 that band is too shallow for the coin to clear the H1, so the
+       coin is hidden there (the particle field stays). */
+    .lux-cover--xl > .lux-cover__scene {
+      --coin-scale: 0;
+    }
   }
+
+  @media (min-width: 1280px) and (min-height: 760px) {
+    /* ≈ x 35–49% and y 98–292px at 1440 x 900: clear of the nav (≤ 68px), the H1 (≥ 315px) and the photo (≥ 51%). */
+    .lux-cover--xl > .lux-cover__scene {
+      --coin-x: 42%;
+      --coin-y: 17%;
+      --coin-scale: 0.5;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    /* Depth frame: a gold hairline offset behind the cover photo (tilts in depth with it). */
+    .lux-cover__media { display: grid; transform-style: preserve-3d; }
+    .lux-cover__media > * { grid-area: 1 / 1; }
+    .lux-cover__depth {
+      display: block;
+      align-self: start;
+      aspect-ratio: 4 / 5;
+      min-height: 72svh;
+      border: 1px solid var(--lux-border-gold);
+      translate: -1.25rem -1.25rem;
+      transform: translateZ(-40px);
+      pointer-events: none;
+    }
+  }
+
 
   /* Services index (§6.1): the whole component lives in primitives-complex.css. */
 
@@ -778,6 +881,14 @@
 
   .lux-faq__item[open] > summary .lux-icon-plus { rotate: 45deg; }
 
+  /* 768–1679px: the fixed WhatsApp/Call corner stack (48px, pages/shell.css) sits in the
+     page gutter over the rail's right edge, so each row's open/close "+" scrolled under it
+     and a click there opened WhatsApp. Keep the toggle clear of it (48px + 1rem); from
+     ≈1664px the stack moves out into the margin beside the 90rem rail. */
+  @media (min-width: 768px) and (max-width: 1679.98px) {
+    .lux-faq__item > summary { padding-inline-end: calc(48px + var(--lux-space-4)); }
+  }
+
   .lux-faq__body {
     padding-bottom: 1.25rem;
     color: var(--lux-muted);
@@ -1018,8 +1129,11 @@
   .lux-commit--cover .lux-commit__cell { padding-top: 0; border-top: 0; }
   .lux-commit--cover dt { font-size: 1.375rem; } /* Cormorant floor */
 
+  /* Phones: three cramped columns became three compact rows. */
   @media (max-width: 639.98px) {
-    .lux-commit--cover dd { display: none; } /* keeps the offer inside the first phone screen */
+    .lux-commit--cover { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
+    .lux-commit--cover dt { text-wrap: pretty; }
+    .lux-cover .lux-commit--cover dd { display: none; } /* cover only: keeps the offer inside the first phone screen */
   }
 
   /* ── Breadcrumbs (§6) ────────────────────────────────────────────── */
@@ -1045,7 +1159,10 @@
     min-height: 2rem;
   }
 
-  .lux-crumbs li + li::before {
+  /* The separator trails the item before it (not leads the next), so when a long last
+     crumb wraps on a phone the "·" stays at the end of line one instead of orphaned at
+     the start of line two. */
+  .lux-crumbs li:not(:last-child)::after {
     content: "·";
     color: var(--lux-gold);
   }
@@ -1107,6 +1224,13 @@
   .lux-pagination [aria-disabled="true"] { opacity: 0.4; }
   .lux-pagination__gap { border-color: transparent; }
 
+  /* Phones: Previous · 1–4 · Next fit one 343px line (≈ 330px; targets stay 44px). */
+  @media (max-width: 479.98px) {
+    .lux-pagination ul { gap: 0.125rem; }
+    /* The 0.16em ui tracking on PREVIOUS/NEXT pushed the row 7px over 343px. */
+    .lux-pagination :is(a, span) { padding-inline: 0.5rem; letter-spacing: 0.04em; }
+  }
+
   /* ── On this page (§6): plain sticky list, <details> on phones ───── */
   .lux-contents {
     font-family: var(--lux-font-body);
@@ -1132,6 +1256,20 @@
   }
 
   .lux-contents summary::-webkit-details-marker { display: none; }
+
+  /* Hairline plus (→ × when open) so the collapsed phone list reads as a control. */
+  .lux-contents summary::after {
+    content: "";
+    flex: none;
+    width: 14px;
+    height: 14px;
+    background:
+      linear-gradient(currentColor, currentColor) center / 100% 1.5px no-repeat,
+      linear-gradient(currentColor, currentColor) center / 1.5px 100% no-repeat;
+    transition: rotate var(--lux-dur-ui) var(--lux-ease);
+  }
+
+  .lux-contents details[open] > summary::after { rotate: 45deg; }
 
   .lux-contents ol {
     display: grid;
@@ -1159,6 +1297,7 @@
     }
 
     .lux-contents summary { border-bottom: 0; }
+    .lux-contents summary::after { display: none; } /* always open at ≥ 1024 */
   }
 
   /* ── Concept card + banner (§6) ──────────────────────────────────── */
@@ -1300,7 +1439,7 @@
   }
 
   /* ── Reduced motion (§9.5): final states, opacity-only hovers ────── */
-  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
     .lux-reveal,
     .lux-section__head::after,
     .lux-process::before,
@@ -1311,6 +1450,7 @@
 
     .lux-section__head::after { --lux-rule: 100%; }
     .lux-process::before { transform: none; }
+    .lux-contents summary::after { transition: none; }
 
     .lux-frame__box img { transition: opacity var(--lux-dur-fast) linear; }
 

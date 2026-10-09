@@ -135,7 +135,7 @@
     .pg-blog-row__link:hover .pg-blog-row__arrow { translate: 6px 0; }
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
     .pg-blog-row__link:hover .pg-blog-row__arrow { translate: none; }
   }
 

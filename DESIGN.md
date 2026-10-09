@@ -626,6 +626,14 @@ Shared-element morphs (320ms, `::view-transition-group(.lux-morph)`): gallery ti
 
 The existing global `prefers-reduced-motion` duration collapse in `luxury-redesign.css` stays.
 
+### 9.6 Motion preference (V7 — "reduce, don't remove")
+The site has its own motion preference, so a visitor whose OS reports `prefers-reduced-motion: reduce` (the owner's Windows PC does) can still choose the 3D/animated site.
+- **Source of truth:** `html[data-motion="full" | "reduced"]`, set before first paint by a tiny inline `<script>` in `<head>` (`MOTION_BOOT_SCRIPT`, `src/components/motion/motion-mode.ts`, rendered by `layout.tsx`). A stored choice (`localStorage["nx-motion"]`) wins; otherwise the OS query decides and is followed live. `window.__nxSetMotion(mode | null)` updates the attribute + storage and dispatches `nx:motion` on `window` (other tabs follow via `storage`).
+- **Control:** `<MotionToggle>` ("Motion: On / Off", `<button aria-pressed>`, name "Motion", 44px, gold focus ring) in the footer legal row next to "Cookie settings" and in the phone menu dialog. Hidden until hydrated.
+- **CSS:** no stylesheet uses the `prefers-reduced-motion` media query. Motion rules are scoped `:where(:root[data-motion="full"])`; the 9.5 "reduce" column applies under `:where(:root:not([data-motion="full"]))` (zero added specificity, `@layer` / `@supports` / `@media (hover)` wrappers kept). The global duration collapse and the View Transition `animation: none` apply to `[data-motion="reduced"]` only. No JS = no attribute = static, fully visible page.
+- **3D:** `canRun3D()` no longer fails for reduced motion (only no WebGL2 / Save-Data / < 4 cores). `Scene3D` passes `motion` to the scene; "reduced" renders one still frame (particles at rest, coin at a 3/4 angle to the key light), no RAF loop, no pointer/gyro parallax, re-rendered only on resize / asset load. A mode change remounts the scene live.
+- **Runtime:** `MotionRuntime` runs tilt, magnetic, cursor light, Lenis and the reveal fallback only under "full" and tears them down on a switch to "reduced". The marquee loops only under "full"; under "reduced" it is a static, scrollable strip without its pause button.
+
 ---
 
 ## 10. Page blueprints
