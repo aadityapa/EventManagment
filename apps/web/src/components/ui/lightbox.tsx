@@ -156,6 +156,7 @@ export function Lightbox({ assets, children }: { assets: LightboxAsset[]; childr
       <dialog
         ref={dialogRef}
         className="lux-lightbox"
+        data-lenis-prevent
         closedby="any"
         aria-label="Photo viewer"
         onClose={onClose}

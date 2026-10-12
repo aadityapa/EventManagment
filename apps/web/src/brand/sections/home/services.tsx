@@ -1,4 +1,5 @@
 import { Button, Section, ServicesIndex } from "@/components/ui";
+import { Filigree } from "@/components/decor";
 
 /**
  * Chapter 01: all twelve services with their starting price. Desktop gets the
@@ -19,6 +20,7 @@ export function HomeServices() {
         </Button>
       }
     >
+      <Filigree kind="divider" className="nx-divider" />
       <ServicesIndex items="all" grouped frame="groups" location="home-services" />
     </Section>
   );

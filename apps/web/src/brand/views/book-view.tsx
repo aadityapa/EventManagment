@@ -55,6 +55,7 @@ export function BookView({ defaultEventType, collection }: BookViewProps) {
             defaultGuests={collection?.guests}
             eyebrow="Your brief"
             title="Share the brief"
+            celebrate
             lead="Two minutes is enough: the occasion, the date, the guest count and a budget band. We take it from there."
           />
         </div>

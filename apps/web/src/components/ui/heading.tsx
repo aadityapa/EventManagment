@@ -12,7 +12,8 @@ export type HeadingProps = {
    * V7 word-by-word reveal (default on for h1/h2). Only string children are
    * split; the text nodes, spaces and accent stay exactly as written, so the
    * heading's text and accessible name are unchanged. h1 words rise on load,
-   * h2 words on scroll; under reduced motion the words are plain inline text.
+   * h2 words on scroll (rotateX rise under motion "full", a fade under "gentle");
+   * under "off" / no JS the words are plain inline text.
    */
   split?: boolean;
   id?: string;

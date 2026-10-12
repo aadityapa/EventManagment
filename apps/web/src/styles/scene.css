@@ -158,12 +158,17 @@
     }
   }
 
-  /* Ambient breathing of the fallback only under the full motion preference. Under
-     "reduced" the canvas still mounts and renders one still frame (no loop). */
-  :where(:root[data-motion="full"]) {
+  /* Ambient breathing of the fallback while it is the only layer: "full" at 14s,
+     "gentle" at half speed. Under "off" the canvas still mounts and renders one
+     still frame (no loop) and the fallback stays put. */
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) {
     .lux-scene:not([data-scene="ready"]) .lux-scene__fallback {
       animation: lux-scene-breathe 14s ease-in-out infinite alternate;
     }
+  }
+
+  :where(:root[data-motion="gentle"]) .lux-scene:not([data-scene="ready"]) .lux-scene__fallback {
+    animation-duration: 28s;
   }
 
   @media (forced-colors: active) {

@@ -14,7 +14,7 @@ import {
   ShaderMaterial,
   type Texture,
 } from "three";
-import type { Stage } from "./stage";
+import { createShareFade, type Stage } from "./stage";
 
 export const PALETTE = {
   gold: 0xd8b26a,
@@ -57,6 +57,9 @@ uniform float uFocus;
 uniform float uIntensity;
 uniform float uMaxPx;
 uniform float uAspect;  // x is stored in units of the band height; widened live
+uniform float uCut;     // adaptive quality: sprites ranked above the cut fade out
+uniform float uBand;
+uniform float uCount;
 attribute vec4 aSeed;   // phase, speed, size, twinkle
 attribute float aSpan;  // half height of this particle's wrap band
 attribute vec3 aColor;
@@ -93,7 +96,8 @@ void main() {
   float twinkle = 0.7 + 0.3 * sin(uTime * (0.5 + aSeed.w * 1.5) + aSeed.x * 6.2831);
   float near = smoothstep(0.8, 3.0, depth);
   float shrink = px > uMaxPx ? uMaxPx / px : 1.0;
-  vAlpha = uIntensity * fog * twinkle * edge * near * (1.0 - blur * 0.45) * shrink;
+  float keep = clamp((uCut - float(gl_VertexID) / uCount) / uBand, 0.0, 1.0);
+  vAlpha = uIntensity * fog * twinkle * edge * near * (1.0 - blur * 0.45) * shrink * keep;
   vColor = aColor;
 }
 `;
@@ -203,12 +207,22 @@ export function createParticleField(stage: Stage, o: FieldOptions): ParticleFiel
       uIntensity: { value: o.intensity },
       uMaxPx: { value: 64 },
       uAspect: { value: 1 },
+      uCut: { value: 2 },
+      uBand: { value: 0.12 },
+      uCount: { value: Math.max(1, o.count) },
       uSprite: { value: createSpriteTexture(stage.preset === "lite" ? 64 : 128) },
     },
   });
 
   const points = new Points(geometry, material);
   points.frustumCulled = false;
+
+  // Adaptive quality: draw fewer sprites. The list is sorted back to front, so the
+  // range drops the nearest, largest sprites first — the bulk of the fill cost.
+  // They fade out (and back in) over ~1 s rather than vanishing in one frame.
+  const fade = createShareFade([1, 0.75, 0.55]);
+  material.uniforms.uBand.value = fade.band;
+  stage.onQualityChange((level) => fade.set(level));
 
   stage.onResize(() => {
     const dpr = stage.size.pixelRatio;
@@ -221,6 +235,8 @@ export function createParticleField(stage: Stage, o: FieldOptions): ParticleFiel
     points,
     update(time) {
       material.uniforms.uTime.value = time;
+      material.uniforms.uCut.value = fade.update(time);
+      geometry.setDrawRange(0, fade.count(o.count));
     },
   };
 }

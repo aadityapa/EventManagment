@@ -43,9 +43,9 @@
   animation-timing-function: var(--lux-ease);
 }
 
-:root[data-motion="reduced"]::view-transition-group(*),
-:root[data-motion="reduced"]::view-transition-old(*),
-:root[data-motion="reduced"]::view-transition-new(*) {
+:root[data-motion="off"]::view-transition-group(*),
+:root[data-motion="off"]::view-transition-old(*),
+:root[data-motion="off"]::view-transition-new(*) {
   animation: none;
 }
 
@@ -389,13 +389,33 @@
   .lux-section--tighter { padding-block: var(--lux-space-tight); }
   .lux-section--plate { background: var(--lux-surface-1); }
 
-  /* Below-fold chapters skip rendering until near the viewport. The placeholder
-     deliberately UNDER-estimates (real chapters run 50–90rem): a short guess only
-     grows when rendered, while the old 48rem guess left blank bands under short
-     chapters (tight/tighter ones are 15–30rem). `auto` remembers the real size. */
+  /* Below-fold chapters skip rendering until near the viewport. The placeholder is
+     the content box (padding comes on top). V8: measured on the live site (home,
+     /about, /services/wedding-planning) the old 36rem guess under-estimated every
+     chapter by ~210px at 1440 and ~360px at 375, so the page grew 1.1–1.8k px while
+     scrolling (scrollbar and smooth-scroll limit jumping). V8 QA re-measured: inner
+     pages' chapters average ≈ 41rem of content at 1440 (/about 534/815/645px), so
+     the desktop default is 40rem; the home chapters get their own measured sizes
+     below. `auto` remembers the real size once rendered; MotionRuntime lays every
+     below-fold chapter out once while idle after load (so the page height settles
+     before the first scroll) and re-measures Lenis on render. */
   .lux-section--lazy {
     content-visibility: auto;
-    contain-intrinsic-size: auto 36rem;
+    contain-intrinsic-size: auto 40rem;
+  }
+
+  /* Home chapters at ≥ 1024 (content box measured at 1440, V8 QA). Scoped by their
+     content: local pages reuse the commitments / questions ids. */
+  @media (min-width: 1024px) {
+    #about.lux-section--lazy { contain-intrinsic-size: auto 70rem; }
+    #how-we-work.lux-section--lazy { contain-intrinsic-size: auto 66rem; }
+    #concepts.lux-section--lazy { contain-intrinsic-size: auto 60rem; }
+    #commitments.lux-section--lazy:has(.pg-home-price) { contain-intrinsic-size: auto 32rem; }
+    #questions.lux-section--lazy:has(details[name="home-faq"]) { contain-intrinsic-size: auto 44rem; }
+  }
+
+  @media (max-width: 767.98px) {
+    .lux-section--lazy { contain-intrinsic-size: auto 58rem; }
   }
 
   .lux-section--lazy.lux-section--tight { contain-intrinsic-size: auto 24rem; }
@@ -404,6 +424,8 @@
      at 375, padding on top) run far past the 36rem guess. A swipe strand stays one card tall. */
   @media (max-width: 767.98px) {
     .lux-section--lazy:has(.lux-concept):not(:has(.lux-strand)) { contain-intrinsic-size: auto 66rem; }
+    /* A photo strand chapter is one row of photos: 607px rendered at 375 incl. 144px padding. */
+    .lux-section--lazy:has(.lux-strand):not(:has(.lux-concept)) { contain-intrinsic-size: auto 29rem; }
   }
 
   .lux-section:has(> .lux-spread:first-child) { padding-top: 0; }
@@ -805,10 +827,9 @@
     grid-template-columns: auto auto 1fr;
     gap: 0.5rem;
     padding: 0.6rem var(--lux-gutter) calc(0.6rem + env(safe-area-inset-bottom));
-    background: color-mix(in srgb, var(--lux-surface-1) 92%, transparent);
+    /* V8: opaque enough to read as glass without a per-frame backdrop blur while the page scrolls under it. */
+    background: color-mix(in srgb, var(--lux-surface-1) 96%, transparent);
     border-top: 1px solid var(--lux-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     transition: translate var(--lux-dur-open) var(--lux-ease), visibility var(--lux-dur-open);
   }
 
@@ -1438,8 +1459,17 @@
     .lux-ledger__link:hover { color: var(--lux-gold); }
   }
 
-  /* ── Reduced motion (§9.5): final states, opacity-only hovers ────── */
-  :where(:root:not([data-motion="full"])) {
+  /* ── Motion "gentle" (§9): fade + a short rise; photos do not scale on scroll ── */
+  /* (The 12px rise itself is a token override in motion.css: tokens.css is unlayered.) */
+  :where(:root[data-motion="gentle"]) {
+    .lux-spread img,
+    .lux-cover__media img {
+      animation: none;
+    }
+  }
+
+  /* ── Motion "off" / no JS (§9.5): final states, opacity-only hovers ── */
+  :where(:root:not([data-motion="full"]):not([data-motion="gentle"])) {
     .lux-reveal,
     .lux-section__head::after,
     .lux-process::before,

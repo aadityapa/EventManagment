@@ -54,8 +54,9 @@ function Track({ items, location, duplicate }: { items: MarqueeItem[]; location:
  * page: a duplicated track loops slowly, pauses on hover and focus, and has a
  * visible pause/play button (WCAG 2.2.2) wired by the MotionRuntime's
  * delegated `[data-marquee-toggle]` handler. Keyboard focus switches it to a
- * still, scrollable strip so the focused link is always in view; under
- * reduced motion it is that still strip from the start.
+ * still, scrollable strip so the focused link is always in view. It loops
+ * under motion "full", slower under "gentle"; under "off" / no JS
+ * it is that still strip from the start.
  */
 export function Marquee({ items, ariaLabel, speed = 60, location = "marquee", className }: MarqueeProps) {
   if (!items.length) return null;

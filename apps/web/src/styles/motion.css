@@ -1,13 +1,16 @@
 /* ==========================================================================
-   Nexyyra V7 — the motion layer (V7 brief, package M). Imported after
-   primitives-complex.css. Every effect is an enhancement over content that is
-   already visible: all motion is scoped to the site motion preference
-   `:root[data-motion="full"]` (set before paint by the inline script in
-   layout.tsx — see DESIGN.md §9 "Motion preference"; the scope is wrapped in
-   :where() so it adds no specificity), pointer effects also need a fine hover
-   pointer, and every
-   scroll-driven rule sits inside @supports (animation-timeline: view()), with
-   an IntersectionObserver fallback (MotionRuntime adds html.lux-io + .is-in).
+   Nexyyra V7/V8 — the motion layer. Imported after primitives-complex.css.
+   Every effect is an enhancement over content that is already visible. Motion
+   is scoped to the site motion level html[data-motion] (set before paint by
+   the inline script in layout.tsx — DESIGN.md §9), always inside :where() so
+   it adds no specificity:
+     full only        :where(:root[data-motion="full"])
+     gentle only      :where(:root[data-motion="gentle"])
+     full or gentle   :where(:root:is([data-motion="full"], [data-motion="gentle"]))
+   "off" and no-JS match none of them: the page is static. Pointer effects also
+   need a fine hover pointer; every scroll-driven rule sits inside
+   @supports (animation-timeline: view()), with an IntersectionObserver
+   fallback (MotionRuntime adds html.lux-io + .is-in).
    Transform/opacity only. Tokens only — no hex.
    ========================================================================== */
 
@@ -25,6 +28,28 @@
 @keyframes lux-word {
   from { opacity: 0.01; transform: translateY(0.55em) rotateX(-75deg); }
   to { opacity: 1; transform: none; }
+}
+
+/* Scroll-linked variant: it can rest half-way, so the travel stays short (V8 QA:
+   0.55em pushed the second line 24px past the h2 box, over the deck below). */
+@keyframes lux-word-scroll {
+  from { opacity: 0.01; transform: translateY(0.3em) rotateX(-60deg); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes lux-word-fade {
+  from { opacity: 0.01; }
+  to { opacity: 1; }
+}
+
+@keyframes lux-shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes lux-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @keyframes lux-parallax {
@@ -60,12 +85,17 @@
   to { background-position: -50% 0; }
 }
 
-/* ── Lenis (the essentials of lenis/dist/lenis.css; smooth scroll is desktop-only) ── */
+/* ── Lenis (the essentials of lenis/dist/lenis.css; smooth scroll is desktop-only).
+   html.lenis also sets scroll-behavior: auto (globals.css) so nothing double-eases. ── */
 html.lenis,
 html.lenis body { height: auto; }
 .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
 .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* Motion "gentle": the shared rise token is shorter (≤ 12px). tokens.css is
+   unlayered, so this override must be too. */
+:root[data-motion="gentle"] { --lux-reveal-rise: 12px; }
 
 /* ── Unlayered on purpose: these extend the unlayered .luxury-button family and
    .lux-accent-purple (luxury-redesign.css), which layered rules cannot beat. ── */
@@ -116,8 +146,9 @@ html.lenis body { height: auto; }
     height: 36rem;
     margin: -18rem 0 0 -18rem;
     border-radius: 50%;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--lux-gold) 9%, transparent), transparent);
-    mix-blend-mode: screen;
+    /* V8: plain alpha, no mix-blend-mode — a blended fixed layer forced the whole
+       page under it to be re-composited every frame. Over the navy it reads the same. */
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--lux-gold) 8%, transparent), transparent);
     opacity: 0;
     pointer-events: none;
     contain: strict;
@@ -125,8 +156,9 @@ html.lenis body { height: auto; }
   }
 
   @media (hover: hover) and (pointer: fine) {
-    :where(:root[data-motion="full"]) .lux-cursor-light { display: block; will-change: transform; }
-    :where(:root[data-motion="full"]) .lux-cursor-light.is-on { opacity: 1; }
+    :where(:root[data-motion="full"]) .lux-cursor-light { display: block; }
+    /* Promoted only while it follows the pointer. */
+    :where(:root[data-motion="full"]) .lux-cursor-light.is-on { opacity: 1; will-change: transform; }
     html:where([data-motion="full"]):has(dialog[open]) .lux-cursor-light { opacity: 0; }
   }
 
@@ -216,13 +248,16 @@ html.lenis body { height: auto; }
 
       :is(a:hover, a:focus-visible, .lux-concept:hover, .lux-concept:focus-within) .lux-frame--depth .lux-frame__box img { scale: 1.18; }
 
-      /* Section heads: words rise on the heading's own scroll timeline. */
-      .lux-split:not(.lux-split--load) { view-timeline-name: --lux-split; }
+      /* Section heads: words rise on the heading's own scroll timeline. The inset
+         is 0, not auto: auto inherits html's scroll-padding-bottom (~145px corner
+         stack on desktop), which left a heading resting in the lower part of the
+         viewport half-revealed. Every word is done by entry 74%. */
+      .lux-split:not(.lux-split--load) { view-timeline-name: --lux-split; view-timeline-inset: 0px; }
 
       .lux-split:not(.lux-split--load) .lux-split__w {
-        animation: lux-word linear both;
+        animation: lux-word-scroll linear both;
         animation-timeline: --lux-split;
-        animation-range: entry calc(min(var(--w, 0), 8) * 5%) entry calc(55% + min(var(--w, 0), 8) * 5%);
+        animation-range: entry calc(min(var(--w, 0), 8) * 3%) entry calc(50% + min(var(--w, 0), 8) * 3%);
       }
 
       /* Concept coverflow: on phones the snap strip rotates cards by position. */
@@ -273,11 +308,97 @@ html.lenis body { height: auto; }
 
     /* ── Process line: the rail glows as it draws ─────────────────────── */
     .lux-process::before { box-shadow: 0 0 12px color-mix(in srgb, var(--lux-gold) 45%, transparent); }
+  }
 
-    /* ── Marquee: the loop (paused on hover, by its button, still on focus) ── */
+  /* ── Motion "gentle": words fade (no rotateX, no depth), short rise ── */
+  :where(:root[data-motion="gentle"]) {
+    @supports (animation-timeline: view()) {
+      .lux-split:not(.lux-split--load) { view-timeline-name: --lux-split; view-timeline-inset: 0px; }
+
+      .lux-split:not(.lux-split--load) .lux-split__w {
+        animation: lux-word-fade linear both;
+        animation-timeline: --lux-split;
+        animation-range: entry calc(min(var(--w, 0), 8) * 4%) entry calc(45% + min(var(--w, 0), 8) * 4%);
+      }
+    }
+
+    .lux-split--load .lux-split__w {
+      animation: lux-word-fade 0.8s var(--lux-ease) both;
+      animation-delay: calc(60ms + min(var(--w, 0), 12) * 45ms);
+    }
+
+    @supports not (animation-timeline: view()) {
+      &.lux-io .lux-reveal {
+        transition: opacity 0.7s var(--lux-ease), translate 0.7s var(--lux-ease);
+        transition-delay: calc(min(var(--i, 0), 8) * 50ms);
+      }
+
+      &.lux-io .lux-reveal:not(.is-in) {
+        opacity: 0;
+        translate: 0 var(--lux-reveal-rise);
+      }
+
+      &.lux-io .lux-split:not(.lux-split--load) .lux-split__w {
+        transition: opacity 0.6s var(--lux-ease);
+        transition-delay: calc(min(var(--w, 0), 10) * 45ms);
+      }
+
+      &.lux-io .lux-split:not(.lux-split--load):not(.is-in) .lux-split__w { opacity: 0; }
+    }
+  }
+
+  /* ── Marquee: the loop under "full" and (slower) "gentle"; paused on hover,
+     by its button, still on focus. "off" / no JS: a still, scrollable strip. ── */
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) {
     .lux-marquee__track { animation: lux-marquee var(--lux-marquee-dur, 60s) linear infinite; }
     .lux-marquee:is(:hover, [data-paused]) .lux-marquee__track { animation-play-state: paused; }
     .lux-marquee__viewport:focus-within { overflow-x: auto; scrollbar-width: none; }
     .lux-marquee__viewport:focus-within .lux-marquee__track { animation: none; }
+  }
+
+  :where(:root[data-motion="gentle"]) .lux-marquee__track { animation-duration: calc(var(--lux-marquee-dur, 60s) * 1.75); }
+
+  /* ── Photo placeholder: a soft champagne shimmer crosses the reserved plate
+     until the image has loaded (MotionRuntime marks [data-loaded]); static
+     plate under "off" / no JS. The positioned <img> paints over it. ── */
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) .lux-frame__box:not([data-loaded])::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--lux-gold-metal) 7%, transparent) 50%, transparent 70%);
+    transform: translateX(100%); /* rests off the plate once the capped loop ends */
+    pointer-events: none;
+    animation: lux-shimmer 1.8s var(--lux-ease) 8; /* capped: a box the runtime never marks still goes still */
+  }
+
+  :where(:root[data-motion="gentle"]) .lux-frame__box:not([data-loaded])::before { animation-duration: 3s; }
+
+  /* ── Scroll progress: a thin gold line at the very top of the viewport, driven
+     by the root scroll timeline (no JS). Hidden under "off" and where scroll
+     timelines are unsupported. ── */
+  .lux-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: calc(var(--lux-z-header) + 1);
+    display: none;
+    height: 2px;
+    background: linear-gradient(90deg, var(--lux-gold-55), var(--lux-gold-metal) 70%, var(--lux-gold));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: scroll(root)) {
+    :where(:root:is([data-motion="full"], [data-motion="gentle"])) .lux-progress {
+      display: block;
+      animation: lux-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  html:is([data-chrome="app"], :has(.lux-app-route)) .lux-progress { display: none; }
+
+  @media print, (forced-colors: active) {
+    .lux-progress { display: none; }
   }
 }

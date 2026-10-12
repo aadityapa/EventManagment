@@ -11,8 +11,10 @@ export type RevealProps = {
 };
 
 /**
- * Pure CSS scroll-driven rise (`animation-timeline: view()`); no JS and no
- * IntersectionObserver fallback — without support the element is simply visible.
+ * Pure CSS scroll-driven rise (`animation-timeline: view()`; 3D depth under
+ * motion "full", a 12px rise under "gentle", static under "off"). Without
+ * support MotionRuntime adds an IntersectionObserver fallback (html.lux-io);
+ * without JS the element is simply visible.
  * Apply to chapter heads, ledger rows, index rows and concept cards, never to page wrappers.
  */
 export function Reveal({ as = "div", index, range = "entry", className, children }: RevealProps) {

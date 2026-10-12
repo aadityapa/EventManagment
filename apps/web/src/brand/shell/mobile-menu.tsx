@@ -51,7 +51,8 @@ export function MobileMenu({ children, menuIcon, closeIcon }: MobileMenuProps) {
         {menuIcon}
         Menu
       </button>
-      <dialog id="site-menu" ref={ref} closedby="any" className="pg-shell-menu" aria-label="Menu">
+      {/* data-lenis-prevent: the menu scrolls natively (its own overflow) while smooth scroll runs. */}
+      <dialog id="site-menu" ref={ref} closedby="any" className="pg-shell-menu" aria-label="Menu" data-lenis-prevent>
         <div className="pg-shell-menu__head">
           <p className="lux-label lux-label--rule-none">Menu</p>
           <button type="button" className="pg-shell-menubtn" onClick={() => ref.current?.close()}>

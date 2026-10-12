@@ -6,8 +6,9 @@
  * must leave the CSS fallback in place when it returns false.
  *
  * Reduced motion is NOT a capability failure ("reduce, don't remove"): the
- * site motion preference (html[data-motion], see components/motion/motion-mode)
- * is passed to the scene as `motion`, and "reduced" renders one still frame.
+ * site motion level (html[data-motion], see components/motion/motion-mode) is
+ * passed to the scene as `motion` — "gentle" animates slower without pointer
+ * parallax, "off" renders one still frame.
  */
 
 export type DevicePreset = "full" | "lite";

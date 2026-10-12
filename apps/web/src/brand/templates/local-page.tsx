@@ -25,6 +25,9 @@ import { getLocalPageContextualLinks } from "@/lib/wedding-internal-links";
 
 export type LocalPageProps = { variant: "city"; page: LocationPage } | { variant: "service"; page: LocalSeoPage };
 
+/** V8 décor: the wedding local pages get rose petals over the cover. */
+const PETAL_PAGES: readonly string[] = ["luxury-wedding-planner-maharashtra", "destination-wedding-planner-pune", "wedding-planner-pune"];
+
 /** Where the 13 cities sit in the footer and about ledger; until /locations exists, "Locations" points there. */
 const LOCATIONS_HREF = "/about#where-we-work";
 
@@ -159,6 +162,7 @@ function ServicePage({ page }: { page: LocalSeoPage }) {
         lead={page.intro}
         icon={<ServiceIcon name={page.icon} size={48} />}
         primary={{ href: "#inquire", cta: "local_cover_proposal" }}
+        petals={PETAL_PAGES.includes(page.slug)}
         secondary={{
           href: getWhatsAppUrl(`Hello Nexyyra Events, I would like a proposal (${page.title}).`),
           label: "WhatsApp a planner",

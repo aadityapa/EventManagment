@@ -61,7 +61,7 @@
   }
 
   @media (hover: hover) {
-    :where(:root[data-motion="full"]) {
+    :where(:root:is([data-motion="full"], [data-motion="gentle"])) {
       .pg-services-photo img { transition: scale var(--lux-dur-image) var(--lux-ease); }
       .pg-services-photo:hover img { scale: 1.03; }
     }

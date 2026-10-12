@@ -9,16 +9,17 @@
  * scene module (which pulls in `three`) and mount a canvas. Nothing here ever
  * blocks LCP, shifts layout or carries content.
  *
- * The site motion preference (html[data-motion]) is passed as `motion`:
- * "full" animates, "reduced" renders one still frame. A change ("nx:motion")
- * remounts the scene in the new mode live.
+ * The site motion level (html[data-motion]) is passed as `motion`: "full"
+ * animates, "gentle" animates at 0.4× without pointer parallax, "off" renders
+ * one still frame. A level change ("nx:motion") remounts the scene in the new
+ * mode live.
  */
 import { useEffect, useRef, type CSSProperties } from "react";
 import { canRun3D, devicePreset } from "./gating";
 import { getMotionMode, onMotionChange, type MotionMode } from "../motion/motion-mode";
 import type { SceneMount } from "./parts/stage";
 
-export type SceneVariant = "hero" | "dust" | "coin" | "globe";
+export type SceneVariant = "hero" | "dust" | "coin" | "globe" | "petals";
 
 export interface Scene3DProps {
   variant: SceneVariant;
@@ -32,6 +33,7 @@ const LOADERS: Record<SceneVariant, () => Promise<{ mount: SceneMount }>> = {
   dust: () => import("./scenes/dust"),
   coin: () => import("./scenes/coin"),
   globe: () => import("./scenes/globe"),
+  petals: () => import("./scenes/petals"),
 };
 
 type IdleWindow = Window & {
@@ -68,10 +70,27 @@ export function Scene3D({ variant, className, intensity = 1 }: Scene3DProps) {
       setState("loading");
       LOADERS[variant]()
         .then(({ mount }) => {
-          // Re-check: reduced motion may have switched on while the chunk loaded.
-          if (cancelled || dispose || !canRun3D()) return;
-          mountedMode = getMotionMode();
-          dispose = mount(host, { preset: devicePreset(), intensity: level, motion: mountedMode });
+          // V8: mount in its own idle slot. Evaluating three + the scene and building
+          // the scene were one 100–160 ms task on a phone (live baseline); split, each
+          // stays shorter and a page with two scenes interleaves them.
+          const mountNow = () => {
+            idleId = undefined;
+            timeoutId = undefined;
+            // Re-check: the level or capability may have changed while waiting.
+            if (cancelled || dispose || !canRun3D()) return;
+            mountedMode = getMotionMode();
+            try {
+              dispose = mount(host, { preset: devicePreset(), intensity: level, motion: mountedMode });
+            } catch {
+              // e.g. "Error creating WebGL context" (GPU blocked, context cap): the fallback glow stays.
+              mountedMode = undefined;
+              host.querySelectorAll("canvas").forEach((canvas) => canvas.remove());
+              setState("off");
+            }
+          };
+          if (cancelled || dispose) return;
+          if (w.requestIdleCallback) idleId = w.requestIdleCallback(mountNow, { timeout: 1000 });
+          else timeoutId = setTimeout(mountNow, 50);
         })
         .catch(() => {
           if (!cancelled) setState("off");
@@ -94,9 +113,9 @@ export function Scene3D({ variant, className, intensity = 1 }: Scene3DProps) {
       mountedMode = undefined;
     };
 
-    // Live switch between "full" and "reduced": remount in the new mode (the
-    // scene chunk is cached, so this is immediate). Not yet mounted: the
-    // pending start() reads the mode when it runs.
+    // Live switch between levels: remount in the new mode (the chunk is
+    // cached, so this is quick). Not yet mounted: the pending start() /
+    // mount reads the level when it runs.
     const stopMotion = onMotionChange((mode) => {
       if (!dispose || mode === mountedMode) return;
       teardown();

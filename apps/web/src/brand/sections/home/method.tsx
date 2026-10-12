@@ -1,4 +1,5 @@
 import { ProcessLine, Section } from "@/components/ui";
+import { Filigree } from "@/components/decor";
 
 /** Chapter 03: the five-step method, with the gold line drawing down the rail on scroll. */
 export function HomeMethod() {
@@ -11,6 +12,7 @@ export function HomeMethod() {
       lead="Every engagement follows the same method, so you always know what happens next and who is answering."
       lazy
     >
+      <Filigree kind="divider" className="nx-divider" />
       <ProcessLine variant="full" />
     </Section>
   );

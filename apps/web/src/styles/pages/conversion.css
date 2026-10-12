@@ -193,7 +193,7 @@
     color: var(--lux-subtle);
   }
 
-  :where(:root:not([data-motion="full"])) {
+  :where(:root:not([data-motion="full"]):not([data-motion="gentle"])) {
     .pg-conv-calc__chip { transition: none; }
   }
 }

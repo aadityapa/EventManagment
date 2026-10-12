@@ -1,5 +1,5 @@
 /* /about (V7 Package A — the pre-V6 format restored) + /company. Page-local only: pg-about-* / pg-team-* classes, --lux-* tokens.
-   Motion here is decorative and is scoped to :root[data-motion="full"] (the site motion preference, DESIGN.md §9); everything reads static without it. */
+   Motion here is decorative and is scoped to the site motion levels (html[data-motion], DESIGN.md §9): scroll-linked orbits under "full" and "gentle", the hover spin under "full" only; everything reads static without it. */
 @layer components {
   /* ── 1 · Hero: full-bleed photo, veil, dust scene, text in a glass panel ── */
   .pg-about-hero {
@@ -59,23 +59,19 @@
     gap: var(--lux-space-4);
     max-width: 42rem;
     padding: clamp(1.5rem, 4vw, 2.75rem);
-    background: rgb(5 8 22 / 0.82);
+    /* V8: no backdrop blur — the panel sits over the animated dust canvas, which
+       made the blur re-run every frame; a touch more navy keeps the glass read. */
+    background: rgb(5 8 22 / 0.86);
     border: 1px solid var(--lux-border-gold);
     border-radius: var(--lux-radius-md);
     box-shadow: var(--lux-shadow-plate);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
   }
 
   .pg-about-hero__crumbs { margin-bottom: 0.25rem; }
   .pg-about-hero__lead { color: color-mix(in srgb, var(--lux-white) 86%, transparent); }
 
   @media (prefers-reduced-transparency: reduce) {
-    .pg-about-hero__panel {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      background: var(--lux-surface-1);
-    }
+    .pg-about-hero__panel { background: var(--lux-surface-1); }
   }
 
   /* ── 2 · Manifesto: one large centred statement ── */
@@ -572,8 +568,8 @@
   }
 }
 
-/* ── Motion (decorative; static without support or under reduced motion) ── */
-:where(:root[data-motion="full"]) {
+/* ── Motion (decorative; static without support or under motion "off") ── */
+:where(:root:is([data-motion="full"], [data-motion="gentle"])) {
   /* The orbit turns as the card scrolls through the viewport (user-driven, not autoplay)… */
   @supports (animation-timeline: view()) {
     .pg-team-card__ring {
@@ -584,8 +580,10 @@
 
     .pg-team-card__ring--cross { animation-name: pg-team-orbit-cross; }
   }
+}
 
-  /* …and spins slowly while the card is hovered or focused. */
+/* …and, under "full" only, spins slowly while the card is hovered or focused. */
+:where(:root[data-motion="full"]) {
   @media (hover: hover) {
     .pg-team-card:is(:hover, :focus-within) .pg-team-card__ring {
       animation: pg-team-orbit 6s linear infinite;

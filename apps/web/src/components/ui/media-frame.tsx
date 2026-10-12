@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react";
-import { preload } from "react-dom";
 import { assetById, assetForRole, localSources, type CurationAsset } from "@/brand/data/image-curation";
 import { BrandImage } from "@/brand/primitives/brand-image";
 import type { CurationId, Focal, Ratio } from "@/components/ui/types";
+import { LcpImage } from "@/components/ui/lcp-image";
 import { ViewTransition } from "@/components/ui/view-transition";
 import { cn } from "@/lib/utils";
 
@@ -110,9 +110,26 @@ export function MediaFrame({
   const local = curated ? localFrameSources(curated, ratio, priority) : undefined;
 
   let img;
-  if (local) {
+  if (local && priority) {
     // Pre-exported WebP set: a plain <img> keeps the LCP request off the optimizer round-trip.
-    if (priority) preload(local.src, { as: "image", imageSrcSet: local.srcSet, imageSizes: sizes, fetchPriority: "high" });
+    // No react-dom preload(), and the eager <img> comes from a client component: from a
+    // server component either one puts a preload hint in the RSC payload, and route
+    // prefetches then fetched other pages' covers. The HTML render still preloads it.
+    img = (
+      <LcpImage
+        src={local.src}
+        srcSet={local.srcSet}
+        sizes={sizes}
+        alt={imgAlt}
+        width={width ?? curated?.width}
+        height={height ?? curated?.height}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+        style={style}
+      />
+    );
+  } else if (local) {
     img = (
       // eslint-disable-next-line @next/next/no-img-element -- sized local WebP set with its own srcset; nothing to optimise
       <img
@@ -122,9 +139,9 @@ export function MediaFrame({
         alt={imgAlt}
         width={width ?? curated?.width}
         height={height ?? curated?.height}
-        loading={priority ? "eager" : "lazy"}
+        loading="lazy"
         decoding="async"
-        fetchPriority={priority ? "high" : "low"}
+        fetchPriority="low"
         style={style}
       />
     );
@@ -144,11 +161,20 @@ export function MediaFrame({
     );
   }
 
-  const box = <div className="lux-frame__box">{img}</div>;
+  // V8: non-priority boxes show a champagne shimmer (::before) until MotionRuntime
+  // marks them [data-loaded]; the LCP frame starts marked so nothing animates behind it.
+  // Depth frames also carry the décor curtain (decor.css), clipped by the box.
+  const isDepth = depth ?? !priority;
+  const box = (
+    <div className="lux-frame__box" data-loaded={priority ? "" : undefined}>
+      {img}
+      {isDepth ? <span className="lux-frame__curtain" aria-hidden="true" /> : null}
+    </div>
+  );
 
   return (
     <figure
-      className={cn("lux-frame", RATIO_CLASS[ratio], frame && "lux-frame--gilt", (depth ?? !priority) && "lux-frame--depth", className)}
+      className={cn("lux-frame", RATIO_CLASS[ratio], frame && "lux-frame--gilt", isDepth && "lux-frame--depth", className)}
       data-tilt={tilt === "soft" ? "soft" : tilt ? "" : undefined}
     >
       {viewTransitionName ? <ViewTransition name={viewTransitionName}>{box}</ViewTransition> : box}

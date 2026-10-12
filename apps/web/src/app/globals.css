@@ -8,6 +8,8 @@
 /* V7 — the 3D scene hosts (package T) and the motion layer (package M). */
 @import "../styles/scene.css";
 @import "../styles/motion.css";
+/* V8 — the luxury-celebration décor layer (package D). */
+@import "../styles/decor.css";
 @import "../styles/lux-conversion.css";
 @import "../styles/pages/inquiry.css";
 /* Page layers (pg-* classes, @layer components) */
@@ -221,25 +223,39 @@ main {
 
 /* ── Motion safety ─────────────────────────────────────────────────────── */
 
-/* Site motion preference (DESIGN.md §9 "Motion preference"): the inline script in
-   layout.tsx sets html[data-motion="full" | "reduced"] before paint from the
-   visitor's stored choice (footer / menu toggle), else the OS setting. Only an
-   explicit "reduced" collapses every duration; with no JS (no attribute) the
-   component rules scoped :not([data-motion="full"]) keep the page static. */
-:root[data-motion="reduced"] *,
-:root[data-motion="reduced"] *::before,
-:root[data-motion="reduced"] *::after {
+/* Site motion levels (DESIGN.md §9): the inline script in layout.tsx sets
+   html[data-motion="full" | "gentle" | "off"] before paint from the visitor's
+   stored choice (footer / menu control), else the OS setting (reduce → gentle).
+   Only an explicit "off" collapses every duration and stops every loop; with no
+   JS (no attribute) the component rules scoped
+   :not([data-motion="full"]):not([data-motion="gentle"]) keep the page static. */
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
-:root[data-motion="reduced"] {
+:root[data-motion="off"] {
   scroll-behavior: auto;
 }
-:root[data-motion="reduced"]::view-transition-group(*),
-:root[data-motion="reduced"]::view-transition-old(*),
-:root[data-motion="reduced"]::view-transition-new(*) {
+:root[data-motion="off"]::view-transition-group(*),
+:root[data-motion="off"]::view-transition-old(*),
+:root[data-motion="off"]::view-transition-new(*) {
   animation: none !important;
+}
+
+/* Lenis eases wheel input and programmatic scrolls while it runs (html.lenis);
+   native smooth scrolling on top would double-ease them. */
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/* MotionRuntime lays each below-fold content-visibility chapter out once while
+   idle (one frame), so `contain-intrinsic-size: auto` remembers its real height
+   before the first scroll. Unlayered + !important: it must beat every layer. */
+.lux-cv-measure {
+  content-visibility: visible !important;
 }
 
 /* ── Legacy helpers for the private auth/admin/dashboard screens ───────── */

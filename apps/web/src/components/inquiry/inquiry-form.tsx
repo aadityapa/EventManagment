@@ -139,6 +139,7 @@ export function InquiryForm({
       const body = (await res.json().catch(() => null)) as InquiryResponse | null;
       if (body?.ok) {
         trackEvent("generate_lead", { source, event_type: payload.eventType });
+        celebrate(formRef.current);
         setStatus({ kind: "sent", reference: body.reference });
         return;
       }
@@ -382,6 +383,18 @@ export function InquiryForm({
       </form>
     </>
   );
+}
+
+/**
+ * V8 décor: a confetti burst from the submit button the moment an inquiry is
+ * confirmed (read before the form unmounts). Loaded on demand, so it is never
+ * in the form's bundle; it follows the motion level itself (gentle = a soft
+ * glow, off = nothing) and a failed chunk load is simply ignored.
+ */
+function celebrate(form: HTMLFormElement | null) {
+  const rect = form?.querySelector<HTMLElement>('button[type="submit"]')?.getBoundingClientRect();
+  const origin = rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : undefined;
+  import("@/components/decor/confetti").then(({ burstConfetti }) => burstConfetti({ origin })).catch(() => {});
 }
 
 function aria(error: string | undefined, fieldId: string) {

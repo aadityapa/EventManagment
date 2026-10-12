@@ -15,7 +15,7 @@ type ProcessLineProps = {
 /**
  * The five-step method as an ordered list. A 1px gold rail draws down the
  * list on scroll and each numeral turns gold as it enters (CSS only, see
- * primitives-complex.css); without support or under reduced motion both
+ * primitives-complex.css); without support or under motion "off" both
  * render fully drawn.
  */
 export function ProcessLine({ steps = BRAND_PROCESS_STEPS, variant = "full", columns = 1, className }: ProcessLineProps) {

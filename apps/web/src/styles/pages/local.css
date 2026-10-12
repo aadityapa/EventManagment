@@ -54,7 +54,7 @@
     .pg-local-band { margin-block: var(--lux-space-tight) var(--lux-space-block); }
   }
 
-  :where(:root:not([data-motion="full"])) {
+  :where(:root:not([data-motion="full"]):not([data-motion="gentle"])) {
     .pg-local-links__link { transition: none; }
   }
 }

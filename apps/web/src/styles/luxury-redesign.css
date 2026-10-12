@@ -138,7 +138,7 @@ html {
   cursor: not-allowed;
 }
 
-:where(:root:not([data-motion="full"])) {
+:where(:root:not([data-motion="full"]):not([data-motion="gentle"])) {
   .luxury-button,
   .luxury-button::after {
     transition-duration: 0.01ms;

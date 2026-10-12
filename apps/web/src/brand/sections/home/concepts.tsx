@@ -1,5 +1,6 @@
 import { BRAND_CASE_STUDIES } from "@/brand/data/content";
 import { Button, ConceptBanner, ConceptCard, Section, Strand } from "@/components/ui";
+import { Filigree } from "@/components/decor";
 
 /**
  * Chapter 04: the three illustrative concepts. The banner and the chapter
@@ -21,6 +22,7 @@ export function HomeConcepts() {
       }
       lazy
     >
+      <Filigree kind="divider" className="nx-divider" />
       <ConceptBanner className="pg-home-concepts__banner" />
       <Strand ariaLabel="Illustrative concepts" snap="mandatory">
         {BRAND_CASE_STUDIES.map((study) => (

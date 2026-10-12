@@ -6,6 +6,7 @@ import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/lux-button";
 import { MediaFrame, resolveCoverAsset } from "@/components/ui/media-frame";
 import { Scene3D } from "@/components/three/scene-host";
+import { FairyLights, PetalsLayer, StageLights } from "@/components/decor";
 import type { BreadcrumbItem, CurationId } from "@/components/ui/types";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -41,6 +42,8 @@ export type CoverProps = {
   viewTransitionName?: string;
   /** Wraps the cover photo in `<ViewTransition name>` — e.g. `concept-{id}` for the card → case page morph. */
   mediaViewTransitionName?: string;
+  /** V8 décor: rose petals falling over the photo and under the copy (wedding pages). */
+  petals?: boolean;
   className?: string;
 };
 
@@ -67,6 +70,7 @@ export function Cover({
   priceLine,
   viewTransitionName,
   mediaViewTransitionName,
+  petals = false,
   className,
 }: CoverProps) {
   const photo = size !== "text" && asset ? resolveCoverAsset(asset) : undefined;
@@ -77,6 +81,11 @@ export function Cover({
     >
       {/* V7: 3D layer behind the copy (hero particles + coin on the home cover, dust elsewhere); CSS glow fallback. */}
       <Scene3D variant={size === "xl" ? "hero" : "dust"} intensity={size === "xl" ? 1 : 0.6} className="lux-cover__scene" />
+      {/* V8 décor (aria-hidden, absolutely positioned, under the copy): the home cover gets stage
+          beams and a draped canopy of fairy lights under the header; every other cover a light string. */}
+      {size === "xl" ? <StageLights className="lux-cover__stage" /> : null}
+      <FairyLights variant={size === "xl" ? "drape" : "line"} bulbs={size === "xl" ? 26 : 18} className="lux-cover__lights" />
+      {petals ? <PetalsLayer intensity={0.5} className="lux-cover__petals" /> : null}
       <div className="lux-cover__text">
         {breadcrumbs?.length ? <Breadcrumbs items={breadcrumbs} schema className="lux-cover__crumbs" /> : null}
         {folio ? (

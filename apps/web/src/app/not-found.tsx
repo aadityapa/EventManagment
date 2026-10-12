@@ -1,3 +1,4 @@
+import { FairyLights } from "@/components/decor";
 import { UiIcon } from "@/components/icons";
 import { Scene3D } from "@/components/three/scene-host";
 import { Button, Heading, PAGE_TITLE_ID, Section, ServicesIndex, type ServiceSlug } from "@/components/ui";
@@ -31,6 +32,8 @@ export default function NotFound() {
         <div className="lux-coin-stage" aria-hidden="true">
           <Scene3D variant="coin" className="lux-coin-stage__scene" />
         </div>
+        {/* V8 décor: a draped string of fairy lights hanging over the coin (aria-hidden). */}
+        <FairyLights variant="drape" bulbs={16} className="pg-legal-404__lights" />
         {/* The page's one Cinzel element (DESIGN.md §10.20). */}
         <p className="pg-legal-404__numeral" aria-hidden="true">
           404

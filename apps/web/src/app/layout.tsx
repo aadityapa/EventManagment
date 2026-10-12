@@ -80,8 +80,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       suppressHydrationWarning
     >
       <head>
-        {/* Site motion preference (DESIGN.md §9): sets html[data-motion] before first paint from the
-            stored "nx-motion" choice, else the OS setting; exposes window.__nxSetMotion. Render-blocking
+        {/* Site motion level (DESIGN.md §9): sets html[data-motion] = full | gentle | off before first paint from the
+            stored "nx-motion" choice, else the OS setting (reduce → gentle); exposes window.__nxSetMotion. Render-blocking
             on purpose and tiny; CSP script-src already allows inline scripts. */}
         <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT_SCRIPT }} />
         <link rel="author" href={`${SITE_CONFIG.url}/llms.txt`} />
@@ -95,6 +95,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SentryInit />
         <AnalyticsProvider />
         <BrandHeader />
+        {/* V8: thin gold scroll-progress line (CSS scroll timeline; hidden under motion "off" / unsupported). */}
+        <div className="lux-progress" aria-hidden="true" />
         <ErrorBoundary>
           <main id="main-content" className="app-main flex flex-1 flex-col" tabIndex={-1}>
             {/* 200ms root crossfade on route change (globals.css: ::view-transition-*(.lux-crossfade)). */}
@@ -104,7 +106,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <BrandFooter />
         <ActionBar />
         <CookieConsent />
-        {/* V7: tilt, magnetic, cursor light, smooth scroll and the reveal fallback — one small island. */}
+        {/* Motion runtime: Lenis smooth scroll, tilt, magnetic, cursor light, reveal fallback — one small island. */}
         <MotionRuntime />
         <div hidden suppressHydrationWarning dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
       </body>

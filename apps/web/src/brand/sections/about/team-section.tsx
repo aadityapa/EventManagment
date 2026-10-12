@@ -7,6 +7,7 @@
  */
 import type { CSSProperties } from "react";
 import { AboutIcon, RESPONSIBILITY_ICONS } from "@/brand/sections/about/about-icons";
+import { Sparkles } from "@/components/decor";
 import { Scene3D } from "@/components/three/scene-host";
 import { UiIcon } from "@/components/icons";
 import { Reveal, Section } from "@/components/ui";
@@ -121,6 +122,8 @@ export function TeamSection({ number }: { number?: string }) {
     >
       <div className="pg-team__coin" aria-hidden="true">
         <Scene3D variant="coin" />
+        {/* V8 décor: champagne sparkles around the coin under the "Meet Our Leadership" head. */}
+        <Sparkles count={6} className="pg-team__sparkles" />
       </div>
       <Tier label="Founders" members={founders} featured />
       <Tier label="Core Team" members={coreTeam} featured={false} />

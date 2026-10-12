@@ -205,7 +205,7 @@ export function createCoin(stage: Stage): Coin {
     rig,
     update(time, delta) {
       if (stage.still) {
-        // Motion "reduced": one flattering still — face turned 3/4 toward the warm
+        // Motion "off": one flattering still — face turned 3/4 toward the warm
         // key light (upper left) so the reeded rim catches the purple rim light.
         // Hidden until the logo and reflections are in, then shown at rest.
         const ready = envReady && logoReady;

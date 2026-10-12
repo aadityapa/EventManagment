@@ -1,12 +1,13 @@
-import type { CSSProperties } from "react";
-import { preload } from "react-dom";
+import { Fragment, type CSSProperties } from "react";
 import { assetForRole, localSources, withoutDuplicates, type CurationAsset } from "@/brand/data/image-curation";
 import { BRAND_REPLY_HOURS } from "@/brand/data/reply-hours";
 import { AboutIcon, type AboutIconName } from "@/brand/sections/about/about-icons";
 import { TeamSection } from "@/brand/sections/about/team-section";
+import { FairyLights, Filigree, FiligreeFrame, PetalsLayer, Sparkles } from "@/components/decor";
 import { Scene3D } from "@/components/three/scene-host";
 import { UiIcon } from "@/components/icons";
 import { Breadcrumbs, Button, Eyebrow, focalToObjectPosition, Heading, MediaFrame, PAGE_TITLE_ID, Reveal, Section } from "@/components/ui";
+import { LcpImage } from "@/components/ui/lcp-image";
 import { companyProfile } from "@/data/cms";
 import { getWhatsAppUrl } from "@/lib/utils";
 
@@ -46,11 +47,15 @@ function SplitWords({ text }: { text: string }) {
   const words = text.split(" ");
   return (
     <>
+      {/* The space is a text node between the spans: inside an inline-block word
+          (motion "full") a trailing space collapses and the words run together. */}
       {words.map((word, i) => (
-        <span key={i} className="lux-split__w" style={{ "--w": i } as CSSProperties}>
-          {word}
+        <Fragment key={i}>
+          <span className="lux-split__w" style={{ "--w": i } as CSSProperties}>
+            {word}
+          </span>
           {i < words.length - 1 ? " " : null}
-        </span>
+        </Fragment>
       ))}
     </>
   );
@@ -61,9 +66,11 @@ export function AboutView() {
   // No photo twice on the page (near-duplicates included): portrait first, then the atelier frame.
   const [portrait] = withoutDuplicates(curated("house-portrait", "spread-about"), cover ? [cover.id] : []);
   const [atelier] = withoutDuplicates(curated("spread-about", "house-portrait"), [cover, portrait].flatMap((a) => (a ? [a.id] : [])));
+  // The hero photo is the LCP: an eager, fetchPriority="high" <img> in the HTML (the
+  // server render preloads it). No react-dom preload(), and the <img> comes from a
+  // client component (LcpImage): from a server component either one puts a preload
+  // hint in the RSC payload, so every prefetch of /about fetched this cover on other pages.
   const coverSet = cover ? localSources(cover) : undefined;
-  // The hero photo is the LCP: preload the local WebP set (never a Drive URL).
-  if (coverSet) preload(coverSet.src, { as: "image", imageSrcSet: coverSet.srcSet, imageSizes: "100vw", fetchPriority: "high" });
 
   return (
     <div className="lux-page pg-about">
@@ -72,8 +79,8 @@ export function AboutView() {
         {cover ? (
           <div className="pg-about-hero__media">
             {coverSet ? (
-              // eslint-disable-next-line @next/next/no-img-element -- local WebP set (768 is the 4:5 phone crop); the LCP stays off the optimizer
-              <img
+              // Local WebP set (768 is the 4:5 phone crop); the LCP stays off the optimizer.
+              <LcpImage
                 src={coverSet.src}
                 srcSet={coverSet.srcSet}
                 sizes="100vw"
@@ -92,6 +99,8 @@ export function AboutView() {
         ) : null}
         <div className="pg-about-hero__veil" aria-hidden="true" />
         <Scene3D variant="dust" intensity={0.6} className="pg-about-hero__scene" />
+        {/* V8 décor: the light string every non-home cover carries, under the header. */}
+        <FairyLights variant="line" bulbs={18} className="lux-cover__lights pg-about-hero__lights" />
         <div className="pg-about-hero__inner">
           <div className="pg-about-hero__panel">
             <Breadcrumbs
@@ -115,6 +124,7 @@ export function AboutView() {
 
       {/* 2 · Manifesto — one large centred statement, revealed word by word. */}
       <section className="lux-section pg-about-manifesto" aria-label="Our belief">
+        <Filigree kind="crest" className="pg-about-manifesto__crest" />
         <p className="pg-about-manifesto__text lux-split">
           <SplitWords text={MANIFESTO} />
         </p>
@@ -138,6 +148,8 @@ export function AboutView() {
           {portrait ? (
             <div className="lux-col-media pg-about-founder__media" data-tilt="soft">
               <MediaFrame asset={portrait.id} ratio="4:5" sizes="(min-width:768px) 50vw, 100vw" frame />
+              <Filigree kind="corner" className="nx-corner nx-corner--tl pg-about-founder__corner" />
+              <Filigree kind="corner" flip className="nx-corner pg-about-founder__corner pg-about-founder__corner--tr" />
             </div>
           ) : null}
         </div>
@@ -208,6 +220,9 @@ export function AboutView() {
       {/* 8 · CTA */}
       <section className="lux-section pg-about-cta" aria-labelledby="about-cta-title">
         <Reveal className="pg-about-cta__panel">
+          {/* V8 décor: engraved corners, petals falling behind the plate, sparkles by the actions. */}
+          <FiligreeFrame />
+          <PetalsLayer intensity={0.6} className="pg-about-cta__petals" />
           <Heading as="h2" id="about-cta-title">
             Let&apos;s craft your legend
           </Heading>
@@ -215,6 +230,7 @@ export function AboutView() {
             Schedule a private consultation — complimentary and without obligation. {BRAND_REPLY_HOURS}
           </p>
           <div className="pg-about-cta__actions">
+            <Sparkles count={6} className="pg-about-cta__sparkles" />
             <Button variant="primary" href="/book-event" cta="book_consultation" location="about_cta" arrow>
               Book Consultation
             </Button>

@@ -1,0 +1,795 @@
+/* ==========================================================================
+   Nexyyra V8 — the luxury-celebration décor layer (V8 brief, package D):
+   fairy lights, stage lights, filigree, sparkles, curtain unveil. Décor only:
+   aria-hidden, absolutely positioned, never affects layout. Gated by the site
+   motion level html[data-motion] = full | gentle | off (DESIGN.md §9).
+
+   Selector contract (zero specificity, so page CSS keeps winning):
+     animated  :where(:root:is([data-motion="full"], [data-motion="gentle"]))
+     full      :where(:root[data-motion="full"])
+     gentle    :where(:root[data-motion="gentle"])
+   Base rules are the static state ("off" and no JS): lights glow, filigree
+   is drawn, sparkles rest, nothing loops. Transform / opacity / rotate /
+   scale / translate only (plus stroke-dashoffset on the small filigree SVGs);
+   every loop is ≤ 0.4 Hz and soft. Text contrast: every layer that can sit
+   behind copy is capped so the copy stays ≥ 4.5:1 (see the notes per block).
+
+   Components: src/components/decor (server-rendered SVG + spans).
+   ========================================================================== */
+
+/* ── Unlayered on purpose: the champagne sparkle extends the unlayered
+   .luxury-button family (luxury-redesign.css), which layered rules cannot beat. ── */
+
+/* Champagne bubbles rising inside the primary (purple) button on hover / keyboard
+   focus. The ::before sits under the label (z -1 inside the button's own stacking
+   context) and only its opacity / translate move. ::after stays the shine sweep. */
+.luxury-button--purple::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 12% 72%, var(--nx-glint) 0 0.7px, var(--nx-glint-halo) 1.4px, transparent 2.6px),
+    radial-gradient(circle at 23% 30%, var(--nx-glint) 0 0.6px, var(--nx-glint-halo) 1.2px, transparent 2.2px),
+    radial-gradient(circle at 39% 80%, var(--nx-glint) 0 0.5px, var(--nx-glint-halo) 1.1px, transparent 2px),
+    radial-gradient(circle at 57% 22%, var(--nx-glint) 0 0.7px, var(--nx-glint-halo) 1.4px, transparent 2.6px),
+    radial-gradient(circle at 72% 68%, var(--nx-glint) 0 0.6px, var(--nx-glint-halo) 1.2px, transparent 2.2px),
+    radial-gradient(circle at 88% 36%, var(--nx-glint) 0 0.7px, var(--nx-glint-halo) 1.4px, transparent 2.6px);
+  --nx-glint: color-mix(in srgb, var(--lux-gold-metal) 30%, white);
+  --nx-glint-halo: color-mix(in srgb, var(--lux-gold-metal) 55%, transparent);
+}
+
+@media (hover: hover) {
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) .luxury-button--purple:hover::before {
+    animation: nx-champagne var(--nx-champ-dur, 1.7s) ease-in-out infinite;
+  }
+}
+
+:where(:root:is([data-motion="full"], [data-motion="gentle"])) .luxury-button--purple:focus-visible::before {
+  animation: nx-champagne var(--nx-champ-dur, 1.7s) ease-in-out infinite;
+}
+
+@keyframes nx-champagne {
+  0% { opacity: 0; translate: 0 5px; }
+  40% { opacity: var(--nx-champ-hi, 1); }
+  100% { opacity: 0; translate: 0 -6px; }
+}
+
+@layer components {
+  /* ── Pace of the ambient loops per motion level ─────────────────────── */
+  :where(:root) {
+    --nx-pace: 1;
+    --nx-tw-lo: 0.42;
+    --nx-tw-scale: 0.8;
+    --nx-sp-hi: 1;
+  }
+
+  :where(:root[data-motion="gentle"]) {
+    --nx-pace: 1.9;
+    --nx-tw-lo: 0.72;
+    --nx-tw-scale: 0.94;
+    --nx-sp-hi: 0.75;
+    --nx-champ-dur: 2.8s;
+    --nx-champ-hi: 0.7;
+  }
+
+  /* ── Fairy lights ─────────────────────────────────────────────────────
+     A catenary wire (SVG, stretched) and round bulbs (spans at % positions on
+     the same curve). Each bulb = a 1px drop, a warm core (::after) and a soft
+     radial halo (::before). Static: every bulb glows. Animated: halo and core
+     twinkle on the bulb's own period (2.6–5.4 s, alternate), so neighbours
+     never pulse together. */
+  .nx-fl {
+    --nx-fl-h: 2.75rem;
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 0;
+    height: var(--nx-fl-h);
+    pointer-events: none;
+    user-select: none;
+    /* No paint containment: the lowest bulbs' halos hang below the box and were
+       cut flat at its edge. Overflow is only a few px down / at the side bulbs,
+       inside covers and a footer that already clip horizontally (page overflow-x: clip). */
+    contain: layout style;
+  }
+
+  /* Deepest bulb ≈ 78% down. 375: 40px under the nav vs the eyebrow at 48px;
+     1024: ≈ 132px vs 150px; 1440: ≈ 151px vs 180px — the canopy never meets the copy. */
+  .nx-fl--drape { --nx-fl-h: clamp(2.5rem, 0.5rem + 6vw, 8rem); }
+
+  .nx-fl--warm {
+    --nx-fl-core: color-mix(in srgb, var(--lux-gold-metal) 40%, white);
+    --nx-fl-core-2: var(--lux-gold-metal);
+    --nx-fl-glow: color-mix(in srgb, var(--lux-gold-metal) 50%, transparent);
+    --nx-fl-glow-2: color-mix(in srgb, var(--lux-gold) 16%, transparent);
+  }
+
+  .nx-fl--champagne {
+    --nx-fl-core: color-mix(in srgb, var(--lux-gold-metal) 16%, white);
+    --nx-fl-core-2: color-mix(in srgb, var(--lux-gold-metal) 72%, white);
+    --nx-fl-glow: color-mix(in srgb, var(--lux-gold-metal) 36%, transparent);
+    --nx-fl-glow-2: color-mix(in srgb, var(--lux-gold-metal) 12%, transparent);
+  }
+
+  .nx-fl__wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .nx-fl__wire {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lux-gold) 42%, transparent);
+    stroke-width: 1;
+  }
+
+  .nx-fl__wire--back { stroke: color-mix(in srgb, var(--lux-gold) 22%, transparent); }
+
+  .nx-fl__bulb {
+    --nx-halo: 1.75rem;
+    --nx-core: 0.3rem;
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 1px;
+    height: 0.3rem;
+    translate: -50% 0;
+    background: color-mix(in srgb, var(--lux-gold) 50%, transparent);
+  }
+
+  .nx-fl__bulb--back {
+    --nx-halo: 1.25rem;
+    --nx-core: 0.22rem;
+    opacity: 0.62;
+  }
+
+  .nx-fl__bulb::before,
+  .nx-fl__bulb::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+  }
+
+  .nx-fl__bulb::before {
+    top: calc(100% + var(--nx-core) * 0.6);
+    width: calc(var(--nx-halo) * var(--s, 1));
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--nx-fl-glow), var(--nx-fl-glow-2) 48%, transparent);
+    opacity: 0.88;
+  }
+
+  .nx-fl__bulb::after {
+    top: 100%;
+    width: calc(var(--nx-core) * var(--s, 1));
+    height: calc(var(--nx-core) * var(--s, 1) * 1.25);
+    translate: -50% 0;
+    border-radius: 50% 50% 45% 45% / 42% 42% 58% 58%;
+    background: radial-gradient(circle at 50% 38%, var(--nx-fl-core), var(--nx-fl-core-2) 72%);
+  }
+
+  @media (max-width: 767.98px) {
+    .nx-fl__bulb { --nx-halo: 1.4rem; --nx-core: 0.26rem; }
+    .nx-fl__bulb--back { --nx-halo: 1rem; --nx-core: 0.2rem; }
+  }
+
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) {
+    .nx-fl__bulb::before {
+      animation: nx-fl-glow calc(var(--t, 4s) * var(--nx-pace)) ease-in-out var(--d, 0s) infinite alternate;
+    }
+
+    .nx-fl__bulb::after {
+      animation: nx-fl-core calc(var(--t, 4s) * var(--nx-pace)) ease-in-out var(--d, 0s) infinite alternate;
+    }
+  }
+
+  /* Placements. Home cover: the canopy hangs under the (transparent) header and
+     ends above the eyebrow at every width; inner covers: a light string under
+     the header. Footer: along its top border. 404: draped over the coin. */
+  .lux-cover > .lux-cover__lights { top: calc(var(--lux-nav-h-current) + env(safe-area-inset-top, 0px)); }
+
+  /* The About hero is bespoke (not <Cover>) but carries the same string: above the
+     scene (-1, earlier in DOM) and the veil, under the glass panel, which starts
+     ≥ 3rem below the header — deeper than the 2.75rem string. */
+  .pg-about-hero > .pg-about-hero__lights {
+    top: calc(var(--lux-nav-h-current) + env(safe-area-inset-top, 0px));
+    z-index: -1;
+  }
+
+  /* Home cover ≥ 1280 × 760, where the hero coin shows in the band between the
+     header and the H1 (measured at 1280 × 760, 1366 × 768, 1440 × 900: the band
+     ends at the H1's first line, ≥ 298px; at 1920 × 1080 at 422px). The canopy
+     is lifted to 4rem (deepest bulb core ≈ 130px), and the coin is set in px
+     (the cover's height varies 1200–1550px, so % would drift): a 142px coin
+     centred at 221px spans 150–292px — 20px under the lowest bulb row, clear of
+     the H1. The scene keeps the coin's screen height fixed through the camera
+     sway / parallax (scenes/hero.ts), so the gap holds while it moves.
+     Supersedes the % values in primitives.css for this breakpoint. */
+  @media (min-width: 1280px) and (min-height: 760px) {
+    .lux-cover--xl > .lux-cover__lights { --nx-fl-h: 4rem; }
+
+    .lux-cover--xl > .lux-cover__scene {
+      --coin-x: 42%;
+      --coin-y: 221px;
+      --coin-size: 142px;
+      --coin-scale: 1;
+    }
+  }
+
+  /* Home cover below 1024: the coin sits right of the eyebrow (which ends ≤ 52% of
+     the width), between the canopy and the H1 — the % placement in primitives.css
+     hung it in the deepest right-hand swag. Set in px per band (the cover height
+     varies, so % would drift). From the CSS: canopy top = nav 64px; lowest bulb
+     bottom at x ≈ 88–92% (front swag, 68–70% deep) = 64 + 0.7 × --nx-fl-h + drop
+     4.8 + core 5.9 (6.8 from 768); eyebrow top = 64 + --lux-space-cover; H1 line
+     top = eyebrow + 15 + 1lh (≥ 25.8px). Each band: coin top ≥ 12px under the
+     lowest bulb, bottom ≥ 6px above the H1 line at the band's worst width, e.g.
+     375: bulbs end ≤ 102px, coin 117.5–146.5px, H1 from 152.8px. */
+  @media (max-width: 1023.98px) {
+    .lux-cover--xl > .lux-cover__scene {
+      --coin-x: 90%;
+      --coin-y: 132px;
+      --coin-size: 29px;
+      --coin-scale: 1;
+    }
+  }
+
+  @media (min-width: 600px) and (max-width: 679.98px) {
+    .lux-cover--xl > .lux-cover__scene { --coin-y: 134px; --coin-size: 25px; }
+  }
+
+  @media (min-width: 680px) and (max-width: 767.98px) {
+    .lux-cover--xl > .lux-cover__scene { --coin-y: 139.5px; --coin-size: 28px; }
+  }
+
+  @media (min-width: 768px) and (max-width: 899.98px) {
+    .lux-cover--xl > .lux-cover__scene { --coin-y: 146px; --coin-size: 29px; }
+  }
+
+  @media (min-width: 900px) and (max-width: 1023.98px) {
+    .lux-cover--xl > .lux-cover__scene { --coin-y: 154px; --coin-size: 34px; }
+  }
+
+  .pg-shell-footer { position: relative; }
+  .pg-shell-footer > .pg-shell-footer__lights { top: 0; }
+
+  .pg-legal-404 { position: relative; }
+
+  .pg-legal-404 > .pg-legal-404__lights {
+    --nx-fl-h: clamp(4.5rem, 3rem + 5vw, 7rem);
+    top: calc(var(--lux-nav-h-current) + 0.5rem);
+  }
+
+  /* ── Stage lights ─────────────────────────────────────────────────────
+     Soft cones from the rig above (conic-gradient, ≤ 10% alpha, faded along
+     their length by a static mask), between the cover veil (-1, ::before) and
+     the copy. Worst case under muted copy: navy + veil + 10% champagne ≈
+     #212231 → muted text 8:1. Full: a slow sweep; gentle: a small drift. */
+  .nx-stage {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+
+  .nx-stage__beam {
+    --nx-beam-w: 64rem;
+    position: absolute;
+    top: -6%;
+    left: var(--bx);
+    width: var(--nx-beam-w);
+    height: 118%;
+    margin-left: calc(var(--nx-beam-w) / -2);
+    transform-origin: 50% 0;
+    rotate: var(--r0);
+    background: conic-gradient(
+      from 166deg at 50% 0%,
+      transparent 0deg,
+      var(--nx-beam) 11deg,
+      var(--nx-beam-hi) 14deg,
+      var(--nx-beam) 17deg,
+      transparent 28deg
+    );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.55) 50%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.55) 50%, transparent 92%);
+  }
+
+  .nx-stage__beam--1 {
+    --bx: 16%;
+    --r0: -9deg;
+    --r1: 7deg;
+    --nx-beam-dur: 17s;
+    --nx-beam: color-mix(in srgb, var(--lux-gold-metal) 7%, transparent);
+    --nx-beam-hi: color-mix(in srgb, var(--lux-gold-metal) 10%, transparent);
+  }
+
+  .nx-stage__beam--2 {
+    --bx: 50%;
+    --r0: 6deg;
+    --r1: -6deg;
+    --nx-beam-dur: 23s;
+    --nx-beam: color-mix(in srgb, var(--lux-purple-bright) 6%, transparent);
+    --nx-beam-hi: color-mix(in srgb, var(--lux-purple-bright) 8%, transparent);
+  }
+
+  .nx-stage__beam--3 {
+    --bx: 84%;
+    --r0: 10deg;
+    --r1: -8deg;
+    --nx-beam-dur: 19s;
+    --nx-beam: color-mix(in srgb, var(--lux-gold-metal) 6%, transparent);
+    --nx-beam-hi: color-mix(in srgb, var(--lux-gold-metal) 9%, transparent);
+  }
+
+  :where(:root[data-motion="full"]) .nx-stage__beam {
+    animation: nx-beam var(--nx-beam-dur) ease-in-out infinite alternate;
+  }
+
+  :where(:root[data-motion="gentle"]) .nx-stage__beam {
+    animation: nx-beam-drift calc(var(--nx-beam-dur) * 2) ease-in-out infinite alternate;
+  }
+
+  /* ── Filigree ─────────────────────────────────────────────────────────
+     Engraved hairlines (≈ 1px at their rendered size) + the gold jewel dot.
+     Static: drawn. Full: strokes draw in on the ornament's own view timeline,
+     the jewels settle last. Gentle: the whole ornament fades in. */
+  .nx-filigree {
+    display: block;
+    overflow: visible;
+    pointer-events: none;
+    color: color-mix(in srgb, var(--lux-gold) 74%, transparent);
+  }
+
+  .nx-filigree__line { stroke-width: 1.15; }
+  .nx-filigree__line--faint { opacity: 0.55; }
+  .nx-filigree__jewel { fill: var(--lux-gold); stroke: none; }
+  .nx-filigree--flip { scale: -1 1; }
+
+  /* Section boundary: centred in the chapter's existing top padding (adds no height,
+     sits inside the lazy section's paint box). */
+  .lux-section > .nx-divider {
+    position: absolute;
+    top: calc(var(--lux-space-section) / 2);
+    left: 50%;
+    width: clamp(9rem, 6rem + 10vw, 14rem);
+    height: auto;
+    aspect-ratio: 10;
+    translate: -50% -50%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+
+  /* About manifesto: a small crest in the top padding, above its gold line. */
+  .pg-about-manifesto > .pg-about-manifesto__crest {
+    position: absolute;
+    top: calc(var(--lux-space-section) / 2);
+    left: 50%;
+    width: clamp(4rem, 3rem + 3vw, 5.5rem);
+    height: auto;
+    aspect-ratio: 80 / 28;
+    translate: -50% -60%;
+  }
+
+  /* Corners: four (FiligreeFrame) inside a plate's padding, or placed singly. */
+  .nx-corners {
+    position: absolute;
+    inset: var(--nx-corner-inset, 0.5rem);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .nx-corner {
+    position: absolute;
+    width: var(--nx-corner-size, clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem));
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .nx-corner--tl { top: 0; left: 0; }
+  .nx-corner--tr { top: 0; right: 0; scale: -1 1; }
+  .nx-corner--bl { bottom: 0; left: 0; scale: 1 -1; }
+  .nx-corner--br { bottom: 0; right: 0; scale: -1 -1; }
+
+  /* About founder photo: two corners framing it from outside, like a mount. */
+  .pg-about-founder__media { position: relative; }
+
+  .pg-about-founder__media > .pg-about-founder__corner {
+    --nx-corner-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+    top: -0.75rem;
+    left: -0.75rem;
+  }
+
+  .pg-about-founder__media > .pg-about-founder__corner--tr {
+    left: auto;
+    right: -0.75rem;
+  }
+
+  @supports (animation-timeline: view()) {
+    :where(:root[data-motion="full"]) {
+      .nx-filigree {
+        view-timeline: --nx-filigree block;
+        view-timeline-inset: 0px;
+      }
+
+      .nx-filigree__line {
+        stroke-dasharray: 1;
+        animation: nx-draw linear both;
+        animation-timeline: --nx-filigree;
+        animation-range: entry 10% cover 42%;
+      }
+
+      .nx-filigree__jewel {
+        animation: nx-fade linear both;
+        animation-timeline: --nx-filigree;
+        animation-range: cover 30% cover 45%;
+      }
+    }
+
+    :where(:root[data-motion="gentle"]) .nx-filigree {
+      animation: nx-fade linear both;
+      animation-timeline: view(block 0px);
+      animation-range: entry 0% cover 35%;
+    }
+  }
+
+  /* ── Sparkles ─────────────────────────────────────────────────────────
+     Four-point champagne stars with a 1–3px glow on the edge of their box.
+     Static: resting, faint. Animated: each twinkles on its own ≥ 2.8 s period. */
+  .nx-sparkles {
+    position: absolute;
+    inset: -0.75rem;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .nx-sparkle {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--sz, 10px);
+    height: var(--sz, 10px);
+    translate: -50% -50%;
+    color: var(--lux-gold-metal);
+    opacity: 0.7;
+    scale: 0.8;
+  }
+
+  .nx-sparkle::before {
+    content: "";
+    position: absolute;
+    inset: 25%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--lux-gold-metal) 70%, transparent), transparent);
+    scale: 2.2;
+  }
+
+  .nx-sparkle svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  :where(:root:is([data-motion="full"], [data-motion="gentle"])) .nx-sparkle {
+    animation: nx-sparkle calc(var(--t, 3.4s) * var(--nx-pace)) ease-in-out var(--d, 0s) infinite;
+  }
+
+  /* About team: around the coin under "Meet Our Leadership". */
+  .pg-team__coin > .pg-team__sparkles { inset: -12% -60%; }
+
+  /* About CTA: around the action row (buttons paint above, so stars only show in the margins). */
+  .pg-about-cta__actions { position: relative; }
+  .pg-about-cta__actions > .pg-about-cta__sparkles { inset: -1rem -1.25rem; }
+
+  /* Inquiry panel: anchored to the submit button where anchor positioning exists;
+     elsewhere the stars are simply not shown (décor only). */
+  .lux-inquiry__form { position: relative; }
+  .lux-inquiry__form > .lux-inquiry__sparkles { display: none; }
+
+  @supports (anchor-name: --nx-submit) {
+    .lux-inquiry__form { anchor-scope: --nx-submit; }
+    .lux-inquiry__form .lux-form__actions > button[type="submit"] { anchor-name: --nx-submit; }
+
+    .lux-inquiry__form > .lux-inquiry__sparkles {
+      display: block;
+      position-anchor: --nx-submit;
+      /* Sent state: the form (and its submit anchor) is gone — hide, never stack at 0,0. */
+      position-visibility: anchors-valid;
+      inset: auto;
+      top: calc(anchor(top) - 0.85rem);
+      left: calc(anchor(left) - 0.85rem);
+      width: calc(anchor-size(width) + 1.7rem);
+      height: calc(anchor-size(height) + 1.7rem);
+    }
+  }
+
+  /* ── Petals (the lazy WebGL `petals` scene) ───────────────────────────
+     The wrapper is positioned by its caller; the CSS fallback is a faint
+     scatter of static petals. */
+  .nx-petals {
+    --nx-blush: #e9b7b9;
+    --nx-rose: #c9727f;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    contain: layout paint style;
+  }
+
+  .lux-scene--petals .lux-scene__fallback {
+    inset: 0;
+    background:
+      radial-gradient(ellipse 7px 4.5px at 14% 18%, color-mix(in srgb, var(--nx-blush) 45%, transparent), transparent 75%),
+      radial-gradient(ellipse 5px 8px at 37% 62%, color-mix(in srgb, var(--nx-rose) 40%, transparent), transparent 75%),
+      radial-gradient(ellipse 8px 5px at 63% 28%, color-mix(in srgb, var(--nx-blush) 40%, transparent), transparent 75%),
+      radial-gradient(ellipse 5px 7px at 82% 74%, color-mix(in srgb, var(--nx-blush) 45%, transparent), transparent 75%),
+      radial-gradient(ellipse 6px 4px at 92% 12%, color-mix(in srgb, var(--nx-rose) 35%, transparent), transparent 75%),
+      radial-gradient(ellipse 4px 6px at 26% 88%, color-mix(in srgb, var(--lux-gold-metal) 35%, transparent), transparent 75%);
+  }
+
+  /* Petals over the cover: above the photo (z 1), under the copy (z 2). The copy
+     column is masked out entirely — at any reduced strength a petal over navy reads
+     as a flat grey-mauve smudge — so petals fall over the photo and in the empty
+     band under the header only, at full colour. Phones (text stacked over the
+     photo): free above the copy's top half, fading in towards the photo. */
+  .lux-cover > .lux-cover__petals {
+    z-index: 1;
+    opacity: 0.9;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 52%, #000 64%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, transparent 52%, #000 64%, #000 90%, transparent 100%);
+  }
+
+  /* Text-only covers (the wedding local pages) on phones: the copy fills the width,
+     so petals drift only through the band between the header and the copy, under
+     the light string (the cover's top padding), and fade out before the crumbs. */
+  .lux-cover--text > .lux-cover__petals {
+    --nx-petal-band: calc(var(--lux-nav-h-current) + env(safe-area-inset-top, 0px) + var(--lux-space-cover));
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(var(--nx-petal-band) * 0.55), transparent var(--nx-petal-band));
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(var(--nx-petal-band) * 0.55), transparent var(--nx-petal-band));
+  }
+
+  .lux-cover:has(> .lux-cover__petals) > :is(.lux-cover__text, .lux-cover__entity) { z-index: 2; }
+
+  /* The cover photo's caption is text too: lifted with the copy. (.lux-cover__media
+     is no stacking context below 1024; from 1024 it is — preserve-3d — so there the
+     mask below also ends the petals above the caption band.) */
+  .lux-cover:has(> .lux-cover__petals) > .lux-cover__media .lux-caption {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 1024px) {
+    /* Photo side only (cols 7–12 start at ≈ 50%), ending above the photo caption,
+       which sits in the cover's last ≈ block gap + 3.5rem (two lines). */
+    .lux-cover > .lux-cover__petals {
+      -webkit-mask-image:
+        linear-gradient(90deg, transparent 0%, transparent 48%, #000 56%),
+        linear-gradient(to top, transparent 0, transparent calc(var(--lux-space-block) + 3.75rem), #000 calc(var(--lux-space-block) + 7.5rem));
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(90deg, transparent 0%, transparent 48%, #000 56%),
+        linear-gradient(to top, transparent 0, transparent calc(var(--lux-space-block) + 3.75rem), #000 calc(var(--lux-space-block) + 7.5rem));
+      mask-composite: intersect;
+    }
+
+    /* Text-only covers: the copy holds cols 1–8; petals fall freely in cols 9–12. */
+    .lux-cover--text > .lux-cover__petals {
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 66%, #000 76%);
+      mask-image: linear-gradient(90deg, transparent 0%, transparent 66%, #000 76%);
+    }
+  }
+
+  /* Petals behind a plate (inquiry panel, About CTA): the layer reaches past the
+     plate by --nx-halo-*, paints under its content (z -1 in the plate's own
+     stacking context) and is masked to the ring AROUND the plate — the plate's
+     own box (the layer's content box) is cut out — so petals pass behind it and
+     never sit under any of its text. Outer edges feather in. */
+  .lux-inquiry,
+  .pg-about-cta__panel {
+    position: relative;
+    isolation: isolate;
+  }
+
+  :is(.lux-inquiry > .lux-inquiry__petals, .pg-about-cta__panel > .pg-about-cta__petals) {
+    --nx-halo-t: 4rem;
+    --nx-halo-b: 3.5rem;
+    --nx-halo-x: 0px;
+    inset: calc(-1 * var(--nx-halo-t)) calc(-1 * var(--nx-halo-x)) calc(-1 * var(--nx-halo-b));
+    z-index: -1;
+    padding: var(--nx-halo-t) var(--nx-halo-x) var(--nx-halo-b);
+    contain: layout style;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(to bottom, transparent, #000 calc(var(--nx-halo-t) * 0.6), #000 calc(100% - var(--nx-halo-b) * 0.6), transparent),
+      linear-gradient(90deg, transparent, #000 calc(var(--nx-halo-x) * 0.6), #000 calc(100% - var(--nx-halo-x) * 0.6), transparent);
+    -webkit-mask-composite: xor, source-in;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(to bottom, transparent, #000 calc(var(--nx-halo-t) * 0.6), #000 calc(100% - var(--nx-halo-b) * 0.6), transparent),
+      linear-gradient(90deg, transparent, #000 calc(var(--nx-halo-x) * 0.6), #000 calc(100% - var(--nx-halo-x) * 0.6), transparent);
+    mask-composite: exclude, intersect;
+  }
+
+  /* /book-event: a note can sit right above the plate, so petals show below it only. */
+  .pg-conv-split .lux-inquiry > .lux-inquiry__petals { --nx-halo-t: 0px; }
+
+  /* Below 1024 the "What happens next" aside follows the plate after one block gap:
+     the ring ends (fully faded) inside that gap, never under its text. */
+  @media (max-width: 1023.98px) {
+    .pg-conv-split .lux-inquiry > .lux-inquiry__petals { --nx-halo-b: calc(var(--lux-space-block) * 0.85); }
+  }
+
+  /* About CTA: a narrow plate in a wide section, so petals also fall at its sides. */
+  .pg-about-cta__panel > .pg-about-cta__petals {
+    --nx-halo-t: 3.5rem;
+    --nx-halo-b: 3rem;
+    --nx-halo-x: clamp(0px, (100vw - 48rem) / 2 - 2rem, 16rem);
+  }
+
+  /* Inquiry plate corners sit in its padding (≥ 1rem phones, ≥ 2rem from 1024). */
+  .lux-inquiry > .lux-inquiry__corners { --nx-corner-inset: 0.375rem; }
+
+  /* ── Price table head: an engraved corner on each outer head cell (wide tables only). ── */
+  @container (min-width: 640px) {
+    .lux-pricetable__table thead th:is(:first-child, :last-child) { position: relative; }
+
+    .lux-pricetable__table thead th:is(:first-child, :last-child)::after {
+      content: "";
+      position: absolute;
+      top: 0.35rem;
+      left: 0.35rem;
+      width: 2rem;
+      aspect-ratio: 1;
+      pointer-events: none;
+      opacity: 0.8;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23d8b26a' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 45V11C3 6.6 6.6 3 11 3H45'/%3E%3Cpath d='M8.5 31V14.5C8.5 11.2 11.2 8.5 14.5 8.5H31' opacity='.55'/%3E%3Cpath d='M17 17C21 18.5 25.5 23 27.5 27.5C23 25.5 18.5 21 17 17Z'/%3E%3Ccircle cx='17' cy='17' r='1.5' fill='%23d8b26a' stroke='none'/%3E%3C/svg%3E")
+        center / contain no-repeat;
+    }
+
+    .lux-pricetable__table thead th:last-child::after {
+      left: auto;
+      right: 0.35rem;
+      scale: -1 1;
+    }
+  }
+
+  /* ── Photo frames: the curtain unveil ─────────────────────────────────
+     A gold-edged panel over each scrolling (depth) photo slides aside on the
+     frame's own view timeline (full) or fades (gentle). Only where scroll
+     timelines exist — or, with the IntersectionObserver fallback (html.lux-io),
+     inside a .lux-reveal once it is .is-in. Never on the LCP cover photo
+     (priority frames carry no depth class); never without motion. */
+  .lux-frame__curtain { display: none; }
+
+  @supports (animation-timeline: view()) {
+    :where(:root:is([data-motion="full"], [data-motion="gentle"])) {
+      /* Inset 0: the default (auto) takes html's scroll-padding (≈ 145px of corner
+         stack at the bottom), which kept on-screen photos veiled (cf. .lux-split). */
+      .lux-frame--depth .lux-frame__box {
+        view-timeline: --nx-curtain block;
+        view-timeline-inset: 0px;
+      }
+
+      .lux-frame--depth .lux-frame__curtain {
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, var(--lux-gold) 0 1px, color-mix(in srgb, var(--lux-gold) 28%, transparent) 1px 4px, transparent 4px),
+          linear-gradient(90deg, var(--lux-surface-2), var(--lux-surface-1));
+        animation: nx-curtain linear both;
+        animation-timeline: --nx-curtain;
+        /* Done within ~280px of the frame entering, whatever its height: a % of
+           cover kept tall frames half-veiled for several hundred px of scroll.
+           A frame shorter than that finishes once fully in (min(); the plain
+           280px line stays as the fallback where min() is not accepted here). */
+        animation-range: entry 0% entry 280px;
+        animation-range: entry 0% entry min(280px, 100%);
+      }
+    }
+
+    /* A view timeline follows the frame's NEAREST scroller. Inside a horizontal
+       strip (phone strands, nav strands, the services popover) that box never
+       scrolls vertically, so the curtain would stop part-way over the photo for
+       good: no curtain there. */
+    :is(.lux-strand--nav, .pg-shell-panel, .lux-marquee__viewport) .lux-frame__curtain { display: none; }
+
+    @media (max-width: 767.98px) {
+      .lux-strand .lux-frame__curtain { display: none; }
+    }
+
+    :where(:root[data-motion="gentle"]) .lux-frame--depth .lux-frame__curtain {
+      background: var(--lux-surface-2);
+      animation-name: nx-fade-out;
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    :where(:root:is([data-motion="full"], [data-motion="gentle"])).lux-io .lux-reveal .lux-frame--depth .lux-frame__curtain {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, var(--lux-gold) 0 1px, color-mix(in srgb, var(--lux-gold) 28%, transparent) 1px 4px, transparent 4px),
+        linear-gradient(90deg, var(--lux-surface-2), var(--lux-surface-1));
+      transition: translate 1.1s var(--lux-ease) 0.15s, opacity 0.9s var(--lux-ease) 0.15s;
+    }
+
+    :where(:root[data-motion="full"]).lux-io .lux-reveal.is-in .lux-frame--depth .lux-frame__curtain { translate: 101% 0; }
+    :where(:root[data-motion="gentle"]).lux-io .lux-reveal.is-in .lux-frame--depth .lux-frame__curtain { opacity: 0; }
+  }
+
+  @media (forced-colors: active) {
+    .nx-fl,
+    .nx-stage,
+    .nx-sparkles,
+    .nx-petals,
+    .nx-filigree { display: none; }
+  }
+
+  @media print {
+    .nx-fl,
+    .nx-stage,
+    .nx-sparkles,
+    .nx-petals { display: none; }
+  }
+}
+
+/* ── Keyframes ─────────────────────────────────────────────────────────── */
+@keyframes nx-fl-glow {
+  from { opacity: var(--nx-tw-lo); scale: var(--nx-tw-scale); }
+  to { opacity: 1; scale: 1.04; }
+}
+
+@keyframes nx-fl-core {
+  from { opacity: calc(var(--nx-tw-lo) + 0.3); }
+  to { opacity: 1; }
+}
+
+@keyframes nx-beam {
+  from { rotate: var(--r0); }
+  to { rotate: var(--r1); }
+}
+
+@keyframes nx-beam-drift {
+  from { rotate: var(--r0); }
+  to { rotate: calc(var(--r0) * 0.55); }
+}
+
+@keyframes nx-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes nx-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes nx-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes nx-sparkle {
+  0%, 100% { opacity: 0.12; scale: 0.4; rotate: 0deg; }
+  50% { opacity: var(--nx-sp-hi); scale: 1; rotate: 45deg; }
+}
+
+@keyframes nx-curtain {
+  from { translate: 0 0; }
+  to { translate: 101% 0; }
+}

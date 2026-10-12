@@ -1,6 +1,7 @@
 import { assetForRole } from "@/brand/data/image-curation";
 import { Button, MediaFrame, Prose, Section } from "@/components/ui";
 import { ENTITY_FACTS, SITE_CONFIG } from "@/lib/constants";
+import { Filigree } from "@/components/decor";
 
 /** "English, Hindi and Marathi" */
 const LANGUAGES = ENTITY_FACTS.languages.slice(0, -1).join(", ") + " and " + ENTITY_FACTS.languages.at(-1);
@@ -20,6 +21,7 @@ export function HomeAbout() {
       deck="One accountable team, from the first conversation to the last guest home."
       lazy
     >
+      <Filigree kind="divider" className="nx-divider" />
       <div className="lux-grid pg-home-about">
         <div className="pg-home-about__copy">
           <Prose dropcap>

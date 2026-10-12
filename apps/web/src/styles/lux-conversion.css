@@ -180,7 +180,7 @@ select.lux-input option {
   }
 }
 
-:where(:root:not([data-motion="full"])) {
+:where(:root:not([data-motion="full"]):not([data-motion="gentle"])) {
   .lux-spinner {
     animation-duration: 2.4s;
   }

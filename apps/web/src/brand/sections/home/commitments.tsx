@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BRAND_INVESTMENTS } from "@/brand/data/content";
 import { Commitments, Section } from "@/components/ui";
 import { services } from "@/data/cms";
+import { Filigree } from "@/components/decor";
 
 /** ₹2,00,000 → "₹2 Lakhs" (prose style; ledgers use formatCurrency). */
 function lakhs(amount: number): string {
@@ -24,6 +25,7 @@ export function HomeCommitments() {
       lead="Policies we set and keep on every engagement, whatever its size."
       lazy
     >
+      <Filigree kind="divider" className="nx-divider" />
       <Commitments variant="grid" />
       <p className="pg-home-price">
         <span>

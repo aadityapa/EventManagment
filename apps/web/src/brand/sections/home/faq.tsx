@@ -1,5 +1,6 @@
 import { HOME_FAQ_ITEMS } from "@/brand/data/faq";
 import { Accordion, Button, Section, type AccordionItem } from "@/components/ui";
+import { Filigree } from "@/components/decor";
 
 /** The six questions rendered here — the FAQPage JSON-LD mirrors exactly these. */
 export const HOME_FAQS: AccordionItem[] = HOME_FAQ_ITEMS.slice(0, 6).map((faq, i) => ({
@@ -23,6 +24,7 @@ export function HomeFaq() {
       }
       lazy
     >
+      <Filigree kind="divider" className="nx-divider" />
       <Accordion name="home-faq" items={HOME_FAQS} schema className="lux-measure" />
     </Section>
   );

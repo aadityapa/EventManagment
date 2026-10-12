@@ -302,7 +302,7 @@ Rules: Cormorant never below 1.375rem (its hairlines fail contrast small). Playf
 - Chapters (`.lux-section`) are separated by a 1px hairline (`border-top: 1px solid var(--lux-border)`) with the folio numeral sitting on the rule, never by coloured bands. Padding-block `--lux-space-section`; `.lux-section--tight` uses `--lux-space-block`; a chapter opening with a spread (`.lux-section:has(> .lux-spread:first-child)`) drops its top padding so the photo touches the rule.
 - Every chapter head: folio + eyebrow + H2 (+ optional deck/lead) in `.lux-col-text`, left-aligned (centred heads only on 404 and the inquiry success state); ≥ `--lux-space-block` between head and body. Spreads are preceded and followed by `--lux-space-section`.
 - Surface alternation: none. The page is one `--lux-bg` surface; `--lux-surface-1` plates appear only for ledgers, the inquiry plate, the price table and the action bar. The body aurora gradient in `luxury-redesign.css` is removed.
-- Below-fold chapters: `content-visibility: auto; contain-intrinsic-size: auto 48rem`.
+- Below-fold chapters: `content-visibility: auto; contain-intrinsic-size: auto 40rem` (measured per viewport / chapter, see §9).
 - All `[id]` targets: `scroll-margin-top: calc(var(--lux-nav-h-current) + 1rem)`.
 
 ### 5.4 "Bento" rules
@@ -626,13 +626,38 @@ Shared-element morphs (320ms, `::view-transition-group(.lux-morph)`): gallery ti
 
 The existing global `prefers-reduced-motion` duration collapse in `luxury-redesign.css` stays.
 
-### 9.6 Motion preference (V7 — "reduce, don't remove")
-The site has its own motion preference, so a visitor whose OS reports `prefers-reduced-motion: reduce` (the owner's Windows PC does) can still choose the 3D/animated site.
-- **Source of truth:** `html[data-motion="full" | "reduced"]`, set before first paint by a tiny inline `<script>` in `<head>` (`MOTION_BOOT_SCRIPT`, `src/components/motion/motion-mode.ts`, rendered by `layout.tsx`). A stored choice (`localStorage["nx-motion"]`) wins; otherwise the OS query decides and is followed live. `window.__nxSetMotion(mode | null)` updates the attribute + storage and dispatches `nx:motion` on `window` (other tabs follow via `storage`).
-- **Control:** `<MotionToggle>` ("Motion: On / Off", `<button aria-pressed>`, name "Motion", 44px, gold focus ring) in the footer legal row next to "Cookie settings" and in the phone menu dialog. Hidden until hydrated.
-- **CSS:** no stylesheet uses the `prefers-reduced-motion` media query. Motion rules are scoped `:where(:root[data-motion="full"])`; the 9.5 "reduce" column applies under `:where(:root:not([data-motion="full"]))` (zero added specificity, `@layer` / `@supports` / `@media (hover)` wrappers kept). The global duration collapse and the View Transition `animation: none` apply to `[data-motion="reduced"]` only. No JS = no attribute = static, fully visible page.
-- **3D:** `canRun3D()` no longer fails for reduced motion (only no WebGL2 / Save-Data / < 4 cores). `Scene3D` passes `motion` to the scene; "reduced" renders one still frame (particles at rest, coin at a 3/4 angle to the key light), no RAF loop, no pointer/gyro parallax, re-rendered only on resize / asset load. A mode change remounts the scene live.
-- **Runtime:** `MotionRuntime` runs tilt, magnetic, cursor light, Lenis and the reveal fallback only under "full" and tears them down on a switch to "reduced". The marquee loops only under "full"; under "reduced" it is a static, scrollable strip without its pause button.
+### 9.6 Motion levels (V8 — supersedes the V7 on/off preference)
+The site has its own three motion levels, so a visitor whose OS reports `prefers-reduced-motion: reduce` (the owner's Windows PC does) gets a calmer but still living site, and anyone can choose.
+- **Source of truth:** `html[data-motion="full" | "gentle" | "off"]`, set before first paint by a tiny inline `<script>` in `<head>` (`MOTION_BOOT_SCRIPT`, `src/components/motion/motion-mode.ts`, rendered by `layout.tsx`). A stored choice (`localStorage["nx-motion"]` ∈ `full|gentle|off`; the legacy V7 value `"reduced"` reads as `"off"`) wins; otherwise OS reduce → `"gentle"`, else `"full"`, followed live. `window.__nxSetMotion(mode | null)` (null = follow the OS again) updates the attribute + storage and dispatches `nx:motion` `{ mode, source }` on `window` (other tabs follow via `storage`). TS: `MotionMode`, `getMotionMode()` ("off" when unset), `onMotionChange(cb)`, `setMotionMode(mode | null)`, `isAnimated(mode)`.
+- **Control:** `<MotionToggle>` (props `{ icon?, className? }`) — "Motion" + a segmented `role="group" aria-label="Motion"` of three `<button aria-pressed>` (Full · Gentle · Off; 44px targets on touch, ≥ 32px on fine pointers, gold focus ring) in the footer legal row and the phone menu. Hidden until hydrated. It is the site-wide pause for every looping animation (the marquee keeps its own button).
+- **What each level allows:**
+
+| | full | gentle | off / no JS |
+|---|---|---|---|
+| Lenis smooth scroll (desktop fine pointer) | lerp 0.085 | lerp 0.12 | native |
+| Reveals (`.lux-reveal`, `.lux-split`) | rise + 3D depth / word rotateX | fade + 12px rise, word fade | static, visible |
+| 3D scenes | animated + pointer/gyro parallax | time ×0.4, no parallax | one still frame |
+| Tilt, magnetic, cursor light, photo parallax, cover/spread settle scale, coverflow, H1 sheen, page-sweep scale | yes | no | no |
+| Décor ambient (fairy lights, stage lights, sparkle) | yes | slower, lower amplitude | still |
+| Filigree draw-in | stroke draw | fade | drawn |
+| Confetti on booking | burst | soft glow | none |
+| Marquee | loops (pause button) | loops 1.75× slower (pause button) | static scrollable strip |
+| Scroll-progress line, photo shimmer, rule / process draws, hover transitions | yes | yes | no |
+| View transition | cross-fade + gold sweep + scale | 200ms cross-fade | none |
+
+- **CSS selector contract** (always inside `:where()`, zero specificity; `@layer` / `@supports` / `@media (hover)` wrappers kept): animated `:where(:root:is([data-motion="full"], [data-motion="gentle"]))`; full only `:where(:root[data-motion="full"])`; gentle only `:where(:root[data-motion="gentle"])`; static (9.5 "reduce" column) `:where(:root:not([data-motion="full"]):not([data-motion="gentle"]))`. The global duration collapse and View Transition `animation: none` apply to `[data-motion="off"]` only. No stylesheet uses the `prefers-reduced-motion` query. No JS = no attribute = static, fully visible page.
+- **3D:** `canRun3D()` never fails for reduced motion. `Scene3D` passes `motion`; the shared stage (`parts/stage.ts`) exposes `Stage.motion`, `Stage.still` (= "off": one frame at `STILL_TIME`, no loop, re-rendered on resize / asset load), hands `frame(time, delta)` already scaled (×1 / ×0.4), keeps `Stage.pointer` at {0,0} unless "full", **warms the GPU** before a scene is ever in view (in an idle slot after `start()`: `compileAsync` + `initTexture` for every texture + one offscreen frame; the loop starts only after that, and its IntersectionObserver margin is `50% 0px`, so the first in-view frame only draws), and runs **adaptive quality** on frame COST, not cadence: main-thread update + render time > 11 ms, or the rAF interval falling behind the display cadence learned on the first frames (> max(20 ms, 1.3 × cadence + 4)), for ~1.5 s steps the pixel ratio down (never below DPR 1 desktop / 0.75 lite) and calls `Stage.onQualityChange(level: 0 | 1 | 2)` so scenes thin their draw counts; ~6 s of fast frames steps back up unless that level already failed. A capped rAF (30 fps power saving, 50 Hz) is never "slow". Scenes mount in their own idle slot after the chunk evaluates. Variants: hero, dust, coin, globe, petals. A level change remounts live.
+- **Runtime:** `MotionRuntime` runs tilt, magnetic and the cursor light under "full" (fine pointer), Lenis and the reveal fallback under "full" + "gentle", and always the marquee toggle, the photo-loaded marker and the dialog scroll lock; each piece starts / stops live on a level change.
+
+### 9.7 Smooth scroll (V8)
+- Lenis, `import("lenis")` inside the runtime effect on hydration (not idle-delayed; never in the initial chunk), desktop `(hover: hover) and (pointer: fine)` only, "full" + "gentle"; touch keeps native momentum. `respectReducedMotion: false` (the levels decide). `src/components/motion/smooth-scroll.ts` (no lenis import) exposes `getLenis()`, ref-counted `lockScroll(reason)` / `unlockScroll(reason)`, `interruptScroll()` and `scrollToTarget(target, opts)` (Lenis when active, else native `scrollIntoView` / `scrollTo`, instant under "off").
+- Edge cases: same-page `#` links glide (Lenis honours `scroll-padding-top`) and then commit the hash natively; the skip link and links another handler took (lightbox tiles) stay native; a hash on load is re-aligned once Lenis boots; route-change clicks reset inertia (`stopInertiaOnNavigate`), so do `popstate` and scrolling keys (Tab, arrows, Page, Home/End, Space); `lenis.resize()` after every route swap; `contentvisibilityautostatechange` refreshes the scroll limit without cancelling a glide; open modal `<dialog>` → `lockScroll("dialog")`; dialogs, popovers and `[data-lenis-prevent]` (menu, lightbox) scroll natively and any element that can scroll in the wheel's direction keeps it (`allowNestedScroll`); `html.lenis { scroll-behavior: auto }` so nothing double-eases.
+
+### 9.8 Render smoothness (V8, from the live baseline)
+- Animate only `transform`, `opacity`, `translate`, `scale`, `rotate` (+ `stroke-dashoffset` on small décor SVG). No `mix-blend-mode` on large fixed layers (the cursor light is plain alpha), no `backdrop-filter` on fixed bars over scrolling content (header and phone action bar are 96% opaque surfaces instead) or over animated canvases (About hero panel); `will-change` only while animating (cursor light while it follows, tilting cards).
+- `.lux-section--lazy` placeholders are measured (content box `auto 40rem` desktop, phones `auto 58rem`, phone photo strands `29rem`; the home chapters have their own ≥ 1024 sizes; tight/tighter keep 24/16rem; footer 82rem, phones 85rem), and `MotionRuntime` lays every below-fold lazy chapter out once while idle after load (`.lux-cv-measure` for one frame), so `auto` remembers real heights and the page height settles before the first scroll.
+- Photos: `decoding="async"`; a soft champagne shimmer crosses `.lux-frame__box` until the runtime marks `[data-loaded]` (capped loop; LCP frames start marked; static under "off").
+- `.lux-progress`: a 2px gold line fixed at the top, `scaleX` on `animation-timeline: scroll(root block)`; "full" + "gentle" only, hidden where unsupported, in print / forced colours and on app routes.
 
 ---
 

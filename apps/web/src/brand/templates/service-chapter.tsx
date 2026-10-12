@@ -28,6 +28,9 @@ export type Service = (typeof services)[number];
 /** Canonical order of the twelve (the index's numbering), so the folio matches the row numeral on /services. */
 const ORDER: readonly string[] = SERVICE_GROUPS.flatMap((g) => g.slugs);
 
+/** V8 décor: the wedding chapters get rose petals over the cover photo. */
+const PETAL_COVERS: readonly string[] = ["wedding-planning", "destination-weddings"];
+
 /** Three neighbours: same index group first, then the rest in index order. */
 function relatedSlugs(slug: string): string[] {
   const group = SERVICE_GROUPS.find((g) => (g.slugs as readonly string[]).includes(slug));
@@ -78,6 +81,7 @@ export function ServiceChapter({ service }: { service: Service }) {
         icon={<ServiceIcon name={slug} size={48} />}
         priceLine={price}
         viewTransitionName={`service-title-${slug}`}
+        petals={PETAL_COVERS.includes(slug)}
       />
 
       <Section id="brief" number="01" eyebrow="The brief" title="What this service covers" lead={intro}>
@@ -162,6 +166,7 @@ export function ServiceChapter({ service }: { service: Service }) {
         defaultEventType={SERVICE_EVENT_TYPE[slug]}
         eyebrow={`${title} · Free consultation`}
         priceLine={price}
+        celebrate
       />
     </div>
   );

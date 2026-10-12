@@ -1,3 +1,4 @@
+import { FiligreeFrame, PetalsLayer, Sparkles } from "@/components/decor";
 import { InquiryForm } from "@/components/inquiry/inquiry-form";
 import { UiIcon } from "@/components/icons";
 import { InquirySentinel } from "@/components/ui/inquiry-sentinel";
@@ -25,6 +26,8 @@ type InquiryPanelProps = {
   contacts?: boolean;
   /** e.g. "From ₹8,00,000" on service pages. */
   priceLine?: string;
+  /** V8 décor for closing CTAs: petals falling behind the plate, sparkles by the submit button. */
+  celebrate?: boolean;
   className?: string;
 };
 
@@ -50,6 +53,7 @@ export function InquiryPanel({
   lead = `${BRAND_REPLY_HOURS} After a free consultation, your itemised proposal follows within 48 hours.`,
   contacts = true,
   priceLine,
+  celebrate = false,
   className,
 }: InquiryPanelProps) {
   const tel = `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`;
@@ -62,6 +66,10 @@ export function InquiryPanel({
   return (
     <section id={id} className={cn("lux-inquiry", className)} aria-labelledby={`${id}-title`}>
       <InquirySentinel />
+      {/* V8 décor (aria-hidden, absolutely positioned): engraved corners on the plate; on closing
+          CTAs, petals that fall behind it (masked to the space around the plate, never under text). */}
+      <FiligreeFrame className="lux-inquiry__corners" />
+      {celebrate ? <PetalsLayer intensity={0.6} className="lux-inquiry__petals" /> : null}
       <div className="lux-inquiry__body">
         <div className="lux-inquiry__copy">
           <p className="lux-label lux-label--rule-leading">{eyebrow}</p>
@@ -89,6 +97,7 @@ export function InquiryPanel({
           ) : null}
         </div>
         <div className="lux-inquiry__form">
+          {celebrate ? <Sparkles count={6} className="lux-inquiry__sparkles" /> : null}
           <InquiryForm
             source={source}
             variant={variant}

@@ -1,23 +1,25 @@
 "use client";
 
-import type Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { getMotionMode, onMotionChange } from "./motion-mode";
+import { getMotionMode, isAnimated, onMotionChange, type MotionMode } from "./motion-mode";
+import { getLenis, interruptScroll, lockScroll, setLenis, unlockScroll } from "./smooth-scroll";
 
 /**
- * V7 motion runtime — mounted once in layout.tsx. One small island of
- * delegated listeners; every effect it drives is decoration over content that
- * is already visible without it:
- *  - [data-tilt] / [data-tilt="soft"]: pointer-follow 3D tilt + glare (7° / 4°)
- *  - [data-magnetic]: buttons drift ≤ 6px toward the pointer
- *  - .lux-cursor-light: soft gold glow following the pointer
- *  - Lenis smooth scroll, loaded dynamically after idle
- *  - .lux-reveal / .lux-split fallback (adds .is-in) where scroll timelines are unsupported
- *  - [data-marquee-toggle]: the marquee's pause/play button
- * Pointer effects and smooth scroll run on fine-pointer hover devices only, and
- * everything but the marquee toggle runs only while the site motion preference
- * is "full" (html[data-motion], DESIGN.md §9). Switching to "reduced" (toggle,
- * OS change, another tab) tears Lenis and every listener down live.
+ * Motion runtime (V7, V8 levels) — mounted once in layout.tsx. One small
+ * island of delegated listeners; every effect it drives is decoration over
+ * content that is already visible without it:
+ *  - [data-tilt] / [data-tilt="soft"]: pointer-follow 3D tilt + glare (7° / 4°)   full
+ *  - [data-magnetic]: buttons drift ≤ 6px toward the pointer                       full
+ *  - .lux-cursor-light: soft gold glow following the pointer                       full
+ *  - Lenis smooth scroll (lerp .085 full / .12 gentle), dynamically imported      full, gentle
+ *  - .lux-reveal / .lux-split fallback (adds .is-in) without scroll timelines     full, gentle
+ *  - [data-marquee-toggle]: the marquee's pause/play button                        always
+ *  - .lux-frame__box[data-loaded]: ends the photo placeholder shimmer             always
+ *  - open modal <dialog> → lockScroll("dialog")                                   always
+ * Pointer effects and smooth scroll need a fine hover pointer (touch keeps its
+ * native momentum). A level change (control, OS, another tab) starts / stops
+ * each piece live; full ↔ gentle only retunes Lenis.
  */
 
 type Cleanup = () => void;
@@ -25,7 +27,10 @@ type Cleanup = () => void;
 const TILT_MAX = 7;
 const TILT_SOFT = 4;
 const MAG_MAX = 6;
+const LERP: Record<Exclude<MotionMode, "off">, number> = { full: 0.085, gentle: 0.12 };
 const REVEAL = ".lux-reveal, .lux-split:not(.lux-split--load)";
+/** Keys that scroll natively: an in-flight Lenis glide must not fight them. */
+const SCROLL_KEYS = new Set(["Tab", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "]);
 
 const px = (n: number, unit: string) => `${n.toFixed(2)}${unit}`;
 
@@ -122,22 +127,47 @@ function startPointer(light: HTMLElement | null): Cleanup {
   };
 }
 
+type SmoothScroll = { stop: Cleanup; retune: (mode: MotionMode) => void };
+
+/** The hash-on-load re-alignment runs once per document, never on a Lenis restart. */
+let hashAligned = false;
+/** Re-align only while the hash target is still about where the browser put it. */
+const HASH_DRIFT_MAX = 0.5;
+
 /**
- * Lenis on desktop fine pointers, loaded after the page is idle so it never
- * competes with LCP. In-page anchors glide via lenis.scrollTo (which honours
- * html scroll-padding-top); the hash is committed natively afterwards so
- * :target, history and focus behave exactly as without Lenis.
+ * Lenis on desktop fine pointers, imported as soon as the runtime hydrates (it
+ * is small and only eases wheel input, so it never competes with LCP).
+ *  - In-page anchors glide via lenis.scrollTo (honours html scroll-padding-top);
+ *    the hash is committed natively afterwards so :target, history and the
+ *    focus starting point behave exactly as without Lenis. The skip link and
+ *    links another handler already took (lightbox tiles) stay native.
+ *  - A hash on load is re-aligned once Lenis is first up (lazy chapters above it
+ *    may have changed height since the browser's own jump) — once per document,
+ *    and only while the target is still near the top: a visitor who already
+ *    scrolled away, or a later Lenis restart (motion level / pointer change),
+ *    is never pulled back to a stale #hash.
+ *  - Links to another route reset inertia (stopInertiaOnNavigate) so Next's
+ *    scroll-to-top / restoration never fights a glide; so does history
+ *    navigation and any scrolling key.
+ *  - content-visibility chapters re-measure the scroll limit when they render.
+ *  - Nested scrollers stay native: dialogs, popovers, [data-lenis-prevent] and
+ *    any element that can scroll in the wheel's direction (allowNestedScroll).
  */
-function startSmoothScroll(): Cleanup {
+function startSmoothScroll(initial: MotionMode): SmoothScroll {
   let destroyed = false;
-  let lenis: Lenis | null = null;
-  const hasIdle = "requestIdleCallback" in window;
+  let mode = initial;
+  let measure = 0;
+  const off = new AbortController();
+  const on = { signal: off.signal };
 
   const onAnchor = (e: MouseEvent) => {
+    const lenis = getLenis();
     if (!lenis || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const link = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>('a[href^="#"]') : null;
-    if (!link || link.classList.contains("skip-link")) return;
-    const id = decodeURIComponent(link.hash.slice(1));
+    const link = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>("a[href*='#']") : null;
+    if (!link || link.classList.contains("skip-link") || link.target === "_blank") return;
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search || !url.hash) return;
+    const id = decodeURIComponent(url.hash.slice(1));
     const el = id ? document.getElementById(id) : null;
     if (!el) return;
     e.preventDefault();
@@ -148,40 +178,69 @@ function startSmoothScroll(): Cleanup {
     });
   };
 
-  const boot = () => {
-    import("lenis")
-      .then(({ default: LenisCtor }) => {
-        if (destroyed) return;
-        lenis = new LenisCtor({
-          autoRaf: true,
-          allowNestedScroll: true,
-          stopInertiaOnNavigate: true,
-          prevent: (node) => !!node.closest("dialog, [popover], [data-lenis-prevent]"),
-        });
-        document.addEventListener("click", onAnchor);
-      })
-      .catch(() => {
-        /* native scrolling stays */
+  const onKey = (e: KeyboardEvent) => {
+    if (SCROLL_KEYS.has(e.key)) interruptScroll();
+  };
+
+  // content-visibility: auto chapters change height as they render; refresh the
+  // limit only (lenis.resize() would also cancel an in-flight glide).
+  const onVisibilityState = () => {
+    if (measure) return;
+    measure = requestAnimationFrame(() => {
+      measure = 0;
+      getLenis()?.dimensions.resize();
+    });
+  };
+
+  import("lenis")
+    .then(({ default: LenisCtor }) => {
+      if (destroyed) return;
+      const lenis = new LenisCtor({
+        autoRaf: true,
+        lerp: LERP[mode === "off" ? "gentle" : mode],
+        allowNestedScroll: true,
+        stopInertiaOnNavigate: true,
+        // Our own motion levels decide: "gentle" (the OS-reduce default) still glides.
+        respectReducedMotion: false,
+        prevent: (node) => !!node.closest("dialog, [popover], [data-lenis-prevent]"),
       });
-  };
+      setLenis(lenis);
 
-  let handle = 0;
-  const schedule = () => {
-    handle = hasIdle ? window.requestIdleCallback(boot, { timeout: 2500 }) : window.setTimeout(boot, 1200);
-  };
-  if (document.readyState === "complete") schedule();
-  else window.addEventListener("load", schedule, { once: true });
+      window.addEventListener("click", onAnchor, on); // window: after document-level handlers ran
+      window.addEventListener("keydown", onKey, on);
+      window.addEventListener("popstate", interruptScroll, on);
+      document.addEventListener("contentvisibilityautostatechange", onVisibilityState, { capture: true, signal: off.signal });
 
-  return () => {
-    destroyed = true;
-    window.removeEventListener("load", schedule);
-    document.removeEventListener("click", onAnchor);
-    if (handle) {
-      if (hasIdle) window.cancelIdleCallback(handle);
-      else window.clearTimeout(handle);
-    }
-    lenis?.destroy();
-    lenis = null;
+      if (!hashAligned) {
+        hashAligned = true;
+        const hash = location.hash.length > 1 ? decodeURIComponent(location.hash.slice(1)) : "";
+        const target = hash && !hash.startsWith("photo-") ? document.getElementById(hash) : null;
+        if (target && window.scrollY > 0) {
+          requestAnimationFrame(() => {
+            const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+            const drift = Math.abs(target.getBoundingClientRect().top - padding);
+            if (drift > 1 && drift < window.innerHeight * HASH_DRIFT_MAX) lenis.scrollTo(target, { immediate: true, force: true });
+          });
+        }
+      }
+    })
+    .catch(() => {
+      /* native scrolling stays */
+    });
+
+  return {
+    retune(next) {
+      mode = next;
+      const lenis = getLenis();
+      if (lenis && next !== "off") lenis.options.lerp = LERP[next];
+    },
+    stop() {
+      destroyed = true;
+      off.abort();
+      if (measure) cancelAnimationFrame(measure);
+      getLenis()?.destroy();
+      setLenis(null);
+    },
   };
 }
 
@@ -241,36 +300,200 @@ function onMarqueeToggle(e: MouseEvent) {
   btn.closest(".lux-marquee")?.toggleAttribute("data-paused", paused);
 }
 
+/** Photo frames: mark the box once its image has loaded (or failed) so the placeholder shimmer stops. */
+function markLoaded(img: Element | null) {
+  if (img instanceof HTMLImageElement) img.closest(".lux-frame__box")?.setAttribute("data-loaded", "");
+}
+
+function startImageMarks(): Cleanup {
+  const onDone = (e: Event) => markLoaded(e.target as Element | null);
+  // load / error do not bubble: capture them at the document.
+  document.addEventListener("load", onDone, true);
+  document.addEventListener("error", onDone, true);
+  document.querySelectorAll<HTMLImageElement>(".lux-frame__box:not([data-loaded]) img").forEach((img) => {
+    if (img.complete) markLoaded(img);
+  });
+  return () => {
+    document.removeEventListener("load", onDone, true);
+    document.removeEventListener("error", onDone, true);
+  };
+}
+
+/**
+ * Any open modal <dialog> (menu, lightbox) holds the page still while Lenis runs.
+ * Watches removals too: an open dialog unmounted with its page (Back with the
+ * lightbox open) fires no close and keeps [open], and must still release the lock.
+ */
+function startDialogLock(): Cleanup {
+  let held = false;
+  const sync = () => {
+    const open = document.querySelector("dialog[open]") !== null;
+    if (open === held) return;
+    held = open;
+    if (open) lockScroll("dialog");
+    else unlockScroll("dialog");
+  };
+  const mo = new MutationObserver(sync);
+  mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["open"] });
+  sync();
+  return () => {
+    mo.disconnect();
+    if (held) unlockScroll("dialog");
+  };
+}
+
+type IdleWindow = Window & {
+  requestIdleCallback?: (cb: (deadline: IdleDeadline) => void, opts?: { timeout: number }) => number;
+  cancelIdleCallback?: (id: number) => void;
+};
+
+const LAZY = ".lux-section--lazy, .pg-shell-footer";
+
+/**
+ * content-visibility: auto chapters first render while being scrolled to, and
+ * each first render corrected the page height by the placeholder error (V8 QA:
+ * −359px on /about, −841px on a phone service page, mid-glide). Instead, once
+ * the page is idle after load, every chapter off screen is laid out once
+ * (`.lux-cv-measure` for one frame), so `contain-intrinsic-size: auto` remembers
+ * its real height and the page height settles before the first scroll. That
+ * includes chapters ABOVE the viewport (a #hash load, a restored scroll, back /
+ * forward): rendered later, mid-glide, their size error was corrected by scroll
+ * anchoring and then overwritten by Lenis's next frame — a jump. Measured while
+ * no glide runs, the anchoring shift is a plain native scroll Lenis adopts, and
+ * lenis.resize() re-syncs it. Chapters near the viewport are already rendered.
+ * Runs at every motion level: the native scrollbar jumped too.
+ */
+function startLazyMeasure(): Cleanup {
+  const w = window as IdleWindow;
+  let idleId = 0;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let frame = 0;
+  let stopped = false;
+  let queue: HTMLElement[] = [];
+
+  const next = () => {
+    if (stopped || !queue.length) return;
+    if (w.requestIdleCallback) idleId = w.requestIdleCallback(step, { timeout: 2000 });
+    else timer = setTimeout(() => step(), 120);
+  };
+
+  function step(deadline?: IdleDeadline) {
+    idleId = 0;
+    timer = undefined;
+    if (stopped) return;
+    // A glide in flight would overwrite the anchoring shift of a chapter above: wait.
+    if (getLenis()?.isScrolling === "smooth") return next();
+    const h = window.innerHeight;
+    const batch: HTMLElement[] = [];
+    let above = false;
+    // At least one chapter per slot; more while the idle budget lasts (layout is forced here, inside the slot).
+    while (queue.length && (!batch.length || (deadline?.timeRemaining() ?? 0) > 8)) {
+      const el = queue.shift()!;
+      if (!el.isConnected) continue;
+      const r = el.getBoundingClientRect();
+      const isAbove = r.bottom < -h * 0.5;
+      if (!isAbove && r.top < h * 1.5) continue;
+      above ||= isAbove;
+      el.classList.add("lux-cv-measure");
+      void el.offsetHeight;
+      batch.push(el);
+    }
+    if (!batch.length) return next();
+    // The size is recorded at the next rendering update; skip again one frame later.
+    frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        batch.forEach((el) => el.classList.remove("lux-cv-measure"));
+        const lenis = getLenis();
+        // Above: scrollY moved (anchoring) — re-sync Lenis's scroll unless a glide began meanwhile.
+        if (above && lenis?.isScrolling !== "smooth") lenis?.resize();
+        else lenis?.dimensions.resize();
+        next();
+      });
+    });
+  }
+
+  const begin = () => {
+    queue = Array.from(document.querySelectorAll<HTMLElement>(LAZY));
+    next();
+  };
+  if (document.readyState === "complete") begin();
+  else window.addEventListener("load", begin, { once: true });
+
+  return () => {
+    stopped = true;
+    window.removeEventListener("load", begin);
+    if (idleId) w.cancelIdleCallback?.(idleId);
+    if (timer) clearTimeout(timer);
+    if (frame) cancelAnimationFrame(frame);
+    document.querySelectorAll(".lux-cv-measure").forEach((el) => el.classList.remove("lux-cv-measure"));
+  };
+}
+
 export function MotionRuntime() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
     const light = document.querySelector<HTMLElement>(".lux-cursor-light");
-    let stops: Cleanup[] = [];
-    let current = "";
+    let pointer: Cleanup | null = null;
+    let reveal: Cleanup | null = null;
+    let smooth: SmoothScroll | null = null;
 
-    const start = () => {
-      const key = `${getMotionMode()}|${fine.matches}`;
-      if (key === current) return;
-      current = key;
-      stops.forEach((stop) => stop());
-      stops = [];
-      if (getMotionMode() !== "full") return;
-      stops.push(startRevealFallback());
-      if (fine.matches) stops.push(startPointer(light), startSmoothScroll());
+    const sync = () => {
+      const mode = getMotionMode();
+      const animated = isAnimated(mode);
+
+      const wantPointer = mode === "full" && fine.matches;
+      if (wantPointer && !pointer) pointer = startPointer(light);
+      else if (!wantPointer && pointer) {
+        pointer();
+        pointer = null;
+      }
+
+      if (animated && !reveal) reveal = startRevealFallback();
+      else if (!animated && reveal) {
+        reveal();
+        reveal = null;
+      }
+
+      const wantSmooth = animated && fine.matches;
+      if (wantSmooth && !smooth) smooth = startSmoothScroll(mode);
+      else if (!wantSmooth && smooth) {
+        smooth.stop();
+        smooth = null;
+      }
+      smooth?.retune(mode);
     };
 
-    start();
-    const stopMotion = onMotionChange(start);
-    fine.addEventListener("change", start);
+    sync();
+    const stopMotion = onMotionChange(sync);
+    fine.addEventListener("change", sync);
     document.addEventListener("click", onMarqueeToggle);
+    const stopImages = startImageMarks();
+    const stopDialogs = startDialogLock();
 
     return () => {
       stopMotion();
-      fine.removeEventListener("change", start);
+      fine.removeEventListener("change", sync);
       document.removeEventListener("click", onMarqueeToggle);
-      stops.forEach((stop) => stop());
+      stopImages();
+      stopDialogs();
+      pointer?.();
+      reveal?.();
+      smooth?.stop();
     };
   }, []);
+
+  // Route content swapped (Next has already scrolled to top or restored): re-measure.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => getLenis()?.resize());
+    const stopMeasure = startLazyMeasure();
+    return () => {
+      cancelAnimationFrame(id);
+      stopMeasure();
+    };
+  }, [pathname]);
 
   return <div className="lux-cursor-light" aria-hidden="true" />;
 }

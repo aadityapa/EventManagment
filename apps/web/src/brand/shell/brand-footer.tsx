@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- pre-sized WebP wordmark with its own srcset; nothing to optimise */
 import Link from "next/link";
+import { FairyLights } from "@/components/decor";
 import { UiIcon } from "@/components/icons";
 import { DetailsOpenAtDesktop } from "@/components/ui";
 import { MotionToggle } from "@/components/motion/motion-toggle";
@@ -56,6 +57,8 @@ export function BrandFooter() {
   const year = new Date().getFullYear();
   return (
     <footer className="pg-shell-footer">
+      {/* V8 décor: a light string of champagne bulbs along the footer's top border (aria-hidden). */}
+      <FairyLights variant="line" tone="champagne" bulbs={20} className="pg-shell-footer__lights" />
       <div className="pg-shell-footer__inner">
         <div className="pg-shell-colophon">
           <div className="pg-shell-colophon__brand">

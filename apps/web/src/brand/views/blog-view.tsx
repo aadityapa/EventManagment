@@ -201,7 +201,6 @@ export function BlogView({ listing }: { listing: BlogListing }) {
           eyebrow={category ?? "All notes"}
           title={category ? `More on ${category.toLowerCase()}` : "Every planning note"}
           lead={pageCount > 1 ? `Page ${page} of ${pageCount}` : undefined}
-          lazy
         >
           <BlogPostRows posts={rows} location="blog_index" />
           <Pagination

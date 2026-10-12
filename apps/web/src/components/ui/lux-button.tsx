@@ -8,7 +8,7 @@ export type ButtonProps = CtaProps & {
   /** `primary` is the one purple action per viewport (a page responsibility). */
   variant?: "primary" | "ghost" | "text";
   size?: "md" | "compact" | "full";
-  /** Renders a `<Link>` (or a plain `<a>` for tel:/mailto:/external URLs) instead of a `<button>`. */
+  /** Renders a `<Link>` (or a plain `<a>` for tel:/mailto:/external URLs and #fragments) instead of a `<button>`. */
   href?: string;
   /** Merge the classes and data attributes into the single child element instead of rendering a tag. */
   asChild?: boolean;
@@ -76,7 +76,10 @@ export function Button({
   );
 
   if (href) {
-    if (external || PROTOCOL_LINK.test(href)) {
+    // In-page anchors (#inquire, #plan, #archive) are plain <a>: next/link takes every
+    // click (preventDefault) and jumps with scrollIntoView, which skipped the Lenis
+    // glide (MotionRuntime) and lost to a glide already in flight.
+    if (external || PROTOCOL_LINK.test(href) || href.startsWith("#")) {
       return (
         <a
           id={id}
